@@ -8,13 +8,105 @@ apis:
       - AI
       - Artificial Intelligence
       - Messages
-    humanURL: https://docs.anthropic.com/en/home
+    humanURL: https://docs.anthropic.com/en/api/messages
     properties:
-      - url: https://docs.anthropic.com/en/home
+      - url: https://docs.anthropic.com/en/api/messages
         type: Documentation
     description: >-
-      Learn how to get started with the Anthropic API, the Console, and Claude
-      Code. 
+      List available models. The Models API response can be used to determine
+      which models are available for use in the API. More recently released
+      models are listed first.
+  - aid: anthropic:anthropic-models-api
+    name: Anthropic Models API
+    tags:
+      - AI
+      - Artificial Intelligence
+      - Models
+    humanURL: https://docs.anthropic.com/en/api/models-list
+    properties:
+      - url: https://docs.anthropic.com/en/api/models-list
+        type: Documentation
+    description: >-
+      Send a structured list of input messages with text and/or image content,
+      and the model will generate the next message in the conversation.    
+  - aid: anthropic:anthropic-message-batches-api
+    name: Anthropic Message Batches API
+    tags:
+      - AI
+      - Artificial Intelligence
+      - Messages
+      - Batches
+    humanURL: https://docs.anthropic.com/en/api/creating-message-batches
+    properties:
+      - url: https://docs.anthropic.com/en/api/creating-message-batches
+        type: Documentation
+    description: >-
+      Send a batch of Message creation requests. The Message Batches API can be
+      used to process multiple Messages API requests at once. Once a Message
+      Batch is created, it begins processing immediately. Batches can take up to
+      24 hours to complete.       
+  - aid: anthropic:anthropic-files-api
+    name: Anthropic Files API
+    tags:
+      - AI
+      - Artificial Intelligence
+      - Files
+    humanURL: https://docs.anthropic.com/en/api/files-create
+    properties:
+      - url: https://docs.anthropic.com/en/api/files-create
+        type: Documentation
+    description: >-
+      The Files API allows you to upload and manage files to use with the
+      Anthropic API without having to re-upload content with each request. For
+      more information about the Files API, see the developer guide for
+      files.      
+  - aid: anthropic:anthropic-admin-api
+    name: Anthropic Admin API
+    tags:
+      - AI
+      - Artificial Intelligence
+      - Administrative
+    humanURL: https://docs.anthropic.com/en/api/admin-api/users/get-user
+    properties:
+      - url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+        type: Documentation
+    description: 'Manage administrative functions.            '
+  - aid: anthropic:anthropic-workspace-api
+    name: Anthropic Workspace API
+    tags:
+      - AI
+      - Artificial Intelligence
+      - Workspace
+    humanURL: https://docs.anthropic.com/en/api/admin-api/workspaces/get-workspace
+    properties:
+      - url: https://docs.anthropic.com/en/api/admin-api/workspaces/get-workspace
+        type: Documentation
+    description: 'Manage workspaces.    '
+  - aid: anthropic:anthropic-workspace-members-api
+    name: Anthropic Workspace Member API
+    tags:
+      - AI
+      - Artificial Intelligence
+      - Workspace
+      - Members
+    humanURL: >-
+      https://docs.anthropic.com/en/api/admin-api/workspace_members/get-workspace-member
+    properties:
+      - url: >-
+          https://docs.anthropic.com/en/api/admin-api/workspace_members/get-workspace-member
+        type: Documentation
+    description: 'Manage workspaces.          '
+  - aid: anthropic:anthropic-prompts-api
+    name: Anthropic Prompts API
+    tags:
+      - AI
+      - Artificial Intelligence
+      - Prompts
+    humanURL: https://docs.anthropic.com/en/api/prompt-tools-generate
+    properties:
+      - url: https://docs.anthropic.com/en/api/prompt-tools-generate
+        type: Documentation
+    description: 'Manage workspaces.             '
 name: Anthropic
 tags:
   - AI
