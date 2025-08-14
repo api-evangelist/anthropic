@@ -2,7 +2,7 @@ aid: anthropic
 url: >-
   https://raw.githubusercontent.com/api-evangelist/anthropic/refs/heads/main/apis.yml
 apis:
-  - aid: anthropic:anthropic-message-api
+  - aid: anthropic:anthropic-messages-api
     name: Anthropic Messages API
     tags:
       - AI
