@@ -18,15 +18,18 @@ name: Anthropic
 tags:
   - AI
   - Artificial Intelligence
-type: Index
+type: Contract
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
 created: '2025-08-14'
 modified: '2025-08-14'
-position: Consumer
+position: Consuming
 description: >-
-  Learn how to get started with the Anthropic API, the Console, and Claude
-  Code. 
+  Claude is an AI assistant created by Anthropic that helps people with a wide
+  variety of tasks through natural conversation. I can assist with writing and
+  editing, answer questions on many topics, help with analysis and research,
+  provide coding support, engage in creative projects, and offer explanations of
+  complex concepts.
 maintainers:
   - FN: Kin Lane
     email: info@apievangelist.com
