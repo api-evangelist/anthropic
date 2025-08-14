@@ -5,7 +5,8 @@ apis:
   - aid: anthropic:anthropic
     name: Anthropic
     tags:
-      - API
+      - AI
+      - Artificial Intelligence
     humanURL: ' https://docs.anthropic.com/en/home'
     properties:
       - url: ' https://docs.anthropic.com/en/home'
@@ -16,6 +17,7 @@ apis:
 name: Anthropic
 tags:
   - AI
+  - Artificial Intelligence
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
