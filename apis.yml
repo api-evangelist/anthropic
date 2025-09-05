@@ -12,8 +12,6 @@ apis:
     properties:
       - url: https://docs.anthropic.com/en/api/messages
         type: Documentation
-      - url: properties/anthropic-messages-api-openapi.yml
-        type: OpenAPI
     description: >-
       List available models. The Models API response can be used to determine
       which models are available for use in the API. More recently released
@@ -28,8 +26,6 @@ apis:
     properties:
       - url: https://docs.anthropic.com/en/api/models-list
         type: Documentation
-      - url: properties/anthropic-models-api-openapi.yml
-        type: OpenAPI
     description: >-
       Send a structured list of input messages with text and/or image content,
       and the model will generate the next message in the conversation.    
@@ -85,8 +81,6 @@ apis:
     properties:
       - url: https://docs.anthropic.com/en/api/admin-api/workspaces/get-workspace
         type: Documentation
-      - url: properties/anthropic-workspace-api-openapi.yml
-        type: OpenAPI
     description: 'Manage workspaces.    '
   - aid: anthropic:anthropic-workspace-members-api
     name: Anthropic Workspace Member API
@@ -112,13 +106,12 @@ apis:
     properties:
       - url: https://docs.anthropic.com/en/api/prompt-tools-generate
         type: Documentation
-      - type: OpenAPI
-        url: properties/anthropic-prompts-api-openapi.yml
     description: 'Manage workspaces.             '
 name: Anthropic
 tags:
   - AI
   - Artificial Intelligence
+  - T1
 type: Contract
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
@@ -549,24 +542,24 @@ common:
     name: Rate Limits
     type: RateLimits
     description: The rate limits for this API.
-  - name: Build with Claude  Anthropic
-    description: 'null'
-    url: https://www.anthropic.com/api
+  - url: https://www.anthropic.com/api
+    name: Build with Claude  Anthropic
     type: Portal
-  - name: Get started with Claude - Anthropic
     description: 'null'
-    url: https://docs.anthropic.com/en/docs/get-started
+  - url: https://docs.anthropic.com/en/docs/get-started
+    name: Get started with Claude - Anthropic
     type: GettingStarted
-  - name: Glossary - Anthropic
     description: 'null'
-    url: https://docs.anthropic.com/en/docs/about-claude/glossary
+  - url: https://docs.anthropic.com/en/docs/about-claude/glossary
+    name: Glossary - Anthropic
     type: Glossary
-  - name: Service tiers - Anthropic
     description: 'null'
-    url: https://docs.anthropic.com/en/api/service-tiers
+  - url: https://docs.anthropic.com/en/api/service-tiers
+    name: Service tiers - Anthropic
     type: Tiers
+    description: 'null'
 created: '2025-08-14'
-modified: '2025-08-15'
+modified: '2025-09-05'
 position: Consuming
 description: >-
   Claude is an AI assistant created by Anthropic that helps people with a wide
