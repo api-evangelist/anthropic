@@ -259,6 +259,8 @@ paths:
                 $ref: '#/components/schemas/Error'
       x-api-evangelist-certified: '2025-08-14'
       x-api-naftiko-published: '2025-08-15'
+      tags:
+        - Models
   /v1/models/{model_id}:
     get:
       summary: Get A Specific Model
@@ -491,6 +493,8 @@ paths:
                 $ref: '#/components/schemas/Error'
       x-api-evangelist-certified: '2025-08-14'
       x-api-naftiko-published: '2025-08-15'
+      tags:
+        - Models
 components:
   securitySchemes:
     ApiKeyAuth:
