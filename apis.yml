@@ -61,7 +61,7 @@ apis:
     properties:
       - url: https://docs.anthropic.com/en/api/files-create
         type: Documentation
-      - url: openapi/anthropic-files-api-openapi.yml
+      - url: properties/anthropic-files-api-openapi.yml
         type: OpenAPI
     description: >-
       The Files API allows you to upload and manage files to use with the
