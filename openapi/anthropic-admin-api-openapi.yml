@@ -138,7 +138,7 @@ paths:
       operationId: getOrganizationUser
       tags:
         - Organization Members
-        - User
+        - Users
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: user_id
@@ -387,7 +387,7 @@ paths:
       operationId: getOrganizationInvite
       tags:
         - Organization Invites
-        - Invite
+        - Invites
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: invite_id
