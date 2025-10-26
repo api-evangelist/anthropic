@@ -250,7 +250,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       tags:
-        - Generate Prompt
+        - Prompts
   /v1/experimental/improve_prompt:
     post:
       summary: Improve A Prompt
@@ -553,7 +553,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       tags:
-        - Improve Prompt
+        - Prompts
   /v1/experimental/templatize_prompt:
     post:
       summary: Templatize A Prompt
@@ -838,7 +838,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       tags:
-        - Templatize Prompt
+        - Prompts
 components:
   securitySchemes:
     ApiKeyAuth:
