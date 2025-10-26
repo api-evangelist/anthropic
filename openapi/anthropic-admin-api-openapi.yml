@@ -332,7 +332,7 @@ paths:
       operationId: createOrganizationInvite
       tags:
         - Organization Invites
-        - Invite
+        - Invites
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
       requestBody:
