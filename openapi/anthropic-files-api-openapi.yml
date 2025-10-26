@@ -1,0 +1,440 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Files API
+  description: |
+    API for uploading and managing files to use with the Claude API.
+    
+    The Files API allows you to upload and manage files to use with the Claude API without having
+    to re-upload content with each request.
+    
+    **Beta Feature:**
+    The Files API is currently in beta. To use the Files API, you'll need to include the beta
+    feature header: `anthropic-beta: files-api-2025-04-14`.
+    
+    For more information about the Files API, see the developer guide for files.
+  version: 2023-06-01
+  contact:
+    name: Anthropic
+    url: https://www.anthropic.com
+
+servers:
+  - url: https://api.anthropic.com/v1
+    description: Production server
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /files:
+    get:
+      summary: List Files
+      description: List files within a workspace
+      operationId: listFiles
+      parameters:
+        - name: before_id
+          in: query
+          required: false
+          description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+          schema:
+            type: string
+        - name: after_id
+          in: query
+          required: false
+          description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: |
+            Number of items to return per page.
+            Defaults to 20. Ranges from 1 to 1000.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 20
+        - name: anthropic-version
+          in: header
+          required: true
+          description: The version of the Claude API you want to use
+          schema:
+            type: string
+            example: "2023-06-01"
+        - name: anthropic-beta
+          in: header
+          required: true
+          description: |
+            Beta version header required for the Files API.
+            Use: files-api-2025-04-14
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [files-api-2025-04-14]
+          style: form
+          explode: false
+          example: ["files-api-2025-04-14"]
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileList'
+              example:
+                data:
+                  - created_at: "2023-11-07T05:31:56Z"
+                    downloadable: false
+                    filename: "document.pdf"
+                    id: "file_abc123"
+                    mime_type: "application/pdf"
+                    size_bytes: 1024
+                    type: "file"
+                first_id: "file_abc123"
+                has_more: false
+                last_id: "file_abc123"
+        '4XX':
+          description: Client Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      summary: Create a File
+      description: Upload a file to use with the Claude API
+      operationId: createFile
+      parameters:
+        - name: anthropic-version
+          in: header
+          required: true
+          description: The version of the Claude API you want to use
+          schema:
+            type: string
+            example: "2023-06-01"
+        - name: anthropic-beta
+          in: header
+          required: true
+          description: |
+            Beta version header required for the Files API.
+            Use: files-api-2025-04-14
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [files-api-2025-04-14]
+          style: form
+          explode: false
+          example: ["files-api-2025-04-14"]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The file to upload
+            encoding:
+              file:
+                contentType: application/pdf, image/jpeg, image/png, image/gif, image/webp, text/plain, text/csv, application/json, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+              example:
+                created_at: "2023-11-07T05:31:56Z"
+                downloadable: false
+                filename: "document.pdf"
+                id: "file_abc123"
+                mime_type: "application/pdf"
+                size_bytes: 1024
+                type: "file"
+        '4XX':
+          description: Client Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /files/{file_id}:
+    get:
+      summary: Get File Metadata
+      description: Retrieve metadata for a specific file
+      operationId: getFileMetadata
+      parameters:
+        - name: file_id
+          in: path
+          required: true
+          description: ID of the File
+          schema:
+            type: string
+          example: "file_011CNha8iCJcU1wXNR6q4V8w"
+        - name: anthropic-version
+          in: header
+          required: true
+          description: The version of the Claude API you want to use
+          schema:
+            type: string
+            example: "2023-06-01"
+        - name: anthropic-beta
+          in: header
+          required: true
+          description: |
+            Beta version header required for the Files API.
+            Use: files-api-2025-04-14
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [files-api-2025-04-14]
+          style: form
+          explode: false
+          example: ["files-api-2025-04-14"]
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+              example:
+                created_at: "2023-11-07T05:31:56Z"
+                downloadable: false
+                filename: "document.pdf"
+                id: "file_011CNha8iCJcU1wXNR6q4V8w"
+                mime_type: "application/pdf"
+                size_bytes: 1024
+                type: "file"
+        '4XX':
+          description: Client Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Delete a File
+      description: Make a file inaccessible through the API
+      operationId: deleteFile
+      parameters:
+        - name: file_id
+          in: path
+          required: true
+          description: ID of the File
+          schema:
+            type: string
+          example: "file_011CNha8iCJcU1wXNR6q4V8w"
+        - name: anthropic-version
+          in: header
+          required: true
+          description: The version of the Claude API you want to use
+          schema:
+            type: string
+            example: "2023-06-01"
+        - name: anthropic-beta
+          in: header
+          required: true
+          description: |
+            Beta version header required for the Files API.
+            Use: files-api-2025-04-14
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [files-api-2025-04-14]
+          style: form
+          explode: false
+          example: ["files-api-2025-04-14"]
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileDeleted'
+              example:
+                id: "file_011CNha8iCJcU1wXNR6q4V8w"
+                type: "file_deleted"
+        '4XX':
+          description: Client Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /files/{file_id}/content:
+    get:
+      summary: Download a File
+      description: Download the contents of a Claude generated file
+      operationId: downloadFile
+      parameters:
+        - name: file_id
+          in: path
+          required: true
+          description: ID of the File
+          schema:
+            type: string
+          example: "file_011CNha8iCJcU1wXNR6q4V8w"
+        - name: anthropic-version
+          in: header
+          required: true
+          description: The version of the Claude API you want to use
+          schema:
+            type: string
+            example: "2023-06-01"
+        - name: anthropic-beta
+          in: header
+          required: true
+          description: |
+            Beta version header required for the Files API.
+            Use: files-api-2025-04-14
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [files-api-2025-04-14]
+          style: form
+          explode: false
+          example: ["files-api-2025-04-14"]
+      responses:
+        '200':
+          description: Successful Response - Returns the file content as binary data
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+                description: The raw file content
+        '4XX':
+          description: Client Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: |
+        Your unique API key for authentication.
+        This key is required in the header of all API requests, to authenticate your account and access Anthropic's services.
+        Get your API key through the Console. Each key is scoped to a Workspace.
+
+  schemas:
+    FileList:
+      type: object
+      required:
+        - data
+        - first_id
+        - has_more
+        - last_id
+      properties:
+        data:
+          type: array
+          description: List of file metadata objects
+          items:
+            $ref: '#/components/schemas/File'
+        first_id:
+          type: string
+          nullable: true
+          description: ID of the first file in this page of results
+          example: "file_abc123"
+        has_more:
+          type: boolean
+          default: false
+          description: Whether there are more results available
+        last_id:
+          type: string
+          nullable: true
+          description: ID of the last file in this page of results
+          example: "file_xyz789"
+
+    FileDeleted:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+          description: ID of the deleted file
+          example: "file_011CNha8iCJcU1wXNR6q4V8w"
+        type:
+          type: string
+          enum: [file_deleted]
+          default: file_deleted
+          description: |
+            Deleted object type.
+            For file deletion, this is always "file_deleted".
+
+    File:
+      type: object
+      required:
+        - id
+        - type
+        - filename
+        - mime_type
+        - size_bytes
+        - created_at
+        - downloadable
+      properties:
+        id:
+          type: string
+          description: |
+            Unique object identifier.
+            The format and length of IDs may change over time.
+          example: "file_abc123"
+        type:
+          type: string
+          enum: [file]
+          description: |
+            Object type.
+            For files, this is always "file".
+        filename:
+          type: string
+          minLength: 1
+          maxLength: 500
+          description: Original filename of the uploaded file
+          example: "document.pdf"
+        mime_type:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: MIME type of the file
+          example: "application/pdf"
+        size_bytes:
+          type: integer
+          minimum: 0
+          description: Size of the file in bytes
+          example: 1024
+        created_at:
+          type: string
+          format: date-time
+          description: RFC 3339 datetime string representing when the file was created
+          example: "2023-11-07T05:31:56Z"
+        downloadable:
+          type: boolean
+          default: false
+          description: Whether the file can be downloaded
+
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+        message:
+          type: string
+          description: A human-readable error message

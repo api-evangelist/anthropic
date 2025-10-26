@@ -1,0 +1,2115 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Admin API
+  description: |
+    The Admin API allows you to programmatically manage your organization's resources, including 
+    organization members, workspaces, and API keys. This provides programmatic control over 
+    administrative tasks that would otherwise require manual configuration in the Claude Console.
+    
+    **Important Notes:**
+    - The Admin API is unavailable for individual accounts
+    - Requires a special Admin API key (starting with sk-ant-admin...)
+    - Only organization members with the admin role can provision Admin API keys
+    - Set up your organization in Console → Settings → Organization to use this API
+    
+    **Organization Roles:**
+    - `user` - Can use Workbench
+    - `claude_code_user` - Can use Workbench and Claude Code
+    - `developer` - Can use Workbench and manage API keys
+    - `billing` - Can use Workbench and manage billing details
+    - `admin` - Can do all of the above, plus manage users
+  version: 2023-06-01
+  contact:
+    name: Anthropic
+    url: https://www.anthropic.com
+
+servers:
+  - url: https://api.anthropic.com/v1
+    description: Production server
+
+security:
+  - AdminApiKeyAuth: []
+
+paths:
+  /organizations/me:
+    get:
+      summary: Get Organization Info
+      description: Get information about your organization programmatically
+      operationId: getOrganizationInfo
+      tags:
+        - Organization
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+              example:
+                id: "12345678-1234-5678-1234-567812345678"
+                type: "organization"
+                name: "Organization Name"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /organizations/users:
+    get:
+      summary: List Users
+      description: List all members in the organization
+      operationId: listOrganizationMembers
+      tags:
+        - Organization Members
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: limit
+          in: query
+          required: false
+          description: |
+            Number of items to return per page.
+            Defaults to 20. Ranges from 1 to 1000.
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 1000
+        - name: before_id
+          in: query
+          required: false
+          description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+          schema:
+            type: string
+        - name: after_id
+          in: query
+          required: false
+          description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: false
+          description: Filter by user email
+          schema:
+            type: string
+            format: email
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationMemberList'
+              example:
+                data:
+                  - added_at: "2024-10-30T23:58:27.427722Z"
+                    email: "user@emaildomain.com"
+                    id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+                    name: "Jane Doe"
+                    role: "user"
+                    type: "user"
+                first_id: "<string>"
+                has_more: true
+                last_id: "<string>"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /organizations/users/{user_id}:
+    get:
+      summary: Get User
+      description: Get details about a specific organization member
+      operationId: getOrganizationUser
+      tags:
+        - Organization Members
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user
+          schema:
+            type: string
+          example: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationMember'
+              example:
+                added_at: "2024-10-30T23:58:27.427722Z"
+                email: "user@emaildomain.com"
+                id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+                name: "Jane Doe"
+                role: "user"
+                type: "user"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+    post:
+      summary: Update User
+      description: |
+        Update the role of an organization member.
+        
+        **Note:** Cannot update a user's role to "admin" through this endpoint.
+      operationId: updateOrganizationMember
+      tags:
+        - Organization Members
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the User
+          schema:
+            type: string
+          example: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - role
+              properties:
+                role:
+                  type: string
+                  enum: [user, claude_code_user, developer, billing, admin]
+                  description: New role for the User. Cannot be "admin".
+            example:
+              role: "user"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationMember'
+              example:
+                added_at: "2024-10-30T23:58:27.427722Z"
+                email: "user@emaildomain.com"
+                id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+                name: "Jane Doe"
+                role: "user"
+                type: "user"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+    delete:
+      summary: Remove User
+      description: Remove a member from the organization
+      operationId: removeOrganizationMember
+      tags:
+        - Organization Members
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the User
+          schema:
+            type: string
+          example: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                  - type
+                properties:
+                  id:
+                    type: string
+                    description: ID of the User
+                    example: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+                  type:
+                    type: string
+                    enum: [user_deleted]
+                    default: user_deleted
+                    description: |
+                      Deleted object type.
+                      For Users, this is always "user_deleted".
+              example:
+                id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+                type: "user_deleted"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /organizations/invites:
+    get:
+      summary: List Invites
+      description: List all pending invites to the organization
+      operationId: listOrganizationInvites
+      tags:
+        - Organization Invites
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: limit
+          in: query
+          required: false
+          description: |
+            Number of items to return per page.
+            Defaults to 20. Ranges from 1 to 1000.
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 1000
+        - name: before_id
+          in: query
+          required: false
+          description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+          schema:
+            type: string
+        - name: after_id
+          in: query
+          required: false
+          description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationInviteList'
+              example:
+                data:
+                  - email: "user@emaildomain.com"
+                    expires_at: "2024-11-20T23:58:27.427722Z"
+                    id: "invite_015gWxCN9Hfg2QhZwTK7Mdeu"
+                    invited_at: "2024-10-30T23:58:27.427722Z"
+                    role: "user"
+                    status: "pending"
+                    type: "invite"
+                first_id: "<string>"
+                has_more: true
+                last_id: "<string>"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+    post:
+      summary: Create Invite
+      description: |
+        Invite a user to join the organization.
+        
+        **Note:** Cannot invite a user with the "admin" role through this endpoint.
+      operationId: createOrganizationInvite
+      tags:
+        - Organization Invites
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - role
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: Email of the User
+                  example: "user@emaildomain.com"
+                role:
+                  type: string
+                  enum: [user, claude_code_user, developer, billing, admin]
+                  description: Role for the invited User. Cannot be "admin".
+                  example: "user"
+            example:
+              email: "user@emaildomain.com"
+              role: "user"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationInvite'
+              example:
+                email: "user@emaildomain.com"
+                expires_at: "2024-11-20T23:58:27.427722Z"
+                id: "invite_015gWxCN9Hfg2QhZwTK7Mdeu"
+                invited_at: "2024-10-30T23:58:27.427722Z"
+                role: "user"
+                status: "pending"
+                type: "invite"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /organizations/invites/{invite_id}:
+    get:
+      summary: Get Invite
+      description: Get details about a specific organization invite
+      operationId: getOrganizationInvite
+      tags:
+        - Organization Invites
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: invite_id
+          in: path
+          required: true
+          description: ID of the Invite
+          schema:
+            type: string
+          example: "invite_015gWxCN9Hfg2QhZwTK7Mdeu"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationInvite'
+              example:
+                email: "user@emaildomain.com"
+                expires_at: "2024-11-20T23:58:27.427722Z"
+                id: "invite_015gWxCN9Hfg2QhZwTK7Mdeu"
+                invited_at: "2024-10-30T23:58:27.427722Z"
+                role: "user"
+                status: "pending"
+                type: "invite"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+    delete:
+      summary: Delete Invite
+      description: Delete a pending organization invite
+      operationId: deleteOrganizationInvite
+      tags:
+        - Organization Invites
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: invite_id
+          in: path
+          required: true
+          description: ID of the Invite
+          schema:
+            type: string
+          example: "invite_015gWxCN9Hfg2QhZwTK7Mdeu"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                  - type
+                properties:
+                  id:
+                    type: string
+                    description: ID of the Invite
+                    example: "invite_015gWxCN9Hfg2QhZwTK7Mdeu"
+                  type:
+                    type: string
+                    enum: [invite_deleted]
+                    default: invite_deleted
+                    description: |
+                      Deleted object type.
+                      For Invites, this is always "invite_deleted".
+              example:
+                id: "invite_015gWxCN9Hfg2QhZwTK7Mdeu"
+                type: "invite_deleted"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /organizations/workspaces:
+    get:
+      summary: List Workspaces
+      description: List all workspaces in the organization
+      operationId: listWorkspaces
+      tags:
+        - Workspaces
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: limit
+          in: query
+          required: false
+          description: |
+            Number of items to return per page.
+            Defaults to 20. Ranges from 1 to 1000.
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 1000
+        - name: include_archived
+          in: query
+          required: false
+          description: Whether to include Workspaces that have been archived in the response
+          schema:
+            type: boolean
+            default: false
+        - name: before_id
+          in: query
+          required: false
+          description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+          schema:
+            type: string
+        - name: after_id
+          in: query
+          required: false
+          description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceList'
+              example:
+                data:
+                  - archived_at: "2024-11-01T23:59:27.427722Z"
+                    created_at: "2024-10-30T23:58:27.427722Z"
+                    display_color: "#6C5BB9"
+                    id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                    name: "Workspace Name"
+                    type: "workspace"
+                first_id: "<string>"
+                has_more: true
+                last_id: "<string>"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+    post:
+      summary: Create Workspace
+      description: Create a new workspace in the organization
+      operationId: createWorkspace
+      tags:
+        - Workspaces
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 40
+                  description: Name of the Workspace
+                  example: "Workspace Name"
+            example:
+              name: "Workspace Name"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+              example:
+                archived_at: null
+                created_at: "2024-10-30T23:58:27.427722Z"
+                display_color: "#6C5BB9"
+                id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                name: "Workspace Name"
+                type: "workspace"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /organizations/workspaces/{workspace_id}:
+    get:
+      summary: Get Workspace
+      description: Get details about a specific workspace
+      operationId: getWorkspace
+      tags:
+        - Workspaces
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: workspace_id
+          in: path
+          required: true
+          description: ID of the Workspace
+          schema:
+            type: string
+          example: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+              example:
+                archived_at: "2024-11-01T23:59:27.427722Z"
+                created_at: "2024-10-30T23:58:27.427722Z"
+                display_color: "#6C5BB9"
+                id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                name: "Workspace Name"
+                type: "workspace"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+    post:
+      summary: Update Workspace
+      description: Update the name of a workspace
+      operationId: updateWorkspace
+      tags:
+        - Workspaces
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: workspace_id
+          in: path
+          required: true
+          description: ID of the Workspace
+          schema:
+            type: string
+          example: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 40
+                  description: Name of the Workspace
+                  example: "Workspace Name"
+            example:
+              name: "Workspace Name"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+              example:
+                archived_at: "2024-11-01T23:59:27.427722Z"
+                created_at: "2024-10-30T23:58:27.427722Z"
+                display_color: "#6C5BB9"
+                id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                name: "Workspace Name"
+                type: "workspace"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /organizations/workspaces/{workspace_id}/archive:
+    post:
+      summary: Archive Workspace
+      description: Archive a workspace
+      operationId: archiveWorkspace
+      tags:
+        - Workspaces
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: workspace_id
+          in: path
+          required: true
+          description: ID of the Workspace
+          schema:
+            type: string
+          example: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+              example:
+                archived_at: "2024-11-01T23:59:27.427722Z"
+                created_at: "2024-10-30T23:58:27.427722Z"
+                display_color: "#6C5BB9"
+                id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                name: "Workspace Name"
+                type: "workspace"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /organizations/workspaces/{workspace_id}/members:
+    get:
+      summary: List Workspace Members
+      description: List all members in a workspace
+      operationId: listWorkspaceMembers
+      tags:
+        - Workspace Members
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: workspace_id
+          in: path
+          required: true
+          description: ID of the Workspace
+          schema:
+            type: string
+          example: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        - name: limit
+          in: query
+          required: false
+          description: |
+            Number of items to return per page.
+            Defaults to 20. Ranges from 1 to 1000.
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 1000
+        - name: before_id
+          in: query
+          required: false
+          description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+          schema:
+            type: string
+        - name: after_id
+          in: query
+          required: false
+          description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceMemberList'
+              example:
+                data:
+                  - type: "workspace_member"
+                    user_id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+                    workspace_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                    workspace_role: "workspace_user"
+                first_id: "<string>"
+                has_more: true
+                last_id: "<string>"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+    post:
+      summary: Add Workspace Member
+      description: |
+        Add a member to a workspace.
+        
+        **Note:** Cannot add a member with the "workspace_billing" role through this endpoint.
+      operationId: addWorkspaceMember
+      tags:
+        - Workspace Members
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: workspace_id
+          in: path
+          required: true
+          description: ID of the Workspace
+          schema:
+            type: string
+          example: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_id
+                - workspace_role
+              properties:
+                user_id:
+                  type: string
+                  description: ID of the User
+                  example: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+                workspace_role:
+                  type: string
+                  enum: [workspace_user, workspace_developer, workspace_admin]
+                  description: Role of the new Workspace Member. Cannot be "workspace_billing".
+                  example: "workspace_user"
+            example:
+              user_id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+              workspace_role: "workspace_user"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceMember'
+              example:
+                type: "workspace_member"
+                user_id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+                workspace_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                workspace_role: "workspace_user"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /organizations/workspaces/{workspace_id}/members/{user_id}:
+    get:
+      summary: Get Workspace Member
+      description: Get details about a specific workspace member
+      operationId: getWorkspaceMember
+      tags:
+        - Workspace Members
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: workspace_id
+          in: path
+          required: true
+          description: ID of the Workspace
+          schema:
+            type: string
+          example: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the User
+          schema:
+            type: string
+          example: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceMember'
+              example:
+                type: "workspace_member"
+                user_id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+                workspace_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                workspace_role: "workspace_user"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+    post:
+      summary: Update Workspace Member
+      description: Update the role of a workspace member
+      operationId: updateWorkspaceMember
+      tags:
+        - Workspace Members
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: workspace_id
+          in: path
+          required: true
+          description: ID of the Workspace
+          schema:
+            type: string
+          example: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the User
+          schema:
+            type: string
+          example: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - workspace_role
+              properties:
+                workspace_role:
+                  type: string
+                  enum: [workspace_user, workspace_developer, workspace_admin, workspace_billing]
+                  description: New workspace role for the User
+                  example: "workspace_user"
+            example:
+              workspace_role: "workspace_user"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceMember'
+              example:
+                type: "workspace_member"
+                user_id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+                workspace_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                workspace_role: "workspace_user"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+    delete:
+      summary: Delete Workspace Member
+      description: Remove a member from a workspace
+      operationId: removeWorkspaceMember
+      tags:
+        - Workspace Members
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: workspace_id
+          in: path
+          required: true
+          description: ID of the Workspace
+          schema:
+            type: string
+          example: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the User
+          schema:
+            type: string
+          example: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - user_id
+                  - workspace_id
+                properties:
+                  type:
+                    type: string
+                    enum: [workspace_member_deleted]
+                    default: workspace_member_deleted
+                    description: |
+                      Deleted object type.
+                      For Workspace Members, this is always "workspace_member_deleted".
+                  user_id:
+                    type: string
+                    description: ID of the User
+                    example: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+                  workspace_id:
+                    type: string
+                    description: ID of the Workspace
+                    example: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+              example:
+                type: "workspace_member_deleted"
+                user_id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+                workspace_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /organizations/api_keys:
+    get:
+      summary: List API Keys
+      description: List API keys in the organization
+      operationId: listApiKeys
+      tags:
+        - API Keys
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: limit
+          in: query
+          required: false
+          description: Number of items to return per page
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 1000
+        - name: status
+          in: query
+          required: false
+          description: Filter by API key status
+          schema:
+            type: string
+            enum: [active, inactive]
+        - name: workspace_id
+          in: query
+          required: false
+          description: Filter by workspace ID
+          schema:
+            type: string
+          example: "wrkspc_xxx"
+        - name: before_id
+          in: query
+          required: false
+          description: ID of the object to use as a cursor for pagination
+          schema:
+            type: string
+        - name: after_id
+          in: query
+          required: false
+          description: ID of the object to use as a cursor for pagination
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyList'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /organizations/api_keys/{api_key_id}:
+    post:
+      summary: Update API Key
+      description: Update an API key's status or name
+      operationId: updateApiKey
+      tags:
+        - API Keys
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: api_key_id
+          in: path
+          required: true
+          description: ID of the API key to update
+          schema:
+            type: string
+          example: "key_xxx"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [active, inactive]
+                  description: New status for the API key
+                name:
+                  type: string
+                  description: New name for the API key
+            example:
+              status: "inactive"
+              name: "New Key Name"
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /organizations/usage_report/messages:
+    get:
+      summary: Get Usage Report
+      description: |
+        Track token consumption across your organization with detailed breakdowns by model, 
+        workspace, and service tier.
+        
+        **Key Concepts:**
+        - Time buckets: Aggregate usage data in fixed intervals (1m, 1h, or 1d)
+        - Token tracking: Measure uncached input, cached input, cache creation, and output tokens
+        - Filtering & grouping: Filter by API key, workspace, model, service tier, or context window
+        - Server tool usage: Track usage of server-side tools like web search
+        
+        **Time Granularity Limits:**
+        - 1m: 60 buckets default, 1440 max (real-time monitoring)
+        - 1h: 24 buckets default, 168 max (daily patterns)
+        - 1d: 7 buckets default, 31 max (weekly/monthly reports)
+        
+        **Data Freshness:** Usage data typically appears within 5 minutes of API request completion
+      operationId: getUsageReport
+      tags:
+        - Usage and Cost
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: starting_at
+          in: query
+          required: true
+          description: Start timestamp for the report (RFC 3339 format)
+          schema:
+            type: string
+            format: date-time
+          example: "2025-01-08T00:00:00Z"
+        - name: ending_at
+          in: query
+          required: true
+          description: End timestamp for the report (RFC 3339 format)
+          schema:
+            type: string
+            format: date-time
+          example: "2025-01-15T00:00:00Z"
+        - name: bucket_width
+          in: query
+          required: true
+          description: Time bucket width for aggregation
+          schema:
+            type: string
+            enum: ['1m', '1h', '1d']
+          example: "1d"
+        - name: group_by
+          in: query
+          required: false
+          description: Dimensions to group results by (can specify multiple)
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [model, workspace_id, api_key_id, service_tier, context_window]
+          style: form
+          explode: true
+        - name: models
+          in: query
+          required: false
+          description: Filter by specific models (can specify multiple)
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          example: ["claude-sonnet-4-5-20250929"]
+        - name: workspace_ids
+          in: query
+          required: false
+          description: Filter by specific workspace IDs (can specify multiple)
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          example: ["wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"]
+        - name: api_key_ids
+          in: query
+          required: false
+          description: Filter by specific API key IDs (can specify multiple)
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          example: ["apikey_01Rj2N8SVvo6BePZj99NhmiT"]
+        - name: service_tiers
+          in: query
+          required: false
+          description: Filter by service tier (can specify multiple)
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [standard, batch, priority]
+          style: form
+          explode: true
+          example: ["batch"]
+        - name: context_window
+          in: query
+          required: false
+          description: Filter by context window ranges (can specify multiple)
+          schema:
+            type: array
+            items:
+              type: string
+              enum: ['0-200k', '200k+']
+          style: form
+          explode: true
+          example: ["0-200k"]
+        - name: limit
+          in: query
+          required: false
+          description: Maximum number of results to return per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 100
+        - name: page
+          in: query
+          required: false
+          description: Pagination token from previous response
+          schema:
+            type: string
+          example: "page_xyz..."
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageReport'
+              example:
+                data:
+                  - bucket_start_date: "2025-01-08T00:00:00Z"
+                    bucket_end_date: "2025-01-09T00:00:00Z"
+                    model: "claude-sonnet-4-5-20250929"
+                    workspace_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                    input_tokens: 150000
+                    output_tokens: 45000
+                    cache_creation_input_tokens: 10000
+                    cache_read_input_tokens: 25000
+                    requests: 1250
+                has_more: false
+                next_page: null
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /organizations/cost_report:
+    get:
+      summary: Get Cost Report
+      description: |
+        Retrieve service-level cost breakdowns in USD.
+        
+        **Key Concepts:**
+        - Currency: All costs in USD, reported as decimal strings in lowest units (cents)
+        - Cost types: Track token usage, web search, and code execution costs
+        - Grouping: Group costs by workspace or description for detailed breakdowns
+        - Time buckets: Daily granularity only (1d)
+        
+        **Important:** Priority Tier costs use a different billing model and are not included 
+        in the cost endpoint. Track Priority Tier usage through the usage endpoint instead.
+        
+        **Data Freshness:** Cost data typically appears within 5 minutes of API request completion
+      operationId: getCostReport
+      tags:
+        - Usage and Cost
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: starting_at
+          in: query
+          required: true
+          description: Start timestamp for the report (RFC 3339 format)
+          schema:
+            type: string
+            format: date-time
+          example: "2025-01-01T00:00:00Z"
+        - name: ending_at
+          in: query
+          required: true
+          description: End timestamp for the report (RFC 3339 format)
+          schema:
+            type: string
+            format: date-time
+          example: "2025-01-31T00:00:00Z"
+        - name: group_by
+          in: query
+          required: false
+          description: Dimensions to group results by (can specify multiple)
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [workspace_id, description]
+          style: form
+          explode: true
+        - name: workspace_ids
+          in: query
+          required: false
+          description: Filter by specific workspace IDs (can specify multiple)
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        - name: limit
+          in: query
+          required: false
+          description: Maximum number of results to return per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 100
+        - name: page
+          in: query
+          required: false
+          description: Pagination token from previous response
+          schema:
+            type: string
+          example: "page_xyz..."
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostReport'
+              example:
+                data:
+                  - bucket_start_date: "2025-01-01T00:00:00Z"
+                    bucket_end_date: "2025-01-02T00:00:00Z"
+                    workspace_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                    description: "Token Usage"
+                    cost_usd_cents: "12345"
+                  - bucket_start_date: "2025-01-01T00:00:00Z"
+                    bucket_end_date: "2025-01-02T00:00:00Z"
+                    workspace_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                    description: "Code Execution Usage"
+                    cost_usd_cents: "567"
+                has_more: false
+                next_page: null
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /organizations/usage_report/claude_code:
+    get:
+      summary: Get Claude Code Analytics
+      description: |
+        Track Claude Code usage, productivity metrics, and developer activity across your organization.
+        
+        **Key Concepts:**
+        - Daily aggregation: Returns metrics for a single day specified by the starting_at parameter
+        - User-level data: Each record represents one user's activity for the specified day
+        - Productivity metrics: Track sessions, lines of code, commits, pull requests, and tool usage
+        - Token and cost data: Monitor usage and estimated costs broken down by Claude model
+        - Cursor-based pagination: Handle large datasets with stable pagination using opaque cursors
+        
+        **Available Metrics:**
+        - Core metrics: Sessions, lines of code (added/removed), commits, pull requests
+        - Tool actions: Acceptance/rejection rates for Edit, Write, and NotebookEdit tools
+        - Model breakdown: Token usage and estimated costs per Claude model
+        
+        **Data Freshness:** Metrics are available with up to 1-hour delay for consistency
+        
+        **Important Notes:**
+        - Only tracks Claude Code usage on the Claude API (1st party)
+        - Usage on Amazon Bedrock, Google Vertex AI, or other platforms is not included
+        - API is free to use for all organizations with Admin API access
+        - All dates are in UTC
+      operationId: getClaudeCodeAnalytics
+      tags:
+        - Claude Code Analytics
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - name: starting_at
+          in: query
+          required: true
+          description: UTC date in YYYY-MM-DD format. Returns metrics for this single day only
+          schema:
+            type: string
+            format: date
+          example: "2025-09-08"
+        - name: limit
+          in: query
+          required: false
+          description: Number of records per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 20
+        - name: page
+          in: query
+          required: false
+          description: Opaque cursor token from previous response's next_page field
+          schema:
+            type: string
+          example: "page_MjAyNS0wNS0xNFQwMDowMDowMFo="
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaudeCodeAnalytics'
+              example:
+                data:
+                  - date: "2025-09-01T00:00:00Z"
+                    actor:
+                      type: "user_actor"
+                      email_address: "developer@company.com"
+                    organization_id: "dc9f6c26-b22c-4831-8d01-0446bada88f1"
+                    customer_type: "api"
+                    terminal_type: "vscode"
+                    core_metrics:
+                      num_sessions: 5
+                      lines_of_code:
+                        added: 1543
+                        removed: 892
+                      commits_by_claude_code: 12
+                      pull_requests_by_claude_code: 2
+                    tool_actions:
+                      edit_tool:
+                        accepted: 45
+                        rejected: 5
+                      multi_edit_tool:
+                        accepted: 12
+                        rejected: 2
+                      write_tool:
+                        accepted: 8
+                        rejected: 1
+                      notebook_edit_tool:
+                        accepted: 3
+                        rejected: 0
+                    model_breakdown:
+                      - model: "claude-3-5-sonnet-20241022"
+                        tokens:
+                          input: 100000
+                          output: 35000
+                          cache_read: 10000
+                          cache_creation: 5000
+                        estimated_cost:
+                          currency: "USD"
+                          amount: 1025
+                has_more: false
+                next_page: null
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+
+components:
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: |
+        Your Admin API key for authentication (starts with sk-ant-admin...).
+        Only organization members with the admin role can provision Admin API keys.
+
+  parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Claude API you want to use
+      schema:
+        type: string
+        example: "2023-06-01"
+
+  responses:
+    ErrorResponse:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    Organization:
+      type: object
+      required:
+        - id
+        - type
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique organization identifier
+          example: "12345678-1234-5678-1234-567812345678"
+        type:
+          type: string
+          enum: [organization]
+          description: Object type
+        name:
+          type: string
+          description: Organization name
+          example: "Organization Name"
+
+    OrganizationMember:
+      type: object
+      required:
+        - id
+        - type
+        - email
+        - name
+        - role
+        - added_at
+      properties:
+        id:
+          type: string
+          description: ID of the User
+          example: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+        type:
+          type: string
+          enum: [user]
+          default: user
+          description: |
+            Object type.
+            For Users, this is always "user".
+        email:
+          type: string
+          format: email
+          description: Email of the User
+          example: "user@emaildomain.com"
+        name:
+          type: string
+          description: Name of the User
+          example: "Jane Doe"
+        role:
+          type: string
+          enum: [user, claude_code_user, developer, billing, admin]
+          description: Organization role of the User
+          example: "user"
+        added_at:
+          type: string
+          format: date-time
+          description: RFC 3339 datetime string indicating when the User joined the Organization
+          example: "2024-10-30T23:58:27.427722Z"
+
+    OrganizationMemberList:
+      type: object
+      required:
+        - data
+        - has_more
+        - first_id
+        - last_id
+      properties:
+        data:
+          type: array
+          description: List of organization members
+          items:
+            $ref: '#/components/schemas/OrganizationMember'
+        first_id:
+          type: string
+          nullable: true
+          description: First ID in the data list. Can be used as the before_id for the previous page.
+          example: "<string>"
+        has_more:
+          type: boolean
+          description: Indicates if there are more results in the requested page direction
+          example: true
+        last_id:
+          type: string
+          nullable: true
+          description: Last ID in the data list. Can be used as the after_id for the next page.
+          example: "<string>"
+
+    OrganizationInvite:
+      type: object
+      required:
+        - id
+        - type
+        - email
+        - role
+        - status
+        - invited_at
+        - expires_at
+      properties:
+        id:
+          type: string
+          description: ID of the Invite
+          example: "invite_015gWxCN9Hfg2QhZwTK7Mdeu"
+        type:
+          type: string
+          enum: [invite]
+          default: invite
+          description: |
+            Object type.
+            For Invites, this is always "invite".
+        email:
+          type: string
+          format: email
+          description: Email of the User being invited
+          example: "user@emaildomain.com"
+        role:
+          type: string
+          enum: [user, claude_code_user, developer, billing, admin]
+          description: Organization role of the User
+          example: "user"
+        status:
+          type: string
+          enum: [pending, accepted, expired, deleted]
+          description: Status of the Invite
+          example: "pending"
+        invited_at:
+          type: string
+          format: date-time
+          description: RFC 3339 datetime string indicating when the Invite was created
+          example: "2024-10-30T23:58:27.427722Z"
+        expires_at:
+          type: string
+          format: date-time
+          description: RFC 3339 datetime string indicating when the Invite expires
+          example: "2024-11-20T23:58:27.427722Z"
+
+    OrganizationInviteList:
+      type: object
+      required:
+        - data
+        - has_more
+        - first_id
+        - last_id
+      properties:
+        data:
+          type: array
+          description: List of organization invites
+          items:
+            $ref: '#/components/schemas/OrganizationInvite'
+        first_id:
+          type: string
+          nullable: true
+          description: First ID in the data list. Can be used as the before_id for the previous page.
+          example: "<string>"
+        has_more:
+          type: boolean
+          description: Indicates if there are more results in the requested page direction
+          example: true
+        last_id:
+          type: string
+          nullable: true
+          description: Last ID in the data list. Can be used as the after_id for the next page.
+          example: "<string>"
+
+    Workspace:
+      type: object
+      required:
+        - id
+        - type
+        - name
+        - created_at
+        - archived_at
+        - display_color
+      properties:
+        id:
+          type: string
+          description: ID of the Workspace
+          example: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        type:
+          type: string
+          enum: [workspace]
+          default: workspace
+          description: |
+            Object type.
+            For Workspaces, this is always "workspace".
+        name:
+          type: string
+          description: Name of the Workspace
+          example: "Workspace Name"
+        display_color:
+          type: string
+          description: Hex color code representing the Workspace in the Anthropic Console
+          example: "#6C5BB9"
+        created_at:
+          type: string
+          format: date-time
+          description: RFC 3339 datetime string indicating when the Workspace was created
+          example: "2024-10-30T23:58:27.427722Z"
+        archived_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: RFC 3339 datetime string indicating when the Workspace was archived, or null if the Workspace is not archived
+          example: "2024-11-01T23:59:27.427722Z"
+
+    WorkspaceList:
+      type: object
+      required:
+        - data
+        - has_more
+        - first_id
+        - last_id
+      properties:
+        data:
+          type: array
+          description: List of workspaces
+          items:
+            $ref: '#/components/schemas/Workspace'
+        first_id:
+          type: string
+          nullable: true
+          description: First ID in the data list. Can be used as the before_id for the previous page.
+          example: "<string>"
+        has_more:
+          type: boolean
+          description: Indicates if there are more results in the requested page direction
+          example: true
+        last_id:
+          type: string
+          nullable: true
+          description: Last ID in the data list. Can be used as the after_id for the next page.
+          example: "<string>"
+
+    WorkspaceMember:
+      type: object
+      required:
+        - type
+        - user_id
+        - workspace_id
+        - workspace_role
+      properties:
+        type:
+          type: string
+          enum: [workspace_member]
+          default: workspace_member
+          description: |
+            Object type.
+            For Workspace Members, this is always "workspace_member".
+        user_id:
+          type: string
+          description: ID of the User
+          example: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+        workspace_id:
+          type: string
+          description: ID of the Workspace
+          example: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        workspace_role:
+          type: string
+          enum: [workspace_user, workspace_developer, workspace_admin, workspace_billing]
+          description: Role of the Workspace Member
+          example: "workspace_user"
+
+    WorkspaceMemberList:
+      type: object
+      required:
+        - data
+        - has_more
+        - first_id
+        - last_id
+      properties:
+        data:
+          type: array
+          description: List of workspace members
+          items:
+            $ref: '#/components/schemas/WorkspaceMember'
+        first_id:
+          type: string
+          nullable: true
+          description: First ID in the data list. Can be used as the before_id for the previous page.
+          example: "<string>"
+        has_more:
+          type: boolean
+          description: Indicates if there are more results in the requested page direction
+          example: true
+        last_id:
+          type: string
+          nullable: true
+          description: Last ID in the data list. Can be used as the after_id for the next page.
+          example: "<string>"
+
+    ApiKey:
+      type: object
+      required:
+        - api_key_id
+        - name
+        - status
+        - workspace_id
+      properties:
+        api_key_id:
+          type: string
+          description: Unique API key identifier
+          example: "key_xxx"
+        name:
+          type: string
+          description: API key name
+        status:
+          type: string
+          enum: [active, inactive]
+          description: Current status of the API key
+        workspace_id:
+          type: string
+          description: ID of the workspace this key belongs to
+          example: "wrkspc_xxx"
+        created_at:
+          type: string
+          format: date-time
+          description: When the API key was created
+        last_used_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the API key was last used
+
+    ApiKeyList:
+      type: object
+      required:
+        - data
+        - has_more
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiKey'
+        has_more:
+          type: boolean
+        first_id:
+          type: string
+          nullable: true
+        last_id:
+          type: string
+          nullable: true
+
+    UsageReport:
+      type: object
+      description: |
+        Detailed usage data including token counts and request metrics.
+        Tracks uncached input, cached input, cache creation, and output tokens.
+      required:
+        - data
+        - has_more
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            required:
+              - bucket_start_date
+              - bucket_end_date
+              - input_tokens
+              - output_tokens
+              - requests
+            properties:
+              bucket_start_date:
+                type: string
+                format: date-time
+                description: Start timestamp of the time bucket
+                example: "2025-01-08T00:00:00Z"
+              bucket_end_date:
+                type: string
+                format: date-time
+                description: End timestamp of the time bucket
+                example: "2025-01-09T00:00:00Z"
+              model:
+                type: string
+                description: Model name (when grouped by model)
+                example: "claude-sonnet-4-5-20250929"
+              workspace_id:
+                type: string
+                nullable: true
+                description: Workspace ID (null for default workspace)
+                example: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+              api_key_id:
+                type: string
+                nullable: true
+                description: API key ID (null for Workbench usage)
+                example: "apikey_01Rj2N8SVvo6BePZj99NhmiT"
+              service_tier:
+                type: string
+                enum: [standard, batch, priority]
+                description: Service tier (when grouped by service_tier)
+              context_window:
+                type: string
+                enum: ['0-200k', '200k+']
+                description: Context window range (when grouped by context_window)
+              input_tokens:
+                type: integer
+                description: Number of uncached input tokens
+                example: 150000
+              output_tokens:
+                type: integer
+                description: Number of output tokens
+                example: 45000
+              cache_creation_input_tokens:
+                type: integer
+                description: Number of tokens used to create cache entries
+                example: 10000
+              cache_read_input_tokens:
+                type: integer
+                description: Number of tokens read from cache
+                example: 25000
+              requests:
+                type: integer
+                description: Number of API requests
+                example: 1250
+        has_more:
+          type: boolean
+          description: Whether there are more results available
+        next_page:
+          type: string
+          nullable: true
+          description: Pagination token for the next page of results
+
+    CostReport:
+      type: object
+      description: |
+        Cost data associated with organization usage.
+        All costs are in USD, reported as decimal strings in lowest units (cents).
+        Includes token usage, web search, and code execution costs.
+      required:
+        - data
+        - has_more
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            required:
+              - bucket_start_date
+              - bucket_end_date
+              - cost_usd_cents
+            properties:
+              bucket_start_date:
+                type: string
+                format: date-time
+                description: Start timestamp of the time bucket (daily granularity)
+                example: "2025-01-01T00:00:00Z"
+              bucket_end_date:
+                type: string
+                format: date-time
+                description: End timestamp of the time bucket
+                example: "2025-01-02T00:00:00Z"
+              workspace_id:
+                type: string
+                nullable: true
+                description: Workspace ID (null for default workspace, when grouped by workspace_id)
+                example: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+              description:
+                type: string
+                description: Cost category description (when grouped by description)
+                example: "Token Usage"
+                enum: ["Token Usage", "Web Search Usage", "Code Execution Usage"]
+              cost_usd_cents:
+                type: string
+                description: Cost in USD cents as a decimal string
+                example: "12345"
+        has_more:
+          type: boolean
+          description: Whether there are more results available
+        next_page:
+          type: string
+          nullable: true
+          description: Pagination token for the next page of results
+
+    ClaudeCodeAnalytics:
+      type: object
+      description: |
+        Daily aggregated metrics for Claude Code usage.
+        Each record represents one user's activity for a single day.
+      required:
+        - data
+        - has_more
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            required:
+              - date
+              - actor
+              - organization_id
+              - customer_type
+              - core_metrics
+            properties:
+              date:
+                type: string
+                format: date-time
+                description: Date in RFC 3339 format (UTC timestamp)
+                example: "2025-09-01T00:00:00Z"
+              actor:
+                type: object
+                description: The user or API key that performed the Claude Code actions
+                oneOf:
+                  - type: object
+                    required:
+                      - type
+                      - email_address
+                    properties:
+                      type:
+                        type: string
+                        enum: [user_actor]
+                      email_address:
+                        type: string
+                        format: email
+                        description: Email address of the user (for OAuth authentication)
+                  - type: object
+                    required:
+                      - type
+                      - api_key_name
+                    properties:
+                      type:
+                        type: string
+                        enum: [api_actor]
+                      api_key_name:
+                        type: string
+                        description: Name of the API key (for API key authentication)
+                example:
+                  type: "user_actor"
+                  email_address: "developer@company.com"
+              organization_id:
+                type: string
+                format: uuid
+                description: Organization UUID
+                example: "dc9f6c26-b22c-4831-8d01-0446bada88f1"
+              customer_type:
+                type: string
+                enum: [api, subscription]
+                description: Type of customer account (api for API customers, subscription for Pro/Team customers)
+                example: "api"
+              terminal_type:
+                type: string
+                description: Type of terminal or environment where Claude Code was used
+                example: "vscode"
+              core_metrics:
+                type: object
+                required:
+                  - num_sessions
+                  - lines_of_code
+                  - commits_by_claude_code
+                  - pull_requests_by_claude_code
+                properties:
+                  num_sessions:
+                    type: integer
+                    description: Number of distinct Claude Code sessions initiated by this actor
+                    example: 5
+                  lines_of_code:
+                    type: object
+                    required:
+                      - added
+                      - removed
+                    properties:
+                      added:
+                        type: integer
+                        description: Total number of lines of code added across all files by Claude Code
+                        example: 1543
+                      removed:
+                        type: integer
+                        description: Total number of lines of code removed across all files by Claude Code
+                        example: 892
+                  commits_by_claude_code:
+                    type: integer
+                    description: Number of git commits created through Claude Code's commit functionality
+                    example: 12
+                  pull_requests_by_claude_code:
+                    type: integer
+                    description: Number of pull requests created through Claude Code's PR functionality
+                    example: 2
+              tool_actions:
+                type: object
+                description: Breakdown of tool action acceptance and rejection rates by tool type
+                properties:
+                  edit_tool:
+                    type: object
+                    properties:
+                      accepted:
+                        type: integer
+                        description: Number of Edit tool proposals that the user accepted
+                      rejected:
+                        type: integer
+                        description: Number of Edit tool proposals that the user rejected
+                    example:
+                      accepted: 45
+                      rejected: 5
+                  multi_edit_tool:
+                    type: object
+                    properties:
+                      accepted:
+                        type: integer
+                        description: Number of Multi-Edit tool proposals that the user accepted
+                      rejected:
+                        type: integer
+                        description: Number of Multi-Edit tool proposals that the user rejected
+                    example:
+                      accepted: 12
+                      rejected: 2
+                  write_tool:
+                    type: object
+                    properties:
+                      accepted:
+                        type: integer
+                        description: Number of Write tool proposals that the user accepted
+                      rejected:
+                        type: integer
+                        description: Number of Write tool proposals that the user rejected
+                    example:
+                      accepted: 8
+                      rejected: 1
+                  notebook_edit_tool:
+                    type: object
+                    properties:
+                      accepted:
+                        type: integer
+                        description: Number of NotebookEdit tool proposals that the user accepted
+                      rejected:
+                        type: integer
+                        description: Number of NotebookEdit tool proposals that the user rejected
+                    example:
+                      accepted: 3
+                      rejected: 0
+              model_breakdown:
+                type: array
+                description: Token usage and costs broken down by Claude model
+                items:
+                  type: object
+                  required:
+                    - model
+                    - tokens
+                    - estimated_cost
+                  properties:
+                    model:
+                      type: string
+                      description: Claude model identifier
+                      example: "claude-3-5-sonnet-20241022"
+                    tokens:
+                      type: object
+                      required:
+                        - input
+                        - output
+                      properties:
+                        input:
+                          type: integer
+                          description: Input token count for this model
+                          example: 100000
+                        output:
+                          type: integer
+                          description: Output token count for this model
+                          example: 35000
+                        cache_read:
+                          type: integer
+                          description: Cache read token count for this model
+                          example: 10000
+                        cache_creation:
+                          type: integer
+                          description: Cache creation token count for this model
+                          example: 5000
+                    estimated_cost:
+                      type: object
+                      required:
+                        - currency
+                        - amount
+                      properties:
+                        currency:
+                          type: string
+                          description: Currency code (currently always USD)
+                          example: "USD"
+                        amount:
+                          type: integer
+                          description: Estimated cost in cents USD
+                          example: 1025
+        has_more:
+          type: boolean
+          description: Whether there are more results available
+        next_page:
+          type: string
+          nullable: true
+          description: Opaque cursor token for the next page of results
+
+    DeletedResponse:
+      type: object
+      required:
+        - deleted
+        - id
+      properties:
+        deleted:
+          type: boolean
+          description: Whether the deletion was successful
+          example: true
+        id:
+          type: string
+          description: ID of the deleted object
+
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+        message:
+          type: string
+          description: A human-readable error message
+
+tags:
+  - name: Organization
+    description: Organization information and management
+  - name: Organization Members
+    description: Manage organization members and their roles
+  - name: Organization Invites
+    description: Invite users and manage invitations
+  - name: Workspaces
+    description: Create and manage workspaces
+  - name: Workspace Members
+    description: Manage workspace membership and roles
+  - name: API Keys
+    description: Monitor and manage API keys
+  - name: Usage and Cost
+    description: Access usage and cost reports
+  - name: Claude Code Analytics
+    description: Access Claude Code productivity metrics
