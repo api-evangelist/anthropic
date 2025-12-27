@@ -20,7 +20,7 @@ security:
 paths:
   /v1/experimental/generate_prompt:
     post:
-      summary: Generate A Prompt
+      summary: Generate Prompt
       description: >-
         Generate a well-written prompt for a specified task. This API creates
         prompts that can be used directly with the Messages
@@ -28,7 +28,7 @@ paths:
         preview for prompt tools APIs<br>- Must use the API directly (not
         available in SDK)<br>- Must include the beta header
         `prompt-tools-2025-04-02`<br>
-      operationId: anthropicGenerateprompt
+      operationId: generatePrompt
       parameters:
         - name: anthropic-beta
           in: header
@@ -248,9 +248,11 @@ paths:
         - Prompts
       x-api-evangelist-processing:
         ChooseTags: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
   /v1/experimental/improve_prompt:
     post:
-      summary: Improve A Prompt
+      summary: Improve Prompt
       description: >-
         Create a new-and-improved prompt guided by feedback. This API takes an
         existing prompt and enhances it based on provided feedback or general
@@ -261,7 +263,7 @@ paths:
         text-only content blocks<br>- No tool calls, images, or prompt caching
         blocks allowed<br>- Only contiguous user messages with text content are
         permitted<br>
-      operationId: anthropicImproveprompt
+      operationId: improvePrompt
       parameters:
         - name: anthropic-beta
           in: header
@@ -554,9 +556,11 @@ paths:
         - Prompts
       x-api-evangelist-processing:
         ChooseTags: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
   /v1/experimental/templatize_prompt:
     post:
-      summary: Templatize A Prompt
+      summary: Templatize Prompt
       description: >-
         Templatize a prompt by identifying and extracting variables. This API
         analyzes a prompt and converts specific values into reusable template
@@ -567,7 +571,7 @@ paths:
         text-only content blocks<br>- No tool calls, images, or prompt caching
         blocks allowed<br>- Only contiguous user messages with text content are
         permitted<br>
-      operationId: anthropicTemplatizeprompt
+      operationId: templatizePrompt
       parameters:
         - name: anthropic-beta
           in: header
@@ -842,6 +846,8 @@ paths:
         - Prompts
       x-api-evangelist-processing:
         ChooseTags: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
 components:
   securitySchemes:
     ApiKeyAuth:
