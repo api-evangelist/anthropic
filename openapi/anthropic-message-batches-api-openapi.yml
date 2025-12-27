@@ -123,7 +123,7 @@ paths:
         CaselCaseOperationIds: true
         WriteDescription: true
     post:
-      summary: Create A Message Batch
+      summary: Create Message Batch
       description: >-
         The Create A Message Batch operation allows you to submit multiple
         message requests to be processed asynchronously as a batch through the
@@ -136,7 +136,7 @@ paths:
         or evaluation workflows where immediate responses aren't required. The
         API returns a batch identifier that you can use to track the status and
         retrieve results once processing is complete.
-      operationId: createAMessageBatch
+      operationId: createMessageBatch
       parameters:
         - name: anthropic-version
           in: header
@@ -234,7 +234,7 @@ paths:
         ChooseTags: true
   /messages/batches/{message_batch_id}:
     get:
-      summary: Retrieve A Message Batch
+      summary: Retrieve Message Batch
       description: >-
         The Anthropic Message Batches API endpoint for retrieving a message
         batch allows you to fetch the current status and details of a previously
@@ -247,7 +247,7 @@ paths:
         any results that are available, creation and expiration timestamps, and
         metadata associated with the batch, enabling you to monitor the progress
         of your asynchronous batch message processing operations.
-      operationId: retrieveAMessageBatch
+      operationId: retrieveMessageBatch
       parameters:
         - name: message_batch_id
           in: path
@@ -317,7 +317,7 @@ paths:
         WriteDescription: true
         ChooseTags: true
     delete:
-      summary: Delete A Message Batch
+      summary: Delete Message Batch
       description: >-
         The Delete A Message Batch operation allows you to permanently remove a
         specific message batch from your Anthropic account by making a DELETE
@@ -331,7 +331,7 @@ paths:
         have appropriate permissions to delete the specified batch. Upon
         successful deletion, the API typically returns a confirmation response
         indicating the batch has been removed from the system.
-      operationId: deleteAMessageBatch
+      operationId: deleteMessageBatch
       parameters:
         - name: message_batch_id
           in: path
@@ -483,7 +483,7 @@ paths:
         CaselCaseOperationIds: true
   /messages/batches/{message_batch_id}/cancel:
     post:
-      summary: Cancel A Message Batch
+      summary: Cancel Message Batch
       description: >
         Cancel a Message Batch that is currently being processed.
 
@@ -504,7 +504,7 @@ paths:
         cancellation may not
 
         result in any canceled requests if they were non-interruptible.
-      operationId: cancelAMessageBatch
+      operationId: cancelMessageBatch
       parameters:
         - name: message_batch_id
           in: path
