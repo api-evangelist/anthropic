@@ -1,40 +1,7 @@
 openapi: 3.1.0
 info:
   title: Anthropic Admin API
-  description: >
-    The Admin API allows you to programmatically manage your organization's
-    resources, including 
-
-    organization members, workspaces, and API keys. This provides programmatic
-    control over 
-
-    administrative tasks that would otherwise require manual configuration in
-    the Claude Console.
-
-
-    **Important Notes:**
-
-    - The Admin API is unavailable for individual accounts
-
-    - Requires a special Admin API key (starting with sk-ant-admin...)
-
-    - Only organization members with the admin role can provision Admin API keys
-
-    - Set up your organization in Console → Settings → Organization to use this
-    API
-
-
-    **Organization Roles:**
-
-    - `user` - Can use Workbench
-
-    - `claude_code_user` - Can use Workbench and Claude Code
-
-    - `developer` - Can use Workbench and manage API keys
-
-    - `billing` - Can use Workbench and manage billing details
-
-    - `admin` - Can do all of the above, plus manage users
+  description: Manage administrative functions.
   version: '2023-06-01T00:00:00.000Z'
   contact:
     name: Anthropic
@@ -47,11 +14,22 @@ security:
 paths:
   /organizations/me:
     get:
-      summary: Get Organization Info
-      description: Get information about your organization programmatically
-      operationId: getOrganizationInfo
+      summary: Get  Organizations Me
+      description: >-
+        The Get Organizations Me endpoint is a GET request available at
+        `/organizations/me` in the Anthropic Admin API that retrieves
+        information about the current authenticated user's organization. This
+        endpoint allows administrators or users to fetch details about their own
+        organization context without needing to specify an organization ID, as
+        it automatically returns data for the organization associated with the
+        authenticated request. It's particularly useful for applications that
+        need to determine organizational settings, permissions, or metadata for
+        the currently logged-in user's organization in a self-service manner.
+      operationId: getOrganizationsMe
       tags:
+        - Get
         - Organizations
+        - Me
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
       responses:
@@ -67,13 +45,28 @@ paths:
                 name: Organization Name
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /organizations/users:
     get:
-      summary: List Users
-      description: List all members in the organization
-      operationId: listOrganizationMembers
+      summary: Get  Organizations Users
+      description: >-
+        This API operation retrieves a list of users associated with a specific
+        organization within the Anthropic platform. By sending a GET request to
+        the /organizations/users endpoint, administrators can view all user
+        accounts that have access to their organization, including details about
+        each user's permissions, roles, and account status. This endpoint is
+        typically used for user management tasks such as auditing organization
+        membership, reviewing access levels, and maintaining oversight of who
+        has access to the organization's resources and API capabilities.
+      operationId: getOrganizationsUsers
       tags:
-        - Organization Members
+        - Get
+        - Organizations
         - Users
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
@@ -131,14 +124,30 @@ paths:
                 last_id: <string>
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /organizations/users/{user_id}:
     get:
-      summary: Get User
-      description: Get details about a specific organization member
-      operationId: getOrganizationUser
+      summary: Get  Organizations Users Id
+      description: >-
+        This API operation retrieves detailed information about a specific user
+        within an organization by making a GET request to the endpoint
+        /organizations/users/{user_id}, where {user_id} is the unique identifier
+        of the user you want to query. It allows administrators to access
+        user-specific data such as account details, permissions, roles, and
+        other relevant attributes associated with that particular user in the
+        Anthropic organization context. This endpoint is typically used for user
+        management tasks, auditing purposes, or when you need to fetch the
+        current state and properties of an individual user account within the
+        organizational structure.
+      operationId: getOrganizationsUsersUserId
       tags:
         - Organization Members
-        - Users
+        - User
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: user_id
@@ -164,13 +173,18 @@ paths:
                 type: user
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
     post:
-      summary: Update User
+      summary: Post  Organizations Users Id
       description: |
         Update the role of an organization member.
 
         **Note:** Cannot update a user's role to "admin" through this endpoint.
-      operationId: updateOrganizationMember
+      operationId: postOrganizationsUsersUserId
       tags:
         - Organization Members
         - Users
@@ -219,10 +233,14 @@ paths:
                 type: user
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
     delete:
-      summary: Remove User
+      summary: Delete  Organizations Users Id
       description: Remove a member from the organization
-      operationId: removeOrganizationMember
+      operationId: deleteOrganizationsUsersUserId
       tags:
         - Organization Members
         - Users
@@ -263,11 +281,15 @@ paths:
                 type: user_deleted
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
   /organizations/invites:
     get:
-      summary: List Invites
+      summary: Get  Organizations Invites
       description: List all pending invites to the organization
-      operationId: listOrganizationInvites
+      operationId: getOrganizationsInvites
       tags:
         - Organization Invites
         - Invites
@@ -321,18 +343,22 @@ paths:
                 last_id: <string>
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
     post:
-      summary: Create Invite
+      summary: Post  Organizations Invites
       description: >
         Invite a user to join the organization.
 
 
         **Note:** Cannot invite a user with the "admin" role through this
         endpoint.
-      operationId: createOrganizationInvite
+      operationId: postOrganizationsInvites
       tags:
         - Organization Invites
-        - Invites
+        - Invite
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
       requestBody:
@@ -380,14 +406,18 @@ paths:
                 type: invite
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
   /organizations/invites/{invite_id}:
     get:
-      summary: Get Invite
+      summary: Get  Organizations Invites Invite Id
       description: Get details about a specific organization invite
-      operationId: getOrganizationInvite
+      operationId: getOrganizationsInvitesInviteId
       tags:
         - Organization Invites
-        - Invites
+        - Invite
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: invite_id
@@ -414,10 +444,14 @@ paths:
                 type: invite
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
     delete:
-      summary: Delete Invite
+      summary: Delete  Organizations Invites Invite Id
       description: Delete a pending organization invite
-      operationId: deleteOrganizationInvite
+      operationId: deleteOrganizationsInvitesInviteId
       tags:
         - Organization Invites
         - Invites
@@ -458,11 +492,15 @@ paths:
                 type: invite_deleted
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
   /organizations/workspaces:
     get:
-      summary: List Workspaces
+      summary: Get  Organizations Workspaces
       description: List all workspaces in the organization
-      operationId: listWorkspaces
+      operationId: getOrganizationsWorkspaces
       tags:
         - Workspaces
       parameters:
@@ -523,10 +561,14 @@ paths:
                 last_id: <string>
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
     post:
-      summary: Create Workspace
+      summary: Post  Organizations Workspaces
       description: Create a new workspace in the organization
-      operationId: createWorkspace
+      operationId: postOrganizationsWorkspaces
       tags:
         - Workspaces
       parameters:
@@ -564,11 +606,15 @@ paths:
                 type: workspace
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
   /organizations/workspaces/{workspace_id}:
     get:
-      summary: Get Workspace
+      summary: Get  Organizations Workspaces Workspace Id
       description: Get details about a specific workspace
-      operationId: getWorkspace
+      operationId: getOrganizationsWorkspacesWorkspaceId
       tags:
         - Workspaces
       parameters:
@@ -596,10 +642,14 @@ paths:
                 type: workspace
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
     post:
-      summary: Update Workspace
+      summary: Post  Organizations Workspaces Workspace Id
       description: Update the name of a workspace
-      operationId: updateWorkspace
+      operationId: postOrganizationsWorkspacesWorkspaceId
       tags:
         - Workspaces
       parameters:
@@ -644,11 +694,15 @@ paths:
                 type: workspace
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
   /organizations/workspaces/{workspace_id}/archive:
     post:
-      summary: Archive Workspace
+      summary: Post  Organizations Workspaces Workspace Id Archive
       description: Archive a workspace
-      operationId: archiveWorkspace
+      operationId: postOrganizationsWorkspacesWorkspaceIdArchive
       tags:
         - Workspaces
       parameters:
@@ -676,11 +730,15 @@ paths:
                 type: workspace
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
   /organizations/workspaces/{workspace_id}/members:
     get:
-      summary: List Workspace Members
+      summary: Get  Organizations Workspaces Workspace Id Members
       description: List all members in a workspace
-      operationId: listWorkspaceMembers
+      operationId: getOrganizationsWorkspacesWorkspaceIdMembers
       tags:
         - Workspace Members
       parameters:
@@ -737,15 +795,19 @@ paths:
                 last_id: <string>
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
     post:
-      summary: Add Workspace Member
+      summary: Post  Organizations Workspaces Workspace Id Members
       description: >
         Add a member to a workspace.
 
 
         **Note:** Cannot add a member with the "workspace_billing" role through
         this endpoint.
-      operationId: addWorkspaceMember
+      operationId: postOrganizationsWorkspacesWorkspaceIdMembers
       tags:
         - Workspace Members
       parameters:
@@ -798,11 +860,15 @@ paths:
                 workspace_role: workspace_user
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
   /organizations/workspaces/{workspace_id}/members/{user_id}:
     get:
-      summary: Get Workspace Member
+      summary: Get  Organizations Workspaces Workspace Id Members User Id
       description: Get details about a specific workspace member
-      operationId: getWorkspaceMember
+      operationId: getOrganizationsWorkspacesWorkspaceIdMembersUserId
       tags:
         - Workspace Members
       parameters:
@@ -835,10 +901,14 @@ paths:
                 workspace_role: workspace_user
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
     post:
-      summary: Update Workspace Member
+      summary: Post  Organizations Workspaces Workspace Id Members User Id
       description: Update the role of a workspace member
-      operationId: updateWorkspaceMember
+      operationId: postOrganizationsWorkspacesWorkspaceIdMembersUserId
       tags:
         - Workspace Members
       parameters:
@@ -891,10 +961,14 @@ paths:
                 workspace_role: workspace_user
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
     delete:
-      summary: Delete Workspace Member
+      summary: Delete  Organizations Workspaces Workspace Id Members User Id
       description: Remove a member from a workspace
-      operationId: removeWorkspaceMember
+      operationId: deleteOrganizationsWorkspacesWorkspaceIdMembersUserId
       tags:
         - Workspace Members
       parameters:
@@ -949,11 +1023,15 @@ paths:
                 workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
   /organizations/api_keys:
     get:
-      summary: List API Keys
+      summary: Get  Organizations Api Keys
       description: List API keys in the organization
-      operationId: listApiKeys
+      operationId: getOrganizationsApiKeys
       tags:
         - API Keys
       parameters:
@@ -1004,11 +1082,15 @@ paths:
                 $ref: '#/components/schemas/ApiKeyList'
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
   /organizations/api_keys/{api_key_id}:
     post:
-      summary: Update API Key
+      summary: Post  Organizations Api Keys Api Key Id
       description: Update an API key's status or name
-      operationId: updateApiKey
+      operationId: postOrganizationsApiKeysApiKeyId
       tags:
         - API Keys
       parameters:
@@ -1048,9 +1130,13 @@ paths:
                 $ref: '#/components/schemas/ApiKey'
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
   /organizations/usage_report/messages:
     get:
-      summary: Get Usage Report
+      summary: Get  Organizations Usage Report Messages
       description: >
         Track token consumption across your organization with detailed
         breakdowns by model, 
@@ -1082,7 +1168,7 @@ paths:
 
         **Data Freshness:** Usage data typically appears within 5 minutes of API
         request completion
-      operationId: getUsageReport
+      operationId: getOrganizationsUsageReportMessages
       tags:
         - Usage Costs
       parameters:
@@ -1235,9 +1321,13 @@ paths:
                 next_page: null
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
   /organizations/cost_report:
     get:
-      summary: Get Cost Report
+      summary: Get  Organizations Cost Report
       description: >
         Retrieve service-level cost breakdowns in USD.
 
@@ -1264,7 +1354,7 @@ paths:
 
         **Data Freshness:** Cost data typically appears within 5 minutes of API
         request completion
-      operationId: getCostReport
+      operationId: getOrganizationsCostReport
       tags:
         - Usage Costs
       parameters:
@@ -1347,9 +1437,13 @@ paths:
                 next_page: null
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
   /organizations/usage_report/claude_code:
     get:
-      summary: Get Claude Code Analytics
+      summary: Get  Organizations Usage Report Claude Code
       description: >
         Track Claude Code usage, productivity metrics, and developer activity
         across your organization.
@@ -1398,7 +1492,7 @@ paths:
         - API is free to use for all organizations with Admin API access
 
         - All dates are in UTC
-      operationId: getClaudeCodeAnalytics
+      operationId: getOrganizationsUsageReportClaudeCode
       tags:
         - Analytics
       parameters:
@@ -1479,6 +1573,10 @@ paths:
                 next_page: null
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+      x-api-evangelist-processing:
+        GenerateOperationSummariesFromPath: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
 components:
   securitySchemes:
     AdminApiKeyAuth:
