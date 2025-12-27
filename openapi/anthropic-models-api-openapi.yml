@@ -1,9 +1,9 @@
 openapi: 3.1.0
 info:
   title: Anthropic Models API
-  description: >
-    The Models API response can be used to determine which models are available
-    for use in the API. More recently released models are listed first.
+  description: >-
+    Send a structured list of input messages with text and/or image content, and
+    the model will generate the next message in the conversation.    
   version: '2025-03-05'
   contact:
     name: Anthropic Support
@@ -260,7 +260,11 @@ paths:
       x-api-evangelist-certified: '2025-08-14'
       x-api-naftiko-published: '2025-08-15'
       tags:
+        - Lists
+        - Available
         - Models
+      x-api-evangelist-processing:
+        ChooseTags: true
   /v1/models/{model_id}:
     get:
       summary: Get A Specific Model
@@ -494,7 +498,11 @@ paths:
       x-api-evangelist-certified: '2025-08-14'
       x-api-naftiko-published: '2025-08-15'
       tags:
+        - Get
+        - Specific
         - Models
+      x-api-evangelist-processing:
+        ChooseTags: true
 components:
   securitySchemes:
     ApiKeyAuth:
