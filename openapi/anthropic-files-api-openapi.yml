@@ -1,25 +1,11 @@
 openapi: 3.1.0
 info:
   title: Anthropic Files API
-  description: >
-    API for uploading and managing files to use with the Claude API.
-
-
-    The Files API allows you to upload and manage files to use with the Claude
-    API without having
-
-    to re-upload content with each request.
-
-
-    **Beta Feature:**
-
-    The Files API is currently in beta. To use the Files API, you'll need to
-    include the beta
-
-    feature header: `anthropic-beta: files-api-2025-04-14`.
-
-
-    For more information about the Files API, see the developer guide for files.
+  description: >-
+    The Files API allows you to upload and manage files to use with the
+    Anthropic API without having to re-upload content with each request. For
+    more information about the Files API, see the developer guide for
+    files.      
   version: '2023-06-01T00:00:00.000Z'
   contact:
     name: Anthropic
@@ -33,7 +19,14 @@ paths:
   /files:
     get:
       summary: List Files
-      description: List files within a workspace
+      description: >-
+        The List Files operation is a GET request to the /files endpoint of the
+        Anthropic Files API that retrieves a paginated list of all files that
+        have been uploaded to your organization. This endpoint returns metadata
+        about each file including the file ID, filename, size, content type,
+        upload timestamp, and current status, allowing you to view and manage
+        all files associated with your account without needing to download the
+        actual file contents.
       operationId: listFiles
       parameters:
         - name: before_id
@@ -112,10 +105,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       tags:
+        - Lists
         - Files
+      x-api-evangelist-processing:
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
     post:
-      summary: Create a File
-      description: Upload a file to use with the Claude API
+      summary: Create File
+      description: >-
+        The Create File operation in the Anthropic Files API allows you to
+        upload files to Anthropic's servers by sending a POST request to the
+        /files endpoint. This operation accepts multipart/form-data requests
+        containing the file content along with metadata such as the file purpose
+        and type. Upon successful upload, the API returns a file object with a
+        unique identifier that can be referenced in subsequent API calls, such
+        as when creating messages or working with other Anthropic services. The
+        uploaded files are stored securely and can be retrieved, listed, or
+        deleted using other endpoints in the Files API.
       operationId: createFile
       parameters:
         - name: anthropic-version
@@ -183,11 +191,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       tags:
+        - Create
         - Files
+      x-api-evangelist-processing:
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /files/{file_id}:
     get:
       summary: Get File Metadata
-      description: Retrieve metadata for a specific file
+      description: >-
+        Retrieves metadata information for a previously uploaded file using its
+        unique file identifier. This endpoint returns details about the file
+        such as its name, size, content type, upload timestamp, and current
+        processing status without downloading the actual file content. It's
+        useful for checking file properties, verifying successful uploads, or
+        confirming file availability before using it in other API operations
+        like message creation or batch processing.
       operationId: getFileMetadata
       parameters:
         - name: file_id
@@ -242,10 +263,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       tags:
-        - File Metadata
+        - Get
+        - Files
+      x-api-evangelist-processing:
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
     delete:
-      summary: Delete a File
-      description: Make a file inaccessible through the API
+      summary: Delete File
+      description: >-
+        The Delete File operation in the Anthropic Files API allows you to
+        permanently remove a previously uploaded file from the system by
+        specifying its unique file identifier in the endpoint path. When you
+        send a DELETE request to /files/{file_id}, the API will locate and
+        delete the corresponding file, freeing up storage space and ensuring the
+        file is no longer accessible through the API. This operation is
+        irreversible, so once a file is deleted, it cannot be recovered and any
+        references to that file ID will no longer be valid. This endpoint is
+        useful for managing your stored files, removing outdated or unnecessary
+        content, and maintaining compliance with data retention policies.
       operationId: deleteFile
       parameters:
         - name: file_id
@@ -295,11 +332,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       tags:
+        - Delete
         - Files
+      x-api-evangelist-processing:
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /files/{file_id}/content:
     get:
-      summary: Download a File
-      description: Download the contents of a Claude generated file
+      summary: Download File
+      description: >-
+        The Download File operation retrieves the actual content of a previously
+        uploaded file from Anthropic's storage system by making a GET request to
+        the /files/{file_id}/content endpoint with the specific file identifier.
+        This endpoint returns the raw file data in its original format, allowing
+        applications to access and process documents, images, or other files
+        that were uploaded to use with Claude or other Anthropic services. The
+        response contains the binary or text content of the file along with
+        appropriate content-type headers, enabling seamless integration into
+        workflows that require retrieving stored files for analysis, reference,
+        or further processing.
       operationId: downloadFile
       parameters:
         - name: file_id
@@ -348,7 +401,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       tags:
+        - Download
         - Files
+      x-api-evangelist-processing:
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
 components:
   securitySchemes:
     ApiKeyAuth:
