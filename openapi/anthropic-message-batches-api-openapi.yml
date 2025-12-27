@@ -1,28 +1,11 @@
 openapi: 3.1.0
 info:
   title: Anthropic Message Batches API
-  description: >
-    API for creating and processing batches of Message creation requests.
-
-
-    The Message Batches API can be used to process multiple Messages API
-    requests at once. 
-
-    Once a Message Batch is created, it begins processing immediately. Batches
-    can take up to 24 hours to complete.
-
-
-    **Feature Support:**
-
-    - Supported models: Claude Haiku 3, Claude Opus 3, Claude Sonnet 3.5, Claude
-    Sonnet 3.5 v2, Claude Sonnet 3.7, Claude Sonnet 4, Claude Sonnet 4.5, and
-    Claude Opus 4
-
-    - All features available in the Messages API, including beta features, are
-    supported
-
-    - Batches may contain up to 100,000 requests and be up to 256 MB in total
-    size
+  description: >-
+    Send a batch of Message creation requests. The Message Batches API can be
+    used to process multiple Messages API requests at once. Once a Message Batch
+    is created, it begins processing immediately. Batches can take up to 24
+    hours to complete.       
   version: '2023-06-01T00:00:00.000Z'
   contact:
     name: Anthropic
@@ -36,9 +19,16 @@ paths:
   /messages/batches:
     get:
       summary: List Message Batches
-      description: >
-        List all Message Batches within a Workspace. Most recently created
-        batches are returned first.
+      description: >-
+        The List Message Batches operation is a GET request to the
+        /messages/batches endpoint that retrieves a paginated list of all
+        message batches associated with your account. This endpoint allows you
+        to view and manage multiple batch processing jobs, returning details
+        such as batch IDs, creation timestamps, processing status, and
+        completion information for each batch. You can use optional query
+        parameters to filter, sort, and paginate through your batches, making it
+        easy to track and monitor asynchronous message processing operations at
+        scale.
       operationId: listMessageBatches
       parameters:
         - name: before_id
@@ -124,11 +114,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       tags:
-        - Message Batches
+        - Lists
+        - Messages
+        - Batches
+      x-api-evangelist-processing:
+        ChooseTags: true
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
     post:
-      summary: Create a Message Batch
-      description: Send a batch of Message creation requests for processing
-      operationId: createMessageBatch
+      summary: Create A Message Batch
+      description: >-
+        The Create A Message Batch operation allows you to submit multiple
+        message requests to be processed asynchronously as a batch through the
+        Anthropic API. By sending a POST request to the /messages/batches
+        endpoint, you can queue up numerous message generation tasks that will
+        be processed in the background, making it ideal for high-volume,
+        non-time-sensitive workloads. This batch processing approach is more
+        cost-effective than individual real-time API calls and is particularly
+        useful for tasks like large-scale data processing, content generation,
+        or evaluation workflows where immediate responses aren't required. The
+        API returns a batch identifier that you can use to track the status and
+        retrieve results once processing is complete.
+      operationId: createAMessageBatch
       parameters:
         - name: anthropic-version
           in: header
@@ -216,20 +224,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       tags:
-        - Message Batches
+        - Create
+        - Messages
+        - Batch
+      x-api-evangelist-processing:
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /messages/batches/{message_batch_id}:
     get:
-      summary: Retrieve a Message Batch
-      description: >
-        Retrieve details about a specific Message Batch.
-
-
-        This endpoint is idempotent and can be used to poll for Message Batch
-        completion.
-
-        To access the results of a Message Batch, make a request to the
-        results_url field in the response.
-      operationId: getMessageBatch
+      summary: Retrieve A Message Batch
+      description: >-
+        The Anthropic Message Batches API endpoint for retrieving a message
+        batch allows you to fetch the current status and details of a previously
+        created batch processing job by making a GET request to
+        /messages/batches/{message_batch_id}, where the message_batch_id is the
+        unique identifier returned when the batch was originally created. This
+        operation returns comprehensive information about the batch including
+        its processing state (such as in_progress, ended, or canceling), the
+        number of requests that have been processed versus the total submitted,
+        any results that are available, creation and expiration timestamps, and
+        metadata associated with the batch, enabling you to monitor the progress
+        of your asynchronous batch message processing operations.
+      operationId: retrieveAMessageBatch
       parameters:
         - name: message_batch_id
           in: path
@@ -290,15 +308,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       tags:
-        - Message Batches
+        - Retrieve
+        - Messages
+        - Batch
+      x-api-evangelist-processing:
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
     delete:
-      summary: Delete a Message Batch
-      description: |
-        Delete a Message Batch.
-
-        Message Batches can only be deleted once they've finished processing.
-        If you'd like to delete an in-progress batch, you must first cancel it.
-      operationId: deleteMessageBatch
+      summary: Delete A Message Batch
+      description: >-
+        The Delete A Message Batch operation allows you to permanently remove a
+        specific message batch from your Anthropic account by making a DELETE
+        request to /messages/batches/{message_batch_id}, where
+        {message_batch_id} is the unique identifier of the batch you wish to
+        delete. This operation is useful for cleaning up completed batches,
+        removing batches that are no longer needed, or managing your storage and
+        resource allocation. Once deleted, the message batch and its associated
+        data cannot be recovered, so caution should be exercised when using this
+        endpoint. The operation requires proper authentication and the user must
+        have appropriate permissions to delete the specified batch. Upon
+        successful deletion, the API typically returns a confirmation response
+        indicating the batch has been removed from the system.
+      operationId: deleteAMessageBatch
       parameters:
         - name: message_batch_id
           in: path
@@ -345,7 +378,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       tags:
-        - Message Batches
+        - Delete
+        - Messages
+        - Batch
+      x-api-evangelist-processing:
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /messages/batches/{message_batch_id}/results:
     get:
       summary: Retrieve Message Batch Results
@@ -364,7 +404,7 @@ paths:
         from the batch's results_url.
 
         This path should not be assumed and may change.
-      operationId: getMessageBatchResults
+      operationId: retrieveMessageBatchResults
       parameters:
         - name: message_batch_id
           in: path
@@ -438,9 +478,12 @@ paths:
                 $ref: '#/components/schemas/Error'
       tags:
         - Message Batches
+      x-api-evangelist-processing:
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
   /messages/batches/{message_batch_id}/cancel:
     post:
-      summary: Cancel a Message Batch
+      summary: Cancel A Message Batch
       description: >
         Cancel a Message Batch that is currently being processed.
 
@@ -461,7 +504,7 @@ paths:
         cancellation may not
 
         result in any canceled requests if they were non-interruptible.
-      operationId: cancelMessageBatch
+      operationId: cancelAMessageBatch
       parameters:
         - name: message_batch_id
           in: path
@@ -522,7 +565,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       tags:
-        - Message Batches
+        - Cancel
+        - Messages
+        - Batch
+      x-api-evangelist-processing:
+        PascalCaseOperationSummaries: true
+        CaselCaseOperationIds: true
+        ChooseTags: true
 components:
   securitySchemes:
     ApiKeyAuth:
