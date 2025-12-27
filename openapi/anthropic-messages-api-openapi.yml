@@ -1,16 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Anthropic Prompt Tools API
-  description: >
-    The prompt tools APIs are in a closed research preview. These APIs are a set
-    of tools to generate and improve prompts, similar to what's available in the
-    Anthropic Workbench, and are intended for use by other prompt engineering
-    platforms and playgrounds.
-
-
-    **Note**: This is an experimental API that requires special access and
-    doesn't have the same level of commitment to long-term support as other
-    APIs.
+  title: Anthropic Prompts API
+  description: 'Manage prompts.             '
   version: 1.0.0
   contact:
     name: Anthropic Support
@@ -26,7 +17,7 @@ security:
 paths:
   /v1/experimental/generate_prompt:
     post:
-      summary: Generate Prompt
+      summary: Generate A Prompt
       description: >-
         Generate a well-written prompt for a specified task. This API creates
         prompts that can be used directly with the Messages
@@ -34,7 +25,7 @@ paths:
         preview for prompt tools APIs<br>- Must use the API directly (not
         available in SDK)<br>- Must include the beta header
         `prompt-tools-2025-04-02`<br>
-      operationId: generatePrompt
+      operationId: anthropicGenerateprompt
       parameters:
         - name: anthropic-beta
           in: header
@@ -249,12 +240,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      tags:
+        - Generate
+        - Prompts
       x-api-evangelist-processing:
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
+        ChooseTags: true
   /v1/experimental/improve_prompt:
     post:
-      summary: Improve Prompt
+      summary: Improve A Prompt
       description: >-
         Create a new-and-improved prompt guided by feedback. This API takes an
         existing prompt and enhances it based on provided feedback or general
@@ -265,7 +258,7 @@ paths:
         text-only content blocks<br>- No tool calls, images, or prompt caching
         blocks allowed<br>- Only contiguous user messages with text content are
         permitted<br>
-      operationId: improvePrompt
+      operationId: anthropicImproveprompt
       parameters:
         - name: anthropic-beta
           in: header
@@ -553,12 +546,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      tags:
+        - Improve
+        - Prompts
       x-api-evangelist-processing:
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
+        ChooseTags: true
   /v1/experimental/templatize_prompt:
     post:
-      summary: Templatize Prompt
+      summary: Templatize A Prompt
       description: >-
         Templatize a prompt by identifying and extracting variables. This API
         analyzes a prompt and converts specific values into reusable template
@@ -569,7 +564,7 @@ paths:
         text-only content blocks<br>- No tool calls, images, or prompt caching
         blocks allowed<br>- Only contiguous user messages with text content are
         permitted<br>
-      operationId: templatizePrompt
+      operationId: anthropicTemplatizeprompt
       parameters:
         - name: anthropic-beta
           in: header
@@ -839,9 +834,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      tags:
+        - Templatize
+        - Prompts
       x-api-evangelist-processing:
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
+        ChooseTags: true
 components:
   securitySchemes:
     ApiKeyAuth:
