@@ -1,10 +1,16 @@
 openapi: 3.1.0
 info:
-  title: Anthropic Messages API
-  description: >-
-    List available models. The Models API response can be used to determine
-    which models are available for use in the API. More recently released models
-    are listed first.
+  title: Anthropic Prompt Tools API
+  description: >
+    The prompt tools APIs are in a closed research preview. These APIs are a set
+    of tools to generate and improve prompts, similar to what's available in the
+    Anthropic Workbench, and are intended for use by other prompt engineering
+    platforms and playgrounds.
+
+
+    **Note**: This is an experimental API that requires special access and
+    doesn't have the same level of commitment to long-term support as other
+    APIs.
   version: 1.0.0
   contact:
     name: Anthropic Support
@@ -243,11 +249,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      tags:
-        - Generate
-        - Prompts
       x-api-evangelist-processing:
-        ChooseTags: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
   /v1/experimental/improve_prompt:
@@ -551,11 +553,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      tags:
-        - Improve
-        - Prompts
       x-api-evangelist-processing:
-        ChooseTags: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
   /v1/experimental/templatize_prompt:
@@ -841,11 +839,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      tags:
-        - Templatize
-        - Prompts
       x-api-evangelist-processing:
-        ChooseTags: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
 components:
