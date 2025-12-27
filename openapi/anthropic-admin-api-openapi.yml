@@ -134,20 +134,20 @@ paths:
     get:
       summary: Get  Organizations Users Id
       description: >-
-        This API operation retrieves detailed information about a specific user
-        within an organization by making a GET request to the endpoint
-        /organizations/users/{user_id}, where {user_id} is the unique identifier
-        of the user you want to query. It allows administrators to access
-        user-specific data such as account details, permissions, roles, and
-        other relevant attributes associated with that particular user in the
-        Anthropic organization context. This endpoint is typically used for user
-        management tasks, auditing purposes, or when you need to fetch the
-        current state and properties of an individual user account within the
-        organizational structure.
+        Retrieves detailed information about a specific user within an
+        organization by their unique user identifier. This endpoint allows
+        administrators to access comprehensive user data including profile
+        information, roles, permissions, and organizational membership details
+        for a given user ID. The operation requires appropriate administrative
+        privileges to query user information and returns a complete user object
+        containing all associated metadata and configuration settings for the
+        specified organization member.
       operationId: getOrganizationsUsersUserId
       tags:
-        - Organization Members
-        - User
+        - Get
+        - Organizations
+        - Users
+        - Identifiers
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: user_id
@@ -178,16 +178,26 @@ paths:
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
         WriteDescription: true
+        ChooseTags: true
     post:
       summary: Post  Organizations Users Id
-      description: |
-        Update the role of an organization member.
-
-        **Note:** Cannot update a user's role to "admin" through this endpoint.
+      description: >-
+        Updates user information for a specific user within an organization by
+        their user ID. This endpoint allows administrators to modify user
+        details such as roles, permissions, or other user-specific settings
+        through a POST request to the specified user's resource path. The
+        operation requires the user_id parameter in the URL path to identify
+        which organization member's information should be updated, and accepts a
+        request body containing the fields to be modified. This is part of the
+        Anthropic Admin API's organization management capabilities, enabling
+        programmatic control over user accounts and their associated properties
+        within the organizational structure.
       operationId: postOrganizationsUsersUserId
       tags:
-        - Organization Members
+        - Post
+        - Organizations
         - Users
+        - Identifiers
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: user_id
@@ -237,13 +247,25 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
     delete:
       summary: Delete  Organizations Users Id
-      description: Remove a member from the organization
+      description: >-
+        Removes a specific user from an organization by their unique user
+        identifier. This operation permanently deletes the user's association
+        with the organization through a DELETE request to the endpoint,
+        requiring the user_id as a path parameter. Once executed, the specified
+        user will no longer have access to the organization's resources or be
+        listed among its members. This is an administrative action typically
+        restricted to organization owners or administrators with appropriate
+        permissions.
       operationId: deleteOrganizationsUsersUserId
       tags:
-        - Organization Members
+        - Delete
+        - Organizations
         - Users
+        - Identifiers
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: user_id
@@ -285,13 +307,25 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /organizations/invites:
     get:
       summary: Get  Organizations Invites
-      description: List all pending invites to the organization
+      description: >-
+        The Get Organizations Invites operation retrieves a list of pending
+        invitations that have been sent to users for joining an organization
+        within the Anthropic Admin API. This GET endpoint at
+        /organizations/invites allows administrators to view all outstanding
+        invitations, including details such as the invitee's email address,
+        invitation status, role assignments, and when the invitation was created
+        or expires, helping them manage and track who has been invited to access
+        organizational resources and whether those invitations have been
+        accepted, declined, or are still awaiting response.
       operationId: getOrganizationsInvites
       tags:
-        - Organization Invites
+        - Get
+        - Organizations
         - Invites
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
@@ -347,18 +381,24 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
     post:
       summary: Post  Organizations Invites
-      description: >
-        Invite a user to join the organization.
-
-
-        **Note:** Cannot invite a user with the "admin" role through this
-        endpoint.
+      description: >-
+        The POST /organizations/invites endpoint in the Anthropic Admin API
+        allows administrators to create and send invitations to new members to
+        join an organization. By making a POST request to this endpoint with the
+        necessary invitation details such as the invitee's email address and
+        assigned role, the system generates an invitation that can be sent to
+        prospective organization members, enabling them to accept and gain
+        access to the organization's resources and workspaces with the specified
+        permissions level.
       operationId: postOrganizationsInvites
       tags:
-        - Organization Invites
-        - Invite
+        - Post
+        - Organizations
+        - Invites
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
       requestBody:
@@ -410,14 +450,30 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /organizations/invites/{invite_id}:
     get:
       summary: Get  Organizations Invites Invite Id
-      description: Get details about a specific organization invite
+      description: >-
+        This API operation retrieves detailed information about a specific
+        organization invite using its unique identifier. By making a GET request
+        to the /organizations/invites/{invite_id} endpoint, administrators can
+        access the current status and details of an invitation that was sent to
+        a user to join an organization within the Anthropic platform. The
+        {invite_id} path parameter uniquely identifies the invitation, and the
+        response typically includes information such as the invitee's email
+        address, invitation status (pending, accepted, or expired), the role or
+        permissions associated with the invite, when it was created, and any
+        relevant expiration details. This endpoint is useful for tracking and
+        managing pending organization invitations, verifying invite details
+        before resending, or auditing invitation history.
       operationId: getOrganizationsInvitesInviteId
       tags:
-        - Organization Invites
-        - Invite
+        - Get
+        - Organizations
+        - Invites
+        - Identifiers
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: invite_id
@@ -448,13 +504,24 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
     delete:
       summary: Delete  Organizations Invites Invite Id
-      description: Delete a pending organization invite
+      description: >-
+        This API endpoint allows administrators to delete a specific
+        organization invite by providing the invite's unique identifier in the
+        URL path. When called with the DELETE HTTP method, it removes the
+        pending invitation from the system, preventing the recipient from
+        accepting it and joining the organization. This is useful for revoking
+        invitations that were sent in error, are no longer needed, or when
+        access permissions have changed before the invite was accepted.
       operationId: deleteOrganizationsInvitesInviteId
       tags:
-        - Organization Invites
+        - Delete
+        - Organizations
         - Invites
+        - Identifiers
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: invite_id
@@ -496,12 +563,25 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /organizations/workspaces:
     get:
       summary: Get  Organizations Workspaces
-      description: List all workspaces in the organization
+      description: >-
+        This API operation retrieves a list of workspaces associated with
+        organizations in the Anthropic Admin API. By sending a GET request to
+        the /organizations/workspaces endpoint, administrators can fetch
+        workspace information across their organization, which typically
+        includes details such as workspace identifiers, names, configurations,
+        and associated metadata. This endpoint is useful for managing and
+        monitoring multiple workspaces within an organizational structure,
+        allowing admins to programmatically access workspace data for reporting,
+        auditing, or integration purposes.
       operationId: getOrganizationsWorkspaces
       tags:
+        - Get
+        - Organizations
         - Workspaces
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
@@ -565,11 +645,26 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
     post:
       summary: Post  Organizations Workspaces
-      description: Create a new workspace in the organization
+      description: >-
+        This API operation creates a new workspace within an organization in the
+        Anthropic Admin API. By sending a POST request to the
+        /organizations/workspaces endpoint, administrators can provision a
+        workspace that serves as a container for projects, team members, and
+        resources within their organization. The operation typically requires
+        authentication credentials with appropriate administrative permissions
+        and accepts parameters such as workspace name, description, and
+        configuration settings in the request body. Upon successful execution,
+        it returns details about the newly created workspace including its
+        unique identifier, which can be used for subsequent workspace management
+        operations.
       operationId: postOrganizationsWorkspaces
       tags:
+        - Post
+        - Organizations
         - Workspaces
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
@@ -610,13 +705,26 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /organizations/workspaces/{workspace_id}:
     get:
       summary: Get  Organizations Workspaces Workspace Id
-      description: Get details about a specific workspace
+      description: >-
+        This API operation retrieves detailed information about a specific
+        workspace within an organization in the Anthropic Admin API. By
+        providing a workspace ID in the URL path, authenticated administrators
+        can fetch the workspace's configuration, settings, metadata, and
+        associated details. This GET endpoint is useful for managing
+        organizational structures, auditing workspace configurations, or
+        integrating workspace data into administrative dashboards and monitoring
+        systems.
       operationId: getOrganizationsWorkspacesWorkspaceId
       tags:
+        - Get
+        - Organizations
         - Workspaces
+        - Identifiers
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: workspace_id
@@ -646,12 +754,27 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
     post:
       summary: Post  Organizations Workspaces Workspace Id
-      description: Update the name of a workspace
+      description: >-
+        This API endpoint creates or modifies a workspace within an organization
+        in the Anthropic Admin API. By sending a POST request to
+        /organizations/workspaces/{workspace_id} with the specific workspace
+        identifier in the path parameter, administrators can establish new
+        workspace configurations or update existing workspace settings for their
+        organization. Workspaces typically serve as logical containers for
+        organizing users, projects, and resources within the broader
+        organizational structure, allowing for better access control, resource
+        allocation, and team collaboration management within the Anthropic
+        platform.
       operationId: postOrganizationsWorkspacesWorkspaceId
       tags:
+        - Post
+        - Organizations
         - Workspaces
+        - Identifiers
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: workspace_id
@@ -698,13 +821,29 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /organizations/workspaces/{workspace_id}/archive:
     post:
       summary: Post  Organizations Workspaces Workspace Id Archive
-      description: Archive a workspace
+      description: >-
+        This API operation archives a specific workspace within an organization
+        by sending a POST request to the endpoint with the workspace's unique
+        identifier. When executed, it marks the designated workspace as
+        archived, which typically means the workspace becomes read-only or
+        hidden from active use while preserving its data and configuration for
+        potential future reference or compliance purposes. The operation
+        requires the workspace_id as a path parameter to identify which
+        workspace should be archived, and proper authentication credentials are
+        needed to authorize the archival action within the Anthropic Admin API's
+        organizational management system.
       operationId: postOrganizationsWorkspacesWorkspaceIdArchive
       tags:
+        - Post
+        - Organizations
         - Workspaces
+        - Identifiers
+        - Archive
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: workspace_id
@@ -734,13 +873,28 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /organizations/workspaces/{workspace_id}/members:
     get:
       summary: Get  Organizations Workspaces Workspace Id Members
-      description: List all members in a workspace
+      description: >-
+        This API operation retrieves a list of all members associated with a
+        specific workspace within an organization in the Anthropic Admin API. By
+        making a GET request to the endpoint with a valid workspace ID,
+        administrators can access details about workspace membership, which
+        typically includes information about users who have access to that
+        particular workspace, their roles, permissions, and other relevant
+        member attributes. This endpoint is useful for workspace management,
+        auditing access controls, and maintaining visibility over who has access
+        to specific organizational workspaces.
       operationId: getOrganizationsWorkspacesWorkspaceIdMembers
       tags:
-        - Workspace Members
+        - Get
+        - Organizations
+        - Workspaces
+        - Identifiers
+        - Members
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: workspace_id
@@ -799,17 +953,28 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
     post:
       summary: Post  Organizations Workspaces Workspace Id Members
-      description: >
-        Add a member to a workspace.
-
-
-        **Note:** Cannot add a member with the "workspace_billing" role through
-        this endpoint.
+      description: >-
+        This API operation allows administrators to add new members to a
+        specific workspace within an organization by making a POST request to
+        the endpoint with the workspace's unique identifier. When invoked, it
+        creates a new membership association between a user and the designated
+        workspace, granting them access according to the permissions and roles
+        specified in the request body. This operation is typically used for
+        workspace management tasks such as onboarding team members, expanding
+        collaborative groups, or provisioning user access to workspace resources
+        and functionality within the Anthropic platform's organizational
+        structure.
       operationId: postOrganizationsWorkspacesWorkspaceIdMembers
       tags:
-        - Workspace Members
+        - Post
+        - Organizations
+        - Workspaces
+        - Identifiers
+        - Members
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: workspace_id
@@ -864,13 +1029,29 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /organizations/workspaces/{workspace_id}/members/{user_id}:
     get:
       summary: Get  Organizations Workspaces Workspace Id Members User Id
-      description: Get details about a specific workspace member
+      description: >-
+        This API operation retrieves detailed information about a specific
+        member within a workspace in an Anthropic organization. By providing
+        both a workspace ID and a user ID in the endpoint path, administrators
+        can fetch comprehensive data about that particular user's membership,
+        including their role, permissions, status, and other relevant
+        member-specific details within the context of the specified workspace.
+        This GET request is useful for auditing workspace membership, verifying
+        user access levels, or displaying individual member information in
+        administrative interfaces.
       operationId: getOrganizationsWorkspacesWorkspaceIdMembersUserId
       tags:
-        - Workspace Members
+        - Get
+        - Organizations
+        - Workspaces
+        - Identifiers
+        - Members
+        - Users
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: workspace_id
@@ -905,12 +1086,30 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
     post:
       summary: Post  Organizations Workspaces Workspace Id Members User Id
-      description: Update the role of a workspace member
+      description: >-
+        This API operation adds or updates a member within a specific workspace
+        in an Anthropic organization. It uses a POST request to the endpoint
+        '/organizations/workspaces/{workspace_id}/members/{user_id}', where you
+        must provide both the workspace identifier and the user identifier as
+        path parameters. This endpoint is typically used for workspace
+        administration tasks such as granting a user access to a particular
+        workspace, updating their membership settings, or modifying their role
+        and permissions within that workspace. The operation requires
+        appropriate administrative privileges to manage workspace memberships
+        and is part of the Anthropic Admin API's organizational management
+        functionality.
       operationId: postOrganizationsWorkspacesWorkspaceIdMembersUserId
       tags:
-        - Workspace Members
+        - Post
+        - Organizations
+        - Workspaces
+        - Identifiers
+        - Members
+        - Users
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: workspace_id
@@ -965,12 +1164,27 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
     delete:
       summary: Delete  Organizations Workspaces Workspace Id Members User Id
-      description: Remove a member from a workspace
+      description: >-
+        This API operation removes a specific user from a workspace within an
+        organization by sending a DELETE request to the endpoint with the
+        workspace ID and user ID as path parameters. When executed, it revokes
+        the specified user's access and membership from the designated
+        workspace, effectively removing their permissions and ability to
+        interact with that workspace's resources. This is typically used for
+        offboarding team members, adjusting team composition, or managing access
+        control within an Anthropic organization's workspace structure.
       operationId: deleteOrganizationsWorkspacesWorkspaceIdMembersUserId
       tags:
-        - Workspace Members
+        - Delete
+        - Organizations
+        - Workspaces
+        - Identifiers
+        - Members
+        - Users
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: workspace_id
@@ -1027,13 +1241,26 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /organizations/api_keys:
     get:
       summary: Get  Organizations Api Keys
-      description: List API keys in the organization
+      description: >-
+        This endpoint retrieves a list of API keys associated with a specific
+        organization in the Anthropic Admin API. When called with a GET request
+        to /organizations/api_keys, it returns information about all API keys
+        that have been created for the organization, which may include details
+        such as key identifiers, creation dates, permissions, and status
+        information. This operation is typically used by organization
+        administrators to audit, monitor, and manage the API keys that provide
+        programmatic access to Anthropic's services within their organization's
+        account.
       operationId: getOrganizationsApiKeys
       tags:
-        - API Keys
+        - Get
+        - Organizations
+        - Keys
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: limit
@@ -1086,13 +1313,29 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /organizations/api_keys/{api_key_id}:
     post:
-      summary: Post  Organizations Api Keys Api Key Id
-      description: Update an API key's status or name
+      summary: Post  Organizations API Keys Id
+      description: >-
+        This API operation allows administrators to update or modify specific
+        API key settings within an organization by making a POST request to the
+        endpoint with the API key's unique identifier. The operation targets
+        individual API keys that have been previously created within the
+        Anthropic organization structure, enabling administrators to change
+        properties such as the key's name, permissions, status, or other
+        configurable attributes. By specifying the api_key_id in the URL path,
+        the request targets a specific key for modification, making it useful
+        for key management tasks like rotating credentials, updating access
+        levels, or changing key metadata without needing to delete and recreate
+        the key entirely.
       operationId: postOrganizationsApiKeysApiKeyId
       tags:
-        - API Keys
+        - Post
+        - Organizations
+        - Keys
+        - Identifiers
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: api_key_id
@@ -1134,43 +1377,28 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /organizations/usage_report/messages:
     get:
       summary: Get  Organizations Usage Report Messages
-      description: >
-        Track token consumption across your organization with detailed
-        breakdowns by model, 
-
-        workspace, and service tier.
-
-
-        **Key Concepts:**
-
-        - Time buckets: Aggregate usage data in fixed intervals (1m, 1h, or 1d)
-
-        - Token tracking: Measure uncached input, cached input, cache creation,
-        and output tokens
-
-        - Filtering & grouping: Filter by API key, workspace, model, service
-        tier, or context window
-
-        - Server tool usage: Track usage of server-side tools like web search
-
-
-        **Time Granularity Limits:**
-
-        - 1m: 60 buckets default, 1440 max (real-time monitoring)
-
-        - 1h: 24 buckets default, 168 max (daily patterns)
-
-        - 1d: 7 buckets default, 31 max (weekly/monthly reports)
-
-
-        **Data Freshness:** Usage data typically appears within 5 minutes of API
-        request completion
+      description: >-
+        The GET /organizations/usage_report/messages endpoint in the Anthropic
+        Admin API retrieves detailed usage reporting data for message
+        interactions within an organization. This operation allows
+        administrators to access comprehensive metrics and analytics related to
+        message consumption, providing insights into API usage patterns, costs,
+        and activity levels across the organization. The endpoint returns
+        structured data that can be used for monitoring, billing reconciliation,
+        and understanding how different teams or projects are utilizing
+        Anthropic's messaging services.
       operationId: getOrganizationsUsageReportMessages
       tags:
-        - Usage Costs
+        - Get
+        - Organizations
+        - Usage
+        - Reports
+        - Messages
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: starting_at
@@ -1325,38 +1553,28 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /organizations/cost_report:
     get:
       summary: Get  Organizations Cost Report
-      description: >
-        Retrieve service-level cost breakdowns in USD.
-
-
-        **Key Concepts:**
-
-        - Currency: All costs in USD, reported as decimal strings in lowest
-        units (cents)
-
-        - Cost types: Track token usage, web search, and code execution costs
-
-        - Grouping: Group costs by workspace or description for detailed
-        breakdowns
-
-        - Time buckets: Daily granularity only (1d)
-
-
-        **Important:** Priority Tier costs use a different billing model and are
-        not included 
-
-        in the cost endpoint. Track Priority Tier usage through the usage
-        endpoint instead.
-
-
-        **Data Freshness:** Cost data typically appears within 5 minutes of API
-        request completion
+      description: >-
+        The Get Organizations Cost Report endpoint is a GET operation available
+        at `/organizations/cost_report` in the Anthropic Admin API that
+        retrieves detailed cost and usage information for an organization. This
+        endpoint allows administrators to access financial data including
+        spending patterns, resource consumption, and billing details across
+        their organization's use of Anthropic's services. The cost report
+        typically includes metrics such as API usage volumes, token consumption,
+        costs by time period, and potentially breakdowns by different projects,
+        users, or service types within the organization, enabling better budget
+        management and cost tracking for enterprise customers.
       operationId: getOrganizationsCostReport
       tags:
-        - Usage Costs
+        - Get
+        - Organizations
+        - Cost
+        - Reports
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: starting_at
@@ -1441,60 +1659,26 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
   /organizations/usage_report/claude_code:
     get:
       summary: Get  Organizations Usage Report Claude Code
-      description: >
-        Track Claude Code usage, productivity metrics, and developer activity
-        across your organization.
-
-
-        **Key Concepts:**
-
-        - Daily aggregation: Returns metrics for a single day specified by the
-        starting_at parameter
-
-        - User-level data: Each record represents one user's activity for the
-        specified day
-
-        - Productivity metrics: Track sessions, lines of code, commits, pull
-        requests, and tool usage
-
-        - Token and cost data: Monitor usage and estimated costs broken down by
-        Claude model
-
-        - Cursor-based pagination: Handle large datasets with stable pagination
-        using opaque cursors
-
-
-        **Available Metrics:**
-
-        - Core metrics: Sessions, lines of code (added/removed), commits, pull
-        requests
-
-        - Tool actions: Acceptance/rejection rates for Edit, Write, and
-        NotebookEdit tools
-
-        - Model breakdown: Token usage and estimated costs per Claude model
-
-
-        **Data Freshness:** Metrics are available with up to 1-hour delay for
-        consistency
-
-
-        **Important Notes:**
-
-        - Only tracks Claude Code usage on the Claude API (1st party)
-
-        - Usage on Amazon Bedrock, Google Vertex AI, or other platforms is not
-        included
-
-        - API is free to use for all organizations with Admin API access
-
-        - All dates are in UTC
+      description: >-
+        This API endpoint retrieves usage report data specifically for Claude
+        Code within an organization through the Anthropic Admin API. By making a
+        GET request to /organizations/usage_report/claude_code, administrators
+        can access detailed analytics and consumption metrics related to Claude
+        Code usage across their organization, enabling them to monitor resource
+        utilization, track adoption patterns, and manage costs associated with
+        Claude Code deployments.
       operationId: getOrganizationsUsageReportClaudeCode
       tags:
-        - Analytics
+        - Get
+        - Organizations
+        - Usage
+        - Reports
+        - Code
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
         - name: starting_at
@@ -1577,6 +1761,8 @@ paths:
         GenerateOperationSummariesFromPath: true
         PascalCaseOperationSummaries: true
         CaselCaseOperationIds: true
+        WriteDescription: true
+        ChooseTags: true
 components:
   securitySchemes:
     AdminApiKeyAuth:
