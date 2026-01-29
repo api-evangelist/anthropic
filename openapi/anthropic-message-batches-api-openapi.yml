@@ -1,84 +1,42 @@
 openapi: 3.1.0
 info:
   title: Anthropic Message Batches API
-  description: >-
-    Send a batch of Message creation requests. The Message Batches API can be
-    used to process multiple Messages API requests at once. Once a Message Batch
-    is created, it begins processing immediately. Batches can take up to 24
-    hours to complete.       
-  version: '2023-06-01T00:00:00.000Z'
+  description: |
+    Send a batch of Message creation requests. The Message Batches API can be used 
+    to process multiple Messages API requests at once. Once a Message Batch is created, 
+    it begins processing immediately. Batches can take up to 24 hours to complete.
+  version: "1.0.0"
   contact:
     name: Anthropic
     url: https://www.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API License
+    url: https://www.anthropic.com/terms
 servers:
   - url: https://api.anthropic.com/v1
-    description: Production server
+    description: Production Server
 security:
   - ApiKeyAuth: []
+
+tags:
+  - name: Message Batches
+    description: Create, manage, and retrieve batch message processing jobs
+
 paths:
   /messages/batches:
     get:
       summary: List Message Batches
-      description: >-
-        The List Message Batches operation is a GET request to the
-        /messages/batches endpoint that retrieves a paginated list of all
-        message batches associated with your account. This endpoint allows you
-        to view and manage multiple batch processing jobs, returning details
-        such as batch IDs, creation timestamps, processing status, and
-        completion information for each batch. You can use optional query
-        parameters to filter, sort, and paginate through your batches, making it
-        easy to track and monitor asynchronous message processing operations at
-        scale.
+      description: Retrieves a paginated list of all message batches associated with your account.
       operationId: listMessageBatches
+      tags:
+        - Message Batches
       parameters:
-        - name: before_id
-          in: query
-          required: false
-          description: >-
-            ID of the object to use as a cursor for pagination. When provided,
-            returns the page of results immediately before this object.
-          schema:
-            type: string
-        - name: after_id
-          in: query
-          required: false
-          description: >-
-            ID of the object to use as a cursor for pagination. When provided,
-            returns the page of results immediately after this object.
-          schema:
-            type: string
-        - name: limit
-          in: query
-          required: false
-          description: |
-            Number of items to return per page.
-            Defaults to 20. Ranges from 1 to 1000.
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 1000
-            default: 20
-        - name: anthropic-version
-          in: header
-          required: true
-          description: The version of the Claude API you want to use
-          schema:
-            type: string
-            example: '2023-06-01'
-        - name: anthropic-beta
-          in: header
-          required: false
-          description: >
-            Optional header to specify the beta version(s) you want to use.
-
-            To use multiple betas, use a comma separated list like beta1,beta2
-            or specify the header multiple times for each beta.
-          schema:
-            type: array
-            items:
-              type: string
-          style: form
-          explode: false
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/BeforeId'
+        - $ref: '#/components/parameters/AfterId'
       responses:
         '200':
           description: Successful Response
@@ -86,113 +44,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageBatchList'
-              example:
-                data:
-                  - archived_at: '2024-08-20T18:37:24.100435Z'
-                    cancel_initiated_at: '2024-08-20T18:37:24.100435Z'
-                    created_at: '2024-08-20T18:37:24.100435Z'
-                    ended_at: '2024-08-20T18:37:24.100435Z'
-                    expires_at: '2024-08-20T18:37:24.100435Z'
-                    id: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
-                    processing_status: in_progress
-                    request_counts:
-                      canceled: 10
-                      errored: 30
-                      expired: 10
-                      processing: 100
-                      succeeded: 50
-                    results_url: >-
-                      https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results
-                    type: message_batch
-                first_id: <string>
-                has_more: true
-                last_id: <string>
-        4XX:
-          description: Client Error Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      tags:
-        - Lists
-        - Messages
-        - Batches
-      x-api-evangelist-processing:
-        ChooseTags: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
+              examples:
+                MessageBatchListExample:
+                  $ref: '#/components/examples/MessageBatchListExample'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "MessageBatchListExample"
+          }
+
     post:
       summary: Create Message Batch
-      description: >-
-        The Create A Message Batch operation allows you to submit multiple
-        message requests to be processed asynchronously as a batch through the
-        Anthropic API. By sending a POST request to the /messages/batches
-        endpoint, you can queue up numerous message generation tasks that will
-        be processed in the background, making it ideal for high-volume,
-        non-time-sensitive workloads. This batch processing approach is more
-        cost-effective than individual real-time API calls and is particularly
-        useful for tasks like large-scale data processing, content generation,
-        or evaluation workflows where immediate responses aren't required. The
-        API returns a batch identifier that you can use to track the status and
-        retrieve results once processing is complete.
+      description: |
+        Creates a new message batch for asynchronous processing. Submits multiple message 
+        requests to be processed in the background, ideal for high-volume, non-time-sensitive workloads.
       operationId: createMessageBatch
+      tags:
+        - Message Batches
       parameters:
-        - name: anthropic-version
-          in: header
-          required: true
-          description: The version of the Claude API you want to use
-          schema:
-            type: string
-            example: '2023-06-01'
-        - name: anthropic-beta
-          in: header
-          required: false
-          description: >
-            Optional header to specify the beta version(s) you want to use.
-
-            To use multiple betas, use a comma separated list like beta1,beta2
-            or specify the header multiple times for each beta.
-          schema:
-            type: array
-            items:
-              type: string
-          style: form
-          explode: false
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - requests
-              properties:
-                requests:
-                  type: array
-                  description: >-
-                    List of requests for prompt completion. Each is an
-                    individual request to create a Message.
-                  minItems: 1
-                  maxItems: 10000
-                  items:
-                    $ref: '#/components/schemas/MessageBatchIndividualRequest'
-            example:
-              requests:
-                - custom_id: my-first-request
-                  params:
-                    model: claude-3-7-sonnet-20250219
-                    max_tokens: 1024
-                    messages:
-                      - role: user
-                        content: Hello, world
-                - custom_id: my-second-request
-                  params:
-                    model: claude-3-7-sonnet-20250219
-                    max_tokens: 1024
-                    messages:
-                      - role: user
-                        content: Hi again, friend
+              $ref: '#/components/schemas/CreateMessageBatchRequest'
+            examples:
+              CreateMessageBatchRequestExample:
+                $ref: '#/components/examples/CreateMessageBatchRequestExample'
       responses:
         '200':
           description: Successful Response
@@ -200,83 +84,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageBatch'
-              example:
-                archived_at: '2024-08-20T18:37:24.100435Z'
-                cancel_initiated_at: '2024-08-20T18:37:24.100435Z'
-                created_at: '2024-08-20T18:37:24.100435Z'
-                ended_at: '2024-08-20T18:37:24.100435Z'
-                expires_at: '2024-08-20T18:37:24.100435Z'
-                id: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
-                processing_status: in_progress
-                request_counts:
-                  canceled: 10
-                  errored: 30
-                  expired: 10
-                  processing: 100
-                  succeeded: 50
-                results_url: >-
-                  https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results
-                type: message_batch
-        4XX:
-          description: Client Error Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      tags:
-        - Create
-        - Messages
-        - Batch
-      x-api-evangelist-processing:
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+              examples:
+                MessageBatchExample:
+                  $ref: '#/components/examples/MessageBatchExample'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "MessageBatchExample"
+          }
+
   /messages/batches/{message_batch_id}:
     get:
       summary: Retrieve Message Batch
-      description: >-
-        The Anthropic Message Batches API endpoint for retrieving a message
-        batch allows you to fetch the current status and details of a previously
-        created batch processing job by making a GET request to
-        /messages/batches/{message_batch_id}, where the message_batch_id is the
-        unique identifier returned when the batch was originally created. This
-        operation returns comprehensive information about the batch including
-        its processing state (such as in_progress, ended, or canceling), the
-        number of requests that have been processed versus the total submitted,
-        any results that are available, creation and expiration timestamps, and
-        metadata associated with the batch, enabling you to monitor the progress
-        of your asynchronous batch message processing operations.
+      description: Retrieves the current status and details of a previously created batch processing job.
       operationId: retrieveMessageBatch
+      tags:
+        - Message Batches
       parameters:
-        - name: message_batch_id
-          in: path
-          required: true
-          description: ID of the Message Batch
-          schema:
-            type: string
-          example: msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d
-        - name: anthropic-version
-          in: header
-          required: true
-          description: The version of the Claude API you want to use
-          schema:
-            type: string
-            example: '2023-06-01'
-        - name: anthropic-beta
-          in: header
-          required: false
-          description: >
-            Optional header to specify the beta version(s) you want to use.
-
-            To use multiple betas, use a comma separated list like beta1,beta2
-            or specify the header multiple times for each beta.
-          schema:
-            type: array
-            items:
-              type: string
-          style: form
-          explode: false
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/MessageBatchId'
       responses:
         '200':
           description: Successful Response
@@ -284,256 +115,97 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageBatch'
-              example:
-                archived_at: '2024-08-20T18:37:24.100435Z'
-                cancel_initiated_at: '2024-08-20T18:37:24.100435Z'
-                created_at: '2024-08-20T18:37:24.100435Z'
-                ended_at: '2024-08-20T18:37:24.100435Z'
-                expires_at: '2024-08-20T18:37:24.100435Z'
-                id: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
-                processing_status: in_progress
-                request_counts:
-                  canceled: 10
-                  errored: 30
-                  expired: 10
-                  processing: 100
-                  succeeded: 50
-                results_url: >-
-                  https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results
-                type: message_batch
-        4XX:
-          description: Client Error Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      tags:
-        - Retrieve
-        - Messages
-        - Batch
-      x-api-evangelist-processing:
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+              examples:
+                MessageBatchExample:
+                  $ref: '#/components/examples/MessageBatchExample'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "MessageBatchExample"
+          }
+
     delete:
       summary: Delete Message Batch
-      description: >-
-        The Delete A Message Batch operation allows you to permanently remove a
-        specific message batch from your Anthropic account by making a DELETE
-        request to /messages/batches/{message_batch_id}, where
-        {message_batch_id} is the unique identifier of the batch you wish to
-        delete. This operation is useful for cleaning up completed batches,
-        removing batches that are no longer needed, or managing your storage and
-        resource allocation. Once deleted, the message batch and its associated
-        data cannot be recovered, so caution should be exercised when using this
-        endpoint. The operation requires proper authentication and the user must
-        have appropriate permissions to delete the specified batch. Upon
-        successful deletion, the API typically returns a confirmation response
-        indicating the batch has been removed from the system.
+      description: Permanently removes a message batch from your account. This action cannot be undone.
       operationId: deleteMessageBatch
+      tags:
+        - Message Batches
       parameters:
-        - name: message_batch_id
-          in: path
-          required: true
-          description: ID of the Message Batch
-          schema:
-            type: string
-          example: msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d
-        - name: anthropic-version
-          in: header
-          required: true
-          description: The version of the Claude API you want to use
-          schema:
-            type: string
-            example: '2023-06-01'
-        - name: anthropic-beta
-          in: header
-          required: false
-          description: >
-            Optional header to specify the beta version(s) you want to use.
-
-            To use multiple betas, use a comma separated list like beta1,beta2
-            or specify the header multiple times for each beta.
-          schema:
-            type: array
-            items:
-              type: string
-          style: form
-          explode: false
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/MessageBatchId'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MessageBatchDeleted'
-              example:
-                id: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
-                type: message_batch_deleted
-        4XX:
-          description: Client Error Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      tags:
-        - Delete
-        - Messages
-        - Batch
-      x-api-evangelist-processing:
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+                $ref: '#/components/schemas/MessageBatchDeletedResponse'
+              examples:
+                MessageBatchDeletedResponseExample:
+                  $ref: '#/components/examples/MessageBatchDeletedResponseExample'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "MessageBatchDeletedResponseExample"
+          }
+
   /messages/batches/{message_batch_id}/results:
     get:
       summary: Retrieve Message Batch Results
-      description: >
-        Streams the results of a Message Batch as a .jsonl file.
-
-
-        Each line in the file is a JSON object containing the result of a single
-        request in the Message Batch.
-
-        Results are not guaranteed to be in the same order as requests. Use the
-        custom_id field to match results to requests.
-
-
-        **Note:** The path for retrieving Message Batch results should be pulled
-        from the batch's results_url.
-
-        This path should not be assumed and may change.
+      description: |
+        Streams the results of a Message Batch as a .jsonl file. Each line is a JSON object 
+        containing the result of a single request. Results are not guaranteed to be in the 
+        same order as requests. Use the custom_id field to match results to requests.
       operationId: retrieveMessageBatchResults
+      tags:
+        - Message Batches
       parameters:
-        - name: message_batch_id
-          in: path
-          required: true
-          description: ID of the Message Batch
-          schema:
-            type: string
-          example: msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d
-        - name: anthropic-version
-          in: header
-          required: true
-          description: The version of the Claude API you want to use
-          schema:
-            type: string
-            example: '2023-06-01'
-        - name: anthropic-beta
-          in: header
-          required: false
-          description: >
-            Optional header to specify the beta version(s) you want to use.
-
-            To use multiple betas, use a comma separated list like beta1,beta2
-            or specify the header multiple times for each beta.
-          schema:
-            type: array
-            items:
-              type: string
-          style: form
-          explode: false
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/MessageBatchId'
       responses:
         '200':
-          description: >
-            Successful Response - Returns a .jsonl file where each line is a
-            JSON object.
-
-            Each line represents the result of a single request in the Message
-            Batch.
+          description: Successful Response - Returns a .jsonl file where each line is a JSON object
           content:
             application/x-jsonl:
               schema:
-                type: string
-                description: JSONL formatted response with one result object per line
-              example: >
-                {"custom_id":"my-second-request","result":{"type":"succeeded","message":{"id":"msg_014VwiXbi91y3JMjcpyGBHX5","type":"message","role":"assistant","model":"claude-3-5-sonnet-20240620","content":[{"type":"text","text":"Hello
-                again! It's nice to see you. How can I assist you
-                today?"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":11,"output_tokens":36}}}}
-
-                {"custom_id":"my-first-request","result":{"type":"succeeded","message":{"id":"msg_01FqfsLoHwgeFbguDgpz48m7","type":"message","role":"assistant","model":"claude-3-5-sonnet-20240620","content":[{"type":"text","text":"Hello!
-                How can I assist you
-                today?"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":34}}}}
+                $ref: '#/components/schemas/MessageBatchResultsStream'
               examples:
-                successfulResults:
-                  summary: Successful batch results
-                  value: >
-                    {"custom_id":"my-second-request","result":{"type":"succeeded","message":{"id":"msg_014VwiXbi91y3JMjcpyGBHX5","type":"message","role":"assistant","model":"claude-3-5-sonnet-20240620","content":[{"type":"text","text":"Hello
-                    again! It's nice to see you. How can I assist you today? Is
-                    there anything specific you'd like to chat about or any
-                    questions you
-                    have?"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":11,"output_tokens":36}}}}
+                MessageBatchResultsExample:
+                  $ref: '#/components/examples/MessageBatchResultsExample'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "MessageBatchResultsExample"
+          }
 
-                    {"custom_id":"my-first-request","result":{"type":"succeeded","message":{"id":"msg_01FqfsLoHwgeFbguDgpz48m7","type":"message","role":"assistant","model":"claude-3-5-sonnet-20240620","content":[{"type":"text","text":"Hello!
-                    How can I assist you today? Feel free to ask me any
-                    questions or let me know if there's anything you'd like to
-                    chat
-                    about."}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":34}}}}
-        4XX:
-          description: Client Error Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      tags:
-        - Message Batches
-      x-api-evangelist-processing:
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
   /messages/batches/{message_batch_id}/cancel:
     post:
       summary: Cancel Message Batch
-      description: >
-        Cancel a Message Batch that is currently being processed.
-
-
-        Batches may be canceled any time before processing ends. Once
-        cancellation is initiated,
-
-        the batch enters a canceling state, at which time the system may
-        complete any in-progress,
-
-        non-interruptible requests before finalizing cancellation.
-
-
-        The number of canceled requests is specified in request_counts. To
-        determine which requests
-
-        were canceled, check the individual results within the batch. Note that
-        cancellation may not
-
-        result in any canceled requests if they were non-interruptible.
+      description: |
+        Cancels a Message Batch that is currently being processed. Once cancellation is initiated, 
+        the batch enters a canceling state. The system may complete any in-progress, non-interruptible 
+        requests before finalizing cancellation.
       operationId: cancelMessageBatch
+      tags:
+        - Message Batches
       parameters:
-        - name: message_batch_id
-          in: path
-          required: true
-          description: ID of the Message Batch
-          schema:
-            type: string
-          example: msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d
-        - name: anthropic-version
-          in: header
-          required: true
-          description: The version of the Claude API you want to use
-          schema:
-            type: string
-            example: '2023-06-01'
-        - name: anthropic-beta
-          in: header
-          required: false
-          description: >
-            Optional header to specify the beta version(s) you want to use.
-
-            To use multiple betas, use a comma separated list like beta1,beta2
-            or specify the header multiple times for each beta.
-          schema:
-            type: array
-            items:
-              type: string
-          style: form
-          explode: false
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/MessageBatchId'
       responses:
         '200':
           description: Successful Response
@@ -541,148 +213,101 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageBatch'
-              example:
-                archived_at: '2024-08-20T18:37:24.100435Z'
-                cancel_initiated_at: '2024-08-20T18:37:24.100435Z'
-                created_at: '2024-08-20T18:37:24.100435Z'
-                ended_at: '2024-08-20T18:37:24.100435Z'
-                expires_at: '2024-08-20T18:37:24.100435Z'
-                id: msgbatch_013Zva2CMHLNnXjNJJJKqJ2EF
-                processing_status: in_progress
-                request_counts:
-                  canceled: 10
-                  errored: 30
-                  expired: 10
-                  processing: 100
-                  succeeded: 50
-                results_url: >-
-                  https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results
-                type: message_batch
-        4XX:
-          description: Client Error Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      tags:
-        - Cancel
-        - Messages
-        - Batch
-      x-api-evangelist-processing:
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        ChooseTags: true
+              examples:
+                CanceledMessageBatchExample:
+                  $ref: '#/components/examples/CanceledMessageBatchExample'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "CanceledMessageBatchExample"
+          }
+
 components:
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
       in: header
       name: x-api-key
-      description: >
-        Your unique API key for authentication.
+      description: |
+        Your unique API key for authentication. This key is required in the header 
+        of all API requests to authenticate your account and access Anthropic's services.
 
-        This key is required in the header of all API requests, to authenticate
-        your account and access Anthropic's services.
+  parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
+      schema:
+        type: string
+        example: "2023-06-01"
 
-        Get your API key through the Console. Each key is scoped to a Workspace.
+    AnthropicBeta:
+      name: anthropic-beta
+      in: header
+      required: false
+      description: |
+        Optional header to specify the beta version(s) you want to use.
+        To use multiple betas, use a comma separated list or specify the header multiple times.
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: false
+
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 1000
+
+    BeforeId:
+      name: before_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns results immediately before this object.
+      schema:
+        type: string
+
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns results immediately after this object.
+      schema:
+        type: string
+
+    MessageBatchId:
+      name: message_batch_id
+      in: path
+      required: true
+      description: Unique identifier for the message batch
+      schema:
+        type: string
+      example: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
+
+  responses:
+    ErrorResponse:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
+
   schemas:
-    MessageBatchIndividualRequest:
-      type: object
-      required:
-        - custom_id
-        - params
-      properties:
-        custom_id:
-          type: string
-          description: >-
-            Developer-provided ID for the request. Used to match results to
-            requests.
-          example: my-first-request
-        params:
-          type: object
-          description: Parameters for the individual Message creation request
-          required:
-            - model
-            - max_tokens
-            - messages
-          properties:
-            model:
-              type: string
-              description: The model that will complete your prompt
-              example: claude-3-7-sonnet-20250219
-            max_tokens:
-              type: integer
-              description: The maximum number of tokens to generate before stopping
-              minimum: 1
-              example: 1024
-            messages:
-              type: array
-              description: Input messages
-              minItems: 1
-              items:
-                type: object
-                required:
-                  - role
-                  - content
-                properties:
-                  role:
-                    type: string
-                    enum:
-                      - user
-                      - assistant
-                    description: The role of the message sender
-                  content:
-                    type: string
-                    description: The content of the message
-    MessageBatchList:
-      type: object
-      required:
-        - data
-        - first_id
-        - has_more
-        - last_id
-      properties:
-        data:
-          type: array
-          description: List of Message Batch objects
-          items:
-            $ref: '#/components/schemas/MessageBatch'
-        first_id:
-          type: string
-          nullable: true
-          description: >-
-            First ID in the data list. Can be used as the before_id for the
-            previous page.
-          example: <string>
-        has_more:
-          type: boolean
-          description: Indicates if there are more results in the requested page direction
-          example: true
-        last_id:
-          type: string
-          nullable: true
-          description: >-
-            Last ID in the data list. Can be used as the after_id for the next
-            page.
-          example: <string>
-    MessageBatchDeleted:
-      type: object
-      required:
-        - id
-        - type
-      properties:
-        id:
-          type: string
-          description: ID of the Message Batch
-          example: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
-        type:
-          type: string
-          enum:
-            - message_batch_deleted
-          default: message_batch_deleted
-          description: |
-            Deleted object type.
-            For Message Batches, this is always "message_batch_deleted".
     MessageBatch:
       type: object
       required:
@@ -699,138 +324,191 @@ components:
       properties:
         id:
           type: string
-          description: |
-            Unique object identifier.
-            The format and length of IDs may change over time.
-          example: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
+          description: Unique object identifier. The format and length of IDs may change over time.
         type:
           type: string
           enum:
             - message_batch
           default: message_batch
-          description: |
-            Object type.
-            For Message Batches, this is always "message_batch".
+          description: Object type. For Message Batches, this is always "message_batch".
         processing_status:
-          type: string
-          enum:
-            - in_progress
-            - canceling
-            - ended
-          description: Processing status of the Message Batch
-          example: in_progress
+          $ref: '#/components/schemas/ProcessingStatus'
         request_counts:
-          type: object
-          description: >
-            Tallies requests within the Message Batch, categorized by their
-            status.
-
-            Requests start as processing and move to one of the other statuses
-            only once processing of the entire batch ends.
-
-            The sum of all values always matches the total number of requests in
-            the batch.
-          required:
-            - processing
-            - succeeded
-            - errored
-            - canceled
-            - expired
-          properties:
-            processing:
-              type: integer
-              description: Number of requests currently being processed
-              example: 100
-            succeeded:
-              type: integer
-              description: Number of requests that completed successfully
-              example: 50
-            errored:
-              type: integer
-              description: Number of requests that encountered an error
-              example: 30
-            canceled:
-              type: integer
-              description: Number of requests that were canceled
-              example: 10
-            expired:
-              type: integer
-              description: Number of requests that expired before processing
-              example: 10
+          $ref: '#/components/schemas/RequestCounts'
         created_at:
           type: string
           format: date-time
-          description: >-
-            RFC 3339 datetime string representing the time at which the Message
-            Batch was created
-          example: '2024-08-20T18:37:24.100435Z'
+          description: RFC 3339 datetime when the batch was created
         expires_at:
           type: string
           format: date-time
-          description: >
-            RFC 3339 datetime string representing the time at which the Message
-            Batch will expire and end processing,
-
-            which is 24 hours after creation.
-          example: '2024-08-20T18:37:24.100435Z'
+          description: RFC 3339 datetime when the batch will expire (24 hours after creation)
         archived_at:
           type: string
           format: date-time
           nullable: true
-          description: >
-            RFC 3339 datetime string representing the time at which the Message
-            Batch was archived
-
-            and its results became unavailable.
-          example: '2024-08-20T18:37:24.100435Z'
+          description: RFC 3339 datetime when the batch was archived, or null if not archived
         cancel_initiated_at:
           type: string
           format: date-time
           nullable: true
-          description: >
-            RFC 3339 datetime string representing the time at which cancellation
-            was initiated for the Message Batch.
-
-            Specified only if cancellation was initiated.
-          example: '2024-08-20T18:37:24.100435Z'
+          description: RFC 3339 datetime when cancellation was initiated, or null if not canceled
         ended_at:
           type: string
           format: date-time
           nullable: true
-          description: >
-            RFC 3339 datetime string representing the time at which processing
-            for the Message Batch ended.
-
-            Specified only once processing ends.
-
-            Processing ends when every request in a Message Batch has either
-            succeeded, errored, canceled, or expired.
-          example: '2024-08-20T18:37:24.100435Z'
+          description: RFC 3339 datetime when processing ended, or null if still processing
         results_url:
           type: string
           format: uri
           nullable: true
-          description: >
-            URL to a .jsonl file containing the results of the Message Batch
-            requests.
+          description: URL to the .jsonl file containing batch results. Available only once processing ends.
 
-            Specified only once processing ends.
-
-            Results in the file are not guaranteed to be in the same order as
-            requests.
-
-            Use the custom_id field to match results to requests.
-          example: >-
-            https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results
-    Error:
+    MessageBatchList:
       type: object
+      required:
+        - data
+        - first_id
+        - has_more
+        - last_id
       properties:
+        data:
+          type: array
+          description: List of Message Batch objects
+          items:
+            $ref: '#/components/schemas/MessageBatch'
+        first_id:
+          type: string
+          nullable: true
+          description: First ID in the data list for pagination
+        has_more:
+          type: boolean
+          description: Indicates if there are more results available
+        last_id:
+          type: string
+          nullable: true
+          description: Last ID in the data list for pagination
+
+    ProcessingStatus:
+      type: string
+      enum:
+        - in_progress
+        - canceling
+        - ended
+      description: Current processing status of the Message Batch
+
+    RequestCounts:
+      type: object
+      description: Tallies of requests categorized by their status
+      required:
+        - processing
+        - succeeded
+        - errored
+        - canceled
+        - expired
+      properties:
+        processing:
+          type: integer
+          description: Number of requests currently being processed
+        succeeded:
+          type: integer
+          description: Number of requests that completed successfully
+        errored:
+          type: integer
+          description: Number of requests that encountered an error
+        canceled:
+          type: integer
+          description: Number of requests that were canceled
+        expired:
+          type: integer
+          description: Number of requests that expired before processing
+
+    CreateMessageBatchRequest:
+      type: object
+      required:
+        - requests
+      properties:
+        requests:
+          type: array
+          description: List of requests for message completion. Each is an individual Message request.
+          minItems: 1
+          maxItems: 10000
+          items:
+            $ref: '#/components/schemas/MessageBatchIndividualRequest'
+
+    MessageBatchIndividualRequest:
+      type: object
+      required:
+        - custom_id
+        - params
+      properties:
+        custom_id:
+          type: string
+          description: Developer-provided ID for matching results to requests. Must be unique within the batch.
+        params:
+          $ref: '#/components/schemas/MessageParams'
+
+    MessageParams:
+      type: object
+      description: Parameters for the individual Message creation request
+      required:
+        - model
+        - max_tokens
+        - messages
+      properties:
+        model:
+          type: string
+          description: The model that will complete your prompt
+        max_tokens:
+          type: integer
+          description: Maximum number of tokens to generate before stopping
+          minimum: 1
+        messages:
+          type: array
+          description: Input messages for the conversation
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Message'
+
+    Message:
+      type: object
+      required:
+        - role
+        - content
+      properties:
+        role:
+          $ref: '#/components/schemas/Role'
+        content:
+          type: string
+          description: The content of the message
+
+    Role:
+      type: string
+      enum:
+        - user
+        - assistant
+      description: The role of the message sender
+
+    MessageBatchDeletedResponse:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+          description: ID of the deleted message batch
         type:
           type: string
-          description: The type of error
-        message:
-          type: string
-          description: A human-readable error message
+          enum:
+            - message_batch_deleted
+          default: message_batch_deleted
+          description: Deletion confirmation type
+
+    MessageBatchResultsStream:
+      type: string
+      description: JSONL formatted stream with one result object per line
+
     MessageBatchResult:
       type: object
       description: Single line in the JSONL results file representing one request's result
@@ -840,14 +518,7 @@ components:
       properties:
         custom_id:
           type: string
-          description: >
-            Developer-provided ID created for each request in a Message Batch.
-
-            Useful for matching results to requests, as results may be given out
-            of request order.
-
-            Must be unique for each request within the Message Batch.
-          example: my-custom-id-1
+          description: Developer-provided ID used for matching results to requests
         result:
           oneOf:
             - $ref: '#/components/schemas/SucceededResult'
@@ -856,14 +527,8 @@ components:
             - $ref: '#/components/schemas/ExpiredResult'
           discriminator:
             propertyName: type
-          description: >
-            Processing result for this request.
+          description: Processing result for this request
 
-            Contains a Message output if processing was successful, an error
-            response if processing failed,
-
-            or the reason why processing was not attempted, such as cancellation
-            or expiration.
     SucceededResult:
       type: object
       required:
@@ -876,62 +541,79 @@ components:
             - succeeded
           description: Result type indicating successful processing
         message:
-          type: object
-          description: The Message object returned from successful processing
-          required:
-            - id
-            - type
-            - role
-            - content
-            - model
-            - stop_reason
-            - usage
-          properties:
-            id:
-              type: string
-              example: msg_01FqfsLoHwgeFbguDgpz48m7
-            type:
-              type: string
-              enum:
-                - message
-            role:
-              type: string
-              enum:
-                - assistant
-            model:
-              type: string
-              example: claude-3-5-sonnet-20240620
-            content:
-              type: array
-              items:
-                type: object
-                properties:
-                  type:
-                    type: string
-                    enum:
-                      - text
-                  text:
-                    type: string
-            stop_reason:
-              type: string
-              nullable: true
-              enum:
-                - end_turn
-                - max_tokens
-                - stop_sequence
-            stop_sequence:
-              type: string
-              nullable: true
-            usage:
-              type: object
-              required:
-                - input_tokens
-                - output_tokens
-              properties:
-                input_tokens:
-                  type: integer
-                output_tokens:
-                  type: integer
+          $ref: '#/components/schemas/MessageResponse'
+
+    MessageResponse:
+      type: object
+      description: The Message object returned from successful processing
+      required:
+        - id
+        - type
+        - role
+        - content
+        - model
+        - stop_reason
+        - usage
+      properties:
+        id:
+          type: string
+          description: Unique message identifier
+        type:
+          type: string
+          enum:
+            - message
+        role:
+          type: string
+          enum:
+            - assistant
+        model:
+          type: string
+          description: Model used for generation
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentBlock'
+        stop_reason:
+          $ref: '#/components/schemas/StopReason'
+        stop_sequence:
+          type: string
+          nullable: true
+        usage:
+          $ref: '#/components/schemas/Usage'
+
+    ContentBlock:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - text
+        text:
+          type: string
+          description: The generated text content
+
+    StopReason:
+      type: string
+      nullable: true
+      enum:
+        - end_turn
+        - max_tokens
+        - stop_sequence
+      description: Reason why the model stopped generating
+
+    Usage:
+      type: object
+      required:
+        - input_tokens
+        - output_tokens
+      properties:
+        input_tokens:
+          type: integer
+          description: Number of input tokens processed
+        output_tokens:
+          type: integer
+          description: Number of output tokens generated
+
     ErroredResult:
       type: object
       required:
@@ -942,17 +624,17 @@ components:
           type: string
           enum:
             - errored
-          description: Result type indicating an error occurred during processing
+          description: Result type indicating an error occurred
         error:
           type: object
-          description: Error details
           properties:
             type:
               type: string
-              description: The type of error that occurred
+              description: Error type identifier
             message:
               type: string
-              description: A human-readable error message
+              description: Human-readable error message
+
     CanceledResult:
       type: object
       required:
@@ -962,7 +644,8 @@ components:
           type: string
           enum:
             - canceled
-          description: Result type indicating the request was canceled before processing
+          description: Result type indicating the request was canceled
+
     ExpiredResult:
       type: object
       required:
@@ -973,3 +656,137 @@ components:
           enum:
             - expired
           description: Result type indicating the request expired before processing
+
+    Error:
+      type: object
+      required:
+        - type
+        - message
+      properties:
+        type:
+          type: string
+          description: The type of error
+        message:
+          type: string
+          description: A human-readable error message
+
+  examples:
+    MessageBatchExample:
+      summary: Message Batch Response
+      value:
+        id: "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF"
+        type: message_batch
+        processing_status: in_progress
+        request_counts:
+          processing: 100
+          succeeded: 50
+          errored: 0
+          canceled: 0
+          expired: 0
+        created_at: "2024-08-20T18:37:24.100435Z"
+        expires_at: "2024-08-21T18:37:24.100435Z"
+        archived_at: null
+        cancel_initiated_at: null
+        ended_at: null
+        results_url: null
+
+    MessageBatchListExample:
+      summary: Message Batch List Response
+      value:
+        data:
+          - id: "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF"
+            type: message_batch
+            processing_status: ended
+            request_counts:
+              processing: 0
+              succeeded: 150
+              errored: 0
+              canceled: 0
+              expired: 0
+            created_at: "2024-08-20T18:37:24.100435Z"
+            expires_at: "2024-08-21T18:37:24.100435Z"
+            archived_at: null
+            cancel_initiated_at: null
+            ended_at: "2024-08-20T19:45:00.000000Z"
+            results_url: "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results"
+          - id: "msgbatch_024Abw3DNIMOoYkKKLRrK3FG"
+            type: message_batch
+            processing_status: in_progress
+            request_counts:
+              processing: 75
+              succeeded: 25
+              errored: 0
+              canceled: 0
+              expired: 0
+            created_at: "2024-08-21T10:15:00.000000Z"
+            expires_at: "2024-08-22T10:15:00.000000Z"
+            archived_at: null
+            cancel_initiated_at: null
+            ended_at: null
+            results_url: null
+        first_id: "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF"
+        has_more: true
+        last_id: "msgbatch_024Abw3DNIMOoYkKKLRrK3FG"
+
+    CreateMessageBatchRequestExample:
+      summary: Create Message Batch Request
+      value:
+        requests:
+          - custom_id: "request-001"
+            params:
+              model: "claude-sonnet-4-20250514"
+              max_tokens: 1024
+              messages:
+                - role: user
+                  content: "Hello, what is the capital of France?"
+          - custom_id: "request-002"
+            params:
+              model: "claude-sonnet-4-20250514"
+              max_tokens: 1024
+              messages:
+                - role: user
+                  content: "Explain quantum computing in simple terms."
+          - custom_id: "request-003"
+            params:
+              model: "claude-sonnet-4-20250514"
+              max_tokens: 2048
+              messages:
+                - role: user
+                  content: "Write a haiku about programming."
+
+    CanceledMessageBatchExample:
+      summary: Canceled Message Batch Response
+      value:
+        id: "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF"
+        type: message_batch
+        processing_status: canceling
+        request_counts:
+          processing: 50
+          succeeded: 40
+          errored: 5
+          canceled: 5
+          expired: 0
+        created_at: "2024-08-20T18:37:24.100435Z"
+        expires_at: "2024-08-21T18:37:24.100435Z"
+        archived_at: null
+        cancel_initiated_at: "2024-08-20T19:00:00.000000Z"
+        ended_at: null
+        results_url: null
+
+    MessageBatchDeletedResponseExample:
+      summary: Message Batch Deleted Response
+      value:
+        id: "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF"
+        type: message_batch_deleted
+
+    MessageBatchResultsExample:
+      summary: Message Batch Results
+      value: |
+        {"custom_id":"request-001","result":{"type":"succeeded","message":{"id":"msg_01FqfsLoHwgeFbguDgpz48m7","type":"message","role":"assistant","model":"claude-sonnet-4-20250514","content":[{"type":"text","text":"The capital of France is Paris."}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":15,"output_tokens":8}}}}
+        {"custom_id":"request-002","result":{"type":"succeeded","message":{"id":"msg_02GrsrtMhxghGfchvEhq59n8","type":"message","role":"assistant","model":"claude-sonnet-4-20250514","content":[{"type":"text","text":"Quantum computing uses quantum bits or qubits that can exist in multiple states simultaneously, unlike classical bits which are either 0 or 1."}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":12,"output_tokens":35}}}}
+
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: "The message_batch_id provided is invalid or does not exist."

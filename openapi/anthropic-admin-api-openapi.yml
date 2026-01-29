@@ -1,35 +1,45 @@
 openapi: 3.1.0
 info:
   title: Anthropic Admin API
-  description: Manage administrative functions.
-  version: '2023-06-01T00:00:00.000Z'
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  version: "1.0.0"
   contact:
     name: Anthropic
     url: https://www.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API License
+    url: https://www.anthropic.com/terms
 servers:
   - url: https://api.anthropic.com/v1
-    description: Production server
+    description: Production Server
 security:
   - AdminApiKeyAuth: []
+
+tags:
+  - name: Organization
+    description: Retrieve organization information and settings
+  - name: Organization Members
+    description: Manage organization members and their roles
+  - name: Organization Invites
+    description: Create and manage organization invitations
+  - name: Workspaces
+    description: Create and manage workspaces within an organization
+  - name: Workspace Members
+    description: Manage workspace membership and roles
+  - name: Api Keys
+    description: Monitor and manage API keys
+  - name: Usage
+    description: Access usage and cost reports
+
 paths:
   /organizations/me:
     get:
-      summary: Get  Organizations Me
-      description: >-
-        The Get Organizations Me endpoint is a GET request available at
-        `/organizations/me` in the Anthropic Admin API that retrieves
-        information about the current authenticated user's organization. This
-        endpoint allows administrators or users to fetch details about their own
-        organization context without needing to specify an organization ID, as
-        it automatically returns data for the organization associated with the
-        authenticated request. It's particularly useful for applications that
-        need to determine organizational settings, permissions, or metadata for
-        the currently logged-in user's organization in a self-service manner.
-      operationId: getOrganizationsMe
+      summary: Get Current Organization
+      description: Retrieves information about the current authenticated user's organization.
+      operationId: getCurrentOrganization
       tags:
-        - Get
-        - Organizations
-        - Me
+        - Organization
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
       responses:
@@ -39,64 +49,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Organization'
-              example:
-                id: 12345678-1234-5678-1234-567812345678
-                type: organization
-                name: Organization Name
-        4XX:
+              examples:
+                OrganizationExample:
+                  $ref: '#/components/examples/OrganizationExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "OrganizationExample"
+          }
+
   /organizations/users:
     get:
-      summary: Get  Organizations Users
-      description: >-
-        This API operation retrieves a list of users associated with a specific
-        organization within the Anthropic platform. By sending a GET request to
-        the /organizations/users endpoint, administrators can view all user
-        accounts that have access to their organization, including details about
-        each user's permissions, roles, and account status. This endpoint is
-        typically used for user management tasks such as auditing organization
-        membership, reviewing access levels, and maintaining oversight of who
-        has access to the organization's resources and API capabilities.
-      operationId: getOrganizationsUsers
+      summary: List Organization Members
+      description: Retrieves a paginated list of users associated with the organization.
+      operationId: listOrganizationMembers
       tags:
-        - Get
-        - Organizations
-        - Users
+        - Organization Members
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: limit
-          in: query
-          required: false
-          description: |
-            Number of items to return per page.
-            Defaults to 20. Ranges from 1 to 1000.
-          schema:
-            type: integer
-            default: 20
-            minimum: 1
-            maximum: 1000
-        - name: before_id
-          in: query
-          required: false
-          description: >-
-            ID of the object to use as a cursor for pagination. When provided,
-            returns the page of results immediately before this object.
-          schema:
-            type: string
-        - name: after_id
-          in: query
-          required: false
-          description: >-
-            ID of the object to use as a cursor for pagination. When provided,
-            returns the page of results immediately after this object.
-          schema:
-            type: string
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/BeforeId'
+        - $ref: '#/components/parameters/AfterId'
         - name: email
           in: query
           required: false
@@ -111,52 +88,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrganizationMemberList'
-              example:
-                data:
-                  - added_at: '2024-10-30T23:58:27.427722Z'
-                    email: user@emaildomain.com
-                    id: user_01WCz1FkmYMm4gnmykNKUu3Q
-                    name: Jane Doe
-                    role: user
-                    type: user
-                first_id: <string>
-                has_more: true
-                last_id: <string>
-        4XX:
+              examples:
+                OrganizationMemberListExample:
+                  $ref: '#/components/examples/OrganizationMemberListExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "OrganizationMemberListExample"
+          }
+
   /organizations/users/{user_id}:
     get:
-      summary: Get  Organizations Users Id
-      description: >-
-        Retrieves detailed information about a specific user within an
-        organization by their unique user identifier. This endpoint allows
-        administrators to access comprehensive user data including profile
-        information, roles, permissions, and organizational membership details
-        for a given user ID. The operation requires appropriate administrative
-        privileges to query user information and returns a complete user object
-        containing all associated metadata and configuration settings for the
-        specified organization member.
-      operationId: getOrganizationsUsersUserId
+      summary: Get Organization Member
+      description: Retrieves detailed information about a specific user within an organization.
+      operationId: getOrganizationMember
       tags:
-        - Get
-        - Organizations
-        - Users
-        - Identifiers
+        - Organization Members
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: user_id
-          in: path
-          required: true
-          description: ID of the user
-          schema:
-            type: string
-          example: user_01WCz1FkmYMm4gnmykNKUu3Q
+        - $ref: '#/components/parameters/UserId'
       responses:
         '200':
           description: Successful Response
@@ -164,69 +118,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrganizationMember'
-              example:
-                added_at: '2024-10-30T23:58:27.427722Z'
-                email: user@emaildomain.com
-                id: user_01WCz1FkmYMm4gnmykNKUu3Q
-                name: Jane Doe
-                role: user
-                type: user
-        4XX:
+              examples:
+                OrganizationMemberExample:
+                  $ref: '#/components/examples/OrganizationMemberExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "OrganizationMemberExample"
+          }
+
     post:
-      summary: Post  Organizations Users Id
-      description: >-
-        Updates user information for a specific user within an organization by
-        their user ID. This endpoint allows administrators to modify user
-        details such as roles, permissions, or other user-specific settings
-        through a POST request to the specified user's resource path. The
-        operation requires the user_id parameter in the URL path to identify
-        which organization member's information should be updated, and accepts a
-        request body containing the fields to be modified. This is part of the
-        Anthropic Admin API's organization management capabilities, enabling
-        programmatic control over user accounts and their associated properties
-        within the organizational structure.
-      operationId: postOrganizationsUsersUserId
+      summary: Update Organization Member
+      description: Updates user information for a specific user within an organization.
+      operationId: updateOrganizationMember
       tags:
-        - Post
-        - Organizations
-        - Users
-        - Identifiers
+        - Organization Members
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: user_id
-          in: path
-          required: true
-          description: ID of the User
-          schema:
-            type: string
-          example: user_01WCz1FkmYMm4gnmykNKUu3Q
+        - $ref: '#/components/parameters/UserId'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - role
-              properties:
-                role:
-                  type: string
-                  enum:
-                    - user
-                    - claude_code_user
-                    - developer
-                    - billing
-                    - admin
-                  description: New role for the User. Cannot be "admin".
-            example:
-              role: user
+              $ref: '#/components/schemas/UpdateOrganizationMemberRequest'
+            examples:
+              UpdateOrganizationMemberRequestExample:
+                $ref: '#/components/examples/UpdateOrganizationMemberRequestExample'
       responses:
         '200':
           description: Successful Response
@@ -234,128 +156,60 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrganizationMember'
-              example:
-                added_at: '2024-10-30T23:58:27.427722Z'
-                email: user@emaildomain.com
-                id: user_01WCz1FkmYMm4gnmykNKUu3Q
-                name: Jane Doe
-                role: user
-                type: user
-        4XX:
+              examples:
+                OrganizationMemberExample:
+                  $ref: '#/components/examples/OrganizationMemberExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "OrganizationMemberExample"
+          }
+
     delete:
-      summary: Delete  Organizations Users Id
-      description: >-
-        Removes a specific user from an organization by their unique user
-        identifier. This operation permanently deletes the user's association
-        with the organization through a DELETE request to the endpoint,
-        requiring the user_id as a path parameter. Once executed, the specified
-        user will no longer have access to the organization's resources or be
-        listed among its members. This is an administrative action typically
-        restricted to organization owners or administrators with appropriate
-        permissions.
-      operationId: deleteOrganizationsUsersUserId
+      summary: Remove Organization Member
+      description: Removes a specific user from an organization.
+      operationId: removeOrganizationMember
       tags:
-        - Delete
-        - Organizations
-        - Users
-        - Identifiers
+        - Organization Members
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: user_id
-          in: path
-          required: true
-          description: ID of the User
-          schema:
-            type: string
-          example: user_01WCz1FkmYMm4gnmykNKUu3Q
+        - $ref: '#/components/parameters/UserId'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - id
-                  - type
-                properties:
-                  id:
-                    type: string
-                    description: ID of the User
-                    example: user_01WCz1FkmYMm4gnmykNKUu3Q
-                  type:
-                    type: string
-                    enum:
-                      - user_deleted
-                    default: user_deleted
-                    description: |
-                      Deleted object type.
-                      For Users, this is always "user_deleted".
-              example:
-                id: user_01WCz1FkmYMm4gnmykNKUu3Q
-                type: user_deleted
-        4XX:
+                $ref: '#/components/schemas/UserDeletedResponse'
+              examples:
+                UserDeletedResponseExample:
+                  $ref: '#/components/examples/UserDeletedResponseExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "UserDeletedResponseExample"
+          }
+
   /organizations/invites:
     get:
-      summary: Get  Organizations Invites
-      description: >-
-        The Get Organizations Invites operation retrieves a list of pending
-        invitations that have been sent to users for joining an organization
-        within the Anthropic Admin API. This GET endpoint at
-        /organizations/invites allows administrators to view all outstanding
-        invitations, including details such as the invitee's email address,
-        invitation status, role assignments, and when the invitation was created
-        or expires, helping them manage and track who has been invited to access
-        organizational resources and whether those invitations have been
-        accepted, declined, or are still awaiting response.
-      operationId: getOrganizationsInvites
+      summary: List Organization Invites
+      description: Retrieves a paginated list of pending invitations for the organization.
+      operationId: listOrganizationInvites
       tags:
-        - Get
-        - Organizations
-        - Invites
+        - Organization Invites
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: limit
-          in: query
-          required: false
-          description: |
-            Number of items to return per page.
-            Defaults to 20. Ranges from 1 to 1000.
-          schema:
-            type: integer
-            default: 20
-            minimum: 1
-            maximum: 1000
-        - name: before_id
-          in: query
-          required: false
-          description: >-
-            ID of the object to use as a cursor for pagination. When provided,
-            returns the page of results immediately before this object.
-          schema:
-            type: string
-        - name: after_id
-          in: query
-          required: false
-          description: >-
-            ID of the object to use as a cursor for pagination. When provided,
-            returns the page of results immediately after this object.
-          schema:
-            type: string
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/BeforeId'
+        - $ref: '#/components/parameters/AfterId'
       responses:
         '200':
           description: Successful Response
@@ -363,42 +217,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrganizationInviteList'
-              example:
-                data:
-                  - email: user@emaildomain.com
-                    expires_at: '2024-11-20T23:58:27.427722Z'
-                    id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
-                    invited_at: '2024-10-30T23:58:27.427722Z'
-                    role: user
-                    status: pending
-                    type: invite
-                first_id: <string>
-                has_more: true
-                last_id: <string>
-        4XX:
+              examples:
+                OrganizationInviteListExample:
+                  $ref: '#/components/examples/OrganizationInviteListExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "OrganizationInviteListExample"
+          }
+
     post:
-      summary: Post  Organizations Invites
-      description: >-
-        The POST /organizations/invites endpoint in the Anthropic Admin API
-        allows administrators to create and send invitations to new members to
-        join an organization. By making a POST request to this endpoint with the
-        necessary invitation details such as the invitee's email address and
-        assigned role, the system generates an invitation that can be sent to
-        prospective organization members, enabling them to accept and gain
-        access to the organization's resources and workspaces with the specified
-        permissions level.
-      operationId: postOrganizationsInvites
+      summary: Create Organization Invite
+      description: Creates and sends an invitation to a new member to join the organization.
+      operationId: createOrganizationInvite
       tags:
-        - Post
-        - Organizations
-        - Invites
+        - Organization Invites
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
       requestBody:
@@ -406,29 +243,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - email
-                - role
-              properties:
-                email:
-                  type: string
-                  format: email
-                  description: Email of the User
-                  example: user@emaildomain.com
-                role:
-                  type: string
-                  enum:
-                    - user
-                    - claude_code_user
-                    - developer
-                    - billing
-                    - admin
-                  description: Role for the invited User. Cannot be "admin".
-                  example: user
-            example:
-              email: user@emaildomain.com
-              role: user
+              $ref: '#/components/schemas/CreateOrganizationInviteRequest'
+            examples:
+              CreateOrganizationInviteRequestExample:
+                $ref: '#/components/examples/CreateOrganizationInviteRequestExample'
       responses:
         '200':
           description: Successful Response
@@ -436,53 +254,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrganizationInvite'
-              example:
-                email: user@emaildomain.com
-                expires_at: '2024-11-20T23:58:27.427722Z'
-                id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
-                invited_at: '2024-10-30T23:58:27.427722Z'
-                role: user
-                status: pending
-                type: invite
-        4XX:
+              examples:
+                OrganizationInviteExample:
+                  $ref: '#/components/examples/OrganizationInviteExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "OrganizationInviteExample"
+          }
+
   /organizations/invites/{invite_id}:
     get:
-      summary: Get  Organizations Invites Invite Id
-      description: >-
-        This API operation retrieves detailed information about a specific
-        organization invite using its unique identifier. By making a GET request
-        to the /organizations/invites/{invite_id} endpoint, administrators can
-        access the current status and details of an invitation that was sent to
-        a user to join an organization within the Anthropic platform. The
-        {invite_id} path parameter uniquely identifies the invitation, and the
-        response typically includes information such as the invitee's email
-        address, invitation status (pending, accepted, or expired), the role or
-        permissions associated with the invite, when it was created, and any
-        relevant expiration details. This endpoint is useful for tracking and
-        managing pending organization invitations, verifying invite details
-        before resending, or auditing invitation history.
-      operationId: getOrganizationsInvitesInviteId
+      summary: Get Organization Invite
+      description: Retrieves detailed information about a specific organization invite.
+      operationId: getOrganizationInvite
       tags:
-        - Get
-        - Organizations
-        - Invites
-        - Identifiers
+        - Organization Invites
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: invite_id
-          in: path
-          required: true
-          description: ID of the Invite
-          schema:
-            type: string
-          example: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+        - $ref: '#/components/parameters/InviteId'
       responses:
         '200':
           description: Successful Response
@@ -490,137 +284,67 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrganizationInvite'
-              example:
-                email: user@emaildomain.com
-                expires_at: '2024-11-20T23:58:27.427722Z'
-                id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
-                invited_at: '2024-10-30T23:58:27.427722Z'
-                role: user
-                status: pending
-                type: invite
-        4XX:
+              examples:
+                OrganizationInviteExample:
+                  $ref: '#/components/examples/OrganizationInviteExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "OrganizationInviteExample"
+          }
+
     delete:
-      summary: Delete  Organizations Invites Invite Id
-      description: >-
-        This API endpoint allows administrators to delete a specific
-        organization invite by providing the invite's unique identifier in the
-        URL path. When called with the DELETE HTTP method, it removes the
-        pending invitation from the system, preventing the recipient from
-        accepting it and joining the organization. This is useful for revoking
-        invitations that were sent in error, are no longer needed, or when
-        access permissions have changed before the invite was accepted.
-      operationId: deleteOrganizationsInvitesInviteId
+      summary: Delete Organization Invite
+      description: Deletes a specific organization invite, preventing the recipient from accepting it.
+      operationId: deleteOrganizationInvite
       tags:
-        - Delete
-        - Organizations
-        - Invites
-        - Identifiers
+        - Organization Invites
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: invite_id
-          in: path
-          required: true
-          description: ID of the Invite
-          schema:
-            type: string
-          example: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+        - $ref: '#/components/parameters/InviteId'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - id
-                  - type
-                properties:
-                  id:
-                    type: string
-                    description: ID of the Invite
-                    example: invite_015gWxCN9Hfg2QhZwTK7Mdeu
-                  type:
-                    type: string
-                    enum:
-                      - invite_deleted
-                    default: invite_deleted
-                    description: |
-                      Deleted object type.
-                      For Invites, this is always "invite_deleted".
-              example:
-                id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
-                type: invite_deleted
-        4XX:
+                $ref: '#/components/schemas/InviteDeletedResponse'
+              examples:
+                InviteDeletedResponseExample:
+                  $ref: '#/components/examples/InviteDeletedResponseExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "InviteDeletedResponseExample"
+          }
+
   /organizations/workspaces:
     get:
-      summary: Get  Organizations Workspaces
-      description: >-
-        This API operation retrieves a list of workspaces associated with
-        organizations in the Anthropic Admin API. By sending a GET request to
-        the /organizations/workspaces endpoint, administrators can fetch
-        workspace information across their organization, which typically
-        includes details such as workspace identifiers, names, configurations,
-        and associated metadata. This endpoint is useful for managing and
-        monitoring multiple workspaces within an organizational structure,
-        allowing admins to programmatically access workspace data for reporting,
-        auditing, or integration purposes.
-      operationId: getOrganizationsWorkspaces
+      summary: List Workspaces
+      description: Retrieves a paginated list of workspaces associated with the organization.
+      operationId: listWorkspaces
       tags:
-        - Get
-        - Organizations
         - Workspaces
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: limit
-          in: query
-          required: false
-          description: |
-            Number of items to return per page.
-            Defaults to 20. Ranges from 1 to 1000.
-          schema:
-            type: integer
-            default: 20
-            minimum: 1
-            maximum: 1000
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/BeforeId'
+        - $ref: '#/components/parameters/AfterId'
         - name: include_archived
           in: query
           required: false
-          description: >-
-            Whether to include Workspaces that have been archived in the
-            response
+          description: Whether to include archived workspaces in the response
           schema:
             type: boolean
             default: false
-        - name: before_id
-          in: query
-          required: false
-          description: >-
-            ID of the object to use as a cursor for pagination. When provided,
-            returns the page of results immediately before this object.
-          schema:
-            type: string
-        - name: after_id
-          in: query
-          required: false
-          description: >-
-            ID of the object to use as a cursor for pagination. When provided,
-            returns the page of results immediately after this object.
-          schema:
-            type: string
       responses:
         '200':
           description: Successful Response
@@ -628,43 +352,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WorkspaceList'
-              example:
-                data:
-                  - archived_at: '2024-11-01T23:59:27.427722Z'
-                    created_at: '2024-10-30T23:58:27.427722Z'
-                    display_color: '#6C5BB9'
-                    id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-                    name: Workspace Name
-                    type: workspace
-                first_id: <string>
-                has_more: true
-                last_id: <string>
-        4XX:
+              examples:
+                WorkspaceListExample:
+                  $ref: '#/components/examples/WorkspaceListExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "WorkspaceListExample"
+          }
+
     post:
-      summary: Post  Organizations Workspaces
-      description: >-
-        This API operation creates a new workspace within an organization in the
-        Anthropic Admin API. By sending a POST request to the
-        /organizations/workspaces endpoint, administrators can provision a
-        workspace that serves as a container for projects, team members, and
-        resources within their organization. The operation typically requires
-        authentication credentials with appropriate administrative permissions
-        and accepts parameters such as workspace name, description, and
-        configuration settings in the request body. Upon successful execution,
-        it returns details about the newly created workspace including its
-        unique identifier, which can be used for subsequent workspace management
-        operations.
-      operationId: postOrganizationsWorkspaces
+      summary: Create Workspace
+      description: Creates a new workspace within the organization.
+      operationId: createWorkspace
       tags:
-        - Post
-        - Organizations
         - Workspaces
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
@@ -673,18 +378,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - name
-              properties:
-                name:
-                  type: string
-                  minLength: 1
-                  maxLength: 40
-                  description: Name of the Workspace
-                  example: Workspace Name
-            example:
-              name: Workspace Name
+              $ref: '#/components/schemas/CreateWorkspaceRequest'
+            examples:
+              CreateWorkspaceRequestExample:
+                $ref: '#/components/examples/CreateWorkspaceRequestExample'
       responses:
         '200':
           description: Successful Response
@@ -692,48 +389,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Workspace'
-              example:
-                archived_at: null
-                created_at: '2024-10-30T23:58:27.427722Z'
-                display_color: '#6C5BB9'
-                id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-                name: Workspace Name
-                type: workspace
-        4XX:
+              examples:
+                WorkspaceExample:
+                  $ref: '#/components/examples/WorkspaceExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "WorkspaceExample"
+          }
+
   /organizations/workspaces/{workspace_id}:
     get:
-      summary: Get  Organizations Workspaces Workspace Id
-      description: >-
-        This API operation retrieves detailed information about a specific
-        workspace within an organization in the Anthropic Admin API. By
-        providing a workspace ID in the URL path, authenticated administrators
-        can fetch the workspace's configuration, settings, metadata, and
-        associated details. This GET endpoint is useful for managing
-        organizational structures, auditing workspace configurations, or
-        integrating workspace data into administrative dashboards and monitoring
-        systems.
-      operationId: getOrganizationsWorkspacesWorkspaceId
+      summary: Get Workspace
+      description: Retrieves detailed information about a specific workspace.
+      operationId: getWorkspace
       tags:
-        - Get
-        - Organizations
         - Workspaces
-        - Identifiers
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: workspace_id
-          in: path
-          required: true
-          description: ID of the Workspace
-          schema:
-            type: string
-          example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        - $ref: '#/components/parameters/WorkspaceId'
       responses:
         '200':
           description: Successful Response
@@ -741,66 +419,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Workspace'
-              example:
-                archived_at: '2024-11-01T23:59:27.427722Z'
-                created_at: '2024-10-30T23:58:27.427722Z'
-                display_color: '#6C5BB9'
-                id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-                name: Workspace Name
-                type: workspace
-        4XX:
+              examples:
+                WorkspaceExample:
+                  $ref: '#/components/examples/WorkspaceExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "WorkspaceExample"
+          }
+
     post:
-      summary: Post  Organizations Workspaces Workspace Id
-      description: >-
-        This API endpoint creates or modifies a workspace within an organization
-        in the Anthropic Admin API. By sending a POST request to
-        /organizations/workspaces/{workspace_id} with the specific workspace
-        identifier in the path parameter, administrators can establish new
-        workspace configurations or update existing workspace settings for their
-        organization. Workspaces typically serve as logical containers for
-        organizing users, projects, and resources within the broader
-        organizational structure, allowing for better access control, resource
-        allocation, and team collaboration management within the Anthropic
-        platform.
-      operationId: postOrganizationsWorkspacesWorkspaceId
+      summary: Update Workspace
+      description: Updates configuration for a specific workspace.
+      operationId: updateWorkspace
       tags:
-        - Post
-        - Organizations
         - Workspaces
-        - Identifiers
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: workspace_id
-          in: path
-          required: true
-          description: ID of the Workspace
-          schema:
-            type: string
-          example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        - $ref: '#/components/parameters/WorkspaceId'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - name
-              properties:
-                name:
-                  type: string
-                  minLength: 1
-                  maxLength: 40
-                  description: Name of the Workspace
-                  example: Workspace Name
-            example:
-              name: Workspace Name
+              $ref: '#/components/schemas/UpdateWorkspaceRequest'
+            examples:
+              UpdateWorkspaceRequestExample:
+                $ref: '#/components/examples/UpdateWorkspaceRequestExample'
       responses:
         '200':
           description: Successful Response
@@ -808,51 +457,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Workspace'
-              example:
-                archived_at: '2024-11-01T23:59:27.427722Z'
-                created_at: '2024-10-30T23:58:27.427722Z'
-                display_color: '#6C5BB9'
-                id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-                name: Workspace Name
-                type: workspace
-        4XX:
+              examples:
+                WorkspaceExample:
+                  $ref: '#/components/examples/WorkspaceExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "WorkspaceExample"
+          }
+
   /organizations/workspaces/{workspace_id}/archive:
     post:
-      summary: Post  Organizations Workspaces Workspace Id Archive
-      description: >-
-        This API operation archives a specific workspace within an organization
-        by sending a POST request to the endpoint with the workspace's unique
-        identifier. When executed, it marks the designated workspace as
-        archived, which typically means the workspace becomes read-only or
-        hidden from active use while preserving its data and configuration for
-        potential future reference or compliance purposes. The operation
-        requires the workspace_id as a path parameter to identify which
-        workspace should be archived, and proper authentication credentials are
-        needed to authorize the archival action within the Anthropic Admin API's
-        organizational management system.
-      operationId: postOrganizationsWorkspacesWorkspaceIdArchive
+      summary: Archive Workspace
+      description: Archives a specific workspace, making it read-only.
+      operationId: archiveWorkspace
       tags:
-        - Post
-        - Organizations
         - Workspaces
-        - Identifiers
-        - Archive
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: workspace_id
-          in: path
-          required: true
-          description: ID of the Workspace
-          schema:
-            type: string
-          example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        - $ref: '#/components/parameters/WorkspaceId'
       responses:
         '200':
           description: Successful Response
@@ -860,77 +487,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Workspace'
-              example:
-                archived_at: '2024-11-01T23:59:27.427722Z'
-                created_at: '2024-10-30T23:58:27.427722Z'
-                display_color: '#6C5BB9'
-                id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-                name: Workspace Name
-                type: workspace
-        4XX:
+              examples:
+                ArchivedWorkspaceExample:
+                  $ref: '#/components/examples/ArchivedWorkspaceExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "ArchivedWorkspaceExample"
+          }
+
   /organizations/workspaces/{workspace_id}/members:
     get:
-      summary: Get  Organizations Workspaces Workspace Id Members
-      description: >-
-        This API operation retrieves a list of all members associated with a
-        specific workspace within an organization in the Anthropic Admin API. By
-        making a GET request to the endpoint with a valid workspace ID,
-        administrators can access details about workspace membership, which
-        typically includes information about users who have access to that
-        particular workspace, their roles, permissions, and other relevant
-        member attributes. This endpoint is useful for workspace management,
-        auditing access controls, and maintaining visibility over who has access
-        to specific organizational workspaces.
-      operationId: getOrganizationsWorkspacesWorkspaceIdMembers
+      summary: List Workspace Members
+      description: Retrieves a paginated list of members for a specific workspace.
+      operationId: listWorkspaceMembers
       tags:
-        - Get
-        - Organizations
-        - Workspaces
-        - Identifiers
-        - Members
+        - Workspace Members
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: workspace_id
-          in: path
-          required: true
-          description: ID of the Workspace
-          schema:
-            type: string
-          example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-        - name: limit
-          in: query
-          required: false
-          description: |
-            Number of items to return per page.
-            Defaults to 20. Ranges from 1 to 1000.
-          schema:
-            type: integer
-            default: 20
-            minimum: 1
-            maximum: 1000
-        - name: before_id
-          in: query
-          required: false
-          description: >-
-            ID of the object to use as a cursor for pagination. When provided,
-            returns the page of results immediately before this object.
-          schema:
-            type: string
-        - name: after_id
-          in: query
-          required: false
-          description: >-
-            ID of the object to use as a cursor for pagination. When provided,
-            returns the page of results immediately after this object.
-          schema:
-            type: string
+        - $ref: '#/components/parameters/WorkspaceId'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/BeforeId'
+        - $ref: '#/components/parameters/AfterId'
       responses:
         '200':
           description: Successful Response
@@ -938,79 +520,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WorkspaceMemberList'
-              example:
-                data:
-                  - type: workspace_member
-                    user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
-                    workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-                    workspace_role: workspace_user
-                first_id: <string>
-                has_more: true
-                last_id: <string>
-        4XX:
+              examples:
+                WorkspaceMemberListExample:
+                  $ref: '#/components/examples/WorkspaceMemberListExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "WorkspaceMemberListExample"
+          }
+
     post:
-      summary: Post  Organizations Workspaces Workspace Id Members
-      description: >-
-        This API operation allows administrators to add new members to a
-        specific workspace within an organization by making a POST request to
-        the endpoint with the workspace's unique identifier. When invoked, it
-        creates a new membership association between a user and the designated
-        workspace, granting them access according to the permissions and roles
-        specified in the request body. This operation is typically used for
-        workspace management tasks such as onboarding team members, expanding
-        collaborative groups, or provisioning user access to workspace resources
-        and functionality within the Anthropic platform's organizational
-        structure.
-      operationId: postOrganizationsWorkspacesWorkspaceIdMembers
+      summary: Add Workspace Member
+      description: Adds a user as a member of a workspace.
+      operationId: addWorkspaceMember
       tags:
-        - Post
-        - Organizations
-        - Workspaces
-        - Identifiers
-        - Members
+        - Workspace Members
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: workspace_id
-          in: path
-          required: true
-          description: ID of the Workspace
-          schema:
-            type: string
-          example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        - $ref: '#/components/parameters/WorkspaceId'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - user_id
-                - workspace_role
-              properties:
-                user_id:
-                  type: string
-                  description: ID of the User
-                  example: user_01WCz1FkmYMm4gnmykNKUu3Q
-                workspace_role:
-                  type: string
-                  enum:
-                    - workspace_user
-                    - workspace_developer
-                    - workspace_admin
-                  description: >-
-                    Role of the new Workspace Member. Cannot be
-                    "workspace_billing".
-                  example: workspace_user
-            example:
-              user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
-              workspace_role: workspace_user
+              $ref: '#/components/schemas/AddWorkspaceMemberRequest'
+            examples:
+              AddWorkspaceMemberRequestExample:
+                $ref: '#/components/examples/AddWorkspaceMemberRequestExample'
       responses:
         '200':
           description: Successful Response
@@ -1018,56 +558,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WorkspaceMember'
-              example:
-                type: workspace_member
-                user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
-                workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-                workspace_role: workspace_user
-        4XX:
+              examples:
+                WorkspaceMemberExample:
+                  $ref: '#/components/examples/WorkspaceMemberExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "WorkspaceMemberExample"
+          }
+
   /organizations/workspaces/{workspace_id}/members/{user_id}:
     get:
-      summary: Get  Organizations Workspaces Workspace Id Members User Id
-      description: >-
-        This API operation retrieves detailed information about a specific
-        member within a workspace in an Anthropic organization. By providing
-        both a workspace ID and a user ID in the endpoint path, administrators
-        can fetch comprehensive data about that particular user's membership,
-        including their role, permissions, status, and other relevant
-        member-specific details within the context of the specified workspace.
-        This GET request is useful for auditing workspace membership, verifying
-        user access levels, or displaying individual member information in
-        administrative interfaces.
-      operationId: getOrganizationsWorkspacesWorkspaceIdMembersUserId
+      summary: Get Workspace Member
+      description: Retrieves membership details for a specific user in a workspace.
+      operationId: getWorkspaceMember
       tags:
-        - Get
-        - Organizations
-        - Workspaces
-        - Identifiers
-        - Members
-        - Users
+        - Workspace Members
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: workspace_id
-          in: path
-          required: true
-          description: ID of the Workspace
-          schema:
-            type: string
-          example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-        - name: user_id
-          in: path
-          required: true
-          description: ID of the User
-          schema:
-            type: string
-          example: user_01WCz1FkmYMm4gnmykNKUu3Q
+        - $ref: '#/components/parameters/WorkspaceId'
+        - $ref: '#/components/parameters/UserId'
       responses:
         '200':
           description: Successful Response
@@ -1075,77 +589,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WorkspaceMember'
-              example:
-                type: workspace_member
-                user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
-                workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-                workspace_role: workspace_user
-        4XX:
+              examples:
+                WorkspaceMemberExample:
+                  $ref: '#/components/examples/WorkspaceMemberExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "WorkspaceMemberExample"
+          }
+
     post:
-      summary: Post  Organizations Workspaces Workspace Id Members User Id
-      description: >-
-        This API operation adds or updates a member within a specific workspace
-        in an Anthropic organization. It uses a POST request to the endpoint
-        '/organizations/workspaces/{workspace_id}/members/{user_id}', where you
-        must provide both the workspace identifier and the user identifier as
-        path parameters. This endpoint is typically used for workspace
-        administration tasks such as granting a user access to a particular
-        workspace, updating their membership settings, or modifying their role
-        and permissions within that workspace. The operation requires
-        appropriate administrative privileges to manage workspace memberships
-        and is part of the Anthropic Admin API's organizational management
-        functionality.
-      operationId: postOrganizationsWorkspacesWorkspaceIdMembersUserId
+      summary: Update Workspace Member
+      description: Updates the role of a workspace member.
+      operationId: updateWorkspaceMember
       tags:
-        - Post
-        - Organizations
-        - Workspaces
-        - Identifiers
-        - Members
-        - Users
+        - Workspace Members
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: workspace_id
-          in: path
-          required: true
-          description: ID of the Workspace
-          schema:
-            type: string
-          example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-        - name: user_id
-          in: path
-          required: true
-          description: ID of the User
-          schema:
-            type: string
-          example: user_01WCz1FkmYMm4gnmykNKUu3Q
+        - $ref: '#/components/parameters/WorkspaceId'
+        - $ref: '#/components/parameters/UserId'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - workspace_role
-              properties:
-                workspace_role:
-                  type: string
-                  enum:
-                    - workspace_user
-                    - workspace_developer
-                    - workspace_admin
-                    - workspace_billing
-                  description: New workspace role for the User
-                  example: workspace_user
-            example:
-              workspace_role: workspace_user
+              $ref: '#/components/schemas/UpdateWorkspaceMemberRequest'
+            examples:
+              UpdateWorkspaceMemberRequestExample:
+                $ref: '#/components/examples/UpdateWorkspaceMemberRequestExample'
       responses:
         '200':
           description: Successful Response
@@ -1153,125 +628,67 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WorkspaceMember'
-              example:
-                type: workspace_member
-                user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
-                workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-                workspace_role: workspace_user
-        4XX:
+              examples:
+                WorkspaceMemberExample:
+                  $ref: '#/components/examples/WorkspaceMemberExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "WorkspaceMemberExample"
+          }
+
     delete:
-      summary: Delete  Organizations Workspaces Workspace Id Members User Id
-      description: >-
-        This API operation removes a specific user from a workspace within an
-        organization by sending a DELETE request to the endpoint with the
-        workspace ID and user ID as path parameters. When executed, it revokes
-        the specified user's access and membership from the designated
-        workspace, effectively removing their permissions and ability to
-        interact with that workspace's resources. This is typically used for
-        offboarding team members, adjusting team composition, or managing access
-        control within an Anthropic organization's workspace structure.
-      operationId: deleteOrganizationsWorkspacesWorkspaceIdMembersUserId
+      summary: Remove Workspace Member
+      description: Removes a user from a workspace.
+      operationId: removeWorkspaceMember
       tags:
-        - Delete
-        - Organizations
-        - Workspaces
-        - Identifiers
-        - Members
-        - Users
+        - Workspace Members
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: workspace_id
-          in: path
-          required: true
-          description: ID of the Workspace
-          schema:
-            type: string
-          example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-        - name: user_id
-          in: path
-          required: true
-          description: ID of the User
-          schema:
-            type: string
-          example: user_01WCz1FkmYMm4gnmykNKUu3Q
+        - $ref: '#/components/parameters/WorkspaceId'
+        - $ref: '#/components/parameters/UserId'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - type
-                  - user_id
-                  - workspace_id
-                properties:
-                  type:
-                    type: string
-                    enum:
-                      - workspace_member_deleted
-                    default: workspace_member_deleted
-                    description: >
-                      Deleted object type.
-
-                      For Workspace Members, this is always
-                      "workspace_member_deleted".
-                  user_id:
-                    type: string
-                    description: ID of the User
-                    example: user_01WCz1FkmYMm4gnmykNKUu3Q
-                  workspace_id:
-                    type: string
-                    description: ID of the Workspace
-                    example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-              example:
-                type: workspace_member_deleted
-                user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
-                workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-        4XX:
+                $ref: '#/components/schemas/WorkspaceMemberDeletedResponse'
+              examples:
+                WorkspaceMemberDeletedResponseExample:
+                  $ref: '#/components/examples/WorkspaceMemberDeletedResponseExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "WorkspaceMemberDeletedResponseExample"
+          }
+
   /organizations/api_keys:
     get:
-      summary: Get  Organizations Api Keys
-      description: >-
-        This endpoint retrieves a list of API keys associated with a specific
-        organization in the Anthropic Admin API. When called with a GET request
-        to /organizations/api_keys, it returns information about all API keys
-        that have been created for the organization, which may include details
-        such as key identifiers, creation dates, permissions, and status
-        information. This operation is typically used by organization
-        administrators to audit, monitor, and manage the API keys that provide
-        programmatic access to Anthropic's services within their organization's
-        account.
-      operationId: getOrganizationsApiKeys
+      summary: List Api Keys
+      description: Retrieves a paginated list of API keys for the organization.
+      operationId: listApiKeys
       tags:
-        - Get
-        - Organizations
-        - Keys
+        - Api Keys
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: limit
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/BeforeId'
+        - $ref: '#/components/parameters/AfterId'
+        - name: workspace_id
           in: query
           required: false
-          description: Number of items to return per page
+          description: Filter by workspace ID
           schema:
-            type: integer
-            default: 10
-            minimum: 1
-            maximum: 1000
+            type: string
         - name: status
           in: query
           required: false
@@ -1281,23 +698,11 @@ paths:
             enum:
               - active
               - inactive
-        - name: workspace_id
+              - archived
+        - name: created_by_user_id
           in: query
           required: false
-          description: Filter by workspace ID
-          schema:
-            type: string
-          example: wrkspc_xxx
-        - name: before_id
-          in: query
-          required: false
-          description: ID of the object to use as a cursor for pagination
-          schema:
-            type: string
-        - name: after_id
-          in: query
-          required: false
-          description: ID of the object to use as a cursor for pagination
+          description: Filter by the user who created the API key
           schema:
             type: string
       responses:
@@ -1307,63 +712,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiKeyList'
-        4XX:
+              examples:
+                ApiKeyListExample:
+                  $ref: '#/components/examples/ApiKeyListExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "ApiKeyListExample"
+          }
+
   /organizations/api_keys/{api_key_id}:
-    post:
-      summary: Post  Organizations API Keys Id
-      description: >-
-        This API operation allows administrators to update or modify specific
-        API key settings within an organization by making a POST request to the
-        endpoint with the API key's unique identifier. The operation targets
-        individual API keys that have been previously created within the
-        Anthropic organization structure, enabling administrators to change
-        properties such as the key's name, permissions, status, or other
-        configurable attributes. By specifying the api_key_id in the URL path,
-        the request targets a specific key for modification, making it useful
-        for key management tasks like rotating credentials, updating access
-        levels, or changing key metadata without needing to delete and recreate
-        the key entirely.
-      operationId: postOrganizationsApiKeysApiKeyId
+    get:
+      summary: Get Api Key
+      description: Retrieves details about a specific API key.
+      operationId: getApiKey
       tags:
-        - Post
-        - Organizations
-        - Keys
-        - Identifiers
+        - Api Keys
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: api_key_id
-          in: path
-          required: true
-          description: ID of the API key to update
-          schema:
-            type: string
-          example: key_xxx
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                status:
-                  type: string
-                  enum:
-                    - active
-                    - inactive
-                  description: New status for the API key
-                name:
-                  type: string
-                  description: New name for the API key
-            example:
-              status: inactive
-              name: New Key Name
+        - $ref: '#/components/parameters/ApiKeyId'
       responses:
         '200':
           description: Successful Response
@@ -1371,418 +742,138 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiKey'
-        4XX:
+              examples:
+                ApiKeyExample:
+                  $ref: '#/components/examples/ApiKeyExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-  /organizations/usage_report/messages:
-    get:
-      summary: Get  Organizations Usage Report Messages
-      description: >-
-        The GET /organizations/usage_report/messages endpoint in the Anthropic
-        Admin API retrieves detailed usage reporting data for message
-        interactions within an organization. This operation allows
-        administrators to access comprehensive metrics and analytics related to
-        message consumption, providing insights into API usage patterns, costs,
-        and activity levels across the organization. The endpoint returns
-        structured data that can be used for monitoring, billing reconciliation,
-        and understanding how different teams or projects are utilizing
-        Anthropic's messaging services.
-      operationId: getOrganizationsUsageReportMessages
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "ApiKeyExample"
+          }
+
+    post:
+      summary: Update Api Key
+      description: Updates an API key's name or status.
+      operationId: updateApiKey
       tags:
-        - Get
-        - Organizations
-        - Usage
-        - Reports
-        - Messages
+        - Api Keys
       parameters:
         - $ref: '#/components/parameters/AnthropicVersion'
-        - name: starting_at
-          in: query
-          required: true
-          description: Start timestamp for the report (RFC 3339 format)
-          schema:
-            type: string
-            format: date-time
-          example: '2025-01-08T00:00:00Z'
-        - name: ending_at
-          in: query
-          required: true
-          description: End timestamp for the report (RFC 3339 format)
-          schema:
-            type: string
-            format: date-time
-          example: '2025-01-15T00:00:00Z'
-        - name: bucket_width
-          in: query
-          required: true
-          description: Time bucket width for aggregation
-          schema:
-            type: string
-            enum:
-              - 1m
-              - 1h
-              - 1d
-          example: 1d
-        - name: group_by
-          in: query
-          required: false
-          description: Dimensions to group results by (can specify multiple)
-          schema:
-            type: array
-            items:
-              type: string
-              enum:
-                - model
-                - workspace_id
-                - api_key_id
-                - service_tier
-                - context_window
-          style: form
-          explode: true
-        - name: models
-          in: query
-          required: false
-          description: Filter by specific models (can specify multiple)
-          schema:
-            type: array
-            items:
-              type: string
-          style: form
-          explode: true
-          example:
-            - claude-sonnet-4-5-20250929
-        - name: workspace_ids
-          in: query
-          required: false
-          description: Filter by specific workspace IDs (can specify multiple)
-          schema:
-            type: array
-            items:
-              type: string
-          style: form
-          explode: true
-          example:
-            - wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-        - name: api_key_ids
-          in: query
-          required: false
-          description: Filter by specific API key IDs (can specify multiple)
-          schema:
-            type: array
-            items:
-              type: string
-          style: form
-          explode: true
-          example:
-            - apikey_01Rj2N8SVvo6BePZj99NhmiT
-        - name: service_tiers
-          in: query
-          required: false
-          description: Filter by service tier (can specify multiple)
-          schema:
-            type: array
-            items:
-              type: string
-              enum:
-                - standard
-                - batch
-                - priority
-          style: form
-          explode: true
-          example:
-            - batch
-        - name: context_window
-          in: query
-          required: false
-          description: Filter by context window ranges (can specify multiple)
-          schema:
-            type: array
-            items:
-              type: string
-              enum:
-                - 0-200k
-                - 200k+
-          style: form
-          explode: true
-          example:
-            - 0-200k
-        - name: limit
-          in: query
-          required: false
-          description: Maximum number of results to return per page
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 1000
-            default: 100
-        - name: page
-          in: query
-          required: false
-          description: Pagination token from previous response
-          schema:
-            type: string
-          example: page_xyz...
+        - $ref: '#/components/parameters/ApiKeyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateApiKeyRequest'
+            examples:
+              UpdateApiKeyRequestExample:
+                $ref: '#/components/examples/UpdateApiKeyRequestExample'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UsageReport'
-              example:
-                data:
-                  - bucket_start_date: '2025-01-08T00:00:00Z'
-                    bucket_end_date: '2025-01-09T00:00:00Z'
-                    model: claude-sonnet-4-5-20250929
-                    workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-                    input_tokens: 150000
-                    output_tokens: 45000
-                    cache_creation_input_tokens: 10000
-                    cache_read_input_tokens: 25000
-                    requests: 1250
-                has_more: false
-                next_page: null
-        4XX:
+                $ref: '#/components/schemas/ApiKey'
+              examples:
+                ApiKeyExample:
+                  $ref: '#/components/examples/ApiKeyExample'
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-  /organizations/cost_report:
-    get:
-      summary: Get  Organizations Cost Report
-      description: >-
-        The Get Organizations Cost Report endpoint is a GET operation available
-        at `/organizations/cost_report` in the Anthropic Admin API that
-        retrieves detailed cost and usage information for an organization. This
-        endpoint allows administrators to access financial data including
-        spending patterns, resource consumption, and billing details across
-        their organization's use of Anthropic's services. The cost report
-        typically includes metrics such as API usage volumes, token consumption,
-        costs by time period, and potentially breakdowns by different projects,
-        users, or service types within the organization, enabling better budget
-        management and cost tracking for enterprise customers.
-      operationId: getOrganizationsCostReport
-      tags:
-        - Get
-        - Organizations
-        - Cost
-        - Reports
-      parameters:
-        - $ref: '#/components/parameters/AnthropicVersion'
-        - name: starting_at
-          in: query
-          required: true
-          description: Start timestamp for the report (RFC 3339 format)
-          schema:
-            type: string
-            format: date-time
-          example: '2025-01-01T00:00:00Z'
-        - name: ending_at
-          in: query
-          required: true
-          description: End timestamp for the report (RFC 3339 format)
-          schema:
-            type: string
-            format: date-time
-          example: '2025-01-31T00:00:00Z'
-        - name: group_by
-          in: query
-          required: false
-          description: Dimensions to group results by (can specify multiple)
-          schema:
-            type: array
-            items:
-              type: string
-              enum:
-                - workspace_id
-                - description
-          style: form
-          explode: true
-        - name: workspace_ids
-          in: query
-          required: false
-          description: Filter by specific workspace IDs (can specify multiple)
-          schema:
-            type: array
-            items:
-              type: string
-          style: form
-          explode: true
-        - name: limit
-          in: query
-          required: false
-          description: Maximum number of results to return per page
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 1000
-            default: 100
-        - name: page
-          in: query
-          required: false
-          description: Pagination token from previous response
-          schema:
-            type: string
-          example: page_xyz...
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CostReport'
-              example:
-                data:
-                  - bucket_start_date: '2025-01-01T00:00:00Z'
-                    bucket_end_date: '2025-01-02T00:00:00Z'
-                    workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-                    description: Token Usage
-                    cost_usd_cents: '12345'
-                  - bucket_start_date: '2025-01-01T00:00:00Z'
-                    bucket_end_date: '2025-01-02T00:00:00Z'
-                    workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-                    description: Code Execution Usage
-                    cost_usd_cents: '567'
-                has_more: false
-                next_page: null
-        4XX:
-          $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
-  /organizations/usage_report/claude_code:
-    get:
-      summary: Get  Organizations Usage Report Claude Code
-      description: >-
-        This API endpoint retrieves usage report data specifically for Claude
-        Code within an organization through the Anthropic Admin API. By making a
-        GET request to /organizations/usage_report/claude_code, administrators
-        can access detailed analytics and consumption metrics related to Claude
-        Code usage across their organization, enabling them to monitor resource
-        utilization, track adoption patterns, and manage costs associated with
-        Claude Code deployments.
-      operationId: getOrganizationsUsageReportClaudeCode
-      tags:
-        - Get
-        - Organizations
-        - Usage
-        - Reports
-        - Code
-      parameters:
-        - $ref: '#/components/parameters/AnthropicVersion'
-        - name: starting_at
-          in: query
-          required: true
-          description: >-
-            UTC date in YYYY-MM-DD format. Returns metrics for this single day
-            only
-          schema:
-            type: string
-            format: date
-          example: '2025-09-08'
-        - name: limit
-          in: query
-          required: false
-          description: Number of records per page
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 1000
-            default: 20
-        - name: page
-          in: query
-          required: false
-          description: Opaque cursor token from previous response's next_page field
-          schema:
-            type: string
-          example: page_MjAyNS0wNS0xNFQwMDowMDowMFo=
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClaudeCodeAnalytics'
-              example:
-                data:
-                  - date: '2025-09-01T00:00:00Z'
-                    actor:
-                      type: user_actor
-                      email_address: developer@company.com
-                    organization_id: dc9f6c26-b22c-4831-8d01-0446bada88f1
-                    customer_type: api
-                    terminal_type: vscode
-                    core_metrics:
-                      num_sessions: 5
-                      lines_of_code:
-                        added: 1543
-                        removed: 892
-                      commits_by_claude_code: 12
-                      pull_requests_by_claude_code: 2
-                    tool_actions:
-                      edit_tool:
-                        accepted: 45
-                        rejected: 5
-                      multi_edit_tool:
-                        accepted: 12
-                        rejected: 2
-                      write_tool:
-                        accepted: 8
-                        rejected: 1
-                      notebook_edit_tool:
-                        accepted: 3
-                        rejected: 0
-                    model_breakdown:
-                      - model: claude-3-5-sonnet-20241022
-                        tokens:
-                          input: 100000
-                          output: 35000
-                          cache_read: 10000
-                          cache_creation: 5000
-                        estimated_cost:
-                          currency: USD
-                          amount: 1025
-                has_more: false
-                next_page: null
-        4XX:
-          $ref: '#/components/responses/ErrorResponse'
-      x-api-evangelist-processing:
-        GenerateOperationSummariesFromPath: true
-        PascalCaseOperationSummaries: true
-        CaselCaseOperationIds: true
-        WriteDescription: true
-        ChooseTags: true
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: |
+          {
+            "dispatcher": "FALLBACK",
+            "fallback": "ApiKeyExample"
+          }
+
 components:
   securitySchemes:
     AdminApiKeyAuth:
       type: apiKey
       in: header
       name: x-api-key
-      description: >
-        Your Admin API key for authentication (starts with sk-ant-admin...).
+      description: Your Admin API key for authentication (starts with sk-ant-admin...).
 
-        Only organization members with the admin role can provision Admin API
-        keys.
   parameters:
     AnthropicVersion:
       name: anthropic-version
       in: header
       required: true
-      description: The version of the Claude API you want to use
+      description: The version of the Anthropic API to use
       schema:
         type: string
-        example: '2023-06-01'
+        example: "2023-06-01"
+
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 1000
+
+    BeforeId:
+      name: before_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
+      schema:
+        type: string
+
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
+      schema:
+        type: string
+
+    UserId:
+      name: user_id
+      in: path
+      required: true
+      description: Unique identifier for the user
+      schema:
+        type: string
+      example: user_01WCz1FkmYMm4gnmykNKUu3Q
+
+    InviteId:
+      name: invite_id
+      in: path
+      required: true
+      description: Unique identifier for the invite
+      schema:
+        type: string
+      example: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+
+    WorkspaceId:
+      name: workspace_id
+      in: path
+      required: true
+      description: Unique identifier for the workspace
+      schema:
+        type: string
+      example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+
+    ApiKeyId:
+      name: api_key_id
+      in: path
+      required: true
+      description: Unique identifier for the API key
+      schema:
+        type: string
+      example: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+
   responses:
     ErrorResponse:
       description: Error Response
@@ -1790,6 +881,10 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
+
   schemas:
     Organization:
       type: object
@@ -1802,16 +897,15 @@ components:
           type: string
           format: uuid
           description: Unique organization identifier
-          example: 12345678-1234-5678-1234-567812345678
         type:
           type: string
           enum:
             - organization
-          description: Object type
+          description: Object type identifier
         name:
           type: string
           description: Organization name
-          example: Organization Name
+
     OrganizationMember:
       type: object
       required:
@@ -1824,42 +918,27 @@ components:
       properties:
         id:
           type: string
-          description: ID of the User
-          example: user_01WCz1FkmYMm4gnmykNKUu3Q
+          description: Unique user identifier
         type:
           type: string
           enum:
             - user
           default: user
-          description: |
-            Object type.
-            For Users, this is always "user".
+          description: Object type identifier
         email:
           type: string
           format: email
-          description: Email of the User
-          example: user@emaildomain.com
+          description: User email address
         name:
           type: string
-          description: Name of the User
-          example: Jane Doe
+          description: User display name
         role:
-          type: string
-          enum:
-            - user
-            - claude_code_user
-            - developer
-            - billing
-            - admin
-          description: Organization role of the User
-          example: user
+          $ref: '#/components/schemas/OrganizationRole'
         added_at:
           type: string
           format: date-time
-          description: >-
-            RFC 3339 datetime string indicating when the User joined the
-            Organization
-          example: '2024-10-30T23:58:27.427722Z'
+          description: RFC 3339 datetime when user joined the organization
+
     OrganizationMemberList:
       type: object
       required:
@@ -1876,21 +955,49 @@ components:
         first_id:
           type: string
           nullable: true
-          description: >-
-            First ID in the data list. Can be used as the before_id for the
-            previous page.
-          example: <string>
+          description: First ID in the data list for pagination
         has_more:
           type: boolean
-          description: Indicates if there are more results in the requested page direction
-          example: true
+          description: Indicates if there are more results available
         last_id:
           type: string
           nullable: true
-          description: >-
-            Last ID in the data list. Can be used as the after_id for the next
-            page.
-          example: <string>
+          description: Last ID in the data list for pagination
+
+    OrganizationRole:
+      type: string
+      enum:
+        - user
+        - claude_code_user
+        - developer
+        - billing
+        - admin
+      description: Role within the organization
+
+    UpdateOrganizationMemberRequest:
+      type: object
+      required:
+        - role
+      properties:
+        role:
+          $ref: '#/components/schemas/OrganizationRole'
+
+    UserDeletedResponse:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+          description: ID of the deleted user
+        type:
+          type: string
+          enum:
+            - user_deleted
+          default: user_deleted
+          description: Deletion confirmation type
+
     OrganizationInvite:
       type: object
       required:
@@ -1904,50 +1011,39 @@ components:
       properties:
         id:
           type: string
-          description: ID of the Invite
-          example: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+          description: Unique invite identifier
         type:
           type: string
           enum:
             - invite
           default: invite
-          description: |
-            Object type.
-            For Invites, this is always "invite".
+          description: Object type identifier
         email:
           type: string
           format: email
-          description: Email of the User being invited
-          example: user@emaildomain.com
+          description: Email address of the invitee
         role:
-          type: string
-          enum:
-            - user
-            - claude_code_user
-            - developer
-            - billing
-            - admin
-          description: Organization role of the User
-          example: user
+          $ref: '#/components/schemas/OrganizationRole'
         status:
-          type: string
-          enum:
-            - pending
-            - accepted
-            - expired
-            - deleted
-          description: Status of the Invite
-          example: pending
+          $ref: '#/components/schemas/InviteStatus'
         invited_at:
           type: string
           format: date-time
-          description: RFC 3339 datetime string indicating when the Invite was created
-          example: '2024-10-30T23:58:27.427722Z'
+          description: RFC 3339 datetime when invite was created
         expires_at:
           type: string
           format: date-time
-          description: RFC 3339 datetime string indicating when the Invite expires
-          example: '2024-11-20T23:58:27.427722Z'
+          description: RFC 3339 datetime when invite expires
+
+    InviteStatus:
+      type: string
+      enum:
+        - pending
+        - accepted
+        - expired
+        - deleted
+      description: Current status of the invite
+
     OrganizationInviteList:
       type: object
       required:
@@ -1964,21 +1060,44 @@ components:
         first_id:
           type: string
           nullable: true
-          description: >-
-            First ID in the data list. Can be used as the before_id for the
-            previous page.
-          example: <string>
+          description: First ID in the data list for pagination
         has_more:
           type: boolean
-          description: Indicates if there are more results in the requested page direction
-          example: true
+          description: Indicates if there are more results available
         last_id:
           type: string
           nullable: true
-          description: >-
-            Last ID in the data list. Can be used as the after_id for the next
-            page.
-          example: <string>
+          description: Last ID in the data list for pagination
+
+    CreateOrganizationInviteRequest:
+      type: object
+      required:
+        - email
+        - role
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email address to send the invite to
+        role:
+          $ref: '#/components/schemas/OrganizationRole'
+
+    InviteDeletedResponse:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+          description: ID of the deleted invite
+        type:
+          type: string
+          enum:
+            - invite_deleted
+          default: invite_deleted
+          description: Deletion confirmation type
+
     Workspace:
       type: object
       required:
@@ -1991,37 +1110,31 @@ components:
       properties:
         id:
           type: string
-          description: ID of the Workspace
-          example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+          description: Unique workspace identifier
         type:
           type: string
           enum:
             - workspace
           default: workspace
-          description: |
-            Object type.
-            For Workspaces, this is always "workspace".
+          description: Object type identifier
         name:
           type: string
-          description: Name of the Workspace
-          example: Workspace Name
+          minLength: 1
+          maxLength: 40
+          description: Workspace name
         display_color:
           type: string
-          description: Hex color code representing the Workspace in the Anthropic Console
-          example: '#6C5BB9'
+          description: Hex color code for UI display
         created_at:
           type: string
           format: date-time
-          description: RFC 3339 datetime string indicating when the Workspace was created
-          example: '2024-10-30T23:58:27.427722Z'
+          description: RFC 3339 datetime when workspace was created
         archived_at:
           type: string
           format: date-time
           nullable: true
-          description: >-
-            RFC 3339 datetime string indicating when the Workspace was archived,
-            or null if the Workspace is not archived
-          example: '2024-11-01T23:59:27.427722Z'
+          description: RFC 3339 datetime when workspace was archived, or null if active
+
     WorkspaceList:
       type: object
       required:
@@ -2038,21 +1151,37 @@ components:
         first_id:
           type: string
           nullable: true
-          description: >-
-            First ID in the data list. Can be used as the before_id for the
-            previous page.
-          example: <string>
+          description: First ID in the data list for pagination
         has_more:
           type: boolean
-          description: Indicates if there are more results in the requested page direction
-          example: true
+          description: Indicates if there are more results available
         last_id:
           type: string
           nullable: true
-          description: >-
-            Last ID in the data list. Can be used as the after_id for the next
-            page.
-          example: <string>
+          description: Last ID in the data list for pagination
+
+    CreateWorkspaceRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 40
+          description: Name for the new workspace
+
+    UpdateWorkspaceRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 40
+          description: Updated name for the workspace
+
     WorkspaceMember:
       type: object
       required:
@@ -2066,26 +1195,25 @@ components:
           enum:
             - workspace_member
           default: workspace_member
-          description: |
-            Object type.
-            For Workspace Members, this is always "workspace_member".
+          description: Object type identifier
         user_id:
           type: string
-          description: ID of the User
-          example: user_01WCz1FkmYMm4gnmykNKUu3Q
+          description: Unique user identifier
         workspace_id:
           type: string
-          description: ID of the Workspace
-          example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+          description: Unique workspace identifier
         workspace_role:
-          type: string
-          enum:
-            - workspace_user
-            - workspace_developer
-            - workspace_admin
-            - workspace_billing
-          description: Role of the Workspace Member
-          example: workspace_user
+          $ref: '#/components/schemas/WorkspaceRole'
+
+    WorkspaceRole:
+      type: string
+      enum:
+        - workspace_user
+        - workspace_developer
+        - workspace_admin
+        - workspace_billing
+      description: Role within the workspace
+
     WorkspaceMemberList:
       type: object
       required:
@@ -2102,489 +1230,378 @@ components:
         first_id:
           type: string
           nullable: true
-          description: >-
-            First ID in the data list. Can be used as the before_id for the
-            previous page.
-          example: <string>
+          description: First ID in the data list for pagination
         has_more:
           type: boolean
-          description: Indicates if there are more results in the requested page direction
-          example: true
+          description: Indicates if there are more results available
         last_id:
           type: string
           nullable: true
-          description: >-
-            Last ID in the data list. Can be used as the after_id for the next
-            page.
-          example: <string>
+          description: Last ID in the data list for pagination
+
+    AddWorkspaceMemberRequest:
+      type: object
+      required:
+        - user_id
+        - workspace_role
+      properties:
+        user_id:
+          type: string
+          description: ID of the user to add
+        workspace_role:
+          $ref: '#/components/schemas/WorkspaceRole'
+
+    UpdateWorkspaceMemberRequest:
+      type: object
+      required:
+        - workspace_role
+      properties:
+        workspace_role:
+          $ref: '#/components/schemas/WorkspaceRole'
+
+    WorkspaceMemberDeletedResponse:
+      type: object
+      required:
+        - type
+        - user_id
+        - workspace_id
+      properties:
+        type:
+          type: string
+          enum:
+            - workspace_member_deleted
+          default: workspace_member_deleted
+          description: Deletion confirmation type
+        user_id:
+          type: string
+          description: ID of the removed user
+        workspace_id:
+          type: string
+          description: ID of the workspace
+
     ApiKey:
       type: object
       required:
-        - api_key_id
+        - id
+        - type
         - name
-        - status
         - workspace_id
+        - created_at
+        - created_by
+        - status
       properties:
-        api_key_id:
+        id:
           type: string
           description: Unique API key identifier
-          example: key_xxx
-        name:
-          type: string
-          description: API key name
-        status:
+        type:
           type: string
           enum:
-            - active
-            - inactive
-          description: Current status of the API key
+            - api_key
+          default: api_key
+          description: Object type identifier
+        name:
+          type: string
+          description: Display name for the API key
         workspace_id:
           type: string
           description: ID of the workspace this key belongs to
-          example: wrkspc_xxx
         created_at:
           type: string
           format: date-time
-          description: When the API key was created
+          description: RFC 3339 datetime when key was created
+        created_by:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID of the user who created the key
+            type:
+              type: string
+              enum:
+                - user
+          description: User who created the API key
+        status:
+          $ref: '#/components/schemas/ApiKeyStatus'
         last_used_at:
           type: string
           format: date-time
           nullable: true
-          description: When the API key was last used
+          description: RFC 3339 datetime when key was last used
+
+    ApiKeyStatus:
+      type: string
+      enum:
+        - active
+        - inactive
+        - archived
+      description: Current status of the API key
+
     ApiKeyList:
       type: object
       required:
         - data
         - has_more
+        - first_id
+        - last_id
       properties:
         data:
           type: array
+          description: List of API keys
           items:
             $ref: '#/components/schemas/ApiKey'
-        has_more:
-          type: boolean
         first_id:
           type: string
           nullable: true
+          description: First ID in the data list for pagination
+        has_more:
+          type: boolean
+          description: Indicates if there are more results available
         last_id:
           type: string
           nullable: true
-    UsageReport:
-      type: object
-      description: |
-        Detailed usage data including token counts and request metrics.
-        Tracks uncached input, cached input, cache creation, and output tokens.
-      required:
-        - data
-        - has_more
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            required:
-              - bucket_start_date
-              - bucket_end_date
-              - input_tokens
-              - output_tokens
-              - requests
-            properties:
-              bucket_start_date:
-                type: string
-                format: date-time
-                description: Start timestamp of the time bucket
-                example: '2025-01-08T00:00:00Z'
-              bucket_end_date:
-                type: string
-                format: date-time
-                description: End timestamp of the time bucket
-                example: '2025-01-09T00:00:00Z'
-              model:
-                type: string
-                description: Model name (when grouped by model)
-                example: claude-sonnet-4-5-20250929
-              workspace_id:
-                type: string
-                nullable: true
-                description: Workspace ID (null for default workspace)
-                example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-              api_key_id:
-                type: string
-                nullable: true
-                description: API key ID (null for Workbench usage)
-                example: apikey_01Rj2N8SVvo6BePZj99NhmiT
-              service_tier:
-                type: string
-                enum:
-                  - standard
-                  - batch
-                  - priority
-                description: Service tier (when grouped by service_tier)
-              context_window:
-                type: string
-                enum:
-                  - 0-200k
-                  - 200k+
-                description: Context window range (when grouped by context_window)
-              input_tokens:
-                type: integer
-                description: Number of uncached input tokens
-                example: 150000
-              output_tokens:
-                type: integer
-                description: Number of output tokens
-                example: 45000
-              cache_creation_input_tokens:
-                type: integer
-                description: Number of tokens used to create cache entries
-                example: 10000
-              cache_read_input_tokens:
-                type: integer
-                description: Number of tokens read from cache
-                example: 25000
-              requests:
-                type: integer
-                description: Number of API requests
-                example: 1250
-        has_more:
-          type: boolean
-          description: Whether there are more results available
-        next_page:
-          type: string
-          nullable: true
-          description: Pagination token for the next page of results
-    CostReport:
-      type: object
-      description: >
-        Cost data associated with organization usage.
+          description: Last ID in the data list for pagination
 
-        All costs are in USD, reported as decimal strings in lowest units
-        (cents).
+    UpdateApiKeyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Updated display name for the API key
+        status:
+          $ref: '#/components/schemas/ApiKeyStatus'
 
-        Includes token usage, web search, and code execution costs.
-      required:
-        - data
-        - has_more
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            required:
-              - bucket_start_date
-              - bucket_end_date
-              - cost_usd_cents
-            properties:
-              bucket_start_date:
-                type: string
-                format: date-time
-                description: Start timestamp of the time bucket (daily granularity)
-                example: '2025-01-01T00:00:00Z'
-              bucket_end_date:
-                type: string
-                format: date-time
-                description: End timestamp of the time bucket
-                example: '2025-01-02T00:00:00Z'
-              workspace_id:
-                type: string
-                nullable: true
-                description: >-
-                  Workspace ID (null for default workspace, when grouped by
-                  workspace_id)
-                example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-              description:
-                type: string
-                description: Cost category description (when grouped by description)
-                example: Token Usage
-                enum:
-                  - Token Usage
-                  - Web Search Usage
-                  - Code Execution Usage
-              cost_usd_cents:
-                type: string
-                description: Cost in USD cents as a decimal string
-                example: '12345'
-        has_more:
-          type: boolean
-          description: Whether there are more results available
-        next_page:
-          type: string
-          nullable: true
-          description: Pagination token for the next page of results
-    ClaudeCodeAnalytics:
-      type: object
-      description: |
-        Daily aggregated metrics for Claude Code usage.
-        Each record represents one user's activity for a single day.
-      required:
-        - data
-        - has_more
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            required:
-              - date
-              - actor
-              - organization_id
-              - customer_type
-              - core_metrics
-            properties:
-              date:
-                type: string
-                format: date-time
-                description: Date in RFC 3339 format (UTC timestamp)
-                example: '2025-09-01T00:00:00Z'
-              actor:
-                type: object
-                description: The user or API key that performed the Claude Code actions
-                oneOf:
-                  - type: object
-                    required:
-                      - type
-                      - email_address
-                    properties:
-                      type:
-                        type: string
-                        enum:
-                          - user_actor
-                      email_address:
-                        type: string
-                        format: email
-                        description: Email address of the user (for OAuth authentication)
-                  - type: object
-                    required:
-                      - type
-                      - api_key_name
-                    properties:
-                      type:
-                        type: string
-                        enum:
-                          - api_actor
-                      api_key_name:
-                        type: string
-                        description: Name of the API key (for API key authentication)
-                example:
-                  type: user_actor
-                  email_address: developer@company.com
-              organization_id:
-                type: string
-                format: uuid
-                description: Organization UUID
-                example: dc9f6c26-b22c-4831-8d01-0446bada88f1
-              customer_type:
-                type: string
-                enum:
-                  - api
-                  - subscription
-                description: >-
-                  Type of customer account (api for API customers, subscription
-                  for Pro/Team customers)
-                example: api
-              terminal_type:
-                type: string
-                description: Type of terminal or environment where Claude Code was used
-                example: vscode
-              core_metrics:
-                type: object
-                required:
-                  - num_sessions
-                  - lines_of_code
-                  - commits_by_claude_code
-                  - pull_requests_by_claude_code
-                properties:
-                  num_sessions:
-                    type: integer
-                    description: >-
-                      Number of distinct Claude Code sessions initiated by this
-                      actor
-                    example: 5
-                  lines_of_code:
-                    type: object
-                    required:
-                      - added
-                      - removed
-                    properties:
-                      added:
-                        type: integer
-                        description: >-
-                          Total number of lines of code added across all files
-                          by Claude Code
-                        example: 1543
-                      removed:
-                        type: integer
-                        description: >-
-                          Total number of lines of code removed across all files
-                          by Claude Code
-                        example: 892
-                  commits_by_claude_code:
-                    type: integer
-                    description: >-
-                      Number of git commits created through Claude Code's commit
-                      functionality
-                    example: 12
-                  pull_requests_by_claude_code:
-                    type: integer
-                    description: >-
-                      Number of pull requests created through Claude Code's PR
-                      functionality
-                    example: 2
-              tool_actions:
-                type: object
-                description: >-
-                  Breakdown of tool action acceptance and rejection rates by
-                  tool type
-                properties:
-                  edit_tool:
-                    type: object
-                    properties:
-                      accepted:
-                        type: integer
-                        description: Number of Edit tool proposals that the user accepted
-                      rejected:
-                        type: integer
-                        description: Number of Edit tool proposals that the user rejected
-                    example:
-                      accepted: 45
-                      rejected: 5
-                  multi_edit_tool:
-                    type: object
-                    properties:
-                      accepted:
-                        type: integer
-                        description: >-
-                          Number of Multi-Edit tool proposals that the user
-                          accepted
-                      rejected:
-                        type: integer
-                        description: >-
-                          Number of Multi-Edit tool proposals that the user
-                          rejected
-                    example:
-                      accepted: 12
-                      rejected: 2
-                  write_tool:
-                    type: object
-                    properties:
-                      accepted:
-                        type: integer
-                        description: Number of Write tool proposals that the user accepted
-                      rejected:
-                        type: integer
-                        description: Number of Write tool proposals that the user rejected
-                    example:
-                      accepted: 8
-                      rejected: 1
-                  notebook_edit_tool:
-                    type: object
-                    properties:
-                      accepted:
-                        type: integer
-                        description: >-
-                          Number of NotebookEdit tool proposals that the user
-                          accepted
-                      rejected:
-                        type: integer
-                        description: >-
-                          Number of NotebookEdit tool proposals that the user
-                          rejected
-                    example:
-                      accepted: 3
-                      rejected: 0
-              model_breakdown:
-                type: array
-                description: Token usage and costs broken down by Claude model
-                items:
-                  type: object
-                  required:
-                    - model
-                    - tokens
-                    - estimated_cost
-                  properties:
-                    model:
-                      type: string
-                      description: Claude model identifier
-                      example: claude-3-5-sonnet-20241022
-                    tokens:
-                      type: object
-                      required:
-                        - input
-                        - output
-                      properties:
-                        input:
-                          type: integer
-                          description: Input token count for this model
-                          example: 100000
-                        output:
-                          type: integer
-                          description: Output token count for this model
-                          example: 35000
-                        cache_read:
-                          type: integer
-                          description: Cache read token count for this model
-                          example: 10000
-                        cache_creation:
-                          type: integer
-                          description: Cache creation token count for this model
-                          example: 5000
-                    estimated_cost:
-                      type: object
-                      required:
-                        - currency
-                        - amount
-                      properties:
-                        currency:
-                          type: string
-                          description: Currency code (currently always USD)
-                          example: USD
-                        amount:
-                          type: integer
-                          description: Estimated cost in cents USD
-                          example: 1025
-        has_more:
-          type: boolean
-          description: Whether there are more results available
-        next_page:
-          type: string
-          nullable: true
-          description: Opaque cursor token for the next page of results
-    DeletedResponse:
-      type: object
-      required:
-        - deleted
-        - id
-      properties:
-        deleted:
-          type: boolean
-          description: Whether the deletion was successful
-          example: true
-        id:
-          type: string
-          description: ID of the deleted object
     Error:
       type: object
+      required:
+        - type
+        - message
       properties:
         type:
           type: string
-          description: The type of error
+          description: Error type identifier
         message:
           type: string
-          description: A human-readable error message
-tags:
-  - name: Organization
-    description: Organization information and management
-  - name: Organization Members
-    description: Manage organization members and their roles
-  - name: Organization Invites
-    description: Invite users and manage invitations
-  - name: Workspaces
-    description: Create and manage workspaces
-  - name: Workspace Members
-    description: Manage workspace membership and roles
-  - name: API Keys
-    description: Monitor and manage API keys
-  - name: Usage and Cost
-    description: Access usage and cost reports
-  - name: Claude Code Analytics
-    description: Access Claude Code productivity metrics
+          description: Human-readable error message
+
+  examples:
+    OrganizationExample:
+      summary: Organization Response
+      value:
+        id: "12345678-1234-5678-1234-567812345678"
+        type: organization
+        name: "Acme Corporation"
+
+    OrganizationMemberExample:
+      summary: Organization Member Response
+      value:
+        id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+        type: user
+        email: "jane.doe@example.com"
+        name: "Jane Doe"
+        role: developer
+        added_at: "2024-10-30T23:58:27.427722Z"
+
+    OrganizationMemberListExample:
+      summary: Organization Member List Response
+      value:
+        data:
+          - id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+            type: user
+            email: "jane.doe@example.com"
+            name: "Jane Doe"
+            role: developer
+            added_at: "2024-10-30T23:58:27.427722Z"
+          - id: "user_02XDa2GlnYNn5hoozlNLVu4R"
+            type: user
+            email: "john.smith@example.com"
+            name: "John Smith"
+            role: user
+            added_at: "2024-10-15T10:30:00.000000Z"
+        first_id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+        has_more: false
+        last_id: "user_02XDa2GlnYNn5hoozlNLVu4R"
+
+    UpdateOrganizationMemberRequestExample:
+      summary: Update Organization Member Request
+      value:
+        role: developer
+
+    UserDeletedResponseExample:
+      summary: User Deleted Response
+      value:
+        id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+        type: user_deleted
+
+    OrganizationInviteExample:
+      summary: Organization Invite Response
+      value:
+        id: "invite_015gWxCN9Hfg2QhZwTK7Mdeu"
+        type: invite
+        email: "newuser@example.com"
+        role: user
+        status: pending
+        invited_at: "2024-10-30T23:58:27.427722Z"
+        expires_at: "2024-11-20T23:58:27.427722Z"
+
+    OrganizationInviteListExample:
+      summary: Organization Invite List Response
+      value:
+        data:
+          - id: "invite_015gWxCN9Hfg2QhZwTK7Mdeu"
+            type: invite
+            email: "newuser@example.com"
+            role: user
+            status: pending
+            invited_at: "2024-10-30T23:58:27.427722Z"
+            expires_at: "2024-11-20T23:58:27.427722Z"
+        first_id: "invite_015gWxCN9Hfg2QhZwTK7Mdeu"
+        has_more: false
+        last_id: "invite_015gWxCN9Hfg2QhZwTK7Mdeu"
+
+    CreateOrganizationInviteRequestExample:
+      summary: Create Organization Invite Request
+      value:
+        email: "newuser@example.com"
+        role: user
+
+    InviteDeletedResponseExample:
+      summary: Invite Deleted Response
+      value:
+        id: "invite_015gWxCN9Hfg2QhZwTK7Mdeu"
+        type: invite_deleted
+
+    WorkspaceExample:
+      summary: Workspace Response
+      value:
+        id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        type: workspace
+        name: "Engineering Team"
+        display_color: "#6C5BB9"
+        created_at: "2024-10-30T23:58:27.427722Z"
+        archived_at: null
+
+    ArchivedWorkspaceExample:
+      summary: Archived Workspace Response
+      value:
+        id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        type: workspace
+        name: "Engineering Team"
+        display_color: "#6C5BB9"
+        created_at: "2024-10-30T23:58:27.427722Z"
+        archived_at: "2024-11-01T23:59:27.427722Z"
+
+    WorkspaceListExample:
+      summary: Workspace List Response
+      value:
+        data:
+          - id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+            type: workspace
+            name: "Engineering Team"
+            display_color: "#6C5BB9"
+            created_at: "2024-10-30T23:58:27.427722Z"
+            archived_at: null
+          - id: "wrkspc_02KxRvs8sQMB6BHy4ILGgGVK"
+            type: workspace
+            name: "Marketing Team"
+            display_color: "#4A90D9"
+            created_at: "2024-09-15T14:20:00.000000Z"
+            archived_at: null
+        first_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        has_more: false
+        last_id: "wrkspc_02KxRvs8sQMB6BHy4ILGgGVK"
+
+    CreateWorkspaceRequestExample:
+      summary: Create Workspace Request
+      value:
+        name: "Engineering Team"
+
+    UpdateWorkspaceRequestExample:
+      summary: Update Workspace Request
+      value:
+        name: "Engineering Team - Updated"
+
+    WorkspaceMemberExample:
+      summary: Workspace Member Response
+      value:
+        type: workspace_member
+        user_id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+        workspace_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        workspace_role: workspace_developer
+
+    WorkspaceMemberListExample:
+      summary: Workspace Member List Response
+      value:
+        data:
+          - type: workspace_member
+            user_id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+            workspace_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+            workspace_role: workspace_developer
+          - type: workspace_member
+            user_id: "user_02XDa2GlnYNn5hoozlNLVu4R"
+            workspace_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+            workspace_role: workspace_user
+        first_id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+        has_more: false
+        last_id: "user_02XDa2GlnYNn5hoozlNLVu4R"
+
+    AddWorkspaceMemberRequestExample:
+      summary: Add Workspace Member Request
+      value:
+        user_id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+        workspace_role: workspace_developer
+
+    UpdateWorkspaceMemberRequestExample:
+      summary: Update Workspace Member Request
+      value:
+        workspace_role: workspace_admin
+
+    WorkspaceMemberDeletedResponseExample:
+      summary: Workspace Member Deleted Response
+      value:
+        type: workspace_member_deleted
+        user_id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+        workspace_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+
+    ApiKeyExample:
+      summary: Api Key Response
+      value:
+        id: "apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9"
+        type: api_key
+        name: "Production API Key"
+        workspace_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        created_at: "2024-10-30T23:58:27.427722Z"
+        created_by:
+          id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+          type: user
+        status: active
+        last_used_at: "2024-11-15T10:30:00.000000Z"
+
+    ApiKeyListExample:
+      summary: Api Key List Response
+      value:
+        data:
+          - id: "apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9"
+            type: api_key
+            name: "Production API Key"
+            workspace_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+            created_at: "2024-10-30T23:58:27.427722Z"
+            created_by:
+              id: "user_01WCz1FkmYMm4gnmykNKUu3Q"
+              type: user
+            status: active
+            last_used_at: "2024-11-15T10:30:00.000000Z"
+        first_id: "apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9"
+        has_more: false
+        last_id: "apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9"
+
+    UpdateApiKeyRequestExample:
+      summary: Update Api Key Request
+      value:
+        name: "Production API Key - Renamed"
+        status: active
+
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: "The request was invalid or malformed."
