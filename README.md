@@ -1,5 +1,5 @@
 # Anthropic (anthropic)
-Claude is an AI assistant created by Anthropic that helps people with a wide variety of tasks through natural conversation. I can assist with writing and editing, answer questions on many topics, help with analysis and research, provide coding support, engage in creative projects, and offer explanations of complex concepts.
+Collection of Anthropic's AI APIs including Claude models
 
 **URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/anthropic/refs/heads/main/apis.yml)
 
@@ -11,12 +11,12 @@ Claude is an AI assistant created by Anthropic that helps people with a wide var
 
 ## Tags:
 
- - AI, Artificial Intelligence
+ - AI, Artificial Intelligence, T1
 
 ## Timestamps
 
-- **Created:** 2025-08-14 
-- **Modified:** 2025-08-15 
+- **Created:** 2025-08-14T00:00:00.000Z 
+- **Modified:** 2025-10-25 
 
 ## APIs
 
@@ -33,6 +33,8 @@ List available models. The Models API response can be used to determine which mo
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/messages)
+- [OpenAPI](properties/anthropic-messages-api-openapi.yml)
+
 ### Anthropic Models API
 Send a structured list of input messages with text and/or image content, and the model will generate the next message in the conversation.    
 
@@ -46,6 +48,8 @@ Send a structured list of input messages with text and/or image content, and the
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/models-list)
+- [OpenAPI](properties/anthropic-models-api-openapi.yml)
+
 ### Anthropic Message Batches API
 Send a batch of Message creation requests. The Message Batches API can be used to process multiple Messages API requests at once. Once a Message Batch is created, it begins processing immediately. Batches can take up to 24 hours to complete.       
 
@@ -59,6 +63,8 @@ Send a batch of Message creation requests. The Message Batches API can be used t
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/creating-message-batches)
+- [OpenAPI](properties/anthropic-message-batches-api-openapi.yml)
+
 ### Anthropic Files API
 The Files API allows you to upload and manage files to use with the Anthropic API without having to re-upload content with each request. For more information about the Files API, see the developer guide for files.      
 
@@ -72,8 +78,10 @@ The Files API allows you to upload and manage files to use with the Anthropic AP
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/files-create)
+- [OpenAPI](properties/anthropic-files-api-openapi.yml)
+
 ### Anthropic Admin API
-Manage administrative functions.            
+Manage administrative functions.
 
 **Human URL:** [https://docs.anthropic.com/en/api/admin-api/users/get-user](https://docs.anthropic.com/en/api/admin-api/users/get-user)
 
@@ -85,34 +93,10 @@ Manage administrative functions.
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/admin-api/users/get-user)
-### Anthropic Workspace API
-Manage workspaces.    
+- [OpenAPI](properties/anthropic-admin-api-openapi.yml)
 
-**Human URL:** [https://docs.anthropic.com/en/api/admin-api/workspaces/get-workspace](https://docs.anthropic.com/en/api/admin-api/workspaces/get-workspace)
-
-
-#### Tags:
-
- - AI, Artificial Intelligence, Workspace
-
-#### Properties
-
-- [Documentation](https://docs.anthropic.com/en/api/admin-api/workspaces/get-workspace)
-### Anthropic Workspace Member API
-Manage workspaces.          
-
-**Human URL:** [https://docs.anthropic.com/en/api/admin-api/workspace_members/get-workspace-member](https://docs.anthropic.com/en/api/admin-api/workspace_members/get-workspace-member)
-
-
-#### Tags:
-
- - AI, Artificial Intelligence, Workspace, Members
-
-#### Properties
-
-- [Documentation](https://docs.anthropic.com/en/api/admin-api/workspace_members/get-workspace-member)
 ### Anthropic Prompts API
-Manage workspaces.             
+Manage prompts.             
 
 **Human URL:** [https://docs.anthropic.com/en/api/prompt-tools-generate](https://docs.anthropic.com/en/api/prompt-tools-generate)
 
@@ -124,6 +108,7 @@ Manage workspaces.
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/prompt-tools-generate)
+- [OpenAPI](properties/anthropic-prompts-api-openapi.yml)
 
 ## Common Properties
 
@@ -148,10 +133,16 @@ Manage workspaces.
 - [GettingStarted](https://docs.anthropic.com/en/docs/get-started)
 - [Glossary](https://docs.anthropic.com/en/docs/about-claude/glossary)
 - [Tiers](https://docs.anthropic.com/en/api/service-tiers)
+- [Terms of Service](https://www.anthropic.com/legal/terms)
+- [Privacy Policy](https://www.anthropic.com/legal/privacy)
+- [Status Page](https://status.anthropic.com)
+- [Blog](https://www.anthropic.com/news)
 
 ## Maintainers
 
 **FN:** Kin Lane
 
 **Email:** info@apievangelist.com
+**FN:** Anthropic
 
+**Email:** support@anthropic.com
