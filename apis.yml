@@ -11,9 +11,21 @@ apis:
   properties:
   - url: https://docs.anthropic.com/en/api/messages
     type: Documentation
-  - url: properties/anthropic-messages-api-openapi.yml
+  - url: https://docs.anthropic.com/en/api/messages-streaming
+    type: Documentation
+  - url: openapi/anthropic-messages-api-openapi.yml
     type: OpenAPI
-  description: List available models. The Models API response can be used to determine which models are available for use in the API. More recently released models are listed first.
+  - url: json-schema/anthropic-message-schema.json
+    type: JSONSchema
+  - url: json-schema/anthropic-tool-use-schema.json
+    type: JSONSchema
+  - url: json-ld/anthropic-context.jsonld
+    type: JSON-LD
+  description: >-
+    Send a structured list of input messages with text and/or image content,
+    and the model will generate the next message in the conversation. The
+    Messages API supports text, images, tool use, extended thinking,
+    streaming, and structured output.
 - aid: anthropic:anthropic-models-api
   name: Anthropic Models API
   tags:
@@ -80,6 +92,81 @@ apis:
   - url: properties/anthropic-prompts-api-openapi.yml
     type: OpenAPI
   description: 'Manage prompts.             '
+- aid: anthropic:anthropic-token-counting-api
+  name: Anthropic Token Counting API
+  tags:
+  - AI
+  - Artificial Intelligence
+  - Tokens
+  - Counting
+  humanURL: https://docs.anthropic.com/en/api/messages-count-tokens
+  properties:
+  - url: https://docs.anthropic.com/en/api/messages-count-tokens
+    type: Documentation
+  - url: properties/anthropic-token-counting-api-openapi.yml
+    type: OpenAPI
+  description: >-
+    Count the number of tokens in a Message, including tools, images, and
+    documents, without creating it. The Token Count API accepts the same
+    structured list of inputs for creating a message, including support for
+    system prompts, tools, images, and PDFs. Token counting is free to use
+    but subject to requests per minute rate limits.
+- aid: anthropic:anthropic-skills-api
+  name: Anthropic Skills API
+  tags:
+  - AI
+  - Artificial Intelligence
+  - Skills
+  - Agents
+  humanURL: https://docs.anthropic.com/en/api/skills/create-skill
+  properties:
+  - url: https://docs.anthropic.com/en/api/skills/create-skill
+    type: Documentation
+  - url: properties/anthropic-skills-api-openapi.yml
+    type: OpenAPI
+  description: >-
+    Create and manage custom agent skills. Skills allow you to package
+    domain expertise and organizational workflows for use with Claude.
+    The Skills API is currently in beta and requires the skills-2025-10-02
+    beta header.
+- aid: anthropic:anthropic-usage-cost-api
+  name: Anthropic Usage & Cost API
+  tags:
+  - AI
+  - Artificial Intelligence
+  - Usage
+  - Cost
+  - Administration
+  humanURL: https://docs.anthropic.com/en/api/usage-cost-api
+  properties:
+  - url: https://docs.anthropic.com/en/api/usage-cost-api
+    type: Documentation
+  description: >-
+    Programmatically access your organization's API usage and cost data with
+    the Usage & Cost Admin API. The Usage API tracks token consumption across
+    your organization with detailed breakdowns by model, workspace, and
+    service tier via the /v1/organizations/usage_report/messages endpoint.
+    The Cost API retrieves service-level cost breakdowns in USD via the
+    /v1/organizations/cost_report endpoint. Requires an Admin API key.
+- aid: anthropic:anthropic-claude-code-analytics-api
+  name: Anthropic Claude Code Analytics API
+  tags:
+  - AI
+  - Artificial Intelligence
+  - Analytics
+  - Claude Code
+  - Administration
+  humanURL: https://docs.anthropic.com/en/api/claude-code-analytics-api
+  properties:
+  - url: https://docs.anthropic.com/en/api/claude-code-analytics-api
+    type: Documentation
+  description: >-
+    Programmatically access your organization's Claude Code usage analytics
+    and productivity metrics with the Claude Code Analytics Admin API. Track
+    sessions, lines of code, commits, pull requests, and tool usage via the
+    /v1/organizations/usage_report/claude_code endpoint. Provides daily
+    aggregated user-level data with model breakdowns and estimated costs.
+    Requires an Admin API key.
 name: Anthropic
 tags:
 - AI
@@ -241,6 +328,46 @@ common:
   type: Plans
 - url: https://www.anthropic.com/pricing#api
   data:
+  - id: claude-opus-4-6
+    name: Claude Opus 4.6
+    type: Latest
+    entries:
+    - geo: US
+      unit: 1M
+      label: Input
+      price: 5
+      metric: token
+      timeFrame: usage
+      description: Input token usage-based pricing.
+    - geo: US
+      unit: 1M
+      label: Output
+      price: 25
+      metric: token
+      timeFrame: usage
+      description: Output token usage-based pricing.
+    - geo: US
+      unit: 1M
+      label: Read Prompt Caching
+      price: 0.5
+      metric: token
+      timeFrame: usage
+      description: Read prompt caching for model.
+    - geo: US
+      unit: 1M
+      label: Write Prompt Caching 5min
+      price: 6.25
+      metric: token
+      timeFrame: usage
+      description: Write prompt caching 5-minute TTL for model.
+    - geo: US
+      unit: 1M
+      label: Write Prompt Caching 1hr
+      price: 10
+      metric: token
+      timeFrame: usage
+      description: Write prompt caching 1-hour TTL for model.
+    description: Most capable model with fast mode support and 1M context window
   - id: claude-opus-4-1
     name: Claude Opus 4.1
     type: Latest
@@ -274,6 +401,75 @@ common:
       timeFrame: usage
       description: Write prompt caching for model.
     description: Most intelligent model for complex tasks
+  - id: claude-sonnet-4-6
+    name: Claude Sonnet 4.6
+    type: Latest
+    entries:
+    - geo: US
+      unit: 1M
+      label: Prompts Input < 200K
+      price: 3
+      metric: token
+      maximum: 200000
+      timeFrame: usage
+      description: Input token less than 200K token usage-based pricing.
+    - geo: US
+      unit: 1M
+      label: Prompts Input > 200K
+      price: 6
+      metric: token
+      minimum: 200000
+      timeFrame: usage
+      description: Input token greater than 200K token usage-based pricing.
+    - geo: US
+      unit: 1M
+      label: Prompts Output < 200K
+      price: 15
+      metric: token
+      maximum: 200000
+      timeFrame: usage
+      description: Output token less than 200k usage-based pricing.
+    - geo: US
+      unit: 1M
+      label: Prompts Output > 200K
+      price: 22.5
+      metric: token
+      minimum: 200000
+      timeFrame: usage
+      description: Output token greater than 200k usage-based pricing.
+    - geo: US
+      unit: 1M
+      label: Read Prompt Caching < 200K
+      price: 0.3
+      metric: token
+      maximum: 200000
+      timeFrame: usage
+      description: Read prompt caching for less than 200K tokens model.
+    - geo: US
+      unit: 1M
+      label: Read Prompt Caching > 200K
+      price: 0.6
+      metric: token
+      minimum: 200000
+      timeFrame: usage
+      description: Read prompt caching for greater than 200K tokens model.
+    - geo: US
+      unit: 1M
+      label: Write Prompt Caching < 200K
+      price: 3.75
+      metric: token
+      maximum: 200000
+      timeFrame: usage
+      description: Write prompt caching for less than 200K tokens model.
+    - geo: US
+      unit: 1M
+      label: Write Prompt Caching > 200K
+      price: 7.5
+      metric: token
+      minimum: 200000
+      timeFrame: usage
+      description: Write prompt caching for greater than 200K tokens model.
+    description: High performance model with 1M context window support
   - id: claude-sonnet-4
     name: Claude Sonnet 4
     type: Latest
@@ -343,6 +539,46 @@ common:
       timeFrame: usage
       description: Write prompt caching for greater than 200K tokens model.
     description: Optimal balance of intelligence, cost, and speed
+  - id: claude-haiku-4-5
+    name: Claude Haiku 4.5
+    type: Latest
+    entries:
+    - geo: US
+      unit: 1M
+      label: Input
+      price: 1
+      metric: token
+      timeFrame: usage
+      description: Input token usage-based pricing.
+    - geo: US
+      unit: 1M
+      label: Output
+      price: 5
+      metric: token
+      timeFrame: usage
+      description: Output token usage-based pricing.
+    - geo: US
+      unit: 1M
+      label: Read Prompt Caching
+      price: 0.1
+      metric: token
+      timeFrame: usage
+      description: Read prompt caching for model.
+    - geo: US
+      unit: 1M
+      label: Write Prompt Caching 5min
+      price: 1.25
+      metric: token
+      timeFrame: usage
+      description: Write prompt caching 5-minute TTL for model.
+    - geo: US
+      unit: 1M
+      label: Write Prompt Caching 1hr
+      price: 2
+      metric: token
+      timeFrame: usage
+      description: Write prompt caching 1-hour TTL for model.
+    description: Fast and cost-effective model for everyday tasks
   - id: claude-haiku-3-5
     name: Claude Haiku 3.5
     type: Latest
@@ -400,6 +636,37 @@ common:
       timeFrame: hour
       description: Usage based for containers by hour.
     description: Run Python code in a sandboxed environment for advanced data analysis. 50 free hours of usage daily per organization.
+  - id: fast-mode
+    name: Fast Mode
+    type: Features
+    entries:
+    - geo: US
+      unit: 1M
+      label: Input
+      price: 30
+      metric: token
+      timeFrame: usage
+      description: Fast mode input token pricing for Claude Opus 4.6.
+    - geo: US
+      unit: 1M
+      label: Output
+      price: 150
+      metric: token
+      timeFrame: usage
+      description: Fast mode output token pricing for Claude Opus 4.6.
+    description: Significantly faster output for Claude Opus 4.6 at premium pricing (6x standard rates). Currently in research preview.
+  - id: web-fetch
+    name: Web Fetch
+    type: Tools
+    entries:
+    - geo: US
+      unit: 1
+      label: Requests
+      price: 0
+      metric: request
+      timeFrame: usage
+      description: No additional cost beyond standard token pricing.
+    description: Fetch web page content for Claude to process. No additional charges beyond standard token costs for fetched content.
   name: Pricing
   type: Pricing
 - url: https://docs.anthropic.com/en/api/service-tiers
@@ -415,6 +682,87 @@ common:
   description: Different tiers of service allow you to balance availability, performance, and predictable costs based on your applications needs.
 - url: https://docs.anthropic.com/en/api/rate-limits
   data:
+  - name: Claude Opus 4.6 Input Tokens
+    type: Model
+    limit: 30000
+    metric: token
+    domains:
+    - api.anthropic.com
+    timeframe: minute
+    description: The input token limits for the Claude Opus 4.6 model.
+    userMultiplied: false
+  - name: Claude Opus 4.6 Output Tokens
+    type: Model
+    limit: 80000
+    metric: tokens
+    domains:
+    - api.anthropic.com
+    timeframe: minute
+    description: The output token limits for the Claude Opus 4.6 model.
+    userMultiplied: false
+  - name: Claude Opus 4.6 Requests
+    type: Model
+    limit: 50
+    metric: request
+    domains:
+    - api.anthropic.com
+    timeframe: minute
+    description: The request limits for the Claude Opus 4.6 model.
+    userMultiplied: false
+  - name: Claude Sonnet 4.6 Input Tokens
+    type: Model
+    limit: 30000
+    metric: token
+    domains:
+    - api.anthropic.com
+    timeframe: minute
+    description: The input token limits for the Claude Sonnet 4.6 model.
+    userMultiplied: false
+  - name: Claude Sonnet 4.6 Output Tokens
+    type: Model
+    limit: 80000
+    metric: tokens
+    domains:
+    - api.anthropic.com
+    timeframe: minute
+    description: The output token limits for the Claude Sonnet 4.6 model.
+    userMultiplied: false
+  - name: Claude Sonnet 4.6 Requests
+    type: Model
+    limit: 50
+    metric: request
+    domains:
+    - api.anthropic.com
+    timeframe: minute
+    description: The request limits for the Claude Sonnet 4.6 model.
+    userMultiplied: false
+  - name: Claude Haiku 4.5 Input Tokens
+    type: Model
+    limit: 50000
+    metric: token
+    domains:
+    - api.anthropic.com
+    timeframe: minute
+    description: The input token limits for the Claude Haiku 4.5 model.
+    userMultiplied: false
+  - name: Claude Haiku 4.5 Output Tokens
+    type: Model
+    limit: 100000
+    metric: tokens
+    domains:
+    - api.anthropic.com
+    timeframe: minute
+    description: The output token limits for the Claude Haiku 4.5 model.
+    userMultiplied: false
+  - name: Claude Haiku 4.5 Requests
+    type: Model
+    limit: 50
+    metric: request
+    domains:
+    - api.anthropic.com
+    timeframe: minute
+    description: The request limits for the Claude Haiku 4.5 model.
+    userMultiplied: false
   - name: Claude Opus 4 Input Tokens
     type: Model
     limit: 30000
@@ -523,13 +871,95 @@ common:
   type: Status Page
 - url: https://www.anthropic.com/news
   type: Blog
+- url: https://www.anthropic.com/engineering
+  type: Engineering Blog
+- url: https://console.anthropic.com/
+  type: SignUp
+- url: https://console.anthropic.com/workbench
+  type: Sandbox
+- url: https://docs.anthropic.com/en/api/beta-headers
+  type: Beta
+- url: https://trust.anthropic.com/
+  type: Trust Center
+- url: https://www.anthropic.com/legal/aup
+  type: Usage Policy
+- url: https://docs.anthropic.com/en/api/administration-api
+  type: AdminDocumentation
+- url: https://docs.anthropic.com/en/api/usage-cost-api
+  type: UsageDocumentation
+- url: https://github.com/anthropics
+  type: GitHubOrg
+- url: https://github.com/anthropics/anthropic-sdk-python
+  type: PythonSDK
+- url: https://github.com/anthropics/anthropic-sdk-typescript
+  type: TypeScriptSDK
+- url: https://github.com/anthropics/anthropic-sdk-java
+  type: JavaSDK
+- url: https://github.com/anthropics/anthropic-sdk-go
+  type: GoSDK
+- url: https://github.com/anthropics/anthropic-sdk-ruby
+  type: RubySDK
+- url: https://github.com/anthropics/anthropic-sdk-csharp
+  type: CSharpSDK
+- url: https://github.com/anthropics/anthropic-sdk-php
+  type: PHPSDK
+- url: https://github.com/anthropics/claude-cookbooks
+  type: Cookbooks
+- url: https://github.com/anthropics/courses
+  type: Courses
+- url: https://www.anthropic.com/learn
+  type: Learning
+- url: https://discord.com/invite/6PPFFzqPDZ
+  type: Discord
+- url: https://www.postman.com/postman/anthropic-apis/overview
+  type: PostmanWorkspace
+- url: https://docs.anthropic.com/en/docs/build-with-claude/token-counting
+  type: TokenCounting
+- url: https://docs.anthropic.com/en/docs/build-with-claude/data-residency
+  type: DataResidency
+- url: https://docs.anthropic.com/en/api/claude-code-analytics-api
+  type: Analytics
+- url: https://privacy.claude.com/
+  type: Privacy Center
+- url: https://docs.anthropic.com/en/api/messages-streaming
+  type: Streaming
+- url: https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview
+  type: ToolUse
+- url: https://docs.anthropic.com/en/docs/agents-and-tools/computer-use
+  type: ComputerUse
+- url: https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking
+  type: ExtendedThinking
+- url: https://docs.anthropic.com/en/docs/build-with-claude/citations
+  type: Citations
+- url: https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching
+  type: PromptCaching
+- url: https://docs.anthropic.com/en/docs/build-with-claude/batch-processing
+  type: BatchProcessing
+- url: https://docs.anthropic.com/en/api/openai-sdk
+  type: OpenAICompatibility
+- url: https://docs.anthropic.com/en/api/claude-on-amazon-bedrock
+  type: AmazonBedrock
+- url: https://docs.anthropic.com/en/api/claude-on-vertex-ai
+  type: GoogleVertexAI
+- url: https://docs.anthropic.com/en/docs/about-claude/models/all-models
+  type: Models
+- url: https://docs.anthropic.com/en/docs/claude-code/sdk
+  type: AgentSDK
+- url: https://docs.anthropic.com/en/api/complete
+  type: MigrationGuide
+- url: https://modelcontextprotocol.io
+  type: ModelContextProtocol
+- url: https://docs.anthropic.com/en/docs/build-with-claude/structured-output
+  type: StructuredOutput
+- url: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview
+  type: PromptEngineering
 created: '2025-08-14T00:00:00.000Z'
-modified: '2025-10-25'
+modified: '2026-03-03'
 position: Consuming
 description: Collection of Anthropic's AI APIs including Claude models
 maintainers:
 - FN: Kin Lane
-  email: info@apievangelist.com
+  email: kin@apievangelist.com
 - name: Anthropic
   email: support@anthropic.com
   url: https://www.anthropic.com

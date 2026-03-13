@@ -1,0 +1,396 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@vocab": "https://schema.org/",
+    "anthropic": "https://api.anthropic.com/v1/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "hydra": "http://www.w3.org/ns/hydra/core#",
+
+    "Message": {
+      "@id": "anthropic:Message",
+      "@context": {
+        "id": {
+          "@id": "anthropic:Message/id",
+          "@type": "xsd:string"
+        },
+        "type": {
+          "@id": "anthropic:Message/type",
+          "@type": "xsd:string"
+        },
+        "role": {
+          "@id": "anthropic:Message/role",
+          "@type": "xsd:string"
+        },
+        "content": {
+          "@id": "anthropic:Message/content",
+          "@container": "@list"
+        },
+        "model": {
+          "@id": "anthropic:Message/model",
+          "@type": "xsd:string"
+        },
+        "stop_reason": {
+          "@id": "anthropic:Message/stopReason",
+          "@type": "xsd:string"
+        },
+        "stop_sequence": {
+          "@id": "anthropic:Message/stopSequence",
+          "@type": "xsd:string"
+        },
+        "usage": {
+          "@id": "anthropic:Message/usage",
+          "@type": "anthropic:Usage"
+        }
+      }
+    },
+
+    "MessageRequest": {
+      "@id": "anthropic:MessageRequest",
+      "@context": {
+        "model": {
+          "@id": "anthropic:MessageRequest/model",
+          "@type": "xsd:string"
+        },
+        "messages": {
+          "@id": "anthropic:MessageRequest/messages",
+          "@container": "@list"
+        },
+        "max_tokens": {
+          "@id": "anthropic:MessageRequest/maxTokens",
+          "@type": "xsd:integer"
+        },
+        "system": {
+          "@id": "anthropic:MessageRequest/system",
+          "@type": "xsd:string"
+        },
+        "temperature": {
+          "@id": "anthropic:MessageRequest/temperature",
+          "@type": "xsd:decimal"
+        },
+        "top_p": {
+          "@id": "anthropic:MessageRequest/topP",
+          "@type": "xsd:decimal"
+        },
+        "top_k": {
+          "@id": "anthropic:MessageRequest/topK",
+          "@type": "xsd:integer"
+        },
+        "stop_sequences": {
+          "@id": "anthropic:MessageRequest/stopSequences",
+          "@container": "@list"
+        },
+        "stream": {
+          "@id": "anthropic:MessageRequest/stream",
+          "@type": "xsd:boolean"
+        },
+        "metadata": {
+          "@id": "anthropic:MessageRequest/metadata",
+          "@type": "anthropic:Metadata"
+        },
+        "tools": {
+          "@id": "anthropic:MessageRequest/tools",
+          "@container": "@list"
+        },
+        "tool_choice": {
+          "@id": "anthropic:MessageRequest/toolChoice",
+          "@type": "anthropic:ToolChoice"
+        },
+        "thinking": {
+          "@id": "anthropic:MessageRequest/thinking",
+          "@type": "anthropic:ThinkingConfig"
+        },
+        "service_tier": {
+          "@id": "anthropic:MessageRequest/serviceTier",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "MessageParam": {
+      "@id": "anthropic:MessageParam",
+      "@context": {
+        "role": {
+          "@id": "anthropic:MessageParam/role",
+          "@type": "xsd:string"
+        },
+        "content": {
+          "@id": "anthropic:MessageParam/content"
+        }
+      }
+    },
+
+    "TextBlock": {
+      "@id": "anthropic:TextBlock",
+      "@context": {
+        "type": {
+          "@id": "anthropic:TextBlock/type",
+          "@type": "xsd:string"
+        },
+        "text": {
+          "@id": "anthropic:TextBlock/text",
+          "@type": "xsd:string"
+        },
+        "citations": {
+          "@id": "anthropic:TextBlock/citations",
+          "@container": "@list"
+        }
+      }
+    },
+
+    "ImageBlock": {
+      "@id": "anthropic:ImageBlock",
+      "@context": {
+        "type": {
+          "@id": "anthropic:ImageBlock/type",
+          "@type": "xsd:string"
+        },
+        "source": {
+          "@id": "anthropic:ImageBlock/source",
+          "@type": "anthropic:ImageSource"
+        }
+      }
+    },
+
+    "DocumentBlock": {
+      "@id": "anthropic:DocumentBlock",
+      "@context": {
+        "type": {
+          "@id": "anthropic:DocumentBlock/type",
+          "@type": "xsd:string"
+        },
+        "source": {
+          "@id": "anthropic:DocumentBlock/source",
+          "@type": "anthropic:DocumentSource"
+        },
+        "title": {
+          "@id": "dcterms:title",
+          "@type": "xsd:string"
+        },
+        "context": {
+          "@id": "anthropic:DocumentBlock/context",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "ToolDefinition": {
+      "@id": "anthropic:ToolDefinition",
+      "@context": {
+        "name": {
+          "@id": "schema:name",
+          "@type": "xsd:string"
+        },
+        "description": {
+          "@id": "schema:description",
+          "@type": "xsd:string"
+        },
+        "input_schema": {
+          "@id": "anthropic:ToolDefinition/inputSchema",
+          "@type": "anthropic:ToolInputSchema"
+        }
+      }
+    },
+
+    "ToolUseBlock": {
+      "@id": "anthropic:ToolUseBlock",
+      "@context": {
+        "type": {
+          "@id": "anthropic:ToolUseBlock/type",
+          "@type": "xsd:string"
+        },
+        "id": {
+          "@id": "anthropic:ToolUseBlock/id",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "anthropic:ToolUseBlock/name",
+          "@type": "xsd:string"
+        },
+        "input": {
+          "@id": "anthropic:ToolUseBlock/input"
+        }
+      }
+    },
+
+    "ToolResultBlock": {
+      "@id": "anthropic:ToolResultBlock",
+      "@context": {
+        "type": {
+          "@id": "anthropic:ToolResultBlock/type",
+          "@type": "xsd:string"
+        },
+        "tool_use_id": {
+          "@id": "anthropic:ToolResultBlock/toolUseId",
+          "@type": "xsd:string"
+        },
+        "content": {
+          "@id": "anthropic:ToolResultBlock/content"
+        },
+        "is_error": {
+          "@id": "anthropic:ToolResultBlock/isError",
+          "@type": "xsd:boolean"
+        }
+      }
+    },
+
+    "ToolChoice": {
+      "@id": "anthropic:ToolChoice",
+      "@context": {
+        "type": {
+          "@id": "anthropic:ToolChoice/type",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "anthropic:ToolChoice/name",
+          "@type": "xsd:string"
+        },
+        "disable_parallel_tool_use": {
+          "@id": "anthropic:ToolChoice/disableParallelToolUse",
+          "@type": "xsd:boolean"
+        }
+      }
+    },
+
+    "ThinkingBlock": {
+      "@id": "anthropic:ThinkingBlock",
+      "@context": {
+        "type": {
+          "@id": "anthropic:ThinkingBlock/type",
+          "@type": "xsd:string"
+        },
+        "thinking": {
+          "@id": "anthropic:ThinkingBlock/thinking",
+          "@type": "xsd:string"
+        },
+        "signature": {
+          "@id": "anthropic:ThinkingBlock/signature",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "ThinkingConfig": {
+      "@id": "anthropic:ThinkingConfig",
+      "@context": {
+        "type": {
+          "@id": "anthropic:ThinkingConfig/type",
+          "@type": "xsd:string"
+        },
+        "budget_tokens": {
+          "@id": "anthropic:ThinkingConfig/budgetTokens",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+
+    "Usage": {
+      "@id": "anthropic:Usage",
+      "@context": {
+        "input_tokens": {
+          "@id": "anthropic:Usage/inputTokens",
+          "@type": "xsd:integer"
+        },
+        "output_tokens": {
+          "@id": "anthropic:Usage/outputTokens",
+          "@type": "xsd:integer"
+        },
+        "cache_creation_input_tokens": {
+          "@id": "anthropic:Usage/cacheCreationInputTokens",
+          "@type": "xsd:integer"
+        },
+        "cache_read_input_tokens": {
+          "@id": "anthropic:Usage/cacheReadInputTokens",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+
+    "Citation": {
+      "@id": "anthropic:Citation",
+      "@context": {
+        "type": {
+          "@id": "anthropic:Citation/type",
+          "@type": "xsd:string"
+        },
+        "cited_text": {
+          "@id": "anthropic:Citation/citedText",
+          "@type": "xsd:string"
+        },
+        "document_index": {
+          "@id": "anthropic:Citation/documentIndex",
+          "@type": "xsd:integer"
+        },
+        "document_title": {
+          "@id": "dcterms:title",
+          "@type": "xsd:string"
+        },
+        "file_id": {
+          "@id": "anthropic:Citation/fileId",
+          "@type": "xsd:string"
+        },
+        "start_char_index": {
+          "@id": "anthropic:Citation/startCharIndex",
+          "@type": "xsd:integer"
+        },
+        "end_char_index": {
+          "@id": "anthropic:Citation/endCharIndex",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+
+    "CacheControl": {
+      "@id": "anthropic:CacheControl",
+      "@context": {
+        "type": {
+          "@id": "anthropic:CacheControl/type",
+          "@type": "xsd:string"
+        },
+        "ttl": {
+          "@id": "anthropic:CacheControl/ttl",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "Metadata": {
+      "@id": "anthropic:Metadata",
+      "@context": {
+        "user_id": {
+          "@id": "anthropic:Metadata/userId",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "ErrorResponse": {
+      "@id": "anthropic:ErrorResponse",
+      "@context": {
+        "type": {
+          "@id": "anthropic:ErrorResponse/type",
+          "@type": "xsd:string"
+        },
+        "error": {
+          "@id": "anthropic:ErrorResponse/error",
+          "@type": "anthropic:Error"
+        }
+      }
+    },
+
+    "Error": {
+      "@id": "anthropic:Error",
+      "@context": {
+        "type": {
+          "@id": "anthropic:Error/type",
+          "@type": "xsd:string"
+        },
+        "message": {
+          "@id": "anthropic:Error/message",
+          "@type": "xsd:string"
+        }
+      }
+    }
+  }
+}
