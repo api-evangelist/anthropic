@@ -29,7 +29,7 @@ tags:
 paths:
   /v1/messages:
     post:
-      summary: Create A Message
+      summary: Anthropic Create A Message
       description: >
         Send a structured list of input messages with text and/or image content,
         and the model will generate the next message in the conversation. The
@@ -742,7 +742,7 @@ components:
             - stop_sequence
             - tool_use
             - pause_turn
-            - null
+            - 
         stop_sequence:
           type:
             - string
@@ -979,7 +979,7 @@ components:
             text: Hi! How can I help you today?
         model: claude-opus-4-6
         stop_reason: end_turn
-        stop_sequence: null
+        stop_sequence:
         usage:
           input_tokens: 10
           output_tokens: 15
@@ -1003,7 +1003,7 @@ components:
               unit: celsius
         model: claude-opus-4-6
         stop_reason: tool_use
-        stop_sequence: null
+        stop_sequence:
         usage:
           input_tokens: 380
           output_tokens: 65

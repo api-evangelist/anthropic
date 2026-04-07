@@ -3,7 +3,7 @@ info:
   title: Anthropic Prompt Tools API
   description: |
     Manage prompts with generation, improvement, and templatization capabilities.
-    
+
     The prompt tools APIs are in a closed research preview. These APIs are a set
     of tools to generate and improve prompts, similar to what's available in the
     Anthropic Workbench, and are intended for use by other prompt engineering
@@ -34,11 +34,11 @@ tags:
 paths:
   /v1/experimental/generate_prompt:
     post:
-      summary: Generate A Prompt
+      summary: Anthropic Generate A Prompt
       description: |
         Generate a well-written prompt for a specified task. This API creates
         prompts that can be used directly with the Messages API.
-        
+
         **Requirements:**
         - Must have joined the closed research preview for prompt tools APIs
         - Must use the API directly (not available in SDK)
@@ -125,12 +125,12 @@ paths:
 
   /v1/experimental/improve_prompt:
     post:
-      summary: Improve A Prompt
+      summary: Anthropic Improve A Prompt
       description: |
         Create a new-and-improved prompt guided by feedback. This API takes an
         existing prompt and enhances it based on provided feedback or general
         prompt engineering best practices.
-        
+
         **Requirements:**
         - Must have joined the closed research preview for prompt tools APIs
         - Must use the API directly (not available in SDK)
@@ -220,12 +220,12 @@ paths:
 
   /v1/experimental/templatize_prompt:
     post:
-      summary: Templatize A Prompt
+      summary: Anthropic Templatize A Prompt
       description: |
         Templatize a prompt by identifying and extracting variables. This API
         analyzes a prompt and converts specific values into reusable template
         variables with placeholders.
-        
+
         **Requirements:**
         - Must have joined the closed research preview for prompt tools APIs
         - Must use the API directly (not available in SDK)
@@ -455,7 +455,7 @@ components:
         target_model:
           type: string
           nullable: true
-          default: null
+          default:
           description: |
             The model this prompt will be used for. This optional
             parameter helps us understand which models our prompt tools
@@ -528,7 +528,7 @@ components:
         target_model:
           type: string
           nullable: true
-          default: null
+          default:
           description: |
             The model this prompt will be used for. This optional
             parameter helps us understand which models our prompt tools

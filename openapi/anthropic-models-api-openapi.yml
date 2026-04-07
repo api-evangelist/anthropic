@@ -4,7 +4,7 @@ info:
   description: |
     Send a structured list of input messages with text and/or image content, and
     the model will generate the next message in the conversation.
-    
+
     This API provides access to list available models, get model details,
     create messages, and count tokens.
   version: '2025-03-05'
@@ -32,7 +32,7 @@ tags:
 paths:
   /v1/models:
     get:
-      summary: List Available Models
+      summary: Anthropic List Available Models
       description: |
         List available models. The Models API response can be used to determine
         which models are available for use in the API. More recently released
@@ -117,7 +117,7 @@ paths:
 
   /v1/models/{model_id}:
     get:
-      summary: Get A Specific Model
+      summary: Anthropic Get A Specific Model
       description: |
         Get a specific model. The Models API response can be used to determine
         information about a specific model or resolve a model alias to a model ID.
@@ -202,11 +202,11 @@ paths:
 
   /v1/messages:
     post:
-      summary: Create A Message
+      summary: Anthropic Create A Message
       description: |
         Send a structured list of input messages with text and/or image content,
         and the model will generate the next message in the conversation.
-        
+
         The Messages API can be used for either single queries or stateless
         multi-turn conversations.
       operationId: createMessage
@@ -299,7 +299,7 @@ paths:
 
   /v1/messages/count_tokens:
     post:
-      summary: Count Tokens In A Message
+      summary: Anthropic Count Tokens In A Message
       description: |
         Count the number of tokens in a message before sending it.
         This allows you to make informed decisions about message length
@@ -1310,7 +1310,7 @@ components:
             text: "Hi! My name is Claude. I'm doing well, thank you for asking! How can I help you today?"
         model: claude-sonnet-4-20250514
         stop_reason: end_turn
-        stop_sequence: null
+        stop_sequence:
         usage:
           input_tokens: 12
           output_tokens: 25

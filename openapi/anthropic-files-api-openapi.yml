@@ -26,7 +26,7 @@ tags:
 paths:
   /files:
     get:
-      summary: List Files
+      summary: Anthropic List Files
       description: Retrieves a paginated list of all files that have been uploaded to your organization.
       operationId: listFiles
       tags:
@@ -58,7 +58,7 @@ paths:
           }
 
     post:
-      summary: Create File
+      summary: Anthropic Create File
       description: Uploads a file to Anthropic's servers for use in subsequent API calls.
       operationId: createFile
       tags:
@@ -101,7 +101,7 @@ paths:
 
   /files/{file_id}:
     get:
-      summary: Get File Metadata
+      summary: Anthropic Get File Metadata
       description: Retrieves metadata information for a previously uploaded file.
       operationId: getFileMetadata
       tags:
@@ -131,7 +131,7 @@ paths:
           }
 
     delete:
-      summary: Delete File
+      summary: Anthropic Delete File
       description: Permanently deletes a file from Anthropic's storage system.
       operationId: deleteFile
       tags:
@@ -162,7 +162,7 @@ paths:
 
   /files/{file_id}/content:
     get:
-      summary: Download File Content
+      summary: Anthropic Download File Content
       description: Downloads the actual content of a previously uploaded file.
       operationId: downloadFileContent
       tags:

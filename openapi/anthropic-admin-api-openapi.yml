@@ -35,7 +35,7 @@ tags:
 paths:
   /organizations/me:
     get:
-      summary: Get Current Organization
+      summary: Anthropic Get Current Organization
       description: Retrieves information about the current authenticated user's organization.
       operationId: getCurrentOrganization
       tags:
@@ -64,7 +64,7 @@ paths:
 
   /organizations/users:
     get:
-      summary: List Organization Members
+      summary: Anthropic List Organization Members
       description: Retrieves a paginated list of users associated with the organization.
       operationId: listOrganizationMembers
       tags:
@@ -103,7 +103,7 @@ paths:
 
   /organizations/users/{user_id}:
     get:
-      summary: Get Organization Member
+      summary: Anthropic Get Organization Member
       description: Retrieves detailed information about a specific user within an organization.
       operationId: getOrganizationMember
       tags:
@@ -132,7 +132,7 @@ paths:
           }
 
     post:
-      summary: Update Organization Member
+      summary: Anthropic Update Organization Member
       description: Updates user information for a specific user within an organization.
       operationId: updateOrganizationMember
       tags:
@@ -170,7 +170,7 @@ paths:
           }
 
     delete:
-      summary: Remove Organization Member
+      summary: Anthropic Remove Organization Member
       description: Removes a specific user from an organization.
       operationId: removeOrganizationMember
       tags:
@@ -200,7 +200,7 @@ paths:
 
   /organizations/invites:
     get:
-      summary: List Organization Invites
+      summary: Anthropic List Organization Invites
       description: Retrieves a paginated list of pending invitations for the organization.
       operationId: listOrganizationInvites
       tags:
@@ -231,7 +231,7 @@ paths:
           }
 
     post:
-      summary: Create Organization Invite
+      summary: Anthropic Create Organization Invite
       description: Creates and sends an invitation to a new member to join the organization.
       operationId: createOrganizationInvite
       tags:
@@ -269,7 +269,7 @@ paths:
 
   /organizations/invites/{invite_id}:
     get:
-      summary: Get Organization Invite
+      summary: Anthropic Get Organization Invite
       description: Retrieves detailed information about a specific organization invite.
       operationId: getOrganizationInvite
       tags:
@@ -298,7 +298,7 @@ paths:
           }
 
     delete:
-      summary: Delete Organization Invite
+      summary: Anthropic Delete Organization Invite
       description: Deletes a specific organization invite, preventing the recipient from accepting it.
       operationId: deleteOrganizationInvite
       tags:
@@ -328,7 +328,7 @@ paths:
 
   /organizations/workspaces:
     get:
-      summary: List Workspaces
+      summary: Anthropic List Workspaces
       description: Retrieves a paginated list of workspaces associated with the organization.
       operationId: listWorkspaces
       tags:
@@ -366,7 +366,7 @@ paths:
           }
 
     post:
-      summary: Create Workspace
+      summary: Anthropic Create Workspace
       description: Creates a new workspace within the organization.
       operationId: createWorkspace
       tags:
@@ -404,7 +404,7 @@ paths:
 
   /organizations/workspaces/{workspace_id}:
     get:
-      summary: Get Workspace
+      summary: Anthropic Get Workspace
       description: Retrieves detailed information about a specific workspace.
       operationId: getWorkspace
       tags:
@@ -433,7 +433,7 @@ paths:
           }
 
     post:
-      summary: Update Workspace
+      summary: Anthropic Update Workspace
       description: Updates configuration for a specific workspace.
       operationId: updateWorkspace
       tags:
@@ -472,7 +472,7 @@ paths:
 
   /organizations/workspaces/{workspace_id}/archive:
     post:
-      summary: Archive Workspace
+      summary: Anthropic Archive Workspace
       description: Archives a specific workspace, making it read-only.
       operationId: archiveWorkspace
       tags:
@@ -502,7 +502,7 @@ paths:
 
   /organizations/workspaces/{workspace_id}/members:
     get:
-      summary: List Workspace Members
+      summary: Anthropic List Workspace Members
       description: Retrieves a paginated list of members for a specific workspace.
       operationId: listWorkspaceMembers
       tags:
@@ -534,7 +534,7 @@ paths:
           }
 
     post:
-      summary: Add Workspace Member
+      summary: Anthropic Add Workspace Member
       description: Adds a user as a member of a workspace.
       operationId: addWorkspaceMember
       tags:
@@ -573,7 +573,7 @@ paths:
 
   /organizations/workspaces/{workspace_id}/members/{user_id}:
     get:
-      summary: Get Workspace Member
+      summary: Anthropic Get Workspace Member
       description: Retrieves membership details for a specific user in a workspace.
       operationId: getWorkspaceMember
       tags:
@@ -603,7 +603,7 @@ paths:
           }
 
     post:
-      summary: Update Workspace Member
+      summary: Anthropic Update Workspace Member
       description: Updates the role of a workspace member.
       operationId: updateWorkspaceMember
       tags:
@@ -642,7 +642,7 @@ paths:
           }
 
     delete:
-      summary: Remove Workspace Member
+      summary: Anthropic Remove Workspace Member
       description: Removes a user from a workspace.
       operationId: removeWorkspaceMember
       tags:
@@ -673,7 +673,7 @@ paths:
 
   /organizations/api_keys:
     get:
-      summary: List Api Keys
+      summary: Anthropic List Api Keys
       description: Retrieves a paginated list of API keys for the organization.
       operationId: listApiKeys
       tags:
@@ -727,7 +727,7 @@ paths:
 
   /organizations/api_keys/{api_key_id}:
     get:
-      summary: Get Api Key
+      summary: Anthropic Get Api Key
       description: Retrieves details about a specific API key.
       operationId: getApiKey
       tags:
@@ -756,7 +756,7 @@ paths:
           }
 
     post:
-      summary: Update Api Key
+      summary: Anthropic Update Api Key
       description: Updates an API key's name or status.
       operationId: updateApiKey
       tags:
@@ -1478,7 +1478,7 @@ components:
         name: "Engineering Team"
         display_color: "#6C5BB9"
         created_at: "2024-10-30T23:58:27.427722Z"
-        archived_at: null
+        archived_at:
 
     ArchivedWorkspaceExample:
       summary: Archived Workspace Response
@@ -1499,13 +1499,13 @@ components:
             name: "Engineering Team"
             display_color: "#6C5BB9"
             created_at: "2024-10-30T23:58:27.427722Z"
-            archived_at: null
+            archived_at:
           - id: "wrkspc_02KxRvs8sQMB6BHy4ILGgGVK"
             type: workspace
             name: "Marketing Team"
             display_color: "#4A90D9"
             created_at: "2024-09-15T14:20:00.000000Z"
-            archived_at: null
+            archived_at:
         first_id: "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
         has_more: false
         last_id: "wrkspc_02KxRvs8sQMB6BHy4ILGgGVK"
