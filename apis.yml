@@ -1,6 +1,5 @@
 aid: anthropic
-url: 
-  https://raw.githubusercontent.com/api-evangelist/anthropic/refs/heads/main/apis.yml
+url: https://raw.githubusercontent.com/api-evangelist/anthropic/refs/heads/main/apis.yml
 apis:
   - aid: anthropic:anthropic-messages-api
     name: Anthropic Messages API
@@ -47,8 +46,8 @@ apis:
     tags:
       - AI
       - Artificial Intelligence
-      - Messages
       - Batches
+      - Messages
     humanURL: https://docs.anthropic.com/en/api/creating-message-batches
     properties:
       - url: https://docs.anthropic.com/en/api/creating-message-batches
@@ -78,9 +77,9 @@ apis:
   - aid: anthropic:anthropic-admin-api
     name: Anthropic Admin API
     tags:
+      - Administrative
       - AI
       - Artificial Intelligence
-      - Administrative
     humanURL: https://docs.anthropic.com/en/api/admin-api/users/get-user
     properties:
       - url: https://docs.anthropic.com/en/api/admin-api/users/get-user
@@ -107,8 +106,8 @@ apis:
     tags:
       - AI
       - Artificial Intelligence
-      - Tokens
       - Counting
+      - Tokens
     humanURL: https://docs.anthropic.com/en/api/messages-count-tokens
     properties:
       - url: https://docs.anthropic.com/en/api/messages-count-tokens
@@ -124,10 +123,10 @@ apis:
   - aid: anthropic:anthropic-skills-api
     name: Anthropic Skills API
     tags:
+      - Agents
       - AI
       - Artificial Intelligence
       - Skills
-      - Agents
     humanURL: https://docs.anthropic.com/en/api/skills/create-skill
     properties:
       - url: https://docs.anthropic.com/en/api/skills/create-skill
@@ -142,11 +141,11 @@ apis:
   - aid: anthropic:anthropic-usage-cost-api
     name: Anthropic Usage & Cost API
     tags:
+      - Administration
       - AI
       - Artificial Intelligence
-      - Usage
       - Cost
-      - Administration
+      - Usage
     humanURL: https://docs.anthropic.com/en/api/usage-cost-api
     properties:
       - url: https://docs.anthropic.com/en/api/usage-cost-api
@@ -161,11 +160,11 @@ apis:
   - aid: anthropic:anthropic-claude-code-analytics-api
     name: Anthropic Claude Code Analytics API
     tags:
-      - AI
-      - Artificial Intelligence
-      - Analytics
-      - Claude Code
       - Administration
+      - AI
+      - Analytics
+      - Artificial Intelligence
+      - Claude Code
     humanURL: https://docs.anthropic.com/en/api/claude-code-analytics-api
     properties:
       - url: https://docs.anthropic.com/en/api/claude-code-analytics-api
@@ -275,8 +274,7 @@ common:
           - name: Access to unlimited Projects to organize chats and documents
           - name: Access to Research
           - name: Connect Google Workspace email, calendar, and docs
-          - name: Connect your everyday tools in just a few clicks (with remote 
-              MCP servers)
+          - name: Connect your everyday tools in just a few clicks (with remote MCP servers)
           - name: Extended thinking for complex work
           - name: Ability to use more Claude models
         description: For everyday productivity.
@@ -378,8 +376,7 @@ common:
             metric: token
             timeFrame: usage
             description: Write prompt caching 1-hour TTL for model.
-        description: Most capable model with fast mode support and 1M context 
-          window
+        description: Most capable model with fast mode support and 1M context window
       - id: claude-opus-4-1
         name: Claude Opus 4.1
         type: Latest
@@ -432,8 +429,7 @@ common:
             metric: token
             minimum: 200000
             timeFrame: usage
-            description: Input token greater than 200K token usage-based 
-              pricing.
+            description: Input token greater than 200K token usage-based pricing.
           - geo: US
             unit: 1M
             label: Prompts Output < 200K
@@ -481,8 +477,7 @@ common:
             metric: token
             minimum: 200000
             timeFrame: usage
-            description: Write prompt caching for greater than 200K tokens 
-              model.
+            description: Write prompt caching for greater than 200K tokens model.
         description: High performance model with 1M context window support
       - id: claude-sonnet-4
         name: Claude Sonnet 4
@@ -503,8 +498,7 @@ common:
             metric: token
             minimum: 200000
             timeFrame: usage
-            description: Input token greater than 200K token usage-based 
-              pricing.
+            description: Input token greater than 200K token usage-based pricing.
           - geo: US
             unit: 1M
             label: Prompts Output < 200K
@@ -552,8 +546,7 @@ common:
             metric: token
             minimum: 200000
             timeFrame: usage
-            description: Write prompt caching for greater than 200K tokens 
-              model.
+            description: Write prompt caching for greater than 200K tokens model.
         description: Optimal balance of intelligence, cost, and speed
       - id: claude-haiku-4-5
         name: Claude Haiku 4.5
@@ -639,8 +632,7 @@ common:
             metric: search
             timeFrame: usage
             description: Usage based search pricing.
-        description: Give Claude access to the latest information from the web. 
-          Does not include input and output tokens required to process requests.
+        description: Give Claude access to the latest information from the web. Does not include input and output tokens required to process requests.
       - id: code-execution
         name: Code Execution
         type: Tools
@@ -652,8 +644,7 @@ common:
             metric: container
             timeFrame: hour
             description: Usage based for containers by hour.
-        description: Run Python code in a sandboxed environment for advanced 
-          data analysis. 50 free hours of usage daily per organization.
+        description: Run Python code in a sandboxed environment for advanced data analysis. 50 free hours of usage daily per organization.
       - id: fast-mode
         name: Fast Mode
         type: Features
@@ -672,8 +663,7 @@ common:
             metric: token
             timeFrame: usage
             description: Fast mode output token pricing for Claude Opus 4.6.
-        description: Significantly faster output for Claude Opus 4.6 at premium 
-          pricing (6x standard rates). Currently in research preview.
+        description: Significantly faster output for Claude Opus 4.6 at premium pricing (6x standard rates). Currently in research preview.
       - id: web-fetch
         name: Web Fetch
         type: Tools
@@ -685,27 +675,20 @@ common:
             metric: request
             timeFrame: usage
             description: No additional cost beyond standard token pricing.
-        description: Fetch web page content for Claude to process. No additional
-          charges beyond standard token costs for fetched content.
+        description: Fetch web page content for Claude to process. No additional charges beyond standard token costs for fetched content.
     name: Pricing
     type: Pricing
   - url: https://docs.anthropic.com/en/api/service-tiers
     data:
       - name: Standard
-        description: The standard tier is the default service tier for all API 
-          requests. Requests in this tier are prioritized alongside all other 
-          requests and observe best-effort availability.
+        description: The standard tier is the default service tier for all API requests. Requests in this tier are prioritized alongside all other requests and observe best-effort availability.
       - name: Priority
-        description: Requests in this tier are prioritized over all other 
-          requests to Anthropic. This prioritization helps minimize server 
-          overloaded errors, even during peak times.
+        description: Requests in this tier are prioritized over all other requests to Anthropic. This prioritization helps minimize server overloaded errors, even during peak times.
       - name: Batch
-        description: Best for asynchronous workflows which can wait or benefit 
-          from being outside your normal capacity.
+        description: Best for asynchronous workflows which can wait or benefit from being outside your normal capacity.
     name: Tiers
     type: Tiers
-    description: Different tiers of service allow you to balance availability, 
-      performance, and predictable costs based on your applications needs.
+    description: Different tiers of service allow you to balance availability, performance, and predictable costs based on your applications needs.
   - url: https://docs.anthropic.com/en/api/rate-limits
     data:
       - name: Claude Opus 4.6 Input Tokens
@@ -977,8 +960,7 @@ common:
     type: ModelContextProtocol
   - url: https://docs.anthropic.com/en/docs/build-with-claude/structured-output
     type: StructuredOutput
-  - url: 
-      https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview
+  - url: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview
     type: PromptEngineering
 created: '2025-08-14T00:00:00.000Z'
 modified: '2026-03-03'

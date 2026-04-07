@@ -22,10 +22,10 @@ security:
   - ApiKeyAuth: []
 
 tags:
-  - name: Models
-    description: APIs for listing and retrieving model information
   - name: Messages
     description: APIs for creating conversational messages with Claude
+  - name: Models
+    description: APIs for listing and retrieving model information
   - name: Tokens
     description: APIs for counting tokens in messages
 

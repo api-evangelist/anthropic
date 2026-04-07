@@ -17,21 +17,18 @@ security:
   - AdminApiKeyAuth: []
 
 tags:
-  - name: Organization
-    description: Retrieve organization information and settings
-  - name: Organization Members
-    description: Manage organization members and their roles
-  - name: Organization Invites
-    description: Create and manage organization invitations
-  - name: Workspaces
-    description: Create and manage workspaces within an organization
-  - name: Workspace Members
-    description: Manage workspace membership and roles
   - name: Api Keys
     description: Monitor and manage API keys
-  - name: Usage
-    description: Access usage and cost reports
-
+  - name: Organization
+    description: Retrieve organization information and settings
+  - name: Organization Invites
+    description: Create and manage organization invitations
+  - name: Organization Members
+    description: Manage organization members and their roles
+  - name: Workspace Members
+    description: Manage workspace membership and roles
+  - name: Workspaces
+    description: Create and manage workspaces within an organization
 paths:
   /organizations/me:
     get:
