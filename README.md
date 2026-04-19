@@ -1,30 +1,25 @@
 # Anthropic (anthropic)
-Collection of Anthropic's AI APIs including Claude models
+Anthropic is an AI safety company and creator of the Claude family of large language models. The Anthropic API provides access to Claude models for text generation, vision, tool use, extended thinking, batch processing, and agentic workflows. Anthropic also publishes the Model Context Protocol (MCP) for standardized AI tool integration.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/anthropic/refs/heads/main/apis.yml)
+**URL:** [Visit APIs.json](https://raw.githubusercontent.com/api-evangelist/anthropic/refs/heads/main/apis.yml)
 
-## Scope
-
-- **Type:** Contract 
-- **Position:** Consuming 
-- **Access:** 3rd-Party 
+**Run:** [Capabilities Using Naftiko](https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=company-api-evangelist&utm_content=repo)
 
 ## Tags:
 
- - AI, Artificial Intelligence, T1
+ - AI, Artificial Intelligence, Claude, Foundation Models, Large Language Models, Machine Learning
 
 ## Timestamps
 
-- **Created:** 2025-08-14T00:00:00.000Z 
-- **Modified:** 2025-10-25 
+- **Created:** 2025-08-14
+- **Modified:** 2026-04-19
 
 ## APIs
 
 ### Anthropic Messages API
-List available models. The Models API response can be used to determine which models are available for use in the API. More recently released models are listed first.
+Send a structured list of input messages with text and/or image content, and the model will generate the next message in the conversation. Supports text, images, tool use, extended thinking, streaming, and structured output.
 
 **Human URL:** [https://docs.anthropic.com/en/api/messages](https://docs.anthropic.com/en/api/messages)
-
 
 #### Tags:
 
@@ -33,13 +28,16 @@ List available models. The Models API response can be used to determine which mo
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/messages)
-- [OpenAPI](properties/anthropic-messages-api-openapi.yml)
+- [Documentation](https://docs.anthropic.com/en/api/messages-streaming)
+- [OpenAPI](openapi/anthropic-messages-api-openapi.yml)
+- [JSONSchema](json-schema/anthropic-message-schema.json)
+- [JSONSchema](json-schema/anthropic-tool-use-schema.json)
+- [JSONLD](json-ld/anthropic-context.jsonld)
 
 ### Anthropic Models API
-Send a structured list of input messages with text and/or image content, and the model will generate the next message in the conversation.    
+List and retrieve available Claude models via the Models API.
 
 **Human URL:** [https://docs.anthropic.com/en/api/models-list](https://docs.anthropic.com/en/api/models-list)
-
 
 #### Tags:
 
@@ -48,28 +46,26 @@ Send a structured list of input messages with text and/or image content, and the
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/models-list)
-- [OpenAPI](properties/anthropic-models-api-openapi.yml)
+- [OpenAPI](openapi/anthropic-models-api-openapi.yml)
 
 ### Anthropic Message Batches API
-Send a batch of Message creation requests. The Message Batches API can be used to process multiple Messages API requests at once. Once a Message Batch is created, it begins processing immediately. Batches can take up to 24 hours to complete.       
+Process multiple Messages API requests at once with the Message Batches API. Batches can take up to 24 hours to complete and offer significant cost savings.
 
 **Human URL:** [https://docs.anthropic.com/en/api/creating-message-batches](https://docs.anthropic.com/en/api/creating-message-batches)
 
-
 #### Tags:
 
- - AI, Artificial Intelligence, Messages, Batches
+ - AI, Artificial Intelligence, Batches, Messages
 
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/creating-message-batches)
-- [OpenAPI](properties/anthropic-message-batches-api-openapi.yml)
+- [OpenAPI](openapi/anthropic-message-batches-api-openapi.yml)
 
 ### Anthropic Files API
-The Files API allows you to upload and manage files to use with the Anthropic API without having to re-upload content with each request. For more information about the Files API, see the developer guide for files.      
+Upload and manage files to use with the Anthropic API without re-uploading content with each request.
 
 **Human URL:** [https://docs.anthropic.com/en/api/files-create](https://docs.anthropic.com/en/api/files-create)
-
 
 #### Tags:
 
@@ -78,28 +74,26 @@ The Files API allows you to upload and manage files to use with the Anthropic AP
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/files-create)
-- [OpenAPI](properties/anthropic-files-api-openapi.yml)
+- [OpenAPI](openapi/anthropic-files-api-openapi.yml)
 
 ### Anthropic Admin API
-Manage administrative functions.
+Manage administrative functions for Anthropic API organizations including users, API keys, and workspaces.
 
 **Human URL:** [https://docs.anthropic.com/en/api/admin-api/users/get-user](https://docs.anthropic.com/en/api/admin-api/users/get-user)
 
-
 #### Tags:
 
- - AI, Artificial Intelligence, Administrative
+ - Administrative, AI, Artificial Intelligence
 
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/admin-api/users/get-user)
-- [OpenAPI](properties/anthropic-admin-api-openapi.yml)
+- [OpenAPI](openapi/anthropic-admin-api-openapi.yml)
 
 ### Anthropic Prompts API
-Manage prompts.             
+Create and manage prompts in the Anthropic prompt library.
 
 **Human URL:** [https://docs.anthropic.com/en/api/prompt-tools-generate](https://docs.anthropic.com/en/api/prompt-tools-generate)
-
 
 #### Tags:
 
@@ -108,41 +102,66 @@ Manage prompts.
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/prompt-tools-generate)
-- [OpenAPI](properties/anthropic-prompts-api-openapi.yml)
+- [OpenAPI](openapi/anthropic-prompts-api-openapi.yml)
+
+### Anthropic Token Counting API
+Count the number of tokens in a Message, including tools, images, and documents, without creating it. Free to use.
+
+**Human URL:** [https://docs.anthropic.com/en/api/messages-count-tokens](https://docs.anthropic.com/en/api/messages-count-tokens)
+
+#### Tags:
+
+ - AI, Artificial Intelligence, Counting, Tokens
+
+#### Properties
+
+- [Documentation](https://docs.anthropic.com/en/api/messages-count-tokens)
 
 ## Common Properties
 
-- [Quickstarts](https://github.com/anthropics/anthropic-quickstarts)
-- [Portal](https://docs.anthropic.com/en/home)
-- [Documentation](https://docs.anthropic.com/en/api/messages)
-- [Status](https://status.anthropic.com/)
-- [ChangeLog](https://docs.anthropic.com/en/release-notes/api)
-- [Login](https://console.anthropic.com/login)
-- [RateLimits](https://docs.anthropic.com/en/api/rate-limits)
-- [Tiers](https://docs.anthropic.com/en/api/service-tiers)
-- [Errors](https://docs.anthropic.com/en/api/errors)
-- [SDKs](https://docs.anthropic.com/en/api/client-sdks)
-- [Versioning](https://docs.anthropic.com/en/api/versioning)
-- [Regions](https://docs.anthropic.com/en/api/supported-regions)
-- [Support](https://docs.anthropic.com/en/api/getting-help)
-- [Plans](https://www.anthropic.com/pricing)
-- [Pricing](https://www.anthropic.com/pricing#api)
-- [Tiers](https://docs.anthropic.com/en/api/service-tiers)
-- [RateLimits](https://docs.anthropic.com/en/api/rate-limits)
-- [Portal](https://www.anthropic.com/api)
-- [GettingStarted](https://docs.anthropic.com/en/docs/get-started)
-- [Glossary](https://docs.anthropic.com/en/docs/about-claude/glossary)
-- [Tiers](https://docs.anthropic.com/en/api/service-tiers)
-- [Terms of Service](https://www.anthropic.com/legal/terms)
-- [Privacy Policy](https://www.anthropic.com/legal/privacy)
-- [Status Page](https://status.anthropic.com)
+- [Portal](https://www.anthropic.com)
+- [Documentation](https://docs.anthropic.com/)
+- [GettingStarted](https://docs.anthropic.com/en/api/getting-started)
+- [Pricing](https://www.anthropic.com/pricing)
+- [GitHubOrganization](https://github.com/anthropics)
+- [StatusPage](https://status.anthropic.com)
 - [Blog](https://www.anthropic.com/news)
+- [SignUp](https://console.anthropic.com/)
+- [Sandbox](https://console.anthropic.com/workbench)
+- [TrustCenter](https://trust.anthropic.com/)
+- [TermsOfService](https://www.anthropic.com/legal/aup)
+- [PrivacyPolicy](https://www.anthropic.com/legal/privacy)
+- [SDK — Python SDK](https://github.com/anthropics/anthropic-sdk-python)
+- [SDK — TypeScript SDK](https://github.com/anthropics/anthropic-sdk-typescript)
+- [SDK — Java SDK](https://github.com/anthropics/anthropic-sdk-java)
+- [SDK — Go SDK](https://github.com/anthropics/anthropic-sdk-go)
+- [Models](https://docs.anthropic.com/en/docs/about-claude/models/all-models)
+- [Forum](https://discord.com/invite/6PPFFzqPDZ)
+
+## Artifacts
+
+Machine-readable API specifications organized by format.
+
+### OpenAPI
+
+- [Anthropic Messages API](openapi/anthropic-messages-api-openapi.yml)
+- [Anthropic Models API](openapi/anthropic-models-api-openapi.yml)
+- [Anthropic Message Batches API](openapi/anthropic-message-batches-api-openapi.yml)
+- [Anthropic Files API](openapi/anthropic-files-api-openapi.yml)
+- [Anthropic Admin API](openapi/anthropic-admin-api-openapi.yml)
+- [Anthropic Prompts API](openapi/anthropic-prompts-api-openapi.yml)
+
+### JSON Schema
+
+- [Anthropic Message Schema](json-schema/anthropic-message-schema.json)
+- [Anthropic Tool Use Schema](json-schema/anthropic-tool-use-schema.json)
+
+### JSON-LD
+
+- [Anthropic Context](json-ld/anthropic-context.jsonld)
 
 ## Maintainers
 
 **FN:** Kin Lane
 
 **Email:** info@apievangelist.com
-**FN:** Anthropic
-
-**Email:** support@anthropic.com
