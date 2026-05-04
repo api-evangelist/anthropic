@@ -1,0 +1,139 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Anthropic
+providerId: anthropic
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - AI
+  - Rate Limiting
+  - Quotas
+description: Reconciled rate limits for the Anthropic Messages, Batches, and Managed Agents APIs. Token-bucket
+  algorithm; only uncached input tokens count toward ITPM on most models.
+sources:
+  - https://www.anthropic.com/pricing
+  - https://platform.claude.com/docs/en/docs/about-claude/pricing
+  - https://platform.claude.com/docs/en/api/rate-limits
+headers:
+  limit: anthropic-ratelimit-requests-limit
+  remaining: anthropic-ratelimit-requests-remaining
+  reset: anthropic-ratelimit-requests-reset
+  retryAfter: retry-after
+  tokensLimit: anthropic-ratelimit-tokens-limit
+  inputTokensLimit: anthropic-ratelimit-input-tokens-limit
+  outputTokensLimit: anthropic-ratelimit-output-tokens-limit
+responseCodes:
+  throttled: 429
+  quotaExceeded: 429
+algorithm: token-bucket
+spendLimits:
+  - tier: Tier 1
+    creditPurchase: $5
+    monthlyCap: $100
+  - tier: Tier 2
+    creditPurchase: $40
+    monthlyCap: $500
+  - tier: Tier 3
+    creditPurchase: $200
+    monthlyCap: $1,000
+  - tier: Tier 4
+    creditPurchase: $400
+    monthlyCap: $200,000
+  - tier: Monthly Invoicing
+    creditPurchase: N/A
+    monthlyCap: no limit
+limits:
+  - tier: Tier 1
+    model: Claude Opus 4.x
+    rpm: 50
+    itpm: 30000
+    otpm: 8000
+  - tier: Tier 1
+    model: Claude Sonnet 4.x
+    rpm: 50
+    itpm: 30000
+    otpm: 8000
+  - tier: Tier 1
+    model: Claude Haiku 4.5
+    rpm: 50
+    itpm: 50000
+    otpm: 10000
+  - tier: Tier 2
+    model: Claude Opus 4.x
+    rpm: 1000
+    itpm: 450000
+    otpm: 90000
+  - tier: Tier 2
+    model: Claude Sonnet 4.x
+    rpm: 1000
+    itpm: 450000
+    otpm: 90000
+  - tier: Tier 2
+    model: Claude Haiku 4.5
+    rpm: 1000
+    itpm: 450000
+    otpm: 90000
+  - tier: Tier 3
+    model: Claude Opus 4.x
+    rpm: 2000
+    itpm: 800000
+    otpm: 160000
+  - tier: Tier 3
+    model: Claude Sonnet 4.x
+    rpm: 2000
+    itpm: 800000
+    otpm: 160000
+  - tier: Tier 3
+    model: Claude Haiku 4.5
+    rpm: 2000
+    itpm: 1000000
+    otpm: 200000
+  - tier: Tier 4
+    model: Claude Opus 4.x
+    rpm: 4000
+    itpm: 2000000
+    otpm: 400000
+  - tier: Tier 4
+    model: Claude Sonnet 4.x
+    rpm: 4000
+    itpm: 2000000
+    otpm: 400000
+  - tier: Tier 4
+    model: Claude Haiku 4.5
+    rpm: 4000
+    itpm: 4000000
+    otpm: 800000
+batchApiLimits:
+  - tier: Tier 1
+    rpm: 50
+    queueMax: 100000
+    perBatchMax: 100000
+  - tier: Tier 2
+    rpm: 1000
+    queueMax: 200000
+    perBatchMax: 100000
+  - tier: Tier 3
+    rpm: 2000
+    queueMax: 300000
+    perBatchMax: 100000
+  - tier: Tier 4
+    rpm: 4000
+    queueMax: 500000
+    perBatchMax: 100000
+managedAgentLimits:
+  - endpoint: Create endpoints (agents, sessions, environments)
+    limit: 300
+    window: minute
+  - endpoint: Read endpoints (retrieve, list, stream)
+    limit: 600
+    window: minute
+policies:
+  - name: Cache-aware ITPM
+    description: On most models, cache_read_input_tokens do NOT count toward ITPM, making prompt caching
+      an effective way to increase throughput.
+  - name: Auto tier advancement
+    description: Tiers advance automatically based on cumulative credit purchase thresholds.
+  - name: Acceleration limits
+    description: Sharp usage spikes can trigger 429s independent of tier limits — ramp gradually.

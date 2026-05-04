@@ -1,0 +1,117 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Anthropic
+providerId: anthropic
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - FinOps
+  - Cost Management
+  - FOCUS
+  - AI
+  - Tokens
+description: FOCUS-aligned FinOps definition for Anthropic's Claude API. Token-based metering with prompt-caching
+  and batch-processing discount lanes.
+sources:
+  - https://www.anthropic.com/pricing
+  - https://platform.claude.com/docs/en/docs/about-claude/pricing
+  - https://platform.claude.com/docs/en/api/rate-limits
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Anthropic
+serviceCategory: AI and Machine Learning
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+    - Usage
+    - Purchase
+    - Tax
+    - Credit
+    - Adjustment
+  primaryUnit: token
+  secondaryUnits:
+    - search
+    - container_hour
+    - session_hour
+focusColumns:
+  ServiceName: Anthropic API
+  ServiceCategory: AI and Machine Learning
+  ProviderName: Anthropic
+  PublisherName: Anthropic
+  InvoiceIssuerName: Anthropic
+  PricingCategory: Usage-Based
+  PricingUnit: MTok
+  BillingCurrency: USD
+meters:
+  - name: input_tokens
+    unit: token
+    aggregation: sum
+    dimensions:
+      - model
+      - workspace
+      - service_tier
+      - inference_geo
+  - name: output_tokens
+    unit: token
+    aggregation: sum
+    dimensions:
+      - model
+      - workspace
+      - service_tier
+      - inference_geo
+  - name: cache_creation_input_tokens
+    unit: token
+    aggregation: sum
+    dimensions:
+      - model
+      - cache_ttl
+  - name: cache_read_input_tokens
+    unit: token
+    aggregation: sum
+    dimensions:
+      - model
+  - name: web_search_requests
+    unit: search
+    aggregation: sum
+    dimensions:
+      - workspace
+  - name: code_execution_container_hours
+    unit: container_hour
+    aggregation: sum
+    dimensions:
+      - workspace
+discountModels:
+  - name: Prompt caching
+    discount: Cache reads at 0.1x base input price
+  - name: Batch API
+    discount: 50% off both input and output tokens
+  - name: Volume / Enterprise
+    discount: Custom; contact sales
+unitEconomics:
+  - name: Cost per 1M input tokens (Sonnet)
+    metric: billed_cost / (input_tokens / 1_000_000)
+    target: $3.00
+  - name: Cache hit rate
+    metric: cache_read_input_tokens / total_input_tokens
+    target: '>50%'
+  - name: Effective input rate with caching
+    metric: (uncached_input * $3 + cached_input * $0.30) / total_input
+    target: <$1.50/MTok
+principles:
+  - name: Visibility
+    description: Use the Usage & Cost Admin API to surface per-workspace spend to teams in near real-time.
+  - name: Allocation
+    description: Tag requests with workspace, application, and feature dimensions for chargeback/showback.
+  - name: Optimization
+    description: Drive cache hit rates >50%, batch non-interactive workloads (50% discount), pick smallest
+      viable model.
+  - name: Accountability
+    description: Set per-workspace spend limits below tier ceilings to bound team budgets.

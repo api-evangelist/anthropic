@@ -1,0 +1,277 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Anthropic
+providerId: anthropic
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - AI
+  - LLM
+  - Claude
+  - Foundation Models
+description: 'Reconciled plans and per-token pricing for the Anthropic Claude API. Source: anthropic.com/pricing
+  and platform.claude.com docs.'
+sources:
+  - https://www.anthropic.com/pricing
+  - https://platform.claude.com/docs/en/docs/about-claude/pricing
+  - https://platform.claude.com/docs/en/api/rate-limits
+plans:
+  - id: anthropic-claude-opus-4-7
+    name: Claude Opus 4.7
+    type: usage-based
+    description: Most capable Claude model with 1M context support and fast mode.
+    entries:
+      - label: Input tokens
+        name: input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '5.00'
+        userMultiplied: false
+      - label: Output tokens
+        name: output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '25.00'
+        userMultiplied: false
+      - label: 5m cache write
+        name: cache_write_5m
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '6.25'
+        userMultiplied: false
+      - label: 1h cache write
+        name: cache_write_1h
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '10.00'
+        userMultiplied: false
+      - label: Cache read
+        name: cache_read
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '0.50'
+        userMultiplied: false
+      - label: Batch input
+        name: batch_input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '2.50'
+        userMultiplied: false
+      - label: Batch output
+        name: batch_output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '12.50'
+        userMultiplied: false
+    elements:
+      - name: 1M token context window
+      - name: Extended thinking
+      - name: Tool use
+      - name: Vision
+      - name: Prompt caching
+      - name: Batch processing (50% discount)
+  - id: anthropic-claude-sonnet-4-6
+    name: Claude Sonnet 4.6
+    type: usage-based
+    description: High-performance balanced model with 1M context window.
+    entries:
+      - label: Input tokens (<=200K)
+        name: input_under_200k
+        type: metered
+        metric: tokens
+        limit: 200000
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '3.00'
+        userMultiplied: false
+      - label: Input tokens (>200K)
+        name: input_over_200k
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '6.00'
+        userMultiplied: false
+      - label: Output tokens (<=200K)
+        name: output_under_200k
+        type: metered
+        metric: tokens
+        limit: 200000
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '15.00'
+        userMultiplied: false
+      - label: Output tokens (>200K)
+        name: output_over_200k
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '22.50'
+        userMultiplied: false
+      - label: 5m cache write
+        name: cache_write_5m
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '3.75'
+        userMultiplied: false
+      - label: 1h cache write
+        name: cache_write_1h
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '6.00'
+        userMultiplied: false
+      - label: Cache read
+        name: cache_read
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '0.30'
+        userMultiplied: false
+    elements:
+      - name: 1M token context window
+      - name: Extended thinking
+      - name: Vision
+      - name: Prompt caching
+  - id: anthropic-claude-haiku-4-5
+    name: Claude Haiku 4.5
+    type: usage-based
+    description: Fast, cost-effective model for high-volume everyday tasks.
+    entries:
+      - label: Input tokens
+        name: input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '1.00'
+        userMultiplied: false
+      - label: Output tokens
+        name: output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '5.00'
+        userMultiplied: false
+      - label: 5m cache write
+        name: cache_write_5m
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '1.25'
+        userMultiplied: false
+      - label: 1h cache write
+        name: cache_write_1h
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '2.00'
+        userMultiplied: false
+      - label: Cache read
+        name: cache_read
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '0.10'
+        userMultiplied: false
+    elements:
+      - name: Vision
+      - name: Tool use
+      - name: Prompt caching
+      - name: Batch processing
+  - id: anthropic-tool-web-search
+    name: Web Search Tool
+    type: metered-tool
+    description: Server-side web search tool for Claude.
+    entries:
+      - label: Web searches
+        name: web_search
+        type: metered
+        metric: searches
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000
+        price: '10.00'
+        userMultiplied: false
+    elements:
+      - name: Counted in addition to token cost
+  - id: anthropic-tool-code-execution
+    name: Code Execution Tool
+    type: metered-tool
+    description: Sandboxed Python execution. Free with web search/fetch; otherwise per-container/hr.
+    entries:
+      - label: Container hours
+        name: container_hours
+        type: metered
+        metric: container_hours
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1
+        price: '0.05'
+        userMultiplied: false
+    elements:
+      - name: 1,550 free hours/month per organization
+      - name: 5-minute minimum execution time
