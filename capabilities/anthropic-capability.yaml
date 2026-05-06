@@ -1,0 +1,738 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Anthropic Admin API
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  tags:
+  - Anthropic
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: anthropic
+    baseUri: https://api.anthropic.com/v1
+    description: Anthropic Admin API HTTP API.
+    authentication:
+      type: apikey
+      in: header
+      name: x-api-key
+      value: '{{ANTHROPIC_TOKEN}}'
+    resources:
+    - name: organizations-me
+      path: /organizations/me
+      operations:
+      - name: getcurrentorganization
+        method: GET
+        description: Anthropic Get Current Organization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-users
+      path: /organizations/users
+      operations:
+      - name: listorganizationmembers
+        method: GET
+        description: Anthropic List Organization Members
+        inputParameters:
+        - name: email
+          in: query
+          type: string
+          description: Filter by user email
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-users-user-id
+      path: /organizations/users/{user_id}
+      operations:
+      - name: getorganizationmember
+        method: GET
+        description: Anthropic Get Organization Member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateorganizationmember
+        method: POST
+        description: Anthropic Update Organization Member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: removeorganizationmember
+        method: DELETE
+        description: Anthropic Remove Organization Member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-invites
+      path: /organizations/invites
+      operations:
+      - name: listorganizationinvites
+        method: GET
+        description: Anthropic List Organization Invites
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createorganizationinvite
+        method: POST
+        description: Anthropic Create Organization Invite
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-invites-invite-id
+      path: /organizations/invites/{invite_id}
+      operations:
+      - name: getorganizationinvite
+        method: GET
+        description: Anthropic Get Organization Invite
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteorganizationinvite
+        method: DELETE
+        description: Anthropic Delete Organization Invite
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-workspaces
+      path: /organizations/workspaces
+      operations:
+      - name: listworkspaces
+        method: GET
+        description: Anthropic List Workspaces
+        inputParameters:
+        - name: include_archived
+          in: query
+          type: boolean
+          description: Whether to include archived workspaces in the response
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createworkspace
+        method: POST
+        description: Anthropic Create Workspace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-workspaces-workspace-id
+      path: /organizations/workspaces/{workspace_id}
+      operations:
+      - name: getworkspace
+        method: GET
+        description: Anthropic Get Workspace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateworkspace
+        method: POST
+        description: Anthropic Update Workspace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-workspaces-workspace-id-archive
+      path: /organizations/workspaces/{workspace_id}/archive
+      operations:
+      - name: archiveworkspace
+        method: POST
+        description: Anthropic Archive Workspace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-workspaces-workspace-id-members
+      path: /organizations/workspaces/{workspace_id}/members
+      operations:
+      - name: listworkspacemembers
+        method: GET
+        description: Anthropic List Workspace Members
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: addworkspacemember
+        method: POST
+        description: Anthropic Add Workspace Member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-workspaces-workspace-id-members-us
+      path: /organizations/workspaces/{workspace_id}/members/{user_id}
+      operations:
+      - name: getworkspacemember
+        method: GET
+        description: Anthropic Get Workspace Member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateworkspacemember
+        method: POST
+        description: Anthropic Update Workspace Member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: removeworkspacemember
+        method: DELETE
+        description: Anthropic Remove Workspace Member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-api-keys
+      path: /organizations/api_keys
+      operations:
+      - name: listapikeys
+        method: GET
+        description: Anthropic List Api Keys
+        inputParameters:
+        - name: workspace_id
+          in: query
+          type: string
+          description: Filter by workspace ID
+        - name: status
+          in: query
+          type: string
+          description: Filter by API key status
+        - name: created_by_user_id
+          in: query
+          type: string
+          description: Filter by the user who created the API key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-api-keys-api-key-id
+      path: /organizations/api_keys/{api_key_id}
+      operations:
+      - name: getapikey
+        method: GET
+        description: Anthropic Get Api Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateapikey
+        method: POST
+        description: Anthropic Update Api Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: anthropic-rest
+    description: REST adapter for Anthropic Admin API.
+    resources:
+    - path: /organizations/me
+      name: getcurrentorganization
+      operations:
+      - method: GET
+        name: getcurrentorganization
+        description: Anthropic Get Current Organization
+        call: anthropic.getcurrentorganization
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/users
+      name: listorganizationmembers
+      operations:
+      - method: GET
+        name: listorganizationmembers
+        description: Anthropic List Organization Members
+        call: anthropic.listorganizationmembers
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/users/{user_id}
+      name: getorganizationmember
+      operations:
+      - method: GET
+        name: getorganizationmember
+        description: Anthropic Get Organization Member
+        call: anthropic.getorganizationmember
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/users/{user_id}
+      name: updateorganizationmember
+      operations:
+      - method: POST
+        name: updateorganizationmember
+        description: Anthropic Update Organization Member
+        call: anthropic.updateorganizationmember
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/users/{user_id}
+      name: removeorganizationmember
+      operations:
+      - method: DELETE
+        name: removeorganizationmember
+        description: Anthropic Remove Organization Member
+        call: anthropic.removeorganizationmember
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/invites
+      name: listorganizationinvites
+      operations:
+      - method: GET
+        name: listorganizationinvites
+        description: Anthropic List Organization Invites
+        call: anthropic.listorganizationinvites
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/invites
+      name: createorganizationinvite
+      operations:
+      - method: POST
+        name: createorganizationinvite
+        description: Anthropic Create Organization Invite
+        call: anthropic.createorganizationinvite
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/invites/{invite_id}
+      name: getorganizationinvite
+      operations:
+      - method: GET
+        name: getorganizationinvite
+        description: Anthropic Get Organization Invite
+        call: anthropic.getorganizationinvite
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/invites/{invite_id}
+      name: deleteorganizationinvite
+      operations:
+      - method: DELETE
+        name: deleteorganizationinvite
+        description: Anthropic Delete Organization Invite
+        call: anthropic.deleteorganizationinvite
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/workspaces
+      name: listworkspaces
+      operations:
+      - method: GET
+        name: listworkspaces
+        description: Anthropic List Workspaces
+        call: anthropic.listworkspaces
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/workspaces
+      name: createworkspace
+      operations:
+      - method: POST
+        name: createworkspace
+        description: Anthropic Create Workspace
+        call: anthropic.createworkspace
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/workspaces/{workspace_id}
+      name: getworkspace
+      operations:
+      - method: GET
+        name: getworkspace
+        description: Anthropic Get Workspace
+        call: anthropic.getworkspace
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/workspaces/{workspace_id}
+      name: updateworkspace
+      operations:
+      - method: POST
+        name: updateworkspace
+        description: Anthropic Update Workspace
+        call: anthropic.updateworkspace
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/workspaces/{workspace_id}/archive
+      name: archiveworkspace
+      operations:
+      - method: POST
+        name: archiveworkspace
+        description: Anthropic Archive Workspace
+        call: anthropic.archiveworkspace
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/workspaces/{workspace_id}/members
+      name: listworkspacemembers
+      operations:
+      - method: GET
+        name: listworkspacemembers
+        description: Anthropic List Workspace Members
+        call: anthropic.listworkspacemembers
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/workspaces/{workspace_id}/members
+      name: addworkspacemember
+      operations:
+      - method: POST
+        name: addworkspacemember
+        description: Anthropic Add Workspace Member
+        call: anthropic.addworkspacemember
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/workspaces/{workspace_id}/members/{user_id}
+      name: getworkspacemember
+      operations:
+      - method: GET
+        name: getworkspacemember
+        description: Anthropic Get Workspace Member
+        call: anthropic.getworkspacemember
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/workspaces/{workspace_id}/members/{user_id}
+      name: updateworkspacemember
+      operations:
+      - method: POST
+        name: updateworkspacemember
+        description: Anthropic Update Workspace Member
+        call: anthropic.updateworkspacemember
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/workspaces/{workspace_id}/members/{user_id}
+      name: removeworkspacemember
+      operations:
+      - method: DELETE
+        name: removeworkspacemember
+        description: Anthropic Remove Workspace Member
+        call: anthropic.removeworkspacemember
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/api_keys
+      name: listapikeys
+      operations:
+      - method: GET
+        name: listapikeys
+        description: Anthropic List Api Keys
+        call: anthropic.listapikeys
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/api_keys/{api_key_id}
+      name: getapikey
+      operations:
+      - method: GET
+        name: getapikey
+        description: Anthropic Get Api Key
+        call: anthropic.getapikey
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/api_keys/{api_key_id}
+      name: updateapikey
+      operations:
+      - method: POST
+        name: updateapikey
+        description: Anthropic Update Api Key
+        call: anthropic.updateapikey
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: anthropic-mcp
+    transport: http
+    description: MCP adapter for Anthropic Admin API for AI agent use.
+    tools:
+    - name: getcurrentorganization
+      description: Anthropic Get Current Organization
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: anthropic.getcurrentorganization
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listorganizationmembers
+      description: Anthropic List Organization Members
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: anthropic.listorganizationmembers
+      with:
+        email: tools.email
+      inputParameters:
+      - name: email
+        type: string
+        description: Filter by user email
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getorganizationmember
+      description: Anthropic Get Organization Member
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: anthropic.getorganizationmember
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateorganizationmember
+      description: Anthropic Update Organization Member
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: anthropic.updateorganizationmember
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: removeorganizationmember
+      description: Anthropic Remove Organization Member
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: anthropic.removeorganizationmember
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listorganizationinvites
+      description: Anthropic List Organization Invites
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: anthropic.listorganizationinvites
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createorganizationinvite
+      description: Anthropic Create Organization Invite
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: anthropic.createorganizationinvite
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getorganizationinvite
+      description: Anthropic Get Organization Invite
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: anthropic.getorganizationinvite
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteorganizationinvite
+      description: Anthropic Delete Organization Invite
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: anthropic.deleteorganizationinvite
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listworkspaces
+      description: Anthropic List Workspaces
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: anthropic.listworkspaces
+      with:
+        include_archived: tools.include_archived
+      inputParameters:
+      - name: include_archived
+        type: boolean
+        description: Whether to include archived workspaces in the response
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createworkspace
+      description: Anthropic Create Workspace
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: anthropic.createworkspace
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getworkspace
+      description: Anthropic Get Workspace
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: anthropic.getworkspace
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateworkspace
+      description: Anthropic Update Workspace
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: anthropic.updateworkspace
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: archiveworkspace
+      description: Anthropic Archive Workspace
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: anthropic.archiveworkspace
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listworkspacemembers
+      description: Anthropic List Workspace Members
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: anthropic.listworkspacemembers
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: addworkspacemember
+      description: Anthropic Add Workspace Member
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: anthropic.addworkspacemember
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getworkspacemember
+      description: Anthropic Get Workspace Member
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: anthropic.getworkspacemember
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateworkspacemember
+      description: Anthropic Update Workspace Member
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: anthropic.updateworkspacemember
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: removeworkspacemember
+      description: Anthropic Remove Workspace Member
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: anthropic.removeworkspacemember
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listapikeys
+      description: Anthropic List Api Keys
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: anthropic.listapikeys
+      with:
+        workspace_id: tools.workspace_id
+        status: tools.status
+        created_by_user_id: tools.created_by_user_id
+      inputParameters:
+      - name: workspace_id
+        type: string
+        description: Filter by workspace ID
+      - name: status
+        type: string
+        description: Filter by API key status
+      - name: created_by_user_id
+        type: string
+        description: Filter by the user who created the API key
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getapikey
+      description: Anthropic Get Api Key
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: anthropic.getapikey
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateapikey
+      description: Anthropic Update Api Key
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: anthropic.updateapikey
+      outputParameters:
+      - type: object
+        mapping: $.
+binds:
+- namespace: env
+  keys:
+    ANTHROPIC_TOKEN: ANTHROPIC_TOKEN
