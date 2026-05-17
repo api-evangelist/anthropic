@@ -169,7 +169,7 @@ tags:
   - Foundation Models
   - Large Language Models
   - Machine Learning
-type: Contract
+kind: contract
 image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
 common:
