@@ -5,17 +5,15 @@
       "source": "https://www.anthropic.com/news",
       "feed_url": "",
       "title": "",
-      "saved": 0,
-      "error": "no_feed"
+      "saved": 1
     },
     {
       "source": "https://www.anthropic.com/engineering",
       "feed_url": "",
       "title": "",
-      "saved": 0,
-      "error": "no_feed"
+      "saved": 0
     }
   ],
-  "fetched": "2026-05-09T20:17:51Z",
-  "post_count": 0
+  "fetched": "",
+  "post_count": 1
 }
