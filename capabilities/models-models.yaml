@@ -1,0 +1,104 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Anthropic Models API — Models
+  description: 'Anthropic Models API — Models. 2 operations. Lead operation: Anthropic List Available Models. Self-contained
+    Naftiko capability covering one Anthropic business surface.'
+  tags:
+  - Anthropic
+  - Models
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ANTHROPIC_API_KEY: ANTHROPIC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: models-models
+    baseUri: https://api.anthropic.com
+    description: Anthropic Models API — Models business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-models
+      path: /v1/models
+      operations:
+      - name: listmodels
+        method: GET
+        description: Anthropic List Available Models
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-models-model_id
+      path: /v1/models/{model_id}
+      operations:
+      - name: getmodel
+        method: GET
+        description: Anthropic Get A Specific Model
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: x-api-key
+      value: '{{env.ANTHROPIC_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: models-models-rest
+    port: 8080
+    description: REST adapter for Anthropic Models API — Models. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v1/models
+      name: v1-models
+      description: REST surface for v1-models.
+      operations:
+      - method: GET
+        name: listmodels
+        description: Anthropic List Available Models
+        call: models-models.listmodels
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/models/{model-id}
+      name: v1-models-model-id
+      description: REST surface for v1-models-model_id.
+      operations:
+      - method: GET
+        name: getmodel
+        description: Anthropic Get A Specific Model
+        call: models-models.getmodel
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: models-models-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Anthropic Models API — Models. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: anthropic-list-available-models
+      description: Anthropic List Available Models
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: models-models.listmodels
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: anthropic-get-specific-model
+      description: Anthropic Get A Specific Model
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: models-models.getmodel
+      outputParameters:
+      - type: object
+        mapping: $.

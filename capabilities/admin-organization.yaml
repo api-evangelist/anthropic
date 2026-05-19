@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Anthropic Admin API — Organization
+  description: 'Anthropic Admin API — Organization. 1 operations. Lead operation: Anthropic Get Current Organization. Self-contained
+    Naftiko capability covering one Anthropic business surface.'
+  tags:
+  - Anthropic
+  - Organization
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ANTHROPIC_API_KEY: ANTHROPIC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-organization
+    baseUri: https://api.anthropic.com/v1
+    description: Anthropic Admin API — Organization business capability. Self-contained, no shared references.
+    resources:
+    - name: organizations-me
+      path: /organizations/me
+      operations:
+      - name: getcurrentorganization
+        method: GET
+        description: Anthropic Get Current Organization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: x-api-key
+      value: '{{env.ANTHROPIC_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: admin-organization-rest
+    port: 8080
+    description: REST adapter for Anthropic Admin API — Organization. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/organizations/me
+      name: organizations-me
+      description: REST surface for organizations-me.
+      operations:
+      - method: GET
+        name: getcurrentorganization
+        description: Anthropic Get Current Organization
+        call: admin-organization.getcurrentorganization
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-organization-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Anthropic Admin API — Organization. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: anthropic-get-current-organization
+      description: Anthropic Get Current Organization
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-organization.getcurrentorganization
+      outputParameters:
+      - type: object
+        mapping: $.

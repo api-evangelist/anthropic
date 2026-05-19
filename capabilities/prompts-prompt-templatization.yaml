@@ -1,0 +1,82 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Anthropic Prompt Tools API — Prompt Templatization
+  description: 'Anthropic Prompt Tools API — Prompt Templatization. 1 operations. Lead operation: Anthropic Templatize A Prompt.
+    Self-contained Naftiko capability covering one Anthropic business surface.'
+  tags:
+  - Anthropic
+  - Prompt Templatization
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ANTHROPIC_API_KEY: ANTHROPIC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: prompts-prompt-templatization
+    baseUri: https://api.anthropic.com
+    description: Anthropic Prompt Tools API — Prompt Templatization business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-experimental-templatize_prompt
+      path: /v1/experimental/templatize_prompt
+      operations:
+      - name: templatizeprompt
+        method: POST
+        description: Anthropic Templatize A Prompt
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: x-api-key
+      value: '{{env.ANTHROPIC_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: prompts-prompt-templatization-rest
+    port: 8080
+    description: REST adapter for Anthropic Prompt Tools API — Prompt Templatization. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/v1/experimental/templatize-prompt
+      name: v1-experimental-templatize-prompt
+      description: REST surface for v1-experimental-templatize_prompt.
+      operations:
+      - method: POST
+        name: templatizeprompt
+        description: Anthropic Templatize A Prompt
+        call: prompts-prompt-templatization.templatizeprompt
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: prompts-prompt-templatization-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Anthropic Prompt Tools API — Prompt Templatization. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: anthropic-templatize-prompt
+      description: Anthropic Templatize A Prompt
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: prompts-prompt-templatization.templatizeprompt
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

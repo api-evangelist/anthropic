@@ -1,0 +1,199 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Anthropic Admin API — Workspace Members
+  description: 'Anthropic Admin API — Workspace Members. 5 operations. Lead operation: Anthropic List Workspace Members. Self-contained
+    Naftiko capability covering one Anthropic business surface.'
+  tags:
+  - Anthropic
+  - Workspace Members
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ANTHROPIC_API_KEY: ANTHROPIC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-workspace-members
+    baseUri: https://api.anthropic.com/v1
+    description: Anthropic Admin API — Workspace Members business capability. Self-contained, no shared references.
+    resources:
+    - name: organizations-workspaces-workspace_id-members
+      path: /organizations/workspaces/{workspace_id}/members
+      operations:
+      - name: listworkspacemembers
+        method: GET
+        description: Anthropic List Workspace Members
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: addworkspacemember
+        method: POST
+        description: Anthropic Add Workspace Member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: organizations-workspaces-workspace_id-members-user_id
+      path: /organizations/workspaces/{workspace_id}/members/{user_id}
+      operations:
+      - name: getworkspacemember
+        method: GET
+        description: Anthropic Get Workspace Member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateworkspacemember
+        method: POST
+        description: Anthropic Update Workspace Member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: removeworkspacemember
+        method: DELETE
+        description: Anthropic Remove Workspace Member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: x-api-key
+      value: '{{env.ANTHROPIC_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: admin-workspace-members-rest
+    port: 8080
+    description: REST adapter for Anthropic Admin API — Workspace Members. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/organizations/workspaces/{workspace-id}/members
+      name: organizations-workspaces-workspace-id-members
+      description: REST surface for organizations-workspaces-workspace_id-members.
+      operations:
+      - method: GET
+        name: listworkspacemembers
+        description: Anthropic List Workspace Members
+        call: admin-workspace-members.listworkspacemembers
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: addworkspacemember
+        description: Anthropic Add Workspace Member
+        call: admin-workspace-members.addworkspacemember
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/organizations/workspaces/{workspace-id}/members/{user-id}
+      name: organizations-workspaces-workspace-id-members-user-id
+      description: REST surface for organizations-workspaces-workspace_id-members-user_id.
+      operations:
+      - method: GET
+        name: getworkspacemember
+        description: Anthropic Get Workspace Member
+        call: admin-workspace-members.getworkspacemember
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateworkspacemember
+        description: Anthropic Update Workspace Member
+        call: admin-workspace-members.updateworkspacemember
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: removeworkspacemember
+        description: Anthropic Remove Workspace Member
+        call: admin-workspace-members.removeworkspacemember
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-workspace-members-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Anthropic Admin API — Workspace Members. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: anthropic-list-workspace-members
+      description: Anthropic List Workspace Members
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-workspace-members.listworkspacemembers
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: anthropic-add-workspace-member
+      description: Anthropic Add Workspace Member
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: admin-workspace-members.addworkspacemember
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: anthropic-get-workspace-member
+      description: Anthropic Get Workspace Member
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-workspace-members.getworkspacemember
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: anthropic-update-workspace-member
+      description: Anthropic Update Workspace Member
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: admin-workspace-members.updateworkspacemember
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: anthropic-remove-workspace-member
+      description: Anthropic Remove Workspace Member
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: admin-workspace-members.removeworkspacemember
+      outputParameters:
+      - type: object
+        mapping: $.
