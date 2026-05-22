@@ -1,0 +1,339 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Skills API
+  description: >
+    Create and manage custom Agent Skills for use with Claude. Skills package
+    domain expertise and organizational workflows as filesystem-based
+    resources (SKILL.md, scripts, references) that Claude loads on demand
+    via progressive disclosure. The Skills API is currently in beta and
+    requires the skills-2025-10-02 beta header. Workspace-wide sharing model.
+  version: 2025-10-02
+  contact:
+    name: Anthropic Support
+    url: https://support.claude.com
+  license:
+    name: Anthropic Terms of Service
+    url: https://www.anthropic.com/terms
+servers:
+  - url: https://api.anthropic.com
+    description: Production Server
+security:
+  - ApiKeyAuth: []
+tags:
+  - name: Skills
+    description: Create, list, retrieve, update, and delete Skills
+  - name: Skill Versions
+    description: Manage versions of a Skill
+paths:
+  /v1/skills:
+    post:
+      summary: Anthropic Create Skill
+      description: >
+        Upload a new Skill as a zip archive containing SKILL.md plus any
+        supporting files. The Skill is added to the workspace catalog and
+        becomes available to all workspace members.
+      operationId: createSkill
+      tags:
+        - Skills
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateSkillRequest'
+      responses:
+        '200':
+          description: Skill created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Skill'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+    get:
+      summary: Anthropic List Skills
+      description: Paginated list of all Skills in the current workspace.
+      operationId: listSkills
+      tags:
+        - Skills
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/BeforeId'
+        - $ref: '#/components/parameters/AfterId'
+      responses:
+        '200':
+          description: List of Skills.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillList'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+  /v1/skills/{skill_id}:
+    get:
+      summary: Anthropic Get Skill
+      description: Retrieve metadata for a single Skill.
+      operationId: getSkill
+      tags:
+        - Skills
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/SkillIdPath'
+      responses:
+        '200':
+          description: Skill metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Skill'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+    delete:
+      summary: Anthropic Delete Skill
+      description: Delete a Skill from the workspace. All versions are removed.
+      operationId: deleteSkill
+      tags:
+        - Skills
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/SkillIdPath'
+      responses:
+        '200':
+          description: Skill deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+  /v1/skills/{skill_id}/versions:
+    get:
+      summary: Anthropic List Skill Versions
+      description: Paginated list of versions for the given Skill.
+      operationId: listSkillVersions
+      tags:
+        - Skill Versions
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/SkillIdPath'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: List of Skill versions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillVersionList'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      summary: Anthropic Create Skill Version
+      description: Upload a new version of an existing Skill.
+      operationId: createSkillVersion
+      tags:
+        - Skill Versions
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/SkillIdPath'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateSkillVersionRequest'
+      responses:
+        '200':
+          description: Skill version created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillVersion'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+  /v1/skills/{skill_id}/versions/{version}:
+    get:
+      summary: Anthropic Get Skill Version
+      description: Retrieve metadata for a specific Skill version.
+      operationId: getSkillVersion
+      tags:
+        - Skill Versions
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/SkillIdPath'
+        - $ref: '#/components/parameters/VersionPath'
+      responses:
+        '200':
+          description: Skill version metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillVersion'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+  parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: "2023-06-01"
+    AnthropicBeta:
+      name: anthropic-beta
+      in: header
+      required: true
+      description: Must include skills-2025-10-02.
+      schema:
+        type: string
+        default: skills-2025-10-02
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    BeforeId:
+      name: before_id
+      in: query
+      required: false
+      schema:
+        type: string
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      schema:
+        type: string
+    SkillIdPath:
+      name: skill_id
+      in: path
+      required: true
+      schema:
+        type: string
+    VersionPath:
+      name: version
+      in: path
+      required: true
+      schema:
+        type: string
+  schemas:
+    CreateSkillRequest:
+      type: object
+      required:
+        - skill_archive
+      properties:
+        skill_archive:
+          type: string
+          format: binary
+          description: Zip archive containing SKILL.md and supporting files.
+    CreateSkillVersionRequest:
+      type: object
+      required:
+        - skill_archive
+      properties:
+        skill_archive:
+          type: string
+          format: binary
+    Skill:
+      type: object
+      properties:
+        id:
+          type: string
+          example: skill_01ABC...
+        type:
+          type: string
+          example: skill
+        display_title:
+          type: string
+        description:
+          type: string
+        latest_version:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    SkillList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+        has_more:
+          type: boolean
+        first_id:
+          type: string
+        last_id:
+          type: string
+    SkillVersion:
+      type: object
+      properties:
+        id:
+          type: string
+        skill_id:
+          type: string
+        version:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        size_bytes:
+          type: integer
+    SkillVersionList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillVersion'
+        has_more:
+          type: boolean
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          example: skill_deleted
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+            message:
+              type: string
+  responses:
+    ErrorResponse:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

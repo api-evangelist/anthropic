@@ -1,0 +1,146 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Anthropic Usage and Cost API — Reporting
+  description: 'Anthropic Usage & Cost Admin API. 2 operations. Lead operation: Get
+    Messages Usage Report. Self-contained Naftiko capability for FinOps reporting —
+    pulls token usage and USD cost breakdowns by day, model, workspace, and service
+    tier. Requires an Admin API key.'
+  tags:
+  - Anthropic
+  - Usage
+  - Cost
+  - FinOps
+  - Administration
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    ANTHROPIC_ADMIN_API_KEY: ANTHROPIC_ADMIN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: usage-cost-reporting
+    baseUri: https://api.anthropic.com
+    description: Anthropic Admin Usage and Cost reporting endpoints. Returns aggregated
+      token consumption and USD service charges with rich grouping (workspace,
+      api_key, model, service_tier, context_window).
+    headers:
+      anthropic-version: '2023-06-01'
+    resources:
+    - name: v1-usage-report-messages
+      path: /v1/organizations/usage_report/messages
+      operations:
+      - name: getmessagesusagereport
+        method: GET
+        description: Anthropic Get Messages Usage Report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: starting_at
+          in: query
+          type: string
+          required: true
+        - name: ending_at
+          in: query
+          type: string
+        - name: bucket_width
+          in: query
+          type: string
+        - name: group_by
+          in: query
+          type: array
+        - name: models
+          in: query
+          type: array
+        - name: workspace_ids
+          in: query
+          type: array
+    - name: v1-cost-report
+      path: /v1/organizations/cost_report
+      operations:
+      - name: getcostreport
+        method: GET
+        description: Anthropic Get Cost Report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: starting_at
+          in: query
+          type: string
+          required: true
+        - name: ending_at
+          in: query
+          type: string
+        - name: bucket_width
+          in: query
+          type: string
+        - name: group_by
+          in: query
+          type: array
+        - name: workspace_ids
+          in: query
+          type: array
+    authentication:
+      type: apikey
+      key: x-api-key
+      value: '{{env.ANTHROPIC_ADMIN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: usage-cost-reporting-rest
+    port: 8080
+    description: REST adapter for Usage and Cost API.
+    resources:
+    - path: /v1/organizations/usage_report/messages
+      name: v1-usage-report-messages
+      description: REST surface for messages usage report.
+      operations:
+      - method: GET
+        name: getmessagesusagereport
+        description: Anthropic Get Messages Usage Report
+        call: usage-cost-reporting.getmessagesusagereport
+    - path: /v1/organizations/cost_report
+      name: v1-cost-report
+      description: REST surface for cost report.
+      operations:
+      - method: GET
+        name: getcostreport
+        description: Anthropic Get Cost Report
+        call: usage-cost-reporting.getcostreport
+  - type: mcp
+    namespace: usage-cost-reporting-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Usage and Cost API.
+    tools:
+    - name: anthropic-get-messages-usage-report
+      description: Anthropic Get Messages Usage Report
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: usage-cost-reporting.getmessagesusagereport
+      with:
+        starting_at: tools.starting_at
+        ending_at: tools.ending_at
+        bucket_width: tools.bucket_width
+        group_by: tools.group_by
+    - name: anthropic-get-cost-report
+      description: Anthropic Get Cost Report
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: usage-cost-reporting.getcostreport
+      with:
+        starting_at: tools.starting_at
+        ending_at: tools.ending_at
+        bucket_width: tools.bucket_width
+        group_by: tools.group_by

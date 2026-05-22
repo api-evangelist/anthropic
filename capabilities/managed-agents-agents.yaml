@@ -1,0 +1,137 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Anthropic Managed Agents API — Agents
+  description: 'Claude Managed Agents — Agents resource. 5 operations. Lead operation:
+    Create Agent. Define reusable, versioned agent configurations (model, system,
+    tools, MCP servers, skills) that can be referenced from Sessions. Requires the
+    managed-agents-2026-04-01 beta header.'
+  tags:
+  - Anthropic
+  - Agents
+  - Managed Agents
+  - Beta
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    ANTHROPIC_API_KEY: ANTHROPIC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: managed-agents-agents
+    baseUri: https://api.anthropic.com
+    description: CRUD and version management for Claude Managed Agents.
+    headers:
+      anthropic-version: '2023-06-01'
+      anthropic-beta: managed-agents-2026-04-01
+    resources:
+    - name: v1-agents
+      path: /v1/agents
+      operations:
+      - name: createagent
+        method: POST
+        description: Anthropic Create Agent
+        outputRawFormat: json
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+      - name: listagents
+        method: GET
+        description: Anthropic List Agents
+        outputRawFormat: json
+    - name: v1-agents-id
+      path: /v1/agents/{agent_id}
+      operations:
+      - name: getagent
+        method: GET
+        description: Anthropic Get Agent
+        outputRawFormat: json
+        inputParameters:
+        - name: agent_id
+          in: path
+          type: string
+          required: true
+      - name: updateagent
+        method: POST
+        description: Anthropic Update Agent
+        outputRawFormat: json
+        inputParameters:
+        - name: agent_id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          required: true
+    - name: v1-agents-archive
+      path: /v1/agents/{agent_id}/archive
+      operations:
+      - name: archiveagent
+        method: POST
+        description: Anthropic Archive Agent
+        outputRawFormat: json
+        inputParameters:
+        - name: agent_id
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: apikey
+      key: x-api-key
+      value: '{{env.ANTHROPIC_API_KEY}}'
+      placement: header
+  exposes:
+  - type: mcp
+    namespace: managed-agents-agents-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Managed Agents — Agents.
+    tools:
+    - name: anthropic-create-agent
+      description: Anthropic Create Agent
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: managed-agents-agents.createagent
+      with:
+        body: tools.body
+    - name: anthropic-list-agents
+      description: Anthropic List Agents
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: managed-agents-agents.listagents
+    - name: anthropic-get-agent
+      description: Anthropic Get Agent
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: managed-agents-agents.getagent
+      with:
+        agent_id: tools.agent_id
+    - name: anthropic-update-agent
+      description: Anthropic Update Agent
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: managed-agents-agents.updateagent
+      with:
+        agent_id: tools.agent_id
+        body: tools.body
+    - name: anthropic-archive-agent
+      description: Anthropic Archive Agent
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: managed-agents-agents.archiveagent
+      with:
+        agent_id: tools.agent_id

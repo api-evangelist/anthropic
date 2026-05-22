@@ -4,7 +4,7 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Anthropic
 providerId: anthropic
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-22'
 reconciled: true
 tags:
   - AI
@@ -31,7 +31,7 @@ algorithm: token-bucket
 spendLimits:
   - tier: Tier 1
     creditPurchase: $5
-    monthlyCap: $100
+    monthlyCap: $500
   - tier: Tier 2
     creditPurchase: $40
     monthlyCap: $500
@@ -48,8 +48,8 @@ limits:
   - tier: Tier 1
     model: Claude Opus 4.x
     rpm: 50
-    itpm: 30000
-    otpm: 8000
+    itpm: 500000
+    otpm: 80000
   - tier: Tier 1
     model: Claude Sonnet 4.x
     rpm: 50
@@ -63,8 +63,8 @@ limits:
   - tier: Tier 2
     model: Claude Opus 4.x
     rpm: 1000
-    itpm: 450000
-    otpm: 90000
+    itpm: 2000000
+    otpm: 200000
   - tier: Tier 2
     model: Claude Sonnet 4.x
     rpm: 1000
@@ -78,8 +78,8 @@ limits:
   - tier: Tier 3
     model: Claude Opus 4.x
     rpm: 2000
-    itpm: 800000
-    otpm: 160000
+    itpm: 5000000
+    otpm: 400000
   - tier: Tier 3
     model: Claude Sonnet 4.x
     rpm: 2000
@@ -93,8 +93,8 @@ limits:
   - tier: Tier 4
     model: Claude Opus 4.x
     rpm: 4000
-    itpm: 2000000
-    otpm: 400000
+    itpm: 10000000
+    otpm: 800000
   - tier: Tier 4
     model: Claude Sonnet 4.x
     rpm: 4000

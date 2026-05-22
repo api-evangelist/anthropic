@@ -5,15 +5,21 @@
       "source": "https://www.anthropic.com/news",
       "feed_url": "",
       "title": "",
-      "saved": 1
+      "saved": 5
     },
     {
       "source": "https://www.anthropic.com/engineering",
       "feed_url": "",
       "title": "",
-      "saved": 0
+      "saved": 1
+    },
+    {
+      "source": "https://platform.claude.com/docs/en/release-notes/api",
+      "feed_url": "",
+      "title": "",
+      "saved": 2
     }
   ],
-  "fetched": "",
-  "post_count": 1
+  "fetched": "2026-05-22",
+  "post_count": 8
 }

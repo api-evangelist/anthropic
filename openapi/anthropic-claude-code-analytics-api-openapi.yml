@@ -1,0 +1,224 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Claude Code Analytics API
+  description: >
+    Programmatically access your organization's Claude Code usage analytics
+    and productivity metrics. Track sessions, lines of code, commits,
+    pull requests, and tool usage with daily aggregated user-level data and
+    model breakdowns. Requires an Admin API key (sk-ant-admin...).
+  version: 2023-06-01
+  contact:
+    name: Anthropic Support
+    url: https://support.claude.com
+  license:
+    name: Anthropic Terms of Service
+    url: https://www.anthropic.com/terms
+servers:
+  - url: https://api.anthropic.com
+    description: Production Server
+security:
+  - AdminApiKeyAuth: []
+tags:
+  - name: Claude Code Analytics
+    description: Daily aggregated Claude Code usage and productivity metrics
+paths:
+  /v1/organizations/usage_report/claude_code:
+    get:
+      summary: Anthropic Get Claude Code Usage Report
+      description: >
+        Daily aggregated user-level Claude Code usage including session
+        counts, lines of code added/removed, commits, pull requests created,
+        tool actions, and estimated costs by model.
+      operationId: getClaudeCodeUsageReport
+      tags:
+        - Claude Code Analytics
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/StartingAt'
+        - $ref: '#/components/parameters/EndingAt'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: Claude Code analytics report.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaudeCodeUsageReport'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+  parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: "2023-06-01"
+    StartingAt:
+      name: starting_at
+      in: query
+      required: true
+      description: RFC3339 inclusive lower bound (UTC date) for the report window.
+      schema:
+        type: string
+        format: date-time
+    EndingAt:
+      name: ending_at
+      in: query
+      required: false
+      description: RFC3339 exclusive upper bound (UTC date) for the report window.
+      schema:
+        type: string
+        format: date-time
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 20
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: string
+  schemas:
+    ClaudeCodeUsageReport:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+              actor:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: user_actor
+                  email_address:
+                    type: string
+                  user_id:
+                    type: string
+                    nullable: true
+              organization_id:
+                type: string
+              terminal_type:
+                type: string
+                nullable: true
+              core_metrics:
+                type: object
+                properties:
+                  num_sessions:
+                    type: integer
+                  lines_of_code:
+                    type: object
+                    properties:
+                      added:
+                        type: integer
+                      removed:
+                        type: integer
+                  commits_by_claude_code:
+                    type: integer
+                  pull_requests_by_claude_code:
+                    type: integer
+              tool_actions:
+                type: object
+                properties:
+                  edit_tool:
+                    type: object
+                    properties:
+                      accepted:
+                        type: integer
+                      rejected:
+                        type: integer
+                  multi_edit_tool:
+                    type: object
+                    properties:
+                      accepted:
+                        type: integer
+                      rejected:
+                        type: integer
+                  write_tool:
+                    type: object
+                    properties:
+                      accepted:
+                        type: integer
+                      rejected:
+                        type: integer
+                  notebook_edit_tool:
+                    type: object
+                    properties:
+                      accepted:
+                        type: integer
+                      rejected:
+                        type: integer
+              model_breakdown:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    model:
+                      type: string
+                    tokens:
+                      type: object
+                      properties:
+                        input:
+                          type: integer
+                        output:
+                          type: integer
+                        cache_read:
+                          type: integer
+                        cache_creation:
+                          type: object
+                          properties:
+                            ephemeral_5m_input_tokens:
+                              type: integer
+                            ephemeral_1h_input_tokens:
+                              type: integer
+                    estimated_cost:
+                      type: object
+                      properties:
+                        currency:
+                          type: string
+                          default: USD
+                        amount:
+                          type: string
+        has_more:
+          type: boolean
+        next_page:
+          type: string
+          nullable: true
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+            message:
+              type: string
+  responses:
+    ErrorResponse:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

@@ -1,0 +1,743 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Managed Agents API
+  description: >
+    Claude Managed Agents is a fully managed agent harness for running Claude
+    as an autonomous agent with secure sandboxing, built-in tools, and
+    server-sent event streaming. Define reusable, versioned Agents, configure
+    Environments (cloud containers or self-hosted sandboxes), and run
+    stateful Sessions that perform long-running tasks. All endpoints require
+    the managed-agents-2026-04-01 beta header.
+  version: 2026-04-01
+  contact:
+    name: Anthropic Support
+    url: https://support.claude.com
+  license:
+    name: Anthropic Terms of Service
+    url: https://www.anthropic.com/terms
+servers:
+  - url: https://api.anthropic.com
+    description: Production Server
+security:
+  - ApiKeyAuth: []
+tags:
+  - name: Agents
+    description: Reusable, versioned agent configurations
+  - name: Sessions
+    description: Stateful agent execution instances
+  - name: Environments
+    description: Container configuration for agent sessions
+  - name: Events
+    description: User messages and tool results sent to a session
+paths:
+  /v1/agents:
+    post:
+      summary: Anthropic Create Agent
+      description: Define a reusable, versioned agent.
+      operationId: createAgent
+      tags:
+        - Agents
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAgentRequest'
+      responses:
+        '200':
+          description: Agent created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+    get:
+      summary: Anthropic List Agents
+      description: Paginated list of agents in the workspace.
+      operationId: listAgents
+      tags:
+        - Agents
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: List of agents.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentList'
+  /v1/agents/{agent_id}:
+    get:
+      summary: Anthropic Get Agent
+      description: Retrieve an agent's latest version.
+      operationId: getAgent
+      tags:
+        - Agents
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/AgentIdPath'
+      responses:
+        '200':
+          description: Agent retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+    post:
+      summary: Anthropic Update Agent
+      description: >
+        Update an agent. Pass the current version to optimistically lock the
+        update. A new version is created when fields change.
+      operationId: updateAgent
+      tags:
+        - Agents
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/AgentIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAgentRequest'
+      responses:
+        '200':
+          description: Agent updated; new version returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+  /v1/agents/{agent_id}/archive:
+    post:
+      summary: Anthropic Archive Agent
+      description: Archive an agent; existing sessions continue running.
+      operationId: archiveAgent
+      tags:
+        - Agents
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/AgentIdPath'
+      responses:
+        '200':
+          description: Agent archived.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+  /v1/agents/{agent_id}/versions:
+    get:
+      summary: Anthropic List Agent Versions
+      description: Full version history for the agent.
+      operationId: listAgentVersions
+      tags:
+        - Agents
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/AgentIdPath'
+      responses:
+        '200':
+          description: Agent versions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentList'
+  /v1/environments:
+    post:
+      summary: Anthropic Create Environment
+      description: Create a container configuration for sessions.
+      operationId: createEnvironment
+      tags:
+        - Environments
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEnvironmentRequest'
+      responses:
+        '200':
+          description: Environment created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+    get:
+      summary: Anthropic List Environments
+      description: Paginated list of environments.
+      operationId: listEnvironments
+      tags:
+        - Environments
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+      responses:
+        '200':
+          description: Environments.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvironmentList'
+  /v1/environments/{environment_id}:
+    get:
+      summary: Anthropic Get Environment
+      operationId: getEnvironment
+      tags:
+        - Environments
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/EnvironmentIdPath'
+      responses:
+        '200':
+          description: Environment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+    delete:
+      summary: Anthropic Delete Environment
+      operationId: deleteEnvironment
+      tags:
+        - Environments
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/EnvironmentIdPath'
+      responses:
+        '200':
+          description: Environment deleted.
+  /v1/environments/{environment_id}/archive:
+    post:
+      summary: Anthropic Archive Environment
+      operationId: archiveEnvironment
+      tags:
+        - Environments
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/EnvironmentIdPath'
+      responses:
+        '200':
+          description: Environment archived.
+  /v1/sessions:
+    post:
+      summary: Anthropic Create Session
+      description: Create a stateful agent execution instance.
+      operationId: createSession
+      tags:
+        - Sessions
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSessionRequest'
+      responses:
+        '200':
+          description: Session created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+    get:
+      summary: Anthropic List Sessions
+      operationId: listSessions
+      tags:
+        - Sessions
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - name: agent_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - idle
+              - running
+              - rescheduling
+              - terminated
+      responses:
+        '200':
+          description: Sessions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionList'
+  /v1/sessions/{session_id}:
+    get:
+      summary: Anthropic Get Session
+      operationId: getSession
+      tags:
+        - Sessions
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/SessionIdPath'
+      responses:
+        '200':
+          description: Session.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+    post:
+      summary: Anthropic Update Session
+      description: Update a session's tools, mcp_servers, or other config.
+      operationId: updateSession
+      tags:
+        - Sessions
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/SessionIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Session updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+    delete:
+      summary: Anthropic Delete Session
+      operationId: deleteSession
+      tags:
+        - Sessions
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/SessionIdPath'
+      responses:
+        '200':
+          description: Session deleted.
+  /v1/sessions/{session_id}/archive:
+    post:
+      summary: Anthropic Archive Session
+      operationId: archiveSession
+      tags:
+        - Sessions
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/SessionIdPath'
+      responses:
+        '200':
+          description: Session archived.
+  /v1/sessions/{session_id}/events:
+    post:
+      summary: Anthropic Send Session Events
+      description: >
+        Send user events to drive session execution. Event types include
+        user.message, tool.result, and interrupt.
+      operationId: sendSessionEvents
+      tags:
+        - Events
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/SessionIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventBatch'
+      responses:
+        '200':
+          description: Events accepted.
+  /v1/sessions/{session_id}/stream:
+    get:
+      summary: Anthropic Stream Session Events
+      description: >
+        Server-sent events stream of agent execution: assistant messages,
+        tool calls, tool results, and status changes.
+      operationId: streamSession
+      tags:
+        - Events
+      parameters:
+        - $ref: '#/components/parameters/AnthropicVersion'
+        - $ref: '#/components/parameters/AnthropicBeta'
+        - $ref: '#/components/parameters/SessionIdPath'
+      responses:
+        '200':
+          description: SSE stream of session events.
+          content:
+            text/event-stream:
+              schema:
+                type: string
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+  parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: "2023-06-01"
+    AnthropicBeta:
+      name: anthropic-beta
+      in: header
+      required: true
+      description: Must include managed-agents-2026-04-01.
+      schema:
+        type: string
+        default: managed-agents-2026-04-01
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 20
+    AgentIdPath:
+      name: agent_id
+      in: path
+      required: true
+      schema:
+        type: string
+    EnvironmentIdPath:
+      name: environment_id
+      in: path
+      required: true
+      schema:
+        type: string
+    SessionIdPath:
+      name: session_id
+      in: path
+      required: true
+      schema:
+        type: string
+  schemas:
+    CreateAgentRequest:
+      type: object
+      required:
+        - name
+        - model
+      properties:
+        name:
+          type: string
+          example: Coding Assistant
+        model:
+          oneOf:
+            - type: string
+              example: claude-opus-4-7
+            - type: object
+              properties:
+                id:
+                  type: string
+                speed:
+                  type: string
+                  enum:
+                    - standard
+                    - fast
+        system:
+          type: string
+        description:
+          type: string
+        tools:
+          type: array
+          items:
+            type: object
+        mcp_servers:
+          type: array
+          items:
+            type: object
+        skills:
+          type: array
+          items:
+            type: object
+        multiagent:
+          type: object
+        metadata:
+          type: object
+    UpdateAgentRequest:
+      type: object
+      required:
+        - version
+      properties:
+        version:
+          type: integer
+        name:
+          type: string
+        model:
+          oneOf:
+            - type: string
+            - type: object
+        system:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        tools:
+          type: array
+          items:
+            type: object
+        mcp_servers:
+          type: array
+          items:
+            type: object
+        skills:
+          type: array
+          items:
+            type: object
+        metadata:
+          type: object
+    Agent:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          example: agent
+        name:
+          type: string
+        model:
+          type: object
+          properties:
+            id:
+              type: string
+            speed:
+              type: string
+        system:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        tools:
+          type: array
+          items:
+            type: object
+        skills:
+          type: array
+          items:
+            type: object
+        mcp_servers:
+          type: array
+          items:
+            type: object
+        metadata:
+          type: object
+        version:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        archived_at:
+          type: string
+          format: date-time
+          nullable: true
+    AgentList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Agent'
+        has_more:
+          type: boolean
+    CreateEnvironmentRequest:
+      type: object
+      required:
+        - name
+        - config
+      properties:
+        name:
+          type: string
+        config:
+          type: object
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum:
+                - cloud
+                - self_hosted
+            packages:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  type: string
+            networking:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - unrestricted
+                    - limited
+                allowed_hosts:
+                  type: array
+                  items:
+                    type: string
+                allow_mcp_servers:
+                  type: boolean
+                allow_package_managers:
+                  type: boolean
+    Environment:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          example: environment
+        name:
+          type: string
+        config:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        archived_at:
+          type: string
+          format: date-time
+          nullable: true
+    EnvironmentList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Environment'
+        has_more:
+          type: boolean
+    CreateSessionRequest:
+      type: object
+      required:
+        - agent
+        - environment_id
+      properties:
+        agent:
+          oneOf:
+            - type: string
+              description: Agent ID; uses the latest version.
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - agent
+                id:
+                  type: string
+                version:
+                  type: integer
+        environment_id:
+          type: string
+        vault_ids:
+          type: array
+          items:
+            type: string
+    Session:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          example: session
+        agent:
+          type: object
+        environment_id:
+          type: string
+        status:
+          type: string
+          enum:
+            - idle
+            - running
+            - rescheduling
+            - terminated
+        created_at:
+          type: string
+          format: date-time
+        archived_at:
+          type: string
+          format: date-time
+          nullable: true
+    SessionList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Session'
+        has_more:
+          type: boolean
+    EventBatch:
+      type: object
+      required:
+        - events
+      properties:
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - user.message
+                  - tool.result
+                  - interrupt
+              content:
+                type: array
+                items:
+                  type: object
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+            message:
+              type: string
+  responses:
+    ErrorResponse:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

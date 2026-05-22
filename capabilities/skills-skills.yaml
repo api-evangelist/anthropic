@@ -1,0 +1,166 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Anthropic Skills API — Skills
+  description: 'Anthropic Skills API — Skills. 7 operations. Lead operation: Create
+    Skill. Self-contained Naftiko capability covering one Anthropic business
+    surface for Agent Skills lifecycle management (skills-2025-10-02 beta).'
+  tags:
+  - Anthropic
+  - Skills
+  - Agents
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    ANTHROPIC_API_KEY: ANTHROPIC_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: skills-skills
+    baseUri: https://api.anthropic.com
+    description: Anthropic Skills API — Skills. Workspace-wide custom Skill catalog.
+    headers:
+      anthropic-beta: skills-2025-10-02
+      anthropic-version: '2023-06-01'
+    resources:
+    - name: v1-skills
+      path: /v1/skills
+      operations:
+      - name: createskill
+        method: POST
+        description: Anthropic Create Skill
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Skill archive multipart payload.
+          required: true
+      - name: listskills
+        method: GET
+        description: Anthropic List Skills
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-skills-id
+      path: /v1/skills/{skill_id}
+      operations:
+      - name: getskill
+        method: GET
+        description: Anthropic Get Skill
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: skill_id
+          in: path
+          type: string
+          required: true
+      - name: deleteskill
+        method: DELETE
+        description: Anthropic Delete Skill
+        outputRawFormat: json
+        inputParameters:
+        - name: skill_id
+          in: path
+          type: string
+          required: true
+    - name: v1-skills-versions
+      path: /v1/skills/{skill_id}/versions
+      operations:
+      - name: listskillversions
+        method: GET
+        description: Anthropic List Skill Versions
+        outputRawFormat: json
+        inputParameters:
+        - name: skill_id
+          in: path
+          type: string
+          required: true
+      - name: createskillversion
+        method: POST
+        description: Anthropic Create Skill Version
+        outputRawFormat: json
+        inputParameters:
+        - name: skill_id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          required: true
+    authentication:
+      type: apikey
+      key: x-api-key
+      value: '{{env.ANTHROPIC_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: skills-skills-rest
+    port: 8080
+    description: REST adapter for Anthropic Skills API.
+    resources:
+    - path: /v1/skills
+      name: v1-skills
+      description: REST surface for Skills.
+      operations:
+      - method: POST
+        name: createskill
+        description: Anthropic Create Skill
+        call: skills-skills.createskill
+        with:
+          body: rest.body
+      - method: GET
+        name: listskills
+        description: Anthropic List Skills
+        call: skills-skills.listskills
+  - type: mcp
+    namespace: skills-skills-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Anthropic Skills API.
+    tools:
+    - name: anthropic-create-skill
+      description: Anthropic Create Skill
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: skills-skills.createskill
+      with:
+        body: tools.body
+    - name: anthropic-list-skills
+      description: Anthropic List Skills
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: skills-skills.listskills
+    - name: anthropic-get-skill
+      description: Anthropic Get Skill
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: skills-skills.getskill
+      with:
+        skill_id: tools.skill_id
+    - name: anthropic-delete-skill
+      description: Anthropic Delete Skill
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: skills-skills.deleteskill
+      with:
+        skill_id: tools.skill_id

@@ -1,0 +1,86 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Anthropic Claude Code Analytics API — Analytics
+  description: 'Anthropic Claude Code Analytics Admin API. 1 operation. Lead operation:
+    Get Claude Code Usage Report. Returns daily aggregated user-level productivity
+    metrics: sessions, lines added/removed, commits, PRs, tool acceptance rates,
+    and estimated costs by model. Requires an Admin API key.'
+  tags:
+  - Anthropic
+  - Claude Code
+  - Analytics
+  - Administration
+  - Productivity
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    ANTHROPIC_ADMIN_API_KEY: ANTHROPIC_ADMIN_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: claude-code-analytics
+    baseUri: https://api.anthropic.com
+    description: Daily Claude Code usage breakdown by user, with tool acceptance
+      counts, edit metrics, and per-model cost estimates.
+    headers:
+      anthropic-version: '2023-06-01'
+    resources:
+    - name: v1-claude-code-report
+      path: /v1/organizations/usage_report/claude_code
+      operations:
+      - name: getclaudecodeusagereport
+        method: GET
+        description: Anthropic Get Claude Code Usage Report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: starting_at
+          in: query
+          type: string
+          required: true
+        - name: ending_at
+          in: query
+          type: string
+        - name: limit
+          in: query
+          type: integer
+    authentication:
+      type: apikey
+      key: x-api-key
+      value: '{{env.ANTHROPIC_ADMIN_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: claude-code-analytics-rest
+    port: 8080
+    description: REST adapter for Claude Code Analytics API.
+    resources:
+    - path: /v1/organizations/usage_report/claude_code
+      name: v1-claude-code-report
+      description: REST surface for Claude Code analytics.
+      operations:
+      - method: GET
+        name: getclaudecodeusagereport
+        description: Anthropic Get Claude Code Usage Report
+        call: claude-code-analytics.getclaudecodeusagereport
+  - type: mcp
+    namespace: claude-code-analytics-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Claude Code Analytics API.
+    tools:
+    - name: anthropic-get-claude-code-usage-report
+      description: Anthropic Get Claude Code Usage Report
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: claude-code-analytics.getclaudecodeusagereport
+      with:
+        starting_at: tools.starting_at
+        ending_at: tools.ending_at
