@@ -15,6 +15,8 @@ apis:
     type: Documentation
   - url: openapi/anthropic-messages-api-openapi.yml
     type: OpenAPI
+  - url: asyncapi/anthropic-asyncapi.yml
+    type: AsyncAPI
   - url: json-schema/anthropic-message-schema.json
     type: JSONSchema
   - url: json-schema/anthropic-tool-use-schema.json
@@ -803,7 +805,7 @@ common:
   - https://platform.claude.com/docs/en/managed-agents/overview
   updated: '2026-05-22'
 created: '2025-08-14T00:00:00.000Z'
-modified: '2026-05-22'
+modified: '2026-05-29'
 position: Consuming
 description: Anthropic is an AI safety company and creator of the Claude family of large language models (Opus,
   Sonnet, Haiku). The Claude API provides access to Claude models for text generation, vision, tool use, extended
