@@ -1,0 +1,119 @@
+arazzo: 1.0.1
+info:
+  title: Anthropic Provision and Promote a Workspace Member
+  summary: Create a workspace, add a member as a developer, then promote them to workspace admin.
+  description: >-
+    An Admin API role-escalation flow. The workflow creates a workspace, adds a
+    user as a workspace developer, and then promotes that same user to a higher
+    workspace role by updating their membership. Every step spells out its
+    request inline — including the inline admin x-api-key and anthropic-version
+    headers the spec defines — so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: adminApi
+  url: ../openapi/anthropic-admin-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: provision-and-promote-member
+  summary: Create a workspace, add a developer, then promote them.
+  description: >-
+    Creates a workspace, adds a user with the workspace_developer role, and then
+    updates that membership to the requested elevated role.
+  inputs:
+    type: object
+    required:
+    - adminApiKey
+    - workspaceName
+    - userId
+    - promotedRole
+    properties:
+      adminApiKey:
+        type: string
+        description: An Anthropic Admin API key (starts with sk-ant-admin...) sent in x-api-key.
+      workspaceName:
+        type: string
+        description: Name for the new workspace (1 to 40 characters).
+      userId:
+        type: string
+        description: The id of the user to add and then promote.
+      promotedRole:
+        type: string
+        description: >-
+          The elevated workspace role to promote the member to (e.g.
+          workspace_admin).
+  steps:
+  - stepId: createWorkspace
+    description: >-
+      Create a new workspace to provision the member into.
+    operationId: createWorkspace
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.adminApiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.workspaceName
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      workspaceId: $response.body#/id
+  - stepId: addDeveloper
+    description: >-
+      Add the user to the workspace at the workspace_developer role as the
+      starting access level.
+    operationId: addWorkspaceMember
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.adminApiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    - name: workspace_id
+      in: path
+      value: $steps.createWorkspace.outputs.workspaceId
+    requestBody:
+      contentType: application/json
+      payload:
+        user_id: $inputs.userId
+        workspace_role: workspace_developer
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      memberUserId: $response.body#/user_id
+      startingRole: $response.body#/workspace_role
+  - stepId: promoteMember
+    description: >-
+      Promote the member by updating their workspace membership to the requested
+      elevated role.
+    operationId: updateWorkspaceMember
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.adminApiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    - name: workspace_id
+      in: path
+      value: $steps.createWorkspace.outputs.workspaceId
+    - name: user_id
+      in: path
+      value: $steps.addDeveloper.outputs.memberUserId
+    requestBody:
+      contentType: application/json
+      payload:
+        workspace_role: $inputs.promotedRole
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      promotedRole: $response.body#/workspace_role
+  outputs:
+    workspaceId: $steps.createWorkspace.outputs.workspaceId
+    memberUserId: $steps.addDeveloper.outputs.memberUserId
+    promotedRole: $steps.promoteMember.outputs.promotedRole

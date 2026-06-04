@@ -1,0 +1,99 @@
+arazzo: 1.0.1
+info:
+  title: Anthropic Upload, List, and Clean Up a File
+  summary: Upload a file, confirm it appears in the file list, then delete it to clean up.
+  description: >-
+    A Files API housekeeping flow. The workflow uploads a file, lists the
+    organization's files to confirm the new upload is present, and then deletes
+    the uploaded file to clean up storage. Every step spells out its request
+    inline — including the inline anthropic-version header the spec defines — so
+    the flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: filesApi
+  url: ../openapi/anthropic-files-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: upload-list-cleanup-file
+  summary: Upload a file, verify it is listed, then delete it.
+  description: >-
+    Creates a file, lists files to confirm it is stored, and deletes the file
+    to leave storage clean.
+  inputs:
+    type: object
+    required:
+    - apiKey
+    - file
+    properties:
+      apiKey:
+        type: string
+        description: A valid Anthropic API key sent in the x-api-key header.
+      file:
+        type: string
+        description: The binary file contents to upload as multipart form data.
+  steps:
+  - stepId: uploadFile
+    description: >-
+      Upload a file to Anthropic's servers, sending the binary as multipart form
+      data.
+    operationId: createFile
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    requestBody:
+      contentType: multipart/form-data
+      payload:
+        file: $inputs.file
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      fileId: $response.body#/id
+      filename: $response.body#/filename
+  - stepId: listFiles
+    description: >-
+      List the files stored for the organization to confirm the freshly
+      uploaded file is present.
+    operationId: listFiles
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    - name: limit
+      in: query
+      value: 100
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstFileId: $response.body#/data/0/id
+      hasMore: $response.body#/has_more
+  - stepId: deleteFile
+    description: >-
+      Delete the uploaded file to clean up storage now that its presence has
+      been confirmed.
+    operationId: deleteFile
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    - name: file_id
+      in: path
+      value: $steps.uploadFile.outputs.fileId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      deletedId: $response.body#/id
+      deletedType: $response.body#/type
+  outputs:
+    fileId: $steps.uploadFile.outputs.fileId
+    deletedId: $steps.deleteFile.outputs.deletedId

@@ -1,0 +1,120 @@
+arazzo: 1.0.1
+info:
+  title: Anthropic Discover a Model and Send a Message
+  summary: List available models, confirm a chosen model exists, then create a message with it.
+  description: >-
+    A model-discovery to generation flow against the Anthropic Models API. The
+    workflow first lists the models available to the account, then resolves the
+    requested model alias to confirm it is usable, and finally sends a single
+    text message to that model and captures the generated content. Every step
+    spells out its request inline — including the inline x-api-key and
+    anthropic-version headers the spec defines — so the flow can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: modelsApi
+  url: ../openapi/anthropic-models-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: discover-model-and-message
+  summary: Pick an available model, validate it, and generate a message with it.
+  description: >-
+    Lists the available Claude models, confirms the requested model id resolves
+    via the Get Model endpoint, and then calls Create Message to generate a
+    response from that model.
+  inputs:
+    type: object
+    required:
+    - apiKey
+    - modelId
+    - prompt
+    properties:
+      apiKey:
+        type: string
+        description: A valid Anthropic API key sent in the x-api-key header.
+      modelId:
+        type: string
+        description: The model id or alias to validate and use (e.g. claude-sonnet-4-20250514).
+      prompt:
+        type: string
+        description: The user prompt text to send to the model.
+      maxTokens:
+        type: integer
+        description: Maximum number of tokens to generate.
+        default: 1024
+  steps:
+  - stepId: listModels
+    description: >-
+      List the models available to this account so a caller can confirm the
+      desired model is present before using it.
+    operationId: listModels
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    - name: limit
+      in: query
+      value: 20
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstModelId: $response.body#/data/0/id
+      hasMore: $response.body#/has_more
+  - stepId: validateModel
+    description: >-
+      Resolve the requested model id to confirm it exists and is available
+      before attempting to generate a message with it.
+    operationId: getModel
+    parameters:
+    - name: model_id
+      in: path
+      value: $inputs.modelId
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      resolvedModelId: $response.body#/id
+      displayName: $response.body#/display_name
+  - stepId: createMessage
+    description: >-
+      Send a single user message to the validated model and capture the
+      generated content and token usage.
+    operationId: createMessage
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    - name: Content-Type
+      in: header
+      value: application/json
+    requestBody:
+      contentType: application/json
+      payload:
+        model: $steps.validateModel.outputs.resolvedModelId
+        max_tokens: $inputs.maxTokens
+        messages:
+        - role: user
+          content: $inputs.prompt
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      messageId: $response.body#/id
+      content: $response.body#/content
+      stopReason: $response.body#/stop_reason
+      usage: $response.body#/usage
+  outputs:
+    resolvedModelId: $steps.validateModel.outputs.resolvedModelId
+    messageId: $steps.createMessage.outputs.messageId
+    content: $steps.createMessage.outputs.content
+    usage: $steps.createMessage.outputs.usage

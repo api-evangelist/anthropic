@@ -1,0 +1,117 @@
+arazzo: 1.0.1
+info:
+  title: Anthropic Create Workspace and Add a Member
+  summary: Create a workspace, add a user to it, then confirm the member appears in the roster.
+  description: >-
+    An Admin API provisioning flow. The workflow creates a new workspace within
+    the organization, adds a user to that workspace with a given role, and then
+    lists the workspace members to confirm the new member is present. Every step
+    spells out its request inline — including the inline admin x-api-key and
+    anthropic-version headers the spec defines — so the flow can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: adminApi
+  url: ../openapi/anthropic-admin-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-workspace-add-member
+  summary: Provision a workspace and add a member, then verify the roster.
+  description: >-
+    Creates a workspace, adds a user as a member with the supplied workspace
+    role, and lists the workspace members to confirm the addition.
+  inputs:
+    type: object
+    required:
+    - adminApiKey
+    - workspaceName
+    - userId
+    - workspaceRole
+    properties:
+      adminApiKey:
+        type: string
+        description: An Anthropic Admin API key (starts with sk-ant-admin...) sent in x-api-key.
+      workspaceName:
+        type: string
+        description: Name for the new workspace (1 to 40 characters).
+      userId:
+        type: string
+        description: The id of the user to add to the new workspace.
+      workspaceRole:
+        type: string
+        description: >-
+          Role to grant the member: workspace_user, workspace_developer,
+          workspace_admin, or workspace_billing.
+  steps:
+  - stepId: createWorkspace
+    description: >-
+      Create a new workspace within the organization to hold the new member.
+    operationId: createWorkspace
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.adminApiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.workspaceName
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      workspaceId: $response.body#/id
+      workspaceName: $response.body#/name
+  - stepId: addMember
+    description: >-
+      Add the specified user to the new workspace with the requested workspace
+      role.
+    operationId: addWorkspaceMember
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.adminApiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    - name: workspace_id
+      in: path
+      value: $steps.createWorkspace.outputs.workspaceId
+    requestBody:
+      contentType: application/json
+      payload:
+        user_id: $inputs.userId
+        workspace_role: $inputs.workspaceRole
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      memberUserId: $response.body#/user_id
+      memberRole: $response.body#/workspace_role
+  - stepId: verifyMembers
+    description: >-
+      List the workspace members to confirm the newly added user appears in the
+      roster.
+    operationId: listWorkspaceMembers
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.adminApiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    - name: workspace_id
+      in: path
+      value: $steps.createWorkspace.outputs.workspaceId
+    - name: limit
+      in: query
+      value: 100
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstMemberId: $response.body#/data/0/user_id
+      hasMore: $response.body#/has_more
+  outputs:
+    workspaceId: $steps.createWorkspace.outputs.workspaceId
+    memberUserId: $steps.addMember.outputs.memberUserId
+    memberRole: $steps.addMember.outputs.memberRole

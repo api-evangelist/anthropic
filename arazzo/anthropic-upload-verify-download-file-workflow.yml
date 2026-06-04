@@ -1,0 +1,121 @@
+arazzo: 1.0.1
+info:
+  title: Anthropic Upload, Verify, and Download a File
+  summary: Upload a file, read back its metadata, and download its content when it is downloadable.
+  description: >-
+    A Files API round-trip. The workflow uploads a file via multipart form data,
+    reads back the stored file metadata to confirm it landed, and branches on
+    the downloadable flag to download the raw file content. Every step spells
+    out its request inline — including the inline anthropic-version header the
+    spec defines — so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+
+    Adaptation note: the Messages API description in this repository does not
+    define a document source that references an uploaded file_id (its
+    DocumentSource only supports base64, text, url, and content), so this
+    workflow exercises the file lifecycle directly rather than feeding the
+    upload into a message.
+  version: 1.0.0
+sourceDescriptions:
+- name: filesApi
+  url: ../openapi/anthropic-files-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: upload-verify-download-file
+  summary: Upload a file, confirm its metadata, and download its content.
+  description: >-
+    Creates a file, retrieves its metadata to confirm storage, and downloads
+    the content when the file is marked downloadable.
+  inputs:
+    type: object
+    required:
+    - apiKey
+    - file
+    properties:
+      apiKey:
+        type: string
+        description: A valid Anthropic API key sent in the x-api-key header.
+      file:
+        type: string
+        description: The binary file contents to upload as multipart form data.
+  steps:
+  - stepId: uploadFile
+    description: >-
+      Upload a file to Anthropic's servers for later use, sending the binary as
+      multipart form data.
+    operationId: createFile
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    requestBody:
+      contentType: multipart/form-data
+      payload:
+        file: $inputs.file
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      fileId: $response.body#/id
+      filename: $response.body#/filename
+      downloadable: $response.body#/downloadable
+  - stepId: verifyMetadata
+    description: >-
+      Retrieve the stored file metadata to confirm the upload succeeded and
+      inspect its mime type, size, and downloadable flag.
+    operationId: getFileMetadata
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    - name: file_id
+      in: path
+      value: $steps.uploadFile.outputs.fileId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      mimeType: $response.body#/mime_type
+      sizeBytes: $response.body#/size_bytes
+      downloadable: $response.body#/downloadable
+    onSuccess:
+    - name: canDownload
+      type: goto
+      stepId: downloadContent
+      criteria:
+      - context: $response.body
+        condition: $.downloadable == true
+        type: jsonpath
+    - name: notDownloadable
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.downloadable == false
+        type: jsonpath
+  - stepId: downloadContent
+    description: >-
+      Download the raw content of the uploaded file now that it is confirmed
+      downloadable.
+    operationId: downloadFileContent
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    - name: file_id
+      in: path
+      value: $steps.uploadFile.outputs.fileId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      content: $response.body
+  outputs:
+    fileId: $steps.uploadFile.outputs.fileId
+    mimeType: $steps.verifyMetadata.outputs.mimeType
+    content: $steps.downloadContent.outputs.content

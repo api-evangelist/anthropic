@@ -1,0 +1,124 @@
+arazzo: 1.0.1
+info:
+  title: Anthropic Create Batch, Poll, and Retrieve Results
+  summary: Submit a message batch, poll until processing ends, then fetch the JSONL results.
+  description: >-
+    The core asynchronous Message Batches pattern. The workflow creates a batch
+    of message requests, then polls the batch status until processing reaches
+    the ended state, branching back into the poll while it is still in progress.
+    Once the batch has ended it retrieves the JSONL results stream. Every step
+    spells out its request inline — including the inline anthropic-version
+    header the spec defines — so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: messageBatchesApi
+  url: ../openapi/anthropic-message-batches-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-poll-retrieve-batch
+  summary: Create a message batch, wait for it to finish, and pull the results.
+  description: >-
+    Submits a batch of Message requests, polls Retrieve Message Batch until the
+    processing_status is ended, and then calls Retrieve Message Batch Results to
+    download the JSONL output.
+  inputs:
+    type: object
+    required:
+    - apiKey
+    - model
+    - requests
+    properties:
+      apiKey:
+        type: string
+        description: A valid Anthropic API key sent in the x-api-key header.
+      model:
+        type: string
+        description: Default model id referenced by the documentation for the batch requests.
+      requests:
+        type: array
+        description: >-
+          The array of individual batch requests, each with a custom_id and a
+          params object (model, max_tokens, messages).
+        items:
+          type: object
+  steps:
+  - stepId: createBatch
+    description: >-
+      Create a new message batch from the supplied individual requests. The
+      batch begins processing immediately.
+    operationId: createMessageBatch
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    requestBody:
+      contentType: application/json
+      payload:
+        requests: $inputs.requests
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      batchId: $response.body#/id
+      processingStatus: $response.body#/processing_status
+  - stepId: pollBatch
+    description: >-
+      Retrieve the current status of the batch. Branch back to poll again while
+      it is still in progress, or continue once processing has ended.
+    operationId: retrieveMessageBatch
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    - name: message_batch_id
+      in: path
+      value: $steps.createBatch.outputs.batchId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      processingStatus: $response.body#/processing_status
+      resultsUrl: $response.body#/results_url
+    onSuccess:
+    - name: stillProcessing
+      type: goto
+      stepId: pollBatch
+      criteria:
+      - context: $response.body
+        condition: $.processing_status != 'ended'
+        type: jsonpath
+    - name: processingEnded
+      type: goto
+      stepId: getResults
+      criteria:
+      - context: $response.body
+        condition: $.processing_status == 'ended'
+        type: jsonpath
+  - stepId: getResults
+    description: >-
+      Download the JSONL results stream for the completed batch. Each line is a
+      JSON object holding one request's result, keyed by custom_id.
+    operationId: retrieveMessageBatchResults
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    - name: message_batch_id
+      in: path
+      value: $steps.createBatch.outputs.batchId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      results: $response.body
+  outputs:
+    batchId: $steps.createBatch.outputs.batchId
+    processingStatus: $steps.pollBatch.outputs.processingStatus
+    results: $steps.getResults.outputs.results

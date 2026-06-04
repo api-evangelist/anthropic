@@ -1,0 +1,101 @@
+arazzo: 1.0.1
+info:
+  title: Anthropic Invite an Org Member and Confirm
+  summary: Send an organization invite, then read it back and branch on whether it is still pending.
+  description: >-
+    An Admin API invitation flow. The workflow creates and sends an organization
+    invite to an email address with a chosen role, then retrieves that invite by
+    id and branches on its status — continuing while the invite is still pending
+    or ending once it has been resolved. Every step spells out its request
+    inline — including the inline admin x-api-key and anthropic-version headers
+    the spec defines — so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: adminApi
+  url: ../openapi/anthropic-admin-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: invite-org-member-confirm
+  summary: Create an organization invite and confirm its pending status.
+  description: >-
+    Creates an organization invite and retrieves it to confirm the invite was
+    sent and is awaiting acceptance.
+  inputs:
+    type: object
+    required:
+    - adminApiKey
+    - email
+    - role
+    properties:
+      adminApiKey:
+        type: string
+        description: An Anthropic Admin API key (starts with sk-ant-admin...) sent in x-api-key.
+      email:
+        type: string
+        description: Email address to send the organization invite to.
+      role:
+        type: string
+        description: >-
+          Organization role to grant: user, claude_code_user, developer,
+          billing, or admin.
+  steps:
+  - stepId: createInvite
+    description: >-
+      Create and send an invitation for a new member to join the organization
+      with the requested role.
+    operationId: createOrganizationInvite
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.adminApiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    requestBody:
+      contentType: application/json
+      payload:
+        email: $inputs.email
+        role: $inputs.role
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      inviteId: $response.body#/id
+      inviteStatus: $response.body#/status
+  - stepId: confirmInvite
+    description: >-
+      Retrieve the invite by id to confirm it was created and inspect its
+      status, branching on whether it is still pending.
+    operationId: getOrganizationInvite
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.adminApiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    - name: invite_id
+      in: path
+      value: $steps.createInvite.outputs.inviteId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      inviteStatus: $response.body#/status
+      expiresAt: $response.body#/expires_at
+    onSuccess:
+    - name: pending
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status == 'pending'
+        type: jsonpath
+    - name: resolved
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status != 'pending'
+        type: jsonpath
+  outputs:
+    inviteId: $steps.createInvite.outputs.inviteId
+    inviteStatus: $steps.confirmInvite.outputs.inviteStatus
+    expiresAt: $steps.confirmInvite.outputs.expiresAt

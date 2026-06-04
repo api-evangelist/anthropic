@@ -1,0 +1,127 @@
+arazzo: 1.0.1
+info:
+  title: Anthropic Count Tokens Then Create Message
+  summary: Estimate input token usage for a prompt, then send the message only when it fits a budget.
+  description: >-
+    A cost-aware generation flow that pairs the Token Counting API with the
+    Messages API. The workflow first counts the input tokens for a prospective
+    request without charging output tokens, branches on whether the count is
+    within the caller's token budget, and only then sends the real message to
+    create a response. Every step spells out its request inline — including the
+    inline x-api-key and anthropic-version headers the specs define — so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: tokenCountingApi
+  url: ../openapi/anthropic-token-counting-api-openapi.yml
+  type: openapi
+- name: messagesApi
+  url: ../openapi/anthropic-messages-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: count-tokens-then-message
+  summary: Count input tokens for a prompt and conditionally create the message.
+  description: >-
+    Calls Count Message Tokens to estimate the prospective input token total,
+    and only proceeds to Create Message when that total is at or below the
+    supplied token budget.
+  inputs:
+    type: object
+    required:
+    - apiKey
+    - model
+    - prompt
+    - tokenBudget
+    properties:
+      apiKey:
+        type: string
+        description: A valid Anthropic API key sent in the x-api-key header.
+      model:
+        type: string
+        description: The Claude model id to count against and generate with.
+      prompt:
+        type: string
+        description: The user prompt text to evaluate and send.
+      tokenBudget:
+        type: integer
+        description: The maximum acceptable input token count before sending the message.
+      maxTokens:
+        type: integer
+        description: Maximum number of output tokens to generate.
+        default: 1024
+  steps:
+  - stepId: countTokens
+    description: >-
+      Count the input tokens for the prospective message request without
+      creating the message or charging output tokens.
+    operationId: countMessageTokens
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    - name: content-type
+      in: header
+      value: application/json
+    requestBody:
+      contentType: application/json
+      payload:
+        model: $inputs.model
+        messages:
+        - role: user
+          content: $inputs.prompt
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      inputTokens: $response.body#/input_tokens
+    onSuccess:
+    - name: withinBudget
+      type: goto
+      stepId: createMessage
+      criteria:
+      - context: $response.body
+        condition: $.input_tokens <= $inputs.tokenBudget
+        type: jsonpath
+    - name: overBudget
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.input_tokens > $inputs.tokenBudget
+        type: jsonpath
+  - stepId: createMessage
+    description: >-
+      Send the prompt as a real message now that the input token total is known
+      to be within budget, and capture the generated response.
+    operationId: createMessage
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: "2023-06-01"
+    - name: Content-Type
+      in: header
+      value: application/json
+    requestBody:
+      contentType: application/json
+      payload:
+        model: $inputs.model
+        max_tokens: $inputs.maxTokens
+        messages:
+        - role: user
+          content: $inputs.prompt
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      messageId: $response.body#/id
+      content: $response.body#/content
+      usage: $response.body#/usage
+  outputs:
+    inputTokens: $steps.countTokens.outputs.inputTokens
+    messageId: $steps.createMessage.outputs.messageId
+    content: $steps.createMessage.outputs.content
+    usage: $steps.createMessage.outputs.usage
