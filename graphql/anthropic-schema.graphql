@@ -1,0 +1,1053 @@
+"""
+Anthropic Claude API — Conceptual GraphQL Schema
+Source: https://docs.anthropic.com/en/api/
+GitHub: https://github.com/anthropics
+Derived from the Anthropic REST API surface (Messages, Models, Batches, Files, Admin, Skills, Managed Agents).
+"""
+
+# ---------------------------------------------------------------------------
+# Scalars
+# ---------------------------------------------------------------------------
+
+scalar DateTime
+scalar JSON
+scalar Upload
+
+# ---------------------------------------------------------------------------
+# Enums
+# ---------------------------------------------------------------------------
+
+enum StopReason {
+  END_TURN
+  MAX_TOKENS
+  STOP_SEQUENCE
+  TOOL_USE
+  PAUSE_TURN
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+}
+
+enum ContentBlockType {
+  TEXT
+  IMAGE
+  TOOL_USE
+  TOOL_RESULT
+  DOCUMENT
+  THINKING
+  REDACTED_THINKING
+}
+
+enum ImageMediaType {
+  IMAGE_JPEG
+  IMAGE_PNG
+  IMAGE_GIF
+  IMAGE_WEBP
+}
+
+enum DocumentMediaType {
+  APPLICATION_PDF
+  TEXT_PLAIN
+}
+
+enum ToolChoiceType {
+  AUTO
+  ANY
+  TOOL
+  NONE
+}
+
+enum BatchStatus {
+  IN_PROGRESS
+  CANCELING
+  ENDED
+}
+
+enum BatchResultType {
+  SUCCEEDED
+  ERRORED
+  CANCELED
+  EXPIRED
+}
+
+enum FileStatus {
+  PROCESSING
+  READY
+  ERROR
+}
+
+enum MemberRole {
+  USER
+  DEVELOPER
+  BILLING
+  WORKSPACE_ADMIN
+  ORGANIZATION_ADMIN
+}
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+}
+
+enum WebhookEventType {
+  MESSAGE_CREATED
+  BATCH_COMPLETED
+  FILE_READY
+  USAGE_THRESHOLD
+}
+
+enum AgentStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum SessionStatus {
+  RUNNING
+  COMPLETED
+  FAILED
+  STOPPED
+}
+
+enum EnvironmentType {
+  MANAGED
+  SELF_HOSTED
+}
+
+enum CacheControlType {
+  EPHEMERAL
+}
+
+enum ThinkingType {
+  ENABLED
+  DISABLED
+}
+
+# ---------------------------------------------------------------------------
+# Core message types
+# ---------------------------------------------------------------------------
+
+"""A complete Claude message (request or response)."""
+type Message {
+  id: ID!
+  type: String!
+  role: MessageRole!
+  content: [MessageContent!]!
+  model: String!
+  stopReason: StopReason
+  stopSequence: String
+  usage: Usage!
+  createdAt: DateTime
+}
+
+"""Union of all content block types that may appear in a message."""
+union MessageContent =
+    TextBlock
+  | ImageBlock
+  | ToolUseBlock
+  | ToolResultBlock
+  | DocumentBlock
+  | ThinkingBlock
+
+"""A plain-text content block."""
+type TextBlock {
+  type: ContentBlockType!
+  text: String!
+}
+
+"""An image content block."""
+type ImageBlock {
+  type: ContentBlockType!
+  source: FileSource!
+}
+
+"""A block representing a tool invocation made by the model."""
+type ToolUseBlock {
+  type: ContentBlockType!
+  id: ID!
+  name: String!
+  input: JSON!
+}
+
+"""A block carrying the result returned for a tool invocation."""
+type ToolResultBlock {
+  type: ContentBlockType!
+  toolUseId: ID!
+  content: [MessageContent!]
+  isError: Boolean
+}
+
+"""A block referencing an uploaded document or file."""
+type DocumentBlock {
+  type: ContentBlockType!
+  source: FileSource!
+  title: String
+  context: String
+  citations: CitationsConfig
+}
+
+"""An extended-thinking reasoning block produced by the model."""
+type ThinkingBlock {
+  type: ContentBlockType!
+  thinking: String
+  signature: String
+}
+
+# ---------------------------------------------------------------------------
+# Citations
+# ---------------------------------------------------------------------------
+
+"""Configuration for citation extraction from documents."""
+type CitationsConfig {
+  enabled: Boolean!
+}
+
+# ---------------------------------------------------------------------------
+# Token usage
+# ---------------------------------------------------------------------------
+
+"""Aggregate token consumption for a request."""
+type Usage {
+  inputTokens: Int!
+  outputTokens: Int!
+  cacheReadInputTokens: Int
+  cacheCreationInputTokens: Int
+  serverToolUseInputTokens: Int
+  serverToolUseOutputTokens: Int
+}
+
+"""Input token breakdown."""
+type InputTokens {
+  total: Int!
+  cacheRead: Int
+  cacheCreation: Int
+}
+
+"""Output token breakdown."""
+type OutputTokens {
+  total: Int!
+}
+
+"""Tokens read from the prompt cache on this request."""
+type CacheReadTokens {
+  count: Int!
+  savings: Float
+}
+
+"""Tokens written into the prompt cache on this request."""
+type CacheCreationTokens {
+  count: Int!
+  ttl: String
+}
+
+# ---------------------------------------------------------------------------
+# Models
+# ---------------------------------------------------------------------------
+
+"""A Claude model available via the API."""
+type Model {
+  id: ID!
+  displayName: String!
+  createdAt: DateTime!
+  type: String!
+  info: ModelInfo
+}
+
+"""Detailed metadata for a model."""
+type ModelInfo {
+  maxInputTokens: Int!
+  maxOutputTokens: Int!
+  contextWindow: Int!
+  capabilities: Capabilities!
+}
+
+"""The full capability set for a Claude model."""
+type Capabilities {
+  vision: Boolean!
+  toolUse: Boolean!
+  extendedThinking: Boolean!
+  streaming: Boolean!
+  promptCaching: Boolean!
+  batchProcessing: Boolean!
+  computerUse: Boolean!
+  structuredOutputs: Boolean!
+  features: [Feature!]
+  list: [ModelCapability!]
+}
+
+"""A single capability flag."""
+type ModelCapability {
+  name: String!
+  supported: Boolean!
+}
+
+"""A named feature supported by the API or a model."""
+type Feature {
+  name: String!
+  betaHeader: String
+  description: String
+}
+
+# ---------------------------------------------------------------------------
+# Completions (non-streaming)
+# ---------------------------------------------------------------------------
+
+"""A completed non-streaming response."""
+type Completion {
+  id: ID!
+  type: String!
+  completion: String!
+  stopReason: StopReason
+  model: String!
+  usage: Usage
+}
+
+# ---------------------------------------------------------------------------
+# Streaming events
+# ---------------------------------------------------------------------------
+
+"""A server-sent event in a streaming response."""
+interface StreamEvent {
+  type: String!
+}
+
+"""SSE event marking the start of a streamed message."""
+type MessageStart implements StreamEvent {
+  type: String!
+  message: Message!
+}
+
+"""SSE event marking the start of a content block."""
+type ContentBlockStart implements StreamEvent {
+  type: String!
+  index: Int!
+  contentBlock: TextBlock!
+}
+
+"""SSE event carrying a text delta within a content block."""
+type ContentBlockDelta implements StreamEvent {
+  type: String!
+  index: Int!
+  delta: TextDelta!
+}
+
+"""SSE event marking the end of a content block."""
+type ContentBlockStop implements StreamEvent {
+  type: String!
+  index: Int!
+}
+
+"""SSE event marking the end of a streamed message."""
+type MessageStop implements StreamEvent {
+  type: String!
+}
+
+"""A text delta within a streaming content block."""
+type TextDelta {
+  type: String!
+  text: String!
+}
+
+# ---------------------------------------------------------------------------
+# Tools
+# ---------------------------------------------------------------------------
+
+"""A tool definition the model may invoke."""
+type Tool {
+  name: String!
+  description: String
+  inputSchema: ToolInput!
+  type: String
+}
+
+"""The JSON Schema input specification for a tool."""
+type ToolInput {
+  type: String!
+  properties: JSON!
+  required: [String!]
+}
+
+"""How the model selects which tool to call."""
+type ToolChoice {
+  type: ToolChoiceType!
+  name: String
+  disableParallelToolUse: Boolean
+}
+
+"""Built-in computer use tool for browser and desktop automation."""
+type ComputerTool {
+  type: String!
+  name: String!
+  displayWidth: Int!
+  displayHeight: Int!
+  displayNumber: Int
+}
+
+"""Built-in bash execution tool."""
+type BashTool {
+  type: String!
+  name: String!
+}
+
+"""Built-in text editor tool for reading and modifying files."""
+type TextEditorTool {
+  type: String!
+  name: String!
+}
+
+# ---------------------------------------------------------------------------
+# Prompts and conversation structure
+# ---------------------------------------------------------------------------
+
+"""A system-level prompt prepended to a conversation."""
+type SystemPrompt {
+  type: String!
+  text: String!
+  cacheControl: PromptCacheControl
+}
+
+"""A message originating from the human turn."""
+type UserMessage {
+  role: MessageRole!
+  content: [MessageContent!]!
+}
+
+"""A message originating from the assistant turn."""
+type AssistantMessage {
+  role: MessageRole!
+  content: [MessageContent!]!
+}
+
+"""An ordered list of messages forming a multi-turn conversation."""
+type Conversation {
+  id: ID
+  messages: [Message!]!
+  system: [SystemPrompt!]
+  model: String!
+  createdAt: DateTime
+}
+
+# ---------------------------------------------------------------------------
+# Prompt caching
+# ---------------------------------------------------------------------------
+
+"""Prompt cache metadata."""
+type PromptCache {
+  enabled: Boolean!
+  readCount: Int
+  creationCount: Int
+  savedTokens: Int
+}
+
+"""Cache control breakpoint attached to a content block or system prompt."""
+type PromptCacheControl {
+  type: CacheControlType!
+  ttl: String
+}
+
+# ---------------------------------------------------------------------------
+# Batches
+# ---------------------------------------------------------------------------
+
+"""A message batch submission."""
+type Batch {
+  id: ID!
+  type: String!
+  processingStatus: BatchStatus!
+  requestCounts: BatchRequestCounts!
+  endedAt: DateTime
+  createdAt: DateTime!
+  expiresAt: DateTime
+  cancelInitiatedAt: DateTime
+  resultsUrl: String
+}
+
+"""Counts of requests by outcome within a batch."""
+type BatchRequestCounts {
+  processing: Int!
+  succeeded: Int!
+  errored: Int!
+  canceled: Int!
+  expired: Int!
+}
+
+"""The result envelope for a single request within a completed batch."""
+type BatchResult {
+  customId: String!
+  result: BatchOutcome!
+}
+
+"""Union of possible single-request outcomes within a batch."""
+union BatchOutcome = BatchSuccess | BatchError
+
+"""A successfully completed request within a batch."""
+type BatchSuccess {
+  type: String!
+  message: Message!
+}
+
+"""An error returned for a request within a batch."""
+type BatchError {
+  type: String!
+  error: BatchRequestError!
+}
+
+"""Details of an error for a single batch request."""
+type BatchRequestError {
+  type: String!
+  message: String!
+}
+
+# ---------------------------------------------------------------------------
+# Files
+# ---------------------------------------------------------------------------
+
+"""A file uploaded to the Files API."""
+type File {
+  id: ID!
+  filename: String!
+  mediaType: String!
+  size: Int!
+  status: FileStatus!
+  createdAt: DateTime!
+  purpose: String
+}
+
+"""Source reference for an image or document content block."""
+type FileSource {
+  type: String!
+  mediaType: String
+  data: String
+  url: String
+  fileId: ID
+}
+
+# ---------------------------------------------------------------------------
+# Token counting
+# ---------------------------------------------------------------------------
+
+"""Result of a dry-run token count request."""
+type TokenCount {
+  inputTokens: Int!
+  cacheReadInputTokens: Int
+  cacheCreationInputTokens: Int
+}
+
+# ---------------------------------------------------------------------------
+# Admin — Organization
+# ---------------------------------------------------------------------------
+
+"""An Anthropic organization account."""
+type Organization {
+  id: ID!
+  name: String!
+  billingEmail: String
+  createdAt: DateTime!
+}
+
+"""An API key scoped to a workspace or organization."""
+type APIKey {
+  id: ID!
+  name: String!
+  hint: String!
+  workspaceId: ID
+  createdAt: DateTime!
+  lastUsedAt: DateTime
+  status: String!
+}
+
+"""A workspace within an organization."""
+type Workspace {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  archivedAt: DateTime
+  displayColor: String
+}
+
+"""A member of an organization or workspace."""
+type Member {
+  id: ID!
+  email: String!
+  name: String
+  role: MemberRole!
+  userId: ID!
+  addedAt: DateTime!
+}
+
+"""A named role within the system."""
+type Role {
+  id: ID!
+  name: String!
+  description: String
+  permissions: [Permission!]
+}
+
+"""A fine-grained permission attached to a role."""
+type Permission {
+  id: ID!
+  name: String!
+  description: String
+  resource: String
+  action: String
+}
+
+"""A pending organization invitation."""
+type Invite {
+  id: ID!
+  email: String!
+  role: MemberRole!
+  status: InviteStatus!
+  invitedAt: DateTime!
+  expiresAt: DateTime
+}
+
+# ---------------------------------------------------------------------------
+# Billing / FinOps
+# ---------------------------------------------------------------------------
+
+"""Invoice-level cost and usage summary."""
+type InvoiceData {
+  period: String!
+  totalUsd: Float!
+  lineItems: [InvoiceLineItem!]
+}
+
+"""A single line item on an invoice."""
+type InvoiceLineItem {
+  description: String!
+  quantity: Float!
+  unitPrice: Float!
+  totalUsd: Float!
+}
+
+"""Token usage report broken down by model and workspace."""
+type UsageReport {
+  startDate: String!
+  endDate: String!
+  entries: [UsageReportEntry!]!
+}
+
+"""A single row in a usage report."""
+type UsageReportEntry {
+  model: String!
+  workspaceId: ID
+  inputTokens: Int!
+  outputTokens: Int!
+  cacheReadTokens: Int
+  cacheCreationTokens: Int
+  requestCount: Int!
+  date: String!
+}
+
+"""USD cost report broken down by service tier."""
+type CostReport {
+  startDate: String!
+  endDate: String!
+  totalUsd: Float!
+  entries: [CostReportEntry!]!
+}
+
+"""A single row in a cost report."""
+type CostReportEntry {
+  model: String!
+  tier: String
+  inputCostUsd: Float!
+  outputCostUsd: Float!
+  cacheCostUsd: Float
+  totalUsd: Float!
+  date: String!
+}
+
+# ---------------------------------------------------------------------------
+# Webhooks
+# ---------------------------------------------------------------------------
+
+"""A registered webhook endpoint."""
+type Webhook {
+  id: ID!
+  url: String!
+  description: String
+  secret: String
+  events: [WebhookEventType!]!
+  createdAt: DateTime!
+  active: Boolean!
+}
+
+"""A webhook payload delivered to a registered endpoint."""
+type WebhookEvent {
+  id: ID!
+  type: WebhookEventType!
+  createdAt: DateTime!
+  data: JSON!
+}
+
+# ---------------------------------------------------------------------------
+# Beta features
+# ---------------------------------------------------------------------------
+
+"""A named beta feature activated via the anthropic-beta request header."""
+type BetaFeature {
+  id: ID!
+  headerValue: String!
+  description: String
+  stable: Boolean!
+}
+
+# ---------------------------------------------------------------------------
+# Skills
+# ---------------------------------------------------------------------------
+
+"""A custom agent skill definition."""
+type Skill {
+  id: ID!
+  name: String!
+  description: String
+  version: String
+  workspaceId: ID
+  resources: [SkillResource!]
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+"""A resource file within a skill directory."""
+type SkillResource {
+  name: String!
+  path: String!
+  contentType: String
+}
+
+# ---------------------------------------------------------------------------
+# Managed Agents
+# ---------------------------------------------------------------------------
+
+"""A managed agent definition."""
+type Agent {
+  id: ID!
+  name: String!
+  description: String
+  model: String!
+  systemPrompt: String
+  tools: [Tool!]
+  skills: [Skill!]
+  status: AgentStatus!
+  workspaceId: ID
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+"""A managed agent session (a single run of an agent)."""
+type Session {
+  id: ID!
+  agentId: ID!
+  status: SessionStatus!
+  environment: Environment
+  messages: [Message!]
+  startedAt: DateTime!
+  endedAt: DateTime
+  metadata: JSON
+}
+
+"""A sandboxed execution environment for a managed agent."""
+type Environment {
+  id: ID!
+  type: EnvironmentType!
+  sandboxId: String
+  region: String
+  createdAt: DateTime!
+  status: String!
+}
+
+# ---------------------------------------------------------------------------
+# Input types
+# ---------------------------------------------------------------------------
+
+input CreateMessageInput {
+  model: String!
+  messages: [MessageInput!]!
+  system: [SystemPromptInput!]
+  maxTokens: Int!
+  tools: [ToolInput!]
+  toolChoice: ToolChoiceInput
+  temperature: Float
+  topP: Float
+  topK: Int
+  stopSequences: [String!]
+  stream: Boolean
+  thinking: ThinkingConfigInput
+  metadata: MessageMetadataInput
+  betas: [String!]
+}
+
+input MessageInput {
+  role: MessageRole!
+  content: [ContentBlockInput!]!
+}
+
+input ContentBlockInput {
+  type: ContentBlockType!
+  text: String
+  source: FileSourceInput
+  toolUseId: ID
+  content: [ContentBlockInput!]
+  name: String
+  input: JSON
+  cacheControl: CacheControlInput
+}
+
+input FileSourceInput {
+  type: String!
+  mediaType: String
+  data: String
+  url: String
+  fileId: ID
+}
+
+input SystemPromptInput {
+  type: String!
+  text: String!
+  cacheControl: CacheControlInput
+}
+
+input CacheControlInput {
+  type: CacheControlType!
+  ttl: String
+}
+
+input ToolChoiceInput {
+  type: ToolChoiceType!
+  name: String
+  disableParallelToolUse: Boolean
+}
+
+input ThinkingConfigInput {
+  type: ThinkingType!
+  budgetTokens: Int
+}
+
+input MessageMetadataInput {
+  userId: String
+}
+
+input CreateBatchInput {
+  requests: [BatchRequestInput!]!
+  betas: [String!]
+}
+
+input BatchRequestInput {
+  customId: String!
+  params: CreateMessageInput!
+}
+
+input UploadFileInput {
+  filename: String!
+  mediaType: String!
+  content: Upload!
+  purpose: String
+}
+
+input TokenCountInput {
+  model: String!
+  messages: [MessageInput!]!
+  system: [SystemPromptInput!]
+  tools: [ToolInput!]
+  thinking: ThinkingConfigInput
+  betas: [String!]
+}
+
+input GeneratePromptInput {
+  task: String!
+  model: String
+}
+
+input ImprovePromptInput {
+  prompt: String!
+  task: String
+  model: String
+}
+
+input CreateWorkspaceInput {
+  name: String!
+  displayColor: String
+}
+
+input WorkspaceMemberInput {
+  workspaceId: ID!
+  userId: ID!
+  role: MemberRole!
+}
+
+input InviteInput {
+  email: String!
+  role: MemberRole!
+}
+
+input CreateSkillInput {
+  name: String!
+  description: String
+  workspaceId: ID
+}
+
+input CreateAgentInput {
+  name: String!
+  description: String
+  model: String!
+  systemPrompt: String
+  workspaceId: ID
+}
+
+input CreateSessionInput {
+  environmentId: ID
+  metadata: JSON
+}
+
+# ---------------------------------------------------------------------------
+# Root types
+# ---------------------------------------------------------------------------
+
+type Query {
+  """Retrieve a message by ID."""
+  message(id: ID!): Message
+
+  """List all available Claude models."""
+  models: [Model!]!
+
+  """Retrieve a specific model by ID."""
+  model(id: ID!): Model
+
+  """List message batches."""
+  batches(limit: Int, afterId: ID): [Batch!]!
+
+  """Retrieve a batch by ID."""
+  batch(id: ID!): Batch
+
+  """List results for a completed batch."""
+  batchResults(batchId: ID!): [BatchResult!]!
+
+  """List uploaded files."""
+  files(limit: Int, afterId: ID): [File!]!
+
+  """Retrieve a file by ID."""
+  file(id: ID!): File
+
+  """Count tokens for a prompt without creating a message."""
+  countTokens(input: TokenCountInput!): TokenCount!
+
+  """Retrieve the current organization."""
+  organization: Organization
+
+  """List organization members."""
+  members(limit: Int, afterId: ID): [Member!]!
+
+  """List workspaces."""
+  workspaces(limit: Int, afterId: ID): [Workspace!]!
+
+  """Retrieve a workspace by ID."""
+  workspace(id: ID!): Workspace
+
+  """List workspace members."""
+  workspaceMembers(workspaceId: ID!, limit: Int, afterId: ID): [Member!]!
+
+  """List API keys."""
+  apiKeys(limit: Int, afterId: ID): [APIKey!]!
+
+  """List pending organization invitations."""
+  invites(limit: Int, afterId: ID): [Invite!]!
+
+  """Retrieve a usage report for a date range."""
+  usageReport(startDate: String!, endDate: String!): UsageReport!
+
+  """Retrieve a cost report for a date range."""
+  costReport(startDate: String!, endDate: String!): CostReport!
+
+  """List agent skills."""
+  skills(workspaceId: ID, limit: Int, afterId: ID): [Skill!]!
+
+  """Retrieve a skill by ID."""
+  skill(id: ID!): Skill
+
+  """List managed agents."""
+  agents(workspaceId: ID, limit: Int, afterId: ID): [Agent!]!
+
+  """Retrieve a managed agent by ID."""
+  agent(id: ID!): Agent
+
+  """List sessions for an agent."""
+  sessions(agentId: ID!, limit: Int, afterId: ID): [Session!]!
+
+  """Retrieve a session by ID."""
+  session(id: ID!): Session
+
+  """List environments."""
+  environments(limit: Int, afterId: ID): [Environment!]!
+
+  """List registered webhooks."""
+  webhooks(limit: Int, afterId: ID): [Webhook!]!
+
+  """List available beta features."""
+  betaFeatures: [BetaFeature!]!
+}
+
+type Mutation {
+  """Create a new message (non-streaming)."""
+  createMessage(input: CreateMessageInput!): Message!
+
+  """Submit a message batch."""
+  createBatch(input: CreateBatchInput!): Batch!
+
+  """Request cancellation of a batch."""
+  cancelBatch(id: ID!): Batch!
+
+  """Upload a file to the Files API."""
+  uploadFile(input: UploadFileInput!): File!
+
+  """Delete a file."""
+  deleteFile(id: ID!): Boolean!
+
+  """Generate a prompt for a given task."""
+  generatePrompt(input: GeneratePromptInput!): TextBlock!
+
+  """Improve an existing prompt."""
+  improvePrompt(input: ImprovePromptInput!): TextBlock!
+
+  """Create a workspace."""
+  createWorkspace(input: CreateWorkspaceInput!): Workspace!
+
+  """Archive a workspace."""
+  archiveWorkspace(id: ID!): Workspace!
+
+  """Add a member to a workspace."""
+  addWorkspaceMember(input: WorkspaceMemberInput!): Member!
+
+  """Remove a member from a workspace."""
+  removeWorkspaceMember(workspaceId: ID!, userId: ID!): Boolean!
+
+  """Send an organization invitation."""
+  inviteMember(input: InviteInput!): Invite!
+
+  """Delete a pending invitation."""
+  deleteInvite(id: ID!): Boolean!
+
+  """Remove a member from the organization."""
+  removeMember(userId: ID!): Boolean!
+
+  """Create an agent skill."""
+  createSkill(input: CreateSkillInput!): Skill!
+
+  """Delete a skill."""
+  deleteSkill(id: ID!): Boolean!
+
+  """Create a managed agent."""
+  createAgent(input: CreateAgentInput!): Agent!
+
+  """Delete a managed agent."""
+  deleteAgent(id: ID!): Boolean!
+
+  """Start a managed agent session."""
+  createSession(agentId: ID!, input: CreateSessionInput!): Session!
+
+  """Stop a running session."""
+  stopSession(id: ID!): Session!
+}
