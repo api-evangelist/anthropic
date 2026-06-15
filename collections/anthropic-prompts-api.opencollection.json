@@ -1,0 +1,153 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Anthropic Prompt Tools API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Prompt Generation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic Generate A Prompt",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/experimental/generate_prompt",
+            "headers": [
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              },
+              {
+                "name": "x-api-key",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              },
+              {
+                "name": "anthropic-dangerous-direct-browser-access",
+                "value": ""
+              },
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate a well-written prompt for a specified task. This API creates\nprompts that can be used directly with the Messages API.\n\n**Requirements:**\n- Must have joined the closed research preview for prompt tools APIs\n- Must use the API directly (not available in SDK)\n- Must include the beta header `prompt-tools-2025-04-02`\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Prompt Improvement",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic Improve A Prompt",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/experimental/improve_prompt",
+            "headers": [
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              },
+              {
+                "name": "x-api-key",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              },
+              {
+                "name": "anthropic-dangerous-direct-browser-access",
+                "value": ""
+              },
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new-and-improved prompt guided by feedback. This API takes an\nexisting prompt and enhances it based on provided feedback or general\nprompt engineering best practices.\n\n**Requirements:**\n- Must have joined the closed research preview for prompt tools APIs\n- Must use the API directly (not available in SDK)\n- Must include the beta header `prompt-tools-2025-04-02`\n- Messages must contain only text-only content blocks\n- No tool calls, images, or prompt caching blocks allowed\n- Only contiguou"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Prompt Templatization",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic Templatize A Prompt",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/experimental/templatize_prompt",
+            "headers": [
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              },
+              {
+                "name": "x-api-key",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              },
+              {
+                "name": "anthropic-dangerous-direct-browser-access",
+                "value": ""
+              },
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Templatize a prompt by identifying and extracting variables. This API\nanalyzes a prompt and converts specific values into reusable template\nvariables with placeholders.\n\n**Requirements:**\n- Must have joined the closed research preview for prompt tools APIs\n- Must use the API directly (not available in SDK)\n- Must include the beta header `prompt-tools-2025-04-02`\n- Messages must contain only text-only content blocks\n- No tool calls, images, or prompt caching blocks allowed\n- Only contiguous user "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

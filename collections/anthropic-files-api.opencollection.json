@@ -1,0 +1,179 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Anthropic Files API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Files",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic List Files",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/files",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": "files-api-2025-04-14"
+              }
+            ],
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000."
+              },
+              {
+                "name": "before_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns results immediately before this object."
+              },
+              {
+                "name": "after_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns results immediately after this object."
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of all files that have been uploaded to your organization."
+        },
+        {
+          "info": {
+            "name": "Anthropic Create File",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/files",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": "files-api-2025-04-14"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Uploads a file to Anthropic's servers for use in subsequent API calls."
+        },
+        {
+          "info": {
+            "name": "Anthropic Get File Metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/files/:file_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": "files-api-2025-04-14"
+              }
+            ],
+            "params": [
+              {
+                "name": "file_id",
+                "value": "file_011CNha8iCJcU1wXNR6q4V8w",
+                "type": "path",
+                "description": "Unique identifier for the file"
+              }
+            ]
+          },
+          "docs": "Retrieves metadata information for a previously uploaded file."
+        },
+        {
+          "info": {
+            "name": "Anthropic Delete File",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.anthropic.com/v1/files/:file_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": "files-api-2025-04-14"
+              }
+            ],
+            "params": [
+              {
+                "name": "file_id",
+                "value": "file_011CNha8iCJcU1wXNR6q4V8w",
+                "type": "path",
+                "description": "Unique identifier for the file"
+              }
+            ]
+          },
+          "docs": "Permanently deletes a file from Anthropic's storage system."
+        },
+        {
+          "info": {
+            "name": "Anthropic Download File Content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/files/:file_id/content",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": "files-api-2025-04-14"
+              }
+            ],
+            "params": [
+              {
+                "name": "file_id",
+                "value": "file_011CNha8iCJcU1wXNR6q4V8w",
+                "type": "path",
+                "description": "Unique identifier for the file"
+              }
+            ]
+          },
+          "docs": "Downloads the actual content of a previously uploaded file."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

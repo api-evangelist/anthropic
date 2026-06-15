@@ -1,0 +1,271 @@
+{
+  "item": [
+    {
+      "id": "792fba6c-67f6-413b-a7a3-bf42a26a7831",
+      "name": "Token Counting",
+      "description": {
+        "content": "Count tokens before sending a Message request",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "75a1cf4c-58c6-44fe-bde2-0f2a8ac035c9",
+          "name": "Anthropic Count Message Tokens",
+          "request": {
+            "name": "Anthropic Count Message Tokens",
+            "description": {
+              "content": "Count tokens for a prospective Message request, including any tools, images, and documents. Returns the input token total without creating the message or charging output tokens.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "messages",
+                "count_tokens"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API version date.",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "Comma-separated beta feature headers.",
+                "key": "anthropic-beta",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Anthropic API key.",
+                "key": "x-api-key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"<string>\",\n  \"messages\": [\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\"\n    },\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\"\n    }\n  ],\n  \"system\": \"<string>\",\n  \"tools\": [\n    \"<object>\",\n    \"<object>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0e5ec151-4b99-49c6-be2b-d5b964db8b6d",
+              "name": "Token count returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages",
+                    "count_tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API version date.",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Comma-separated beta feature headers.",
+                    "key": "anthropic-beta",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Anthropic API key.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must be application/json.",
+                    "key": "content-type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"claude-opus-4-7\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"How many tokens is this prompt?\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"input_tokens\": 9\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "41d607a6-1a08-4dfc-80f6-d322482ded84",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages",
+                    "count_tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API version date.",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Comma-separated beta feature headers.",
+                    "key": "anthropic-beta",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Anthropic API key.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must be application/json.",
+                    "key": "content-type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"claude-opus-4-7\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"How many tokens is this prompt?\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.anthropic.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "fa804faa-3e6c-4881-9980-b7ab97a35347",
+    "name": "Anthropic Token Counting API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Count the number of tokens in a Message, including tools, images, and documents, without creating it. The Token Count API accepts the same structured list of inputs for creating a message, including support for system prompts, tools, images, and PDFs. Token counting is free to use but subject to requests-per-minute rate limits.\n\n\nContact Support:\n Name: Anthropic Support",
+      "type": "text/plain"
+    }
+  }
+}

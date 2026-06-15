@@ -1,0 +1,254 @@
+{
+  "item": [
+    {
+      "id": "d3a20c09-1550-4bcf-852c-db6f1c5354a8",
+      "name": "Claude Code Analytics",
+      "description": {
+        "content": "Daily aggregated Claude Code usage and productivity metrics",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "af98569b-aeb9-41e9-865f-d8570cd1688d",
+          "name": "Anthropic Get Claude Code Usage Report",
+          "request": {
+            "name": "Anthropic Get Claude Code Usage Report",
+            "description": {
+              "content": "Daily aggregated user-level Claude Code usage including session counts, lines of code added/removed, commits, pull requests created, tool actions, and estimated costs by model.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "organizations",
+                "usage_report",
+                "claude_code"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "starting_at",
+                  "value": "<dateTime>",
+                  "description": "(Required) RFC3339 inclusive lower bound (UTC date) for the report window."
+                },
+                {
+                  "disabled": false,
+                  "key": "ending_at",
+                  "value": "<dateTime>",
+                  "description": "RFC3339 exclusive upper bound (UTC date) for the report window."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c202f46c-f9db-4fd2-8c85-72dd49ebfba0",
+              "name": "Claude Code analytics report.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations",
+                    "usage_report",
+                    "claude_code"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "starting_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "ending_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"date\": \"1975-07-12\",\n      \"actor\": {\n        \"type\": \"user_actor\",\n        \"email_address\": \"string\",\n        \"user_id\": \"string\"\n      },\n      \"organization_id\": \"string\",\n      \"terminal_type\": \"string\",\n      \"core_metrics\": {\n        \"num_sessions\": 7693,\n        \"lines_of_code\": {\n          \"added\": 6679,\n          \"removed\": 7082\n        },\n        \"commits_by_claude_code\": 5565,\n        \"pull_requests_by_claude_code\": 5936\n      },\n      \"tool_actions\": {\n        \"edit_tool\": {\n          \"accepted\": 3775,\n          \"rejected\": 3410\n        },\n        \"multi_edit_tool\": {\n          \"accepted\": 488,\n          \"rejected\": 6460\n        },\n        \"write_tool\": {\n          \"accepted\": 9254,\n          \"rejected\": 9505\n        },\n        \"notebook_edit_tool\": {\n          \"accepted\": 8811,\n          \"rejected\": 7584\n        }\n      },\n      \"model_breakdown\": [\n        {\n          \"model\": \"string\",\n          \"tokens\": {\n            \"input\": 8679,\n            \"output\": 6858,\n            \"cache_read\": 7244,\n            \"cache_creation\": {\n              \"ephemeral_5m_input_tokens\": 2064,\n              \"ephemeral_1h_input_tokens\": 21\n            }\n          },\n          \"estimated_cost\": {\n            \"currency\": \"USD\",\n            \"amount\": \"string\"\n          }\n        },\n        {\n          \"model\": \"string\",\n          \"tokens\": {\n            \"input\": 5483,\n            \"output\": 2180,\n            \"cache_read\": 9974,\n            \"cache_creation\": {\n              \"ephemeral_5m_input_tokens\": 673,\n              \"ephemeral_1h_input_tokens\": 4816\n            }\n          },\n          \"estimated_cost\": {\n            \"currency\": \"USD\",\n            \"amount\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"date\": \"2010-08-02\",\n      \"actor\": {\n        \"type\": \"user_actor\",\n        \"email_address\": \"string\",\n        \"user_id\": \"string\"\n      },\n      \"organization_id\": \"string\",\n      \"terminal_type\": \"string\",\n      \"core_metrics\": {\n        \"num_sessions\": 2899,\n        \"lines_of_code\": {\n          \"added\": 3535,\n          \"removed\": 5946\n        },\n        \"commits_by_claude_code\": 612,\n        \"pull_requests_by_claude_code\": 6768\n      },\n      \"tool_actions\": {\n        \"edit_tool\": {\n          \"accepted\": 2302,\n          \"rejected\": 7856\n        },\n        \"multi_edit_tool\": {\n          \"accepted\": 7860,\n          \"rejected\": 4554\n        },\n        \"write_tool\": {\n          \"accepted\": 4523,\n          \"rejected\": 6898\n        },\n        \"notebook_edit_tool\": {\n          \"accepted\": 2788,\n          \"rejected\": 9058\n        }\n      },\n      \"model_breakdown\": [\n        {\n          \"model\": \"string\",\n          \"tokens\": {\n            \"input\": 5451,\n            \"output\": 9683,\n            \"cache_read\": 9508,\n            \"cache_creation\": {\n              \"ephemeral_5m_input_tokens\": 5684,\n              \"ephemeral_1h_input_tokens\": 2493\n            }\n          },\n          \"estimated_cost\": {\n            \"currency\": \"USD\",\n            \"amount\": \"string\"\n          }\n        },\n        {\n          \"model\": \"string\",\n          \"tokens\": {\n            \"input\": 5708,\n            \"output\": 3009,\n            \"cache_read\": 3630,\n            \"cache_creation\": {\n              \"ephemeral_5m_input_tokens\": 2460,\n              \"ephemeral_1h_input_tokens\": 8830\n            }\n          },\n          \"estimated_cost\": {\n            \"currency\": \"USD\",\n            \"amount\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"has_more\": false,\n  \"next_page\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "16f96f8f-1881-43bf-809c-832cdaf72f98",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations",
+                    "usage_report",
+                    "claude_code"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "starting_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "ending_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.anthropic.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "8b2e882f-93eb-4947-ac4a-4d91e296ef96",
+    "name": "Anthropic Claude Code Analytics API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Programmatically access your organization's Claude Code usage analytics and productivity metrics. Track sessions, lines of code, commits, pull requests, and tool usage with daily aggregated user-level data and model breakdowns. Requires an Admin API key (sk-ant-admin...).\n\n\nContact Support:\n Name: Anthropic Support",
+      "type": "text/plain"
+    }
+  }
+}

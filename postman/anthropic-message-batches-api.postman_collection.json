@@ -1,0 +1,1156 @@
+{
+  "info": {
+    "_postman_id": "1064423e-d80c-409c-bf43-f29fc4365999",
+    "name": "Anthropic Message Batches API",
+    "description": "Send a batch of Message creation requests. The Message Batches API can be used \nto process multiple Messages API requests at once. Once a Message Batch is created, \nit begins processing immediately. Batches can take up to 24 hours to complete.\n\n\nContact Support:\n Name: Anthropic\n Email: support@anthropic.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:05:24.000Z",
+    "updatedAt": "2026-06-05T15:05:24.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-1064423e-d80c-409c-bf43-f29fc4365999"
+  },
+  "item": [
+    {
+      "name": "messages",
+      "item": [
+        {
+          "name": "batches",
+          "item": [
+            {
+              "name": "{message_batch_id}",
+              "item": [
+                {
+                  "name": "results",
+                  "item": [
+                    {
+                      "name": "Anthropic Retrieve Message Batch Results",
+                      "id": "ac5e7ede-0506-4fdc-9326-d0778bc54b72",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                            "key": "anthropic-beta",
+                            "value": "<string>,<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/x-jsonl"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/messages/batches/:message_batch_id/results",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "messages",
+                            "batches",
+                            ":message_batch_id",
+                            "results"
+                          ],
+                          "variable": [
+                            {
+                              "id": "52857f99-1c69-4569-b582-209b8a578889",
+                              "key": "message_batch_id",
+                              "value": "<string>",
+                              "description": "(Required) Unique identifier for the message batch"
+                            }
+                          ]
+                        },
+                        "description": "Streams the results of a Message Batch as a .jsonl file. Each line is a JSON object \ncontaining the result of a single request. Results are not guaranteed to be in the \nsame order as requests. Use the custom_id field to match results to requests.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "155b0571-f680-4ce1-b7f6-fe47cd1bf2e8",
+                          "name": "Successful Response - Returns a .jsonl file where each line is a JSON object",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) The version of the Anthropic API to use",
+                                "key": "anthropic-version",
+                                "value": "<string>"
+                              },
+                              {
+                                "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                                "key": "anthropic-beta",
+                                "value": "<string>,<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/x-jsonl"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "x-api-key",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/messages/batches/:message_batch_id/results",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "messages",
+                                "batches",
+                                ":message_batch_id",
+                                "results"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "message_batch_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-jsonl"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "<string>",
+                          "createdAt": "2026-06-05T15:05:25.000Z",
+                          "updatedAt": "2026-06-05T15:05:25.000Z",
+                          "uid": "35240-155b0571-f680-4ce1-b7f6-fe47cd1bf2e8"
+                        },
+                        {
+                          "id": "dd92b11e-7ed7-418f-b40b-0ed381f3d173",
+                          "name": "Error Response",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) The version of the Anthropic API to use",
+                                "key": "anthropic-version",
+                                "value": "<string>"
+                              },
+                              {
+                                "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                                "key": "anthropic-beta",
+                                "value": "<string>,<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "x-api-key",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/messages/batches/:message_batch_id/results",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "messages",
+                                "batches",
+                                ":message_batch_id",
+                                "results"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "message_batch_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:05:25.000Z",
+                          "updatedAt": "2026-06-05T15:05:25.000Z",
+                          "uid": "35240-dd92b11e-7ed7-418f-b40b-0ed381f3d173"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:05:25.000Z",
+                      "updatedAt": "2026-06-05T15:05:25.000Z",
+                      "uid": "35240-ac5e7ede-0506-4fdc-9326-d0778bc54b72"
+                    }
+                  ],
+                  "id": "d8744483-0d2a-4e7e-8a64-2ee458afeda0",
+                  "createdAt": "2026-06-05T15:05:25.000Z",
+                  "updatedAt": "2026-06-05T15:05:25.000Z",
+                  "uid": "35240-d8744483-0d2a-4e7e-8a64-2ee458afeda0"
+                },
+                {
+                  "name": "cancel",
+                  "item": [
+                    {
+                      "name": "Anthropic Cancel Message Batch",
+                      "id": "8ae97ccc-580e-4de6-9dde-0a2bf8ce4f58",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                            "key": "anthropic-beta",
+                            "value": "<string>,<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/messages/batches/:message_batch_id/cancel",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "messages",
+                            "batches",
+                            ":message_batch_id",
+                            "cancel"
+                          ],
+                          "variable": [
+                            {
+                              "id": "7f099560-5fb5-4a7d-954a-85bd7de0e665",
+                              "key": "message_batch_id",
+                              "value": "<string>",
+                              "description": "(Required) Unique identifier for the message batch"
+                            }
+                          ]
+                        },
+                        "description": "Cancels a Message Batch that is currently being processed. Once cancellation is initiated, \nthe batch enters a canceling state. The system may complete any in-progress, non-interruptible \nrequests before finalizing cancellation.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "77963f33-8ed2-49e6-a67c-03444bed8906",
+                          "name": "Successful Response",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) The version of the Anthropic API to use",
+                                "key": "anthropic-version",
+                                "value": "<string>"
+                              },
+                              {
+                                "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                                "key": "anthropic-beta",
+                                "value": "<string>,<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "x-api-key",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/messages/batches/:message_batch_id/cancel",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "messages",
+                                "batches",
+                                ":message_batch_id",
+                                "cancel"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "message_batch_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"message_batch\",\n  \"processing_status\": \"ended\",\n  \"request_counts\": {\n    \"processing\": \"<integer>\",\n    \"succeeded\": \"<integer>\",\n    \"errored\": \"<integer>\",\n    \"canceled\": \"<integer>\",\n    \"expired\": \"<integer>\"\n  },\n  \"created_at\": \"<dateTime>\",\n  \"expires_at\": \"<dateTime>\",\n  \"archived_at\": \"<dateTime>\",\n  \"cancel_initiated_at\": \"<dateTime>\",\n  \"ended_at\": \"<dateTime>\",\n  \"results_url\": \"<uri>\"\n}",
+                          "createdAt": "2026-06-05T15:05:25.000Z",
+                          "updatedAt": "2026-06-05T15:05:25.000Z",
+                          "uid": "35240-77963f33-8ed2-49e6-a67c-03444bed8906"
+                        },
+                        {
+                          "id": "ac22535f-7a2e-405c-ae55-655c0aa1dedc",
+                          "name": "Error Response",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) The version of the Anthropic API to use",
+                                "key": "anthropic-version",
+                                "value": "<string>"
+                              },
+                              {
+                                "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                                "key": "anthropic-beta",
+                                "value": "<string>,<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "x-api-key",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/messages/batches/:message_batch_id/cancel",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "messages",
+                                "batches",
+                                ":message_batch_id",
+                                "cancel"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "message_batch_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:05:25.000Z",
+                          "updatedAt": "2026-06-05T15:05:25.000Z",
+                          "uid": "35240-ac22535f-7a2e-405c-ae55-655c0aa1dedc"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:05:25.000Z",
+                      "updatedAt": "2026-06-05T15:05:25.000Z",
+                      "uid": "35240-8ae97ccc-580e-4de6-9dde-0a2bf8ce4f58"
+                    }
+                  ],
+                  "id": "69a91c2e-3528-48c0-8277-eb906e9079ae",
+                  "createdAt": "2026-06-05T15:05:25.000Z",
+                  "updatedAt": "2026-06-05T15:05:25.000Z",
+                  "uid": "35240-69a91c2e-3528-48c0-8277-eb906e9079ae"
+                },
+                {
+                  "name": "Anthropic Retrieve Message Batch",
+                  "id": "5582b24b-f899-4c66-96d2-554b9535c585",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                        "key": "anthropic-beta",
+                        "value": "<string>,<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/messages/batches/:message_batch_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "messages",
+                        "batches",
+                        ":message_batch_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "3ecc2d44-2b0e-4631-b0f7-1b0544e6299c",
+                          "key": "message_batch_id",
+                          "value": "<string>",
+                          "description": "(Required) Unique identifier for the message batch"
+                        }
+                      ]
+                    },
+                    "description": "Retrieves the current status and details of a previously created batch processing job."
+                  },
+                  "response": [
+                    {
+                      "id": "cb64bbc5-7a2f-431a-8a8e-66bac2953ec5",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                            "key": "anthropic-beta",
+                            "value": "<string>,<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/messages/batches/:message_batch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "messages",
+                            "batches",
+                            ":message_batch_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "message_batch_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"message_batch\",\n  \"processing_status\": \"ended\",\n  \"request_counts\": {\n    \"processing\": \"<integer>\",\n    \"succeeded\": \"<integer>\",\n    \"errored\": \"<integer>\",\n    \"canceled\": \"<integer>\",\n    \"expired\": \"<integer>\"\n  },\n  \"created_at\": \"<dateTime>\",\n  \"expires_at\": \"<dateTime>\",\n  \"archived_at\": \"<dateTime>\",\n  \"cancel_initiated_at\": \"<dateTime>\",\n  \"ended_at\": \"<dateTime>\",\n  \"results_url\": \"<uri>\"\n}",
+                      "createdAt": "2026-06-05T15:05:25.000Z",
+                      "updatedAt": "2026-06-05T15:05:25.000Z",
+                      "uid": "35240-cb64bbc5-7a2f-431a-8a8e-66bac2953ec5"
+                    },
+                    {
+                      "id": "65e0c156-1e4b-4dce-8a0c-6ae3b4ded829",
+                      "name": "Error Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                            "key": "anthropic-beta",
+                            "value": "<string>,<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/messages/batches/:message_batch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "messages",
+                            "batches",
+                            ":message_batch_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "message_batch_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:05:25.000Z",
+                      "updatedAt": "2026-06-05T15:05:25.000Z",
+                      "uid": "35240-65e0c156-1e4b-4dce-8a0c-6ae3b4ded829"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:05:25.000Z",
+                  "updatedAt": "2026-06-05T15:05:25.000Z",
+                  "uid": "35240-5582b24b-f899-4c66-96d2-554b9535c585"
+                },
+                {
+                  "name": "Anthropic Delete Message Batch",
+                  "id": "190f3fbb-60ea-4368-bf11-8fb62d6bc33d",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                        "key": "anthropic-beta",
+                        "value": "<string>,<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/messages/batches/:message_batch_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "messages",
+                        "batches",
+                        ":message_batch_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "73e9effe-d3d7-46f2-bc8b-9b716a25e21b",
+                          "key": "message_batch_id",
+                          "value": "<string>",
+                          "description": "(Required) Unique identifier for the message batch"
+                        }
+                      ]
+                    },
+                    "description": "Permanently removes a message batch from your account. This action cannot be undone."
+                  },
+                  "response": [
+                    {
+                      "id": "2e9e756e-130c-43c2-b0e3-2fe60676a2e2",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                            "key": "anthropic-beta",
+                            "value": "<string>,<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/messages/batches/:message_batch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "messages",
+                            "batches",
+                            ":message_batch_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "message_batch_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"message_batch_deleted\"\n}",
+                      "createdAt": "2026-06-05T15:05:25.000Z",
+                      "updatedAt": "2026-06-05T15:05:25.000Z",
+                      "uid": "35240-2e9e756e-130c-43c2-b0e3-2fe60676a2e2"
+                    },
+                    {
+                      "id": "712baaf4-4d29-437c-b19b-4bbd878de5b9",
+                      "name": "Error Response",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                            "key": "anthropic-beta",
+                            "value": "<string>,<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/messages/batches/:message_batch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "messages",
+                            "batches",
+                            ":message_batch_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "message_batch_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:05:25.000Z",
+                      "updatedAt": "2026-06-05T15:05:25.000Z",
+                      "uid": "35240-712baaf4-4d29-437c-b19b-4bbd878de5b9"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:05:25.000Z",
+                  "updatedAt": "2026-06-05T15:05:25.000Z",
+                  "uid": "35240-190f3fbb-60ea-4368-bf11-8fb62d6bc33d"
+                }
+              ],
+              "id": "c3fd2a11-00f8-47bb-bc92-16e1a3970431",
+              "createdAt": "2026-06-05T15:05:25.000Z",
+              "updatedAt": "2026-06-05T15:05:25.000Z",
+              "uid": "35240-c3fd2a11-00f8-47bb-bc92-16e1a3970431"
+            },
+            {
+              "name": "Anthropic List Message Batches",
+              "id": "b468edc1-c325-425f-b3b9-e6a715f3436a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use",
+                    "key": "anthropic-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                    "key": "anthropic-beta",
+                    "value": "<string>,<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/messages/batches?limit=20&before_id=<string>&after_id=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "messages",
+                    "batches"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "description": "ID of the object to use as a cursor for pagination. Returns results immediately before this object.",
+                      "key": "before_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "ID of the object to use as a cursor for pagination. Returns results immediately after this object.",
+                      "key": "after_id",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Retrieves a paginated list of all message batches associated with your account."
+              },
+              "response": [
+                {
+                  "id": "6bc4d8d9-f5a8-4496-8f43-da2c2fb9429b",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                        "key": "anthropic-beta",
+                        "value": "<string>,<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/messages/batches?limit=20&before_id=<string>&after_id=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "messages",
+                        "batches"
+                      ],
+                      "query": [
+                        {
+                          "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                          "key": "limit",
+                          "value": "20"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns results immediately before this object.",
+                          "key": "before_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns results immediately after this object.",
+                          "key": "after_id",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"message_batch\",\n      \"processing_status\": \"canceling\",\n      \"request_counts\": {\n        \"processing\": \"<integer>\",\n        \"succeeded\": \"<integer>\",\n        \"errored\": \"<integer>\",\n        \"canceled\": \"<integer>\",\n        \"expired\": \"<integer>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"expires_at\": \"<dateTime>\",\n      \"archived_at\": \"<dateTime>\",\n      \"cancel_initiated_at\": \"<dateTime>\",\n      \"ended_at\": \"<dateTime>\",\n      \"results_url\": \"<uri>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"message_batch\",\n      \"processing_status\": \"in_progress\",\n      \"request_counts\": {\n        \"processing\": \"<integer>\",\n        \"succeeded\": \"<integer>\",\n        \"errored\": \"<integer>\",\n        \"canceled\": \"<integer>\",\n        \"expired\": \"<integer>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"expires_at\": \"<dateTime>\",\n      \"archived_at\": \"<dateTime>\",\n      \"cancel_initiated_at\": \"<dateTime>\",\n      \"ended_at\": \"<dateTime>\",\n      \"results_url\": \"<uri>\"\n    }\n  ],\n  \"first_id\": \"<string>\",\n  \"has_more\": \"<boolean>\",\n  \"last_id\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:25.000Z",
+                  "updatedAt": "2026-06-05T15:05:25.000Z",
+                  "uid": "35240-6bc4d8d9-f5a8-4496-8f43-da2c2fb9429b"
+                },
+                {
+                  "id": "489fa74c-3011-4e28-bc0b-16c04f57a5c2",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                        "key": "anthropic-beta",
+                        "value": "<string>,<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/messages/batches?limit=20&before_id=<string>&after_id=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "messages",
+                        "batches"
+                      ],
+                      "query": [
+                        {
+                          "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                          "key": "limit",
+                          "value": "20"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns results immediately before this object.",
+                          "key": "before_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns results immediately after this object.",
+                          "key": "after_id",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:25.000Z",
+                  "updatedAt": "2026-06-05T15:05:25.000Z",
+                  "uid": "35240-489fa74c-3011-4e28-bc0b-16c04f57a5c2"
+                }
+              ],
+              "createdAt": "2026-06-05T15:05:25.000Z",
+              "updatedAt": "2026-06-05T15:05:25.000Z",
+              "uid": "35240-b468edc1-c325-425f-b3b9-e6a715f3436a"
+            },
+            {
+              "name": "Anthropic Create Message Batch",
+              "id": "bdca9ca5-e9d0-48e2-867a-62baa1c1cef6",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use",
+                    "key": "anthropic-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                    "key": "anthropic-beta",
+                    "value": "<string>,<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"requests\": [\n    {\n      \"custom_id\": \"<string>\",\n      \"params\": {\n        \"model\": \"<string>\",\n        \"max_tokens\": \"<integer>\",\n        \"messages\": [\n          {\n            \"role\": \"assistant\",\n            \"content\": \"<string>\"\n          }\n        ]\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/messages/batches",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "messages",
+                    "batches"
+                  ]
+                },
+                "description": "Creates a new message batch for asynchronous processing. Submits multiple message \nrequests to be processed in the background, ideal for high-volume, non-time-sensitive workloads.\n"
+              },
+              "response": [
+                {
+                  "id": "a9804e47-12c0-45ab-ad36-76ce958b970f",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                        "key": "anthropic-beta",
+                        "value": "<string>,<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"requests\": [\n    {\n      \"custom_id\": \"<string>\",\n      \"params\": {\n        \"model\": \"<string>\",\n        \"max_tokens\": \"<integer>\",\n        \"messages\": [\n          {\n            \"role\": \"assistant\",\n            \"content\": \"<string>\"\n          }\n        ]\n      }\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/messages/batches",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "messages",
+                        "batches"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"message_batch\",\n  \"processing_status\": \"ended\",\n  \"request_counts\": {\n    \"processing\": \"<integer>\",\n    \"succeeded\": \"<integer>\",\n    \"errored\": \"<integer>\",\n    \"canceled\": \"<integer>\",\n    \"expired\": \"<integer>\"\n  },\n  \"created_at\": \"<dateTime>\",\n  \"expires_at\": \"<dateTime>\",\n  \"archived_at\": \"<dateTime>\",\n  \"cancel_initiated_at\": \"<dateTime>\",\n  \"ended_at\": \"<dateTime>\",\n  \"results_url\": \"<uri>\"\n}",
+                  "createdAt": "2026-06-05T15:05:25.000Z",
+                  "updatedAt": "2026-06-05T15:05:25.000Z",
+                  "uid": "35240-a9804e47-12c0-45ab-ad36-76ce958b970f"
+                },
+                {
+                  "id": "d5f3cc49-dc1a-482f-83d7-2251cd41396b",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                        "key": "anthropic-beta",
+                        "value": "<string>,<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"requests\": [\n    {\n      \"custom_id\": \"<string>\",\n      \"params\": {\n        \"model\": \"<string>\",\n        \"max_tokens\": \"<integer>\",\n        \"messages\": [\n          {\n            \"role\": \"assistant\",\n            \"content\": \"<string>\"\n          }\n        ]\n      }\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/messages/batches",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "messages",
+                        "batches"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:25.000Z",
+                  "updatedAt": "2026-06-05T15:05:25.000Z",
+                  "uid": "35240-d5f3cc49-dc1a-482f-83d7-2251cd41396b"
+                }
+              ],
+              "createdAt": "2026-06-05T15:05:25.000Z",
+              "updatedAt": "2026-06-05T15:05:25.000Z",
+              "uid": "35240-bdca9ca5-e9d0-48e2-867a-62baa1c1cef6"
+            }
+          ],
+          "id": "58c1a235-14ee-4ef2-b526-375b57d5dfde",
+          "createdAt": "2026-06-05T15:05:25.000Z",
+          "updatedAt": "2026-06-05T15:05:25.000Z",
+          "uid": "35240-58c1a235-14ee-4ef2-b526-375b57d5dfde"
+        }
+      ],
+      "id": "b50cacfd-7d80-4e11-aa20-a6e719e6ebcc",
+      "createdAt": "2026-06-05T15:05:25.000Z",
+      "updatedAt": "2026-06-05T15:05:25.000Z",
+      "uid": "35240-b50cacfd-7d80-4e11-aa20-a6e719e6ebcc"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.anthropic.com/v1"
+    }
+  ]
+}

@@ -1,0 +1,629 @@
+{
+  "item": [
+    {
+      "id": "d1bcd59d-8fcb-4135-819a-58e97b4f5dd1",
+      "name": "Usage",
+      "description": {
+        "content": "Token usage and consumption reporting",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "496dde8d-6b0c-423a-99cf-10a0121f4d31",
+          "name": "Anthropic Get Messages Usage Report",
+          "request": {
+            "name": "Anthropic Get Messages Usage Report",
+            "description": {
+              "content": "Aggregated token usage for Messages API requests, broken down by day, model, workspace, and service tier.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "organizations",
+                "usage_report",
+                "messages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "starting_at",
+                  "value": "<dateTime>",
+                  "description": "(Required) RFC3339 inclusive lower bound for the report window."
+                },
+                {
+                  "disabled": false,
+                  "key": "ending_at",
+                  "value": "<dateTime>",
+                  "description": "RFC3339 exclusive upper bound for the report window."
+                },
+                {
+                  "disabled": false,
+                  "key": "bucket_width",
+                  "value": "1d",
+                  "description": "Aggregation bucket size."
+                },
+                {
+                  "disabled": false,
+                  "key": "group_by",
+                  "value": "<string>",
+                  "description": "Dimensions to group the report by."
+                },
+                {
+                  "disabled": false,
+                  "key": "group_by",
+                  "value": "<string>",
+                  "description": "Dimensions to group the report by."
+                },
+                {
+                  "disabled": false,
+                  "key": "models",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "models",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "workspace_ids",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "workspace_ids",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a8510825-92c7-4224-877c-c16c8361c534",
+              "name": "Usage report.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations",
+                    "usage_report",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "starting_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "ending_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "bucket_width",
+                      "value": "1d"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "models",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "models",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"starting_at\": \"1953-04-18T18:20:00.988Z\",\n      \"ending_at\": \"1948-03-29T16:40:53.660Z\",\n      \"results\": [\n        {\n          \"workspace_id\": \"string\",\n          \"api_key_id\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"context_window\": \"string\",\n          \"uncached_input_tokens\": 847,\n          \"cache_read_input_tokens\": 930,\n          \"cache_creation_5m_input_tokens\": 3214,\n          \"cache_creation_1h_input_tokens\": 9753,\n          \"output_tokens\": 316,\n          \"server_tool_use\": {}\n        },\n        {\n          \"workspace_id\": \"string\",\n          \"api_key_id\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"context_window\": \"string\",\n          \"uncached_input_tokens\": 9061,\n          \"cache_read_input_tokens\": 6430,\n          \"cache_creation_5m_input_tokens\": 1406,\n          \"cache_creation_1h_input_tokens\": 6127,\n          \"output_tokens\": 5642,\n          \"server_tool_use\": {}\n        }\n      ]\n    },\n    {\n      \"starting_at\": \"2023-08-20T16:07:28.481Z\",\n      \"ending_at\": \"1992-06-28T18:14:52.337Z\",\n      \"results\": [\n        {\n          \"workspace_id\": \"string\",\n          \"api_key_id\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"context_window\": \"string\",\n          \"uncached_input_tokens\": 4765,\n          \"cache_read_input_tokens\": 3239,\n          \"cache_creation_5m_input_tokens\": 8488,\n          \"cache_creation_1h_input_tokens\": 3087,\n          \"output_tokens\": 2065,\n          \"server_tool_use\": {}\n        },\n        {\n          \"workspace_id\": \"string\",\n          \"api_key_id\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"context_window\": \"string\",\n          \"uncached_input_tokens\": 6547,\n          \"cache_read_input_tokens\": 9712,\n          \"cache_creation_5m_input_tokens\": 6168,\n          \"cache_creation_1h_input_tokens\": 3184,\n          \"output_tokens\": 7991,\n          \"server_tool_use\": {}\n        }\n      ]\n    }\n  ],\n  \"has_more\": false,\n  \"next_page\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "190c5ade-37d6-47cc-8a62-641c8caf57ed",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations",
+                    "usage_report",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "starting_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "ending_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "bucket_width",
+                      "value": "1d"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "models",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "models",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "ba37a05f-5cd5-4c83-8cfe-4c94fe37a2d2",
+      "name": "Cost",
+      "description": {
+        "content": "Service-level cost reporting",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "cba7d996-e03d-484c-9dac-25e99675dcd6",
+          "name": "Anthropic Get Cost Report",
+          "request": {
+            "name": "Anthropic Get Cost Report",
+            "description": {
+              "content": "Service-level cost breakdowns for the organization in USD, including Messages, Batches, Files, Skills, and Claude Code line items.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "organizations",
+                "cost_report"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "starting_at",
+                  "value": "<dateTime>",
+                  "description": "(Required) RFC3339 inclusive lower bound for the report window."
+                },
+                {
+                  "disabled": false,
+                  "key": "ending_at",
+                  "value": "<dateTime>",
+                  "description": "RFC3339 exclusive upper bound for the report window."
+                },
+                {
+                  "disabled": false,
+                  "key": "bucket_width",
+                  "value": "1d",
+                  "description": "Aggregation bucket size."
+                },
+                {
+                  "disabled": false,
+                  "key": "group_by",
+                  "value": "<string>",
+                  "description": "Dimensions to group the report by."
+                },
+                {
+                  "disabled": false,
+                  "key": "group_by",
+                  "value": "<string>",
+                  "description": "Dimensions to group the report by."
+                },
+                {
+                  "disabled": false,
+                  "key": "workspace_ids",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "workspace_ids",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "39f9b509-73c8-41d1-9d28-0a3cc825ad38",
+              "name": "Cost report.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations",
+                    "cost_report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "starting_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "ending_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "bucket_width",
+                      "value": "1d"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"starting_at\": \"1999-06-01T21:09:38.519Z\",\n      \"ending_at\": \"2006-09-20T12:11:26.499Z\",\n      \"results\": [\n        {\n          \"workspace_id\": \"string\",\n          \"description\": \"string\",\n          \"cost_type\": \"string\",\n          \"context_window\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"token_type\": \"string\",\n          \"currency\": \"USD\",\n          \"amount\": \"string\"\n        },\n        {\n          \"workspace_id\": \"string\",\n          \"description\": \"string\",\n          \"cost_type\": \"string\",\n          \"context_window\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"token_type\": \"string\",\n          \"currency\": \"USD\",\n          \"amount\": \"string\"\n        }\n      ]\n    },\n    {\n      \"starting_at\": \"2021-06-04T01:29:38.264Z\",\n      \"ending_at\": \"2012-07-25T08:48:21.334Z\",\n      \"results\": [\n        {\n          \"workspace_id\": \"string\",\n          \"description\": \"string\",\n          \"cost_type\": \"string\",\n          \"context_window\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"token_type\": \"string\",\n          \"currency\": \"USD\",\n          \"amount\": \"string\"\n        },\n        {\n          \"workspace_id\": \"string\",\n          \"description\": \"string\",\n          \"cost_type\": \"string\",\n          \"context_window\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"token_type\": \"string\",\n          \"currency\": \"USD\",\n          \"amount\": \"string\"\n        }\n      ]\n    }\n  ],\n  \"has_more\": true,\n  \"next_page\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ff68ecff-aaeb-4a85-b2a8-d82887816e59",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "organizations",
+                    "cost_report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "starting_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "ending_at",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "bucket_width",
+                      "value": "1d"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.anthropic.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "62d4977d-a179-4842-a61a-478d45ea3152",
+    "name": "Anthropic Usage and Cost API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Programmatically access your organization's API usage and cost data via the Usage & Cost Admin API. The Usage API tracks token consumption across your organization with breakdowns by model, workspace, and service tier. The Cost API retrieves service-level cost breakdowns in USD. Both endpoints require an Admin API key (sk-ant-admin...).\n\n\nContact Support:\n Name: Anthropic Support",
+      "type": "text/plain"
+    }
+  }
+}

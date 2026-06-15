@@ -1,0 +1,210 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Anthropic Models API",
+    "version": "2025-03-05"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Models",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic List Available Models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/models",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              },
+              {
+                "name": "x-api-key",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              },
+              {
+                "name": "anthropic-dangerous-direct-browser-access",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "before_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. When provided,\nreturns the page of results immediately before this object.\n"
+              },
+              {
+                "name": "after_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. When provided,\nreturns the page of results immediately after this object.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.\n"
+              }
+            ]
+          },
+          "docs": "List available models. The Models API response can be used to determine\nwhich models are available for use in the API. More recently released\nmodels are listed first.\n"
+        },
+        {
+          "info": {
+            "name": "Anthropic Get A Specific Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/models/:model_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              },
+              {
+                "name": "x-api-key",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              },
+              {
+                "name": "anthropic-dangerous-direct-browser-access",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "model_id",
+                "value": "claude-sonnet-4-20250514",
+                "type": "path",
+                "description": "Model identifier or alias."
+              }
+            ]
+          },
+          "docs": "Get a specific model. The Models API response can be used to determine\ninformation about a specific model or resolve a model alias to a model ID.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Messages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic Create A Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/messages",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              },
+              {
+                "name": "x-api-key",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              },
+              {
+                "name": "anthropic-dangerous-direct-browser-access",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a structured list of input messages with text and/or image content,\nand the model will generate the next message in the conversation.\n\nThe Messages API can be used for either single queries or stateless\nmulti-turn conversations.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic Count Tokens In A Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/messages/count_tokens",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              },
+              {
+                "name": "x-api-key",
+                "value": ""
+              },
+              {
+                "name": "Content-Type",
+                "value": ""
+              },
+              {
+                "name": "anthropic-dangerous-direct-browser-access",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Count the number of tokens in a message before sending it.\nThis allows you to make informed decisions about message length\nand manage your token budget effectively.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

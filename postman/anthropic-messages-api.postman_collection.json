@@ -1,0 +1,621 @@
+{
+  "info": {
+    "_postman_id": "2f097273-d95b-40db-bc74-5e5862f8dc14",
+    "name": "Anthropic Messages API",
+    "description": "Send a structured list of input messages with text and/or image content, and the model will generate the next message in the conversation. The Messages API can be used for both single-turn and multi-turn conversations. It supports text, images, tool use, extended thinking, streaming, and structured output.\n\n\nContact Support:\n Name: Anthropic Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:05:21.000Z",
+    "updatedAt": "2026-06-05T15:05:21.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-2f097273-d95b-40db-bc74-5e5862f8dc14"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "messages",
+          "item": [
+            {
+              "name": "Anthropic Create A Message",
+              "id": "04ec4c7e-78ea-422a-b2ef-37a99ea68e27",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "description": "(Required) A valid Anthropic API key.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                    "key": "anthropic-beta",
+                    "value": "<string>,<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"<string>\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"<string>\"\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"system\": \"<string>\",\n  \"temperature\": 1,\n  \"top_p\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"stream\": false,\n  \"metadata\": {\n    \"user_id\": \"<string>\"\n  },\n  \"tools\": [\n    {\n      \"name\": \"-\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"noneff\": \"enim dolore anim\",\n          \"Lorem7e8\": true,\n          \"aute_63\": \"sed magna cupidatat aute in\"\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    },\n    {\n      \"name\": \"EHQLZtm5NudHAYYmjjeJNvy2sywn_Bmgq3LO_YuCYQe8yy877rrL3z-b\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"deserunt_21\": true,\n          \"amet_97\": 19377432\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    }\n  ],\n  \"tool_choice\": {\n    \"type\": \"none\",\n    \"name\": \"<string>\",\n    \"disable_parallel_tool_use\": false\n  },\n  \"thinking\": {\n    \"type\": \"adaptive\",\n    \"budget_tokens\": \"<integer>\"\n  },\n  \"service_tier\": \"standard_only\",\n  \"output_config\": {\n    \"format\": {\n      \"type\": \"json_schema\",\n      \"schema\": {\n        \"reprehenderit_0\": 90698909,\n        \"quis_ae9\": \"pariatur est culpa occaecat\",\n        \"irure_688\": 12252351.873698547,\n        \"consectetur866\": 69576585,\n        \"in_3e\": 83034787.1070543\n      }\n    },\n    \"effort\": \"high\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/messages",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "messages"
+                  ]
+                },
+                "description": "Send a structured list of input messages with text and/or image content, and the model will generate the next message in the conversation. The Messages API can be used for both single-turn and multi-turn conversations.\n"
+              },
+              "response": [
+                {
+                  "id": "2f7292ba-60e7-417e-a759-9c0732f4884c",
+                  "name": "Successful message response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
+                        "key": "anthropic-version",
+                        "value": "2023-06-01"
+                      },
+                      {
+                        "description": "(Required) A valid Anthropic API key.",
+                        "key": "x-api-key",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                        "key": "anthropic-beta",
+                        "value": "<string>,<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"model\": \"<string>\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"<string>\"\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"system\": \"<string>\",\n  \"temperature\": 1,\n  \"top_p\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"stream\": false,\n  \"metadata\": {\n    \"user_id\": \"<string>\"\n  },\n  \"tools\": [\n    {\n      \"name\": \"-\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"noneff\": \"enim dolore anim\",\n          \"Lorem7e8\": true,\n          \"aute_63\": \"sed magna cupidatat aute in\"\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    },\n    {\n      \"name\": \"EHQLZtm5NudHAYYmjjeJNvy2sywn_Bmgq3LO_YuCYQe8yy877rrL3z-b\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"deserunt_21\": true,\n          \"amet_97\": 19377432\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    }\n  ],\n  \"tool_choice\": {\n    \"type\": \"none\",\n    \"name\": \"<string>\",\n    \"disable_parallel_tool_use\": false\n  },\n  \"thinking\": {\n    \"type\": \"adaptive\",\n    \"budget_tokens\": \"<integer>\"\n  },\n  \"service_tier\": \"standard_only\",\n  \"output_config\": {\n    \"format\": {\n      \"type\": \"json_schema\",\n      \"schema\": {\n        \"reprehenderit_0\": 90698909,\n        \"quis_ae9\": \"pariatur est culpa occaecat\",\n        \"irure_688\": 12252351.873698547,\n        \"consectetur866\": 69576585,\n        \"in_3e\": 83034787.1070543\n      }\n    },\n    \"effort\": \"high\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/messages",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "messages"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"message\",\n  \"role\": \"assistant\",\n  \"content\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"<string>\",\n      \"citations\": [\n        {\n          \"type\": \"content_block_location\",\n          \"cited_text\": \"<string>\",\n          \"document_index\": \"<integer>\",\n          \"document_title\": \"<string>\",\n          \"file_id\": \"<string>\",\n          \"start_char_index\": \"<integer>\",\n          \"end_char_index\": \"<integer>\"\n        },\n        {\n          \"type\": \"content_block_location\",\n          \"cited_text\": \"<string>\",\n          \"document_index\": \"<integer>\",\n          \"document_title\": \"<string>\",\n          \"file_id\": \"<string>\",\n          \"start_char_index\": \"<integer>\",\n          \"end_char_index\": \"<integer>\"\n        }\n      ]\n    },\n    {\n      \"type\": \"text\",\n      \"text\": \"<string>\",\n      \"citations\": [\n        {\n          \"type\": \"content_block_location\",\n          \"cited_text\": \"<string>\",\n          \"document_index\": \"<integer>\",\n          \"document_title\": \"<string>\",\n          \"file_id\": \"<string>\",\n          \"start_char_index\": \"<integer>\",\n          \"end_char_index\": \"<integer>\"\n        },\n        {\n          \"type\": \"content_block_location\",\n          \"cited_text\": \"<string>\",\n          \"document_index\": \"<integer>\",\n          \"document_title\": \"<string>\",\n          \"file_id\": \"<string>\",\n          \"start_char_index\": \"<integer>\",\n          \"end_char_index\": \"<integer>\"\n        }\n      ]\n    }\n  ],\n  \"model\": \"<string>\",\n  \"stop_reason\": \"stop_sequence\",\n  \"usage\": {\n    \"input_tokens\": \"<integer>\",\n    \"output_tokens\": \"<integer>\",\n    \"cache_creation_input_tokens\": \"<integer>\",\n    \"cache_read_input_tokens\": \"<integer>\"\n  },\n  \"stop_sequence\": \"<string,null>\"\n}",
+                  "createdAt": "2026-06-05T15:05:21.000Z",
+                  "updatedAt": "2026-06-05T15:05:21.000Z",
+                  "uid": "35240-2f7292ba-60e7-417e-a759-9c0732f4884c"
+                },
+                {
+                  "id": "0dae2eb4-469c-448c-b1b9-e96e3cceff43",
+                  "name": "Bad Request - Invalid input parameters",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
+                        "key": "anthropic-version",
+                        "value": "2023-06-01"
+                      },
+                      {
+                        "description": "(Required) A valid Anthropic API key.",
+                        "key": "x-api-key",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                        "key": "anthropic-beta",
+                        "value": "<string>,<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"model\": \"<string>\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"<string>\"\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"system\": \"<string>\",\n  \"temperature\": 1,\n  \"top_p\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"stream\": false,\n  \"metadata\": {\n    \"user_id\": \"<string>\"\n  },\n  \"tools\": [\n    {\n      \"name\": \"-\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"noneff\": \"enim dolore anim\",\n          \"Lorem7e8\": true,\n          \"aute_63\": \"sed magna cupidatat aute in\"\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    },\n    {\n      \"name\": \"EHQLZtm5NudHAYYmjjeJNvy2sywn_Bmgq3LO_YuCYQe8yy877rrL3z-b\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"deserunt_21\": true,\n          \"amet_97\": 19377432\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    }\n  ],\n  \"tool_choice\": {\n    \"type\": \"none\",\n    \"name\": \"<string>\",\n    \"disable_parallel_tool_use\": false\n  },\n  \"thinking\": {\n    \"type\": \"adaptive\",\n    \"budget_tokens\": \"<integer>\"\n  },\n  \"service_tier\": \"standard_only\",\n  \"output_config\": {\n    \"format\": {\n      \"type\": \"json_schema\",\n      \"schema\": {\n        \"reprehenderit_0\": 90698909,\n        \"quis_ae9\": \"pariatur est culpa occaecat\",\n        \"irure_688\": 12252351.873698547,\n        \"consectetur866\": 69576585,\n        \"in_3e\": 83034787.1070543\n      }\n    },\n    \"effort\": \"high\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/messages",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "messages"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"error\": {\n    \"type\": \"overloaded_error\",\n    \"message\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-06-05T15:05:21.000Z",
+                  "updatedAt": "2026-06-05T15:05:21.000Z",
+                  "uid": "35240-0dae2eb4-469c-448c-b1b9-e96e3cceff43"
+                },
+                {
+                  "id": "a9a297ce-672d-43b4-b8e3-ea3364508d7f",
+                  "name": "Unauthorized - Invalid or missing API key",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
+                        "key": "anthropic-version",
+                        "value": "2023-06-01"
+                      },
+                      {
+                        "description": "(Required) A valid Anthropic API key.",
+                        "key": "x-api-key",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                        "key": "anthropic-beta",
+                        "value": "<string>,<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"model\": \"<string>\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"<string>\"\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"system\": \"<string>\",\n  \"temperature\": 1,\n  \"top_p\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"stream\": false,\n  \"metadata\": {\n    \"user_id\": \"<string>\"\n  },\n  \"tools\": [\n    {\n      \"name\": \"-\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"noneff\": \"enim dolore anim\",\n          \"Lorem7e8\": true,\n          \"aute_63\": \"sed magna cupidatat aute in\"\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    },\n    {\n      \"name\": \"EHQLZtm5NudHAYYmjjeJNvy2sywn_Bmgq3LO_YuCYQe8yy877rrL3z-b\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"deserunt_21\": true,\n          \"amet_97\": 19377432\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    }\n  ],\n  \"tool_choice\": {\n    \"type\": \"none\",\n    \"name\": \"<string>\",\n    \"disable_parallel_tool_use\": false\n  },\n  \"thinking\": {\n    \"type\": \"adaptive\",\n    \"budget_tokens\": \"<integer>\"\n  },\n  \"service_tier\": \"standard_only\",\n  \"output_config\": {\n    \"format\": {\n      \"type\": \"json_schema\",\n      \"schema\": {\n        \"reprehenderit_0\": 90698909,\n        \"quis_ae9\": \"pariatur est culpa occaecat\",\n        \"irure_688\": 12252351.873698547,\n        \"consectetur866\": 69576585,\n        \"in_3e\": 83034787.1070543\n      }\n    },\n    \"effort\": \"high\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/messages",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "messages"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"error\": {\n    \"type\": \"overloaded_error\",\n    \"message\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-06-05T15:05:21.000Z",
+                  "updatedAt": "2026-06-05T15:05:21.000Z",
+                  "uid": "35240-a9a297ce-672d-43b4-b8e3-ea3364508d7f"
+                },
+                {
+                  "id": "b3115c5a-d91b-4955-a96d-30bb097af757",
+                  "name": "Forbidden - Access denied",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
+                        "key": "anthropic-version",
+                        "value": "2023-06-01"
+                      },
+                      {
+                        "description": "(Required) A valid Anthropic API key.",
+                        "key": "x-api-key",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                        "key": "anthropic-beta",
+                        "value": "<string>,<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"model\": \"<string>\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"<string>\"\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"system\": \"<string>\",\n  \"temperature\": 1,\n  \"top_p\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"stream\": false,\n  \"metadata\": {\n    \"user_id\": \"<string>\"\n  },\n  \"tools\": [\n    {\n      \"name\": \"-\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"noneff\": \"enim dolore anim\",\n          \"Lorem7e8\": true,\n          \"aute_63\": \"sed magna cupidatat aute in\"\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    },\n    {\n      \"name\": \"EHQLZtm5NudHAYYmjjeJNvy2sywn_Bmgq3LO_YuCYQe8yy877rrL3z-b\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"deserunt_21\": true,\n          \"amet_97\": 19377432\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    }\n  ],\n  \"tool_choice\": {\n    \"type\": \"none\",\n    \"name\": \"<string>\",\n    \"disable_parallel_tool_use\": false\n  },\n  \"thinking\": {\n    \"type\": \"adaptive\",\n    \"budget_tokens\": \"<integer>\"\n  },\n  \"service_tier\": \"standard_only\",\n  \"output_config\": {\n    \"format\": {\n      \"type\": \"json_schema\",\n      \"schema\": {\n        \"reprehenderit_0\": 90698909,\n        \"quis_ae9\": \"pariatur est culpa occaecat\",\n        \"irure_688\": 12252351.873698547,\n        \"consectetur866\": 69576585,\n        \"in_3e\": 83034787.1070543\n      }\n    },\n    \"effort\": \"high\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/messages",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "messages"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"error\": {\n    \"type\": \"overloaded_error\",\n    \"message\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-06-05T15:05:21.000Z",
+                  "updatedAt": "2026-06-05T15:05:21.000Z",
+                  "uid": "35240-b3115c5a-d91b-4955-a96d-30bb097af757"
+                },
+                {
+                  "id": "02f6b570-38b1-4bf2-8b04-475f4df10bd7",
+                  "name": "Too Many Requests - Rate limit exceeded",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
+                        "key": "anthropic-version",
+                        "value": "2023-06-01"
+                      },
+                      {
+                        "description": "(Required) A valid Anthropic API key.",
+                        "key": "x-api-key",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                        "key": "anthropic-beta",
+                        "value": "<string>,<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"model\": \"<string>\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"<string>\"\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"system\": \"<string>\",\n  \"temperature\": 1,\n  \"top_p\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"stream\": false,\n  \"metadata\": {\n    \"user_id\": \"<string>\"\n  },\n  \"tools\": [\n    {\n      \"name\": \"-\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"noneff\": \"enim dolore anim\",\n          \"Lorem7e8\": true,\n          \"aute_63\": \"sed magna cupidatat aute in\"\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    },\n    {\n      \"name\": \"EHQLZtm5NudHAYYmjjeJNvy2sywn_Bmgq3LO_YuCYQe8yy877rrL3z-b\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"deserunt_21\": true,\n          \"amet_97\": 19377432\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    }\n  ],\n  \"tool_choice\": {\n    \"type\": \"none\",\n    \"name\": \"<string>\",\n    \"disable_parallel_tool_use\": false\n  },\n  \"thinking\": {\n    \"type\": \"adaptive\",\n    \"budget_tokens\": \"<integer>\"\n  },\n  \"service_tier\": \"standard_only\",\n  \"output_config\": {\n    \"format\": {\n      \"type\": \"json_schema\",\n      \"schema\": {\n        \"reprehenderit_0\": 90698909,\n        \"quis_ae9\": \"pariatur est culpa occaecat\",\n        \"irure_688\": 12252351.873698547,\n        \"consectetur866\": 69576585,\n        \"in_3e\": 83034787.1070543\n      }\n    },\n    \"effort\": \"high\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/messages",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "messages"
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"error\": {\n    \"type\": \"overloaded_error\",\n    \"message\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-06-05T15:05:21.000Z",
+                  "updatedAt": "2026-06-05T15:05:21.000Z",
+                  "uid": "35240-02f6b570-38b1-4bf2-8b04-475f4df10bd7"
+                },
+                {
+                  "id": "1cae9825-9b0c-47ed-8bde-439cc4127433",
+                  "name": "Internal Server Error",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
+                        "key": "anthropic-version",
+                        "value": "2023-06-01"
+                      },
+                      {
+                        "description": "(Required) A valid Anthropic API key.",
+                        "key": "x-api-key",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                        "key": "anthropic-beta",
+                        "value": "<string>,<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"model\": \"<string>\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"<string>\"\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"system\": \"<string>\",\n  \"temperature\": 1,\n  \"top_p\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"stream\": false,\n  \"metadata\": {\n    \"user_id\": \"<string>\"\n  },\n  \"tools\": [\n    {\n      \"name\": \"-\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"noneff\": \"enim dolore anim\",\n          \"Lorem7e8\": true,\n          \"aute_63\": \"sed magna cupidatat aute in\"\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    },\n    {\n      \"name\": \"EHQLZtm5NudHAYYmjjeJNvy2sywn_Bmgq3LO_YuCYQe8yy877rrL3z-b\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"deserunt_21\": true,\n          \"amet_97\": 19377432\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    }\n  ],\n  \"tool_choice\": {\n    \"type\": \"none\",\n    \"name\": \"<string>\",\n    \"disable_parallel_tool_use\": false\n  },\n  \"thinking\": {\n    \"type\": \"adaptive\",\n    \"budget_tokens\": \"<integer>\"\n  },\n  \"service_tier\": \"standard_only\",\n  \"output_config\": {\n    \"format\": {\n      \"type\": \"json_schema\",\n      \"schema\": {\n        \"reprehenderit_0\": 90698909,\n        \"quis_ae9\": \"pariatur est culpa occaecat\",\n        \"irure_688\": 12252351.873698547,\n        \"consectetur866\": 69576585,\n        \"in_3e\": 83034787.1070543\n      }\n    },\n    \"effort\": \"high\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/messages",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "messages"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"error\": {\n    \"type\": \"overloaded_error\",\n    \"message\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-06-05T15:05:21.000Z",
+                  "updatedAt": "2026-06-05T15:05:21.000Z",
+                  "uid": "35240-1cae9825-9b0c-47ed-8bde-439cc4127433"
+                },
+                {
+                  "id": "ea416852-f84d-4c44-9c28-e3ae76f7c725",
+                  "name": "API Overloaded",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
+                        "key": "anthropic-version",
+                        "value": "2023-06-01"
+                      },
+                      {
+                        "description": "(Required) A valid Anthropic API key.",
+                        "key": "x-api-key",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
+                        "key": "anthropic-beta",
+                        "value": "<string>,<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"model\": \"<string>\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"<string>\"\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"system\": \"<string>\",\n  \"temperature\": 1,\n  \"top_p\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"stream\": false,\n  \"metadata\": {\n    \"user_id\": \"<string>\"\n  },\n  \"tools\": [\n    {\n      \"name\": \"-\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"noneff\": \"enim dolore anim\",\n          \"Lorem7e8\": true,\n          \"aute_63\": \"sed magna cupidatat aute in\"\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    },\n    {\n      \"name\": \"EHQLZtm5NudHAYYmjjeJNvy2sywn_Bmgq3LO_YuCYQe8yy877rrL3z-b\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"deserunt_21\": true,\n          \"amet_97\": 19377432\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"ephemeral\",\n        \"ttl\": \"5m\"\n      }\n    }\n  ],\n  \"tool_choice\": {\n    \"type\": \"none\",\n    \"name\": \"<string>\",\n    \"disable_parallel_tool_use\": false\n  },\n  \"thinking\": {\n    \"type\": \"adaptive\",\n    \"budget_tokens\": \"<integer>\"\n  },\n  \"service_tier\": \"standard_only\",\n  \"output_config\": {\n    \"format\": {\n      \"type\": \"json_schema\",\n      \"schema\": {\n        \"reprehenderit_0\": 90698909,\n        \"quis_ae9\": \"pariatur est culpa occaecat\",\n        \"irure_688\": 12252351.873698547,\n        \"consectetur866\": 69576585,\n        \"in_3e\": 83034787.1070543\n      }\n    },\n    \"effort\": \"high\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/messages",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "messages"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"error\": {\n    \"type\": \"overloaded_error\",\n    \"message\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-06-05T15:05:21.000Z",
+                  "updatedAt": "2026-06-05T15:05:21.000Z",
+                  "uid": "35240-ea416852-f84d-4c44-9c28-e3ae76f7c725"
+                }
+              ],
+              "createdAt": "2026-06-05T15:05:21.000Z",
+              "updatedAt": "2026-06-05T15:05:21.000Z",
+              "uid": "35240-04ec4c7e-78ea-422a-b2ef-37a99ea68e27"
+            }
+          ],
+          "id": "56a71b3f-3059-4451-96b4-8525c79983c6",
+          "createdAt": "2026-06-05T15:05:21.000Z",
+          "updatedAt": "2026-06-05T15:05:21.000Z",
+          "uid": "35240-56a71b3f-3059-4451-96b4-8525c79983c6"
+        }
+      ],
+      "id": "1a7cfa81-2e39-4586-8813-7f116e38ecdd",
+      "createdAt": "2026-06-05T15:05:21.000Z",
+      "updatedAt": "2026-06-05T15:05:21.000Z",
+      "uid": "35240-1a7cfa81-2e39-4586-8813-7f116e38ecdd"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.anthropic.com"
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Anthropic Usage and Cost API",
+    "version": "Wed May 31 2023 20:00:00 GMT-0400 (Eastern Daylight Time)"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Usage",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic Get Messages Usage Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/usage_report/messages",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "starting_at",
+                "value": "",
+                "type": "query",
+                "description": "RFC3339 inclusive lower bound for the report window."
+              },
+              {
+                "name": "ending_at",
+                "value": "",
+                "type": "query",
+                "description": "RFC3339 exclusive upper bound for the report window."
+              },
+              {
+                "name": "bucket_width",
+                "value": "",
+                "type": "query",
+                "description": "Aggregation bucket size."
+              },
+              {
+                "name": "group_by",
+                "value": "",
+                "type": "query",
+                "description": "Dimensions to group the report by."
+              },
+              {
+                "name": "models",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "workspace_ids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Aggregated token usage for Messages API requests, broken down by day, model, workspace, and service tier.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Cost",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic Get Cost Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/cost_report",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "starting_at",
+                "value": "",
+                "type": "query",
+                "description": "RFC3339 inclusive lower bound for the report window."
+              },
+              {
+                "name": "ending_at",
+                "value": "",
+                "type": "query",
+                "description": "RFC3339 exclusive upper bound for the report window."
+              },
+              {
+                "name": "bucket_width",
+                "value": "",
+                "type": "query",
+                "description": "Aggregation bucket size."
+              },
+              {
+                "name": "group_by",
+                "value": "",
+                "type": "query",
+                "description": "Dimensions to group the report by."
+              },
+              {
+                "name": "workspace_ids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Service-level cost breakdowns for the organization in USD, including Messages, Batches, Files, Skills, and Claude Code line items.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

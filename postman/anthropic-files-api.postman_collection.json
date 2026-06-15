@@ -1,0 +1,955 @@
+{
+  "info": {
+    "_postman_id": "2f74d954-bbc8-4caa-8c3f-7e220ccdd5fa",
+    "name": "Anthropic Files API",
+    "description": "The Files API allows you to upload and manage files to use with the Anthropic API \nwithout having to re-upload content with each request. Upload documents, images, \nand other supported file types for use in message creation and batch processing.\n\n\nContact Support:\n Name: Anthropic\n Email: support@anthropic.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:05:27.000Z",
+    "updatedAt": "2026-06-05T15:05:27.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-2f74d954-bbc8-4caa-8c3f-7e220ccdd5fa"
+  },
+  "item": [
+    {
+      "name": "files",
+      "item": [
+        {
+          "name": "{file_id}",
+          "item": [
+            {
+              "name": "content",
+              "item": [
+                {
+                  "name": "Anthropic Download File Content",
+                  "id": "b6279144-2b20-4b2d-807c-01f38da90b54",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "(Required) Beta version header required for the Files API",
+                        "key": "anthropic-beta",
+                        "value": "files-api-2025-04-14,files-api-2025-04-14"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/octet-stream"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/files/:file_id/content",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "files",
+                        ":file_id",
+                        "content"
+                      ],
+                      "variable": [
+                        {
+                          "id": "5d7e3bec-ace0-4121-bad0-0377c8107176",
+                          "key": "file_id",
+                          "value": "<string>",
+                          "description": "(Required) Unique identifier for the file"
+                        }
+                      ]
+                    },
+                    "description": "Downloads the actual content of a previously uploaded file."
+                  },
+                  "response": [
+                    {
+                      "id": "c359dc83-434a-4d0b-8dfe-b6d46a1224b3",
+                      "name": "Successful Response - Returns the file content as binary data",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "description": "(Required) Beta version header required for the Files API",
+                            "key": "anthropic-beta",
+                            "value": "files-api-2025-04-14,files-api-2025-04-14"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/octet-stream"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/:file_id/content",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            ":file_id",
+                            "content"
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/octet-stream"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "<binary>",
+                      "createdAt": "2026-06-05T15:05:27.000Z",
+                      "updatedAt": "2026-06-05T15:05:27.000Z",
+                      "uid": "35240-c359dc83-434a-4d0b-8dfe-b6d46a1224b3"
+                    },
+                    {
+                      "id": "e57bf27f-77c7-4dba-8319-ec370d7e7bd4",
+                      "name": "Error Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "description": "(Required) Beta version header required for the Files API",
+                            "key": "anthropic-beta",
+                            "value": "files-api-2025-04-14,files-api-2025-04-14"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/:file_id/content",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            ":file_id",
+                            "content"
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:05:27.000Z",
+                      "updatedAt": "2026-06-05T15:05:27.000Z",
+                      "uid": "35240-e57bf27f-77c7-4dba-8319-ec370d7e7bd4"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:05:27.000Z",
+                  "updatedAt": "2026-06-05T15:05:27.000Z",
+                  "uid": "35240-b6279144-2b20-4b2d-807c-01f38da90b54"
+                }
+              ],
+              "id": "001f4b42-1be3-4e1a-bd0e-d13ee8382625",
+              "createdAt": "2026-06-05T15:05:27.000Z",
+              "updatedAt": "2026-06-05T15:05:27.000Z",
+              "uid": "35240-001f4b42-1be3-4e1a-bd0e-d13ee8382625"
+            },
+            {
+              "name": "Anthropic Get File Metadata",
+              "id": "8dcd19cc-cd05-4751-8ff8-de16ac2704f3",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use",
+                    "key": "anthropic-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) Beta version header required for the Files API",
+                    "key": "anthropic-beta",
+                    "value": "files-api-2025-04-14,files-api-2025-04-14"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/files/:file_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files",
+                    ":file_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "5ef92c3a-2f95-4b0a-8385-a50fa99bc579",
+                      "key": "file_id",
+                      "value": "<string>",
+                      "description": "(Required) Unique identifier for the file"
+                    }
+                  ]
+                },
+                "description": "Retrieves metadata information for a previously uploaded file."
+              },
+              "response": [
+                {
+                  "id": "aeb51cf1-99c5-4cf4-89c9-9460faec40ea",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "(Required) Beta version header required for the Files API",
+                        "key": "anthropic-beta",
+                        "value": "files-api-2025-04-14,files-api-2025-04-14"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/files/:file_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "files",
+                        ":file_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "file_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"file\",\n  \"filename\": \"<string>\",\n  \"mime_type\": \"<string>\",\n  \"size_bytes\": \"<integer>\",\n  \"created_at\": \"<dateTime>\",\n  \"downloadable\": false\n}",
+                  "createdAt": "2026-06-05T15:05:27.000Z",
+                  "updatedAt": "2026-06-05T15:05:27.000Z",
+                  "uid": "35240-aeb51cf1-99c5-4cf4-89c9-9460faec40ea"
+                },
+                {
+                  "id": "a4ab36d4-b73a-49a9-baf5-4bc4f15aa81d",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "(Required) Beta version header required for the Files API",
+                        "key": "anthropic-beta",
+                        "value": "files-api-2025-04-14,files-api-2025-04-14"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/files/:file_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "files",
+                        ":file_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "file_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:27.000Z",
+                  "updatedAt": "2026-06-05T15:05:27.000Z",
+                  "uid": "35240-a4ab36d4-b73a-49a9-baf5-4bc4f15aa81d"
+                }
+              ],
+              "createdAt": "2026-06-05T15:05:27.000Z",
+              "updatedAt": "2026-06-05T15:05:27.000Z",
+              "uid": "35240-8dcd19cc-cd05-4751-8ff8-de16ac2704f3"
+            },
+            {
+              "name": "Anthropic Delete File",
+              "id": "807c4843-c120-4a5f-997a-a2c811c02b82",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use",
+                    "key": "anthropic-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) Beta version header required for the Files API",
+                    "key": "anthropic-beta",
+                    "value": "files-api-2025-04-14,files-api-2025-04-14"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/files/:file_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files",
+                    ":file_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "32ec13d8-3013-4a86-9205-7cc54f4b8be2",
+                      "key": "file_id",
+                      "value": "<string>",
+                      "description": "(Required) Unique identifier for the file"
+                    }
+                  ]
+                },
+                "description": "Permanently deletes a file from Anthropic's storage system."
+              },
+              "response": [
+                {
+                  "id": "d18ffb01-23ff-4157-bf84-5665a6e15ed5",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "(Required) Beta version header required for the Files API",
+                        "key": "anthropic-beta",
+                        "value": "files-api-2025-04-14,files-api-2025-04-14"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/files/:file_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "files",
+                        ":file_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "file_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"file_deleted\"\n}",
+                  "createdAt": "2026-06-05T15:05:27.000Z",
+                  "updatedAt": "2026-06-05T15:05:27.000Z",
+                  "uid": "35240-d18ffb01-23ff-4157-bf84-5665a6e15ed5"
+                },
+                {
+                  "id": "65ce1b77-0777-4625-8be6-658f3be48362",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "(Required) Beta version header required for the Files API",
+                        "key": "anthropic-beta",
+                        "value": "files-api-2025-04-14,files-api-2025-04-14"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/files/:file_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "files",
+                        ":file_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "file_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:27.000Z",
+                  "updatedAt": "2026-06-05T15:05:27.000Z",
+                  "uid": "35240-65ce1b77-0777-4625-8be6-658f3be48362"
+                }
+              ],
+              "createdAt": "2026-06-05T15:05:27.000Z",
+              "updatedAt": "2026-06-05T15:05:27.000Z",
+              "uid": "35240-807c4843-c120-4a5f-997a-a2c811c02b82"
+            }
+          ],
+          "id": "1d8999aa-452a-4690-9cb6-b9b1b1a0773e",
+          "createdAt": "2026-06-05T15:05:27.000Z",
+          "updatedAt": "2026-06-05T15:05:27.000Z",
+          "uid": "35240-1d8999aa-452a-4690-9cb6-b9b1b1a0773e"
+        },
+        {
+          "name": "Anthropic List Files",
+          "id": "d5b992a7-d2d7-4675-86de-29aa8fbe4087",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "description": "(Required) The version of the Anthropic API to use",
+                "key": "anthropic-version",
+                "value": "<string>"
+              },
+              {
+                "description": "(Required) Beta version header required for the Files API",
+                "key": "anthropic-beta",
+                "value": "files-api-2025-04-14,files-api-2025-04-14"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/files?limit=20&before_id=<string>&after_id=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "files"
+              ],
+              "query": [
+                {
+                  "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "description": "ID of the object to use as a cursor for pagination. Returns results immediately before this object.",
+                  "key": "before_id",
+                  "value": "<string>"
+                },
+                {
+                  "description": "ID of the object to use as a cursor for pagination. Returns results immediately after this object.",
+                  "key": "after_id",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Retrieves a paginated list of all files that have been uploaded to your organization."
+          },
+          "response": [
+            {
+              "id": "45bb37e2-7441-45cc-8460-c6d4de952f2f",
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use",
+                    "key": "anthropic-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) Beta version header required for the Files API",
+                    "key": "anthropic-beta",
+                    "value": "files-api-2025-04-14,files-api-2025-04-14"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/files?limit=20&before_id=<string>&after_id=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "description": "ID of the object to use as a cursor for pagination. Returns results immediately before this object.",
+                      "key": "before_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "ID of the object to use as a cursor for pagination. Returns results immediately after this object.",
+                      "key": "after_id",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"file\",\n      \"filename\": \"<string>\",\n      \"mime_type\": \"<string>\",\n      \"size_bytes\": \"<integer>\",\n      \"created_at\": \"<dateTime>\",\n      \"downloadable\": false\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"file\",\n      \"filename\": \"<string>\",\n      \"mime_type\": \"<string>\",\n      \"size_bytes\": \"<integer>\",\n      \"created_at\": \"<dateTime>\",\n      \"downloadable\": false\n    }\n  ],\n  \"first_id\": \"<string>\",\n  \"has_more\": false,\n  \"last_id\": \"<string>\"\n}",
+              "createdAt": "2026-06-05T15:05:27.000Z",
+              "updatedAt": "2026-06-05T15:05:27.000Z",
+              "uid": "35240-45bb37e2-7441-45cc-8460-c6d4de952f2f"
+            },
+            {
+              "id": "b947d728-643a-4df2-a1a5-46a59cd6809f",
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use",
+                    "key": "anthropic-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) Beta version header required for the Files API",
+                    "key": "anthropic-beta",
+                    "value": "files-api-2025-04-14,files-api-2025-04-14"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/files?limit=20&before_id=<string>&after_id=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "description": "ID of the object to use as a cursor for pagination. Returns results immediately before this object.",
+                      "key": "before_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "ID of the object to use as a cursor for pagination. Returns results immediately after this object.",
+                      "key": "after_id",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-06-05T15:05:27.000Z",
+              "updatedAt": "2026-06-05T15:05:27.000Z",
+              "uid": "35240-b947d728-643a-4df2-a1a5-46a59cd6809f"
+            }
+          ],
+          "createdAt": "2026-06-05T15:05:27.000Z",
+          "updatedAt": "2026-06-05T15:05:27.000Z",
+          "uid": "35240-d5b992a7-d2d7-4675-86de-29aa8fbe4087"
+        },
+        {
+          "name": "Anthropic Create File",
+          "id": "ee231a07-6c43-406d-a85b-cab7bcea8f40",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "description": "(Required) The version of the Anthropic API to use",
+                "key": "anthropic-version",
+                "value": "<string>"
+              },
+              {
+                "description": "(Required) Beta version header required for the Files API",
+                "key": "anthropic-beta",
+                "value": "files-api-2025-04-14,files-api-2025-04-14"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "description": "(Required) The file to upload",
+                  "key": "file",
+                  "type": "file",
+                  "contentType": "application/pdf, image/jpeg, image/png, image/gif, image/webp, text/plain, text/csv, application/json, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                  "value": null
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/files",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "files"
+              ]
+            },
+            "description": "Uploads a file to Anthropic's servers for use in subsequent API calls."
+          },
+          "response": [
+            {
+              "id": "936cfc17-8ecd-4e36-aedb-8496c82843a9",
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use",
+                    "key": "anthropic-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) Beta version header required for the Files API",
+                    "key": "anthropic-beta",
+                    "value": "files-api-2025-04-14,files-api-2025-04-14"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": "(Required) The file to upload",
+                      "key": "file",
+                      "type": "file",
+                      "contentType": "application/pdf, image/jpeg, image/png, image/gif, image/webp, text/plain, text/csv, application/json, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/files",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"file\",\n  \"filename\": \"<string>\",\n  \"mime_type\": \"<string>\",\n  \"size_bytes\": \"<integer>\",\n  \"created_at\": \"<dateTime>\",\n  \"downloadable\": false\n}",
+              "createdAt": "2026-06-05T15:05:27.000Z",
+              "updatedAt": "2026-06-05T15:05:27.000Z",
+              "uid": "35240-936cfc17-8ecd-4e36-aedb-8496c82843a9"
+            },
+            {
+              "id": "eedafe04-9c2b-421e-a32a-615c57a209ab",
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use",
+                    "key": "anthropic-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) Beta version header required for the Files API",
+                    "key": "anthropic-beta",
+                    "value": "files-api-2025-04-14,files-api-2025-04-14"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": "(Required) The file to upload",
+                      "key": "file",
+                      "type": "file",
+                      "contentType": "application/pdf, image/jpeg, image/png, image/gif, image/webp, text/plain, text/csv, application/json, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/files",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-06-05T15:05:27.000Z",
+              "updatedAt": "2026-06-05T15:05:27.000Z",
+              "uid": "35240-eedafe04-9c2b-421e-a32a-615c57a209ab"
+            }
+          ],
+          "createdAt": "2026-06-05T15:05:27.000Z",
+          "updatedAt": "2026-06-05T15:05:27.000Z",
+          "uid": "35240-ee231a07-6c43-406d-a85b-cab7bcea8f40"
+        }
+      ],
+      "id": "a6505778-3c17-44ae-8971-7b348343c566",
+      "createdAt": "2026-06-05T15:05:27.000Z",
+      "updatedAt": "2026-06-05T15:05:27.000Z",
+      "uid": "35240-a6505778-3c17-44ae-8971-7b348343c566"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.anthropic.com/v1"
+    }
+  ]
+}

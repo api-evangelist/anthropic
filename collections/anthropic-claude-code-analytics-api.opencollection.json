@@ -1,0 +1,67 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Anthropic Claude Code Analytics API",
+    "version": "Wed May 31 2023 20:00:00 GMT-0400 (Eastern Daylight Time)"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Claude Code Analytics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic Get Claude Code Usage Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/usage_report/claude_code",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "starting_at",
+                "value": "",
+                "type": "query",
+                "description": "RFC3339 inclusive lower bound (UTC date) for the report window."
+              },
+              {
+                "name": "ending_at",
+                "value": "",
+                "type": "query",
+                "description": "RFC3339 exclusive upper bound (UTC date) for the report window."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Daily aggregated user-level Claude Code usage including session counts, lines of code added/removed, commits, pull requests created, tool actions, and estimated costs by model.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

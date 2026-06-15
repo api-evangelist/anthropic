@@ -1,0 +1,2464 @@
+{
+  "item": [
+    {
+      "id": "949b5afb-3bf6-4545-afe1-2860cbbbc570",
+      "name": "Agents",
+      "description": {
+        "content": "Reusable, versioned agent configurations",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7cd92bd7-e01c-4a2b-9ffb-04630468f0fc",
+          "name": "Anthropic Create Agent",
+          "request": {
+            "name": "Anthropic Create Agent",
+            "description": {
+              "content": "Define a reusable, versioned agent.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"model\": \"<string>\",\n  \"system\": \"<string>\",\n  \"description\": \"<string>\",\n  \"tools\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"mcp_servers\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"skills\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"multiagent\": \"<object>\",\n  \"metadata\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "48dfa998-d939-4d4b-babe-8388560d51c2",
+              "name": "Agent created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Coding Assistant\",\n  \"model\": \"claude-opus-4-7\",\n  \"system\": \"<string>\",\n  \"description\": \"<string>\",\n  \"tools\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"mcp_servers\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"skills\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"multiagent\": \"<object>\",\n  \"metadata\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"agent\",\n  \"name\": \"string\",\n  \"model\": {\n    \"id\": \"string\",\n    \"speed\": \"string\"\n  },\n  \"system\": \"string\",\n  \"description\": \"string\",\n  \"metadata\": {},\n  \"version\": 9233,\n  \"created_at\": \"1954-12-27T03:55:01.766Z\",\n  \"updated_at\": \"1985-01-12T15:40:40.700Z\",\n  \"archived_at\": \"1983-10-26T22:06:28.001Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93dab4f0-2514-4a02-a065-d3968bcb314a",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Coding Assistant\",\n  \"model\": \"claude-opus-4-7\",\n  \"system\": \"<string>\",\n  \"description\": \"<string>\",\n  \"tools\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"mcp_servers\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"skills\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"multiagent\": \"<object>\",\n  \"metadata\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7b1b26f0-e9f2-46f5-86f0-5c164764bf43",
+          "name": "Anthropic List Agents",
+          "request": {
+            "name": "Anthropic List Agents",
+            "description": {
+              "content": "Paginated list of agents in the workspace.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e19a3269-997c-4ef1-b749-9c95b5b83e2b",
+              "name": "List of agents.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"type\": \"agent\",\n      \"name\": \"string\",\n      \"model\": {\n        \"id\": \"string\",\n        \"speed\": \"string\"\n      },\n      \"system\": \"string\",\n      \"description\": \"string\",\n      \"metadata\": {},\n      \"version\": 4217,\n      \"created_at\": \"1988-11-11T02:05:21.039Z\",\n      \"updated_at\": \"1973-05-01T20:35:14.958Z\",\n      \"archived_at\": \"2007-08-03T23:54:04.421Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"type\": \"agent\",\n      \"name\": \"string\",\n      \"model\": {\n        \"id\": \"string\",\n        \"speed\": \"string\"\n      },\n      \"system\": \"string\",\n      \"description\": \"string\",\n      \"metadata\": {},\n      \"version\": 3403,\n      \"created_at\": \"2012-12-18T17:01:30.684Z\",\n      \"updated_at\": \"1990-01-17T23:58:02.991Z\",\n      \"archived_at\": \"2005-04-26T14:31:52.606Z\"\n    }\n  ],\n  \"has_more\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fe1299a6-3faf-478d-b840-a0bea5ca5272",
+          "name": "Anthropic Get Agent",
+          "request": {
+            "name": "Anthropic Get Agent",
+            "description": {
+              "content": "Retrieve an agent's latest version.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                ":agent_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2e2af52b-dd51-4040-92f5-0779c5a20e0b",
+              "name": "Agent retrieved.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"agent\",\n  \"name\": \"string\",\n  \"model\": {\n    \"id\": \"string\",\n    \"speed\": \"string\"\n  },\n  \"system\": \"string\",\n  \"description\": \"string\",\n  \"metadata\": {},\n  \"version\": 9233,\n  \"created_at\": \"1954-12-27T03:55:01.766Z\",\n  \"updated_at\": \"1985-01-12T15:40:40.700Z\",\n  \"archived_at\": \"1983-10-26T22:06:28.001Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "da7e71c6-8fa3-44ca-89e9-e96af6b8008f",
+          "name": "Anthropic Update Agent",
+          "request": {
+            "name": "Anthropic Update Agent",
+            "description": {
+              "content": "Update an agent. Pass the current version to optimistically lock the update. A new version is created when fields change.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                ":agent_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"version\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"model\": \"<string>\",\n  \"system\": \"<string>\",\n  \"description\": \"<string>\",\n  \"tools\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"mcp_servers\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"skills\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"metadata\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c93a19ce-5e62-4a68-b918-1719780ed40f",
+              "name": "Agent updated; new version returned.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"version\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"model\": \"<string>\",\n  \"system\": \"<string>\",\n  \"description\": \"<string>\",\n  \"tools\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"mcp_servers\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"skills\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"metadata\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"agent\",\n  \"name\": \"string\",\n  \"model\": {\n    \"id\": \"string\",\n    \"speed\": \"string\"\n  },\n  \"system\": \"string\",\n  \"description\": \"string\",\n  \"metadata\": {},\n  \"version\": 9233,\n  \"created_at\": \"1954-12-27T03:55:01.766Z\",\n  \"updated_at\": \"1985-01-12T15:40:40.700Z\",\n  \"archived_at\": \"1983-10-26T22:06:28.001Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "650fcbd9-1d95-461a-a1d8-78647ee55028",
+          "name": "Anthropic Archive Agent",
+          "request": {
+            "name": "Anthropic Archive Agent",
+            "description": {
+              "content": "Archive an agent; existing sessions continue running.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                ":agent_id",
+                "archive"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fe2a1f3f-6f55-47bb-b12c-a0a82c06e579",
+              "name": "Agent archived.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"agent\",\n  \"name\": \"string\",\n  \"model\": {\n    \"id\": \"string\",\n    \"speed\": \"string\"\n  },\n  \"system\": \"string\",\n  \"description\": \"string\",\n  \"metadata\": {},\n  \"version\": 9233,\n  \"created_at\": \"1954-12-27T03:55:01.766Z\",\n  \"updated_at\": \"1985-01-12T15:40:40.700Z\",\n  \"archived_at\": \"1983-10-26T22:06:28.001Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ddfa2d38-6827-4516-9e06-b79fdbe75435",
+          "name": "Anthropic List Agent Versions",
+          "request": {
+            "name": "Anthropic List Agent Versions",
+            "description": {
+              "content": "Full version history for the agent.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                ":agent_id",
+                "versions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "af1f59d1-bbfc-4188-abc2-67b772a9b27b",
+              "name": "Agent versions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id",
+                    "versions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"type\": \"agent\",\n      \"name\": \"string\",\n      \"model\": {\n        \"id\": \"string\",\n        \"speed\": \"string\"\n      },\n      \"system\": \"string\",\n      \"description\": \"string\",\n      \"metadata\": {},\n      \"version\": 4217,\n      \"created_at\": \"1988-11-11T02:05:21.039Z\",\n      \"updated_at\": \"1973-05-01T20:35:14.958Z\",\n      \"archived_at\": \"2007-08-03T23:54:04.421Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"type\": \"agent\",\n      \"name\": \"string\",\n      \"model\": {\n        \"id\": \"string\",\n        \"speed\": \"string\"\n      },\n      \"system\": \"string\",\n      \"description\": \"string\",\n      \"metadata\": {},\n      \"version\": 3403,\n      \"created_at\": \"2012-12-18T17:01:30.684Z\",\n      \"updated_at\": \"1990-01-17T23:58:02.991Z\",\n      \"archived_at\": \"2005-04-26T14:31:52.606Z\"\n    }\n  ],\n  \"has_more\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "36a1bb4e-5dd8-4828-ab1f-0c0f2b3d16f3",
+      "name": "Sessions",
+      "description": {
+        "content": "Stateful agent execution instances",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4885f955-6883-4f4e-bf94-97d58e1671ec",
+          "name": "Anthropic Create Session",
+          "request": {
+            "name": "Anthropic Create Session",
+            "description": {
+              "content": "Create a stateful agent execution instance.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "sessions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"agent\": \"<string>\",\n  \"environment_id\": \"<string>\",\n  \"vault_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "81886758-6a59-4264-af65-09e8c5106d09",
+              "name": "Session created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"agent\": \"<string>\",\n  \"environment_id\": \"<string>\",\n  \"vault_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"session\",\n  \"agent\": {},\n  \"environment_id\": \"string\",\n  \"status\": \"rescheduling\",\n  \"created_at\": \"2017-01-07T11:12:50.115Z\",\n  \"archived_at\": \"2004-01-17T17:28:36.966Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0e45fd87-a06f-4bfa-9601-cc0ffd5e4e17",
+          "name": "Anthropic List Sessions",
+          "request": {
+            "name": "Anthropic List Sessions",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "sessions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "agent_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "52589b71-2fa1-4e35-a940-8bf04fec14d5",
+              "name": "Sessions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "agent_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"type\": \"session\",\n      \"agent\": {},\n      \"environment_id\": \"string\",\n      \"status\": \"terminated\",\n      \"created_at\": \"1980-01-29T10:29:08.920Z\",\n      \"archived_at\": \"1966-10-14T05:57:21.172Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"type\": \"session\",\n      \"agent\": {},\n      \"environment_id\": \"string\",\n      \"status\": \"rescheduling\",\n      \"created_at\": \"1973-03-27T22:07:09.370Z\",\n      \"archived_at\": \"2001-03-08T16:17:14.186Z\"\n    }\n  ],\n  \"has_more\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4b01f4df-c974-487b-b293-ee8816700a83",
+          "name": "Anthropic Get Session",
+          "request": {
+            "name": "Anthropic Get Session",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "sessions",
+                ":session_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "session_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f7bec9ea-b29b-4498-88eb-c179b33a80e2",
+              "name": "Session.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "sessions",
+                    ":session_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "session_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"session\",\n  \"agent\": {},\n  \"environment_id\": \"string\",\n  \"status\": \"rescheduling\",\n  \"created_at\": \"2017-01-07T11:12:50.115Z\",\n  \"archived_at\": \"2004-01-17T17:28:36.966Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "346a8149-e924-4e93-ad03-b54ebd14d505",
+          "name": "Anthropic Update Session",
+          "request": {
+            "name": "Anthropic Update Session",
+            "description": {
+              "content": "Update a session's tools, mcp_servers, or other config.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "sessions",
+                ":session_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "session_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "780c5f49-b2da-4e86-90c2-9109398a27f7",
+              "name": "Session updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "sessions",
+                    ":session_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "session_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"session\",\n  \"agent\": {},\n  \"environment_id\": \"string\",\n  \"status\": \"rescheduling\",\n  \"created_at\": \"2017-01-07T11:12:50.115Z\",\n  \"archived_at\": \"2004-01-17T17:28:36.966Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8f72a392-bddb-462b-8c60-de2f7fe1070e",
+          "name": "Anthropic Delete Session",
+          "request": {
+            "name": "Anthropic Delete Session",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "sessions",
+                ":session_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "session_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a2746807-d652-431a-9a27-d2697aa0b322",
+              "name": "Session deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "sessions",
+                    ":session_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "session_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "96439342-4d6e-461f-b4e0-78eaa8c29640",
+          "name": "Anthropic Archive Session",
+          "request": {
+            "name": "Anthropic Archive Session",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "sessions",
+                ":session_id",
+                "archive"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "session_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a3717317-2714-43ff-affc-2e3367ccae1e",
+              "name": "Session archived.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "sessions",
+                    ":session_id",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "session_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "064e2968-e891-44a0-a7dd-bf68108afd83",
+      "name": "Environments",
+      "description": {
+        "content": "Container configuration for agent sessions",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dc62ea48-a11a-4b3d-bdb8-e31fcee01a56",
+          "name": "Anthropic Create Environment",
+          "request": {
+            "name": "Anthropic Create Environment",
+            "description": {
+              "content": "Create a container configuration for sessions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "environments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"config\": {\n    \"type\": \"<string>\",\n    \"packages\": {\n      \"key_0\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"key_1\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"networking\": {\n      \"type\": \"<string>\",\n      \"allowed_hosts\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"allow_mcp_servers\": \"<boolean>\",\n      \"allow_package_managers\": \"<boolean>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "763acc82-d4b8-4f83-b91a-828dd5e486ea",
+              "name": "Environment created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "environments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"config\": {\n    \"type\": \"<string>\",\n    \"packages\": {\n      \"key_0\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"key_1\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"networking\": {\n      \"type\": \"<string>\",\n      \"allowed_hosts\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"allow_mcp_servers\": \"<boolean>\",\n      \"allow_package_managers\": \"<boolean>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"environment\",\n  \"name\": \"string\",\n  \"config\": {},\n  \"created_at\": \"2025-05-19T13:32:18.278Z\",\n  \"archived_at\": \"2015-06-26T21:55:22.003Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "82377c6c-2ba1-4aaf-8d6a-71334a7bdd0f",
+          "name": "Anthropic List Environments",
+          "request": {
+            "name": "Anthropic List Environments",
+            "description": {
+              "content": "Paginated list of environments.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "environments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "43e201fd-49d4-4180-9f53-060457f9b704",
+              "name": "Environments.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "environments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"type\": \"environment\",\n      \"name\": \"string\",\n      \"config\": {},\n      \"created_at\": \"1997-11-24T04:33:35.976Z\",\n      \"archived_at\": \"1951-07-17T11:12:46.545Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"type\": \"environment\",\n      \"name\": \"string\",\n      \"config\": {},\n      \"created_at\": \"1982-07-14T12:47:41.358Z\",\n      \"archived_at\": \"1969-12-17T14:48:53.001Z\"\n    }\n  ],\n  \"has_more\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fd5d5442-a33c-4b4c-953c-24f84e014034",
+          "name": "Anthropic Get Environment",
+          "request": {
+            "name": "Anthropic Get Environment",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "environments",
+                ":environment_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "environment_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1a67d492-8fca-4185-a901-2acfe5f1774d",
+              "name": "Environment.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "environments",
+                    ":environment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"environment\",\n  \"name\": \"string\",\n  \"config\": {},\n  \"created_at\": \"2025-05-19T13:32:18.278Z\",\n  \"archived_at\": \"2015-06-26T21:55:22.003Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2adc6d9b-2a0e-4505-bd08-1787e6c5244d",
+          "name": "Anthropic Delete Environment",
+          "request": {
+            "name": "Anthropic Delete Environment",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "environments",
+                ":environment_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "environment_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4d5186a5-7a67-402c-82eb-873a1e8ff49f",
+              "name": "Environment deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "environments",
+                    ":environment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1ca2a4c6-3874-41f3-a1fc-8516746b6b85",
+          "name": "Anthropic Archive Environment",
+          "request": {
+            "name": "Anthropic Archive Environment",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "environments",
+                ":environment_id",
+                "archive"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "environment_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e74cf6e2-a238-46bc-bcd4-4d29b3f74e5e",
+              "name": "Environment archived.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "environments",
+                    ":environment_id",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "080fa465-a854-4c97-938b-57f2cc309b27",
+      "name": "Events",
+      "description": {
+        "content": "User messages and tool results sent to a session",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5489aba5-1f61-4fe0-b731-b844b1e1da48",
+          "name": "Anthropic Send Session Events",
+          "request": {
+            "name": "Anthropic Send Session Events",
+            "description": {
+              "content": "Send user events to drive session execution. Event types include user.message, tool.result, and interrupt.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "sessions",
+                ":session_id",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "session_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"events\": [\n    {\n      \"type\": \"<string>\",\n      \"content\": [\n        \"<object>\",\n        \"<object>\"\n      ]\n    },\n    {\n      \"type\": \"<string>\",\n      \"content\": [\n        \"<object>\",\n        \"<object>\"\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "21b4fe17-3695-4d4e-9677-6a0d0da2aa47",
+              "name": "Events accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "sessions",
+                    ":session_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "session_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"events\": [\n    {\n      \"type\": \"<string>\",\n      \"content\": [\n        \"<object>\",\n        \"<object>\"\n      ]\n    },\n    {\n      \"type\": \"<string>\",\n      \"content\": [\n        \"<object>\",\n        \"<object>\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "04e1806b-b737-4aef-86aa-0e855bda9083",
+          "name": "Anthropic Stream Session Events",
+          "request": {
+            "name": "Anthropic Stream Session Events",
+            "description": {
+              "content": "Server-sent events stream of agent execution: assistant messages, tool calls, tool results, and status changes.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "sessions",
+                ":session_id",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "session_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fb12ee28-80bb-429c-9073-92deee1af251",
+              "name": "SSE stream of session events.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "sessions",
+                    ":session_id",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "session_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/event-stream"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/event-stream"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.anthropic.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "2ef2c99d-98a2-4bec-9c54-659f9c4b4884",
+    "name": "Anthropic Managed Agents API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Claude Managed Agents is a fully managed agent harness for running Claude as an autonomous agent with secure sandboxing, built-in tools, and server-sent event streaming. Define reusable, versioned Agents, configure Environments (cloud containers or self-hosted sandboxes), and run stateful Sessions that perform long-running tasks. All endpoints require the managed-agents-2026-04-01 beta header.\n\n\nContact Support:\n Name: Anthropic Support",
+      "type": "text/plain"
+    }
+  }
+}

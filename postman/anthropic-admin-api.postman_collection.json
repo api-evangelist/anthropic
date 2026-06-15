@@ -1,0 +1,4085 @@
+{
+  "info": {
+    "_postman_id": "f28908be-06ea-4f26-abf5-04b141e2cb0b",
+    "name": "Anthropic Admin API",
+    "description": "Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.\n\nContact Support:\n Name: Anthropic\n Email: support@anthropic.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:05:30.000Z",
+    "updatedAt": "2026-06-05T15:05:30.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-f28908be-06ea-4f26-abf5-04b141e2cb0b"
+  },
+  "item": [
+    {
+      "name": "organizations",
+      "item": [
+        {
+          "name": "me",
+          "item": [
+            {
+              "name": "Anthropic Get Current Organization",
+              "id": "4906c073-e41b-4a77-a8c5-747f242d336e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use",
+                    "key": "anthropic-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/organizations/me",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "organizations",
+                    "me"
+                  ]
+                },
+                "description": "Retrieves information about the current authenticated user's organization."
+              },
+              "response": [
+                {
+                  "id": "60fcbd1e-5309-459e-bc70-e63d11f5aa8f",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/me",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "me"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<uuid>\",\n  \"type\": \"organization\",\n  \"name\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-60fcbd1e-5309-459e-bc70-e63d11f5aa8f"
+                },
+                {
+                  "id": "78419d35-e3ee-4889-8129-f3676e4892a3",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/me",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "me"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-78419d35-e3ee-4889-8129-f3676e4892a3"
+                }
+              ],
+              "createdAt": "2026-06-05T15:05:31.000Z",
+              "updatedAt": "2026-06-05T15:05:31.000Z",
+              "uid": "35240-4906c073-e41b-4a77-a8c5-747f242d336e"
+            }
+          ],
+          "id": "9e329652-7bcb-4a02-9151-c4c4d3e45a9b",
+          "createdAt": "2026-06-05T15:05:30.000Z",
+          "updatedAt": "2026-06-05T15:05:30.000Z",
+          "uid": "35240-9e329652-7bcb-4a02-9151-c4c4d3e45a9b"
+        },
+        {
+          "name": "users",
+          "item": [
+            {
+              "name": "{user_id}",
+              "item": [
+                {
+                  "name": "Anthropic Get Organization Member",
+                  "id": "47eef5a6-955f-4769-b3aa-a780ebecb105",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/users/:user_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "users",
+                        ":user_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "1de8c6c3-3b39-451a-a217-885dd1304124",
+                          "key": "user_id",
+                          "value": "<string>",
+                          "description": "(Required) Unique identifier for the user"
+                        }
+                      ]
+                    },
+                    "description": "Retrieves detailed information about a specific user within an organization."
+                  },
+                  "response": [
+                    {
+                      "id": "df685694-cab5-45d3-8982-06b4cd27b467",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/users/:user_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "users",
+                            ":user_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"user\",\n  \"email\": \"<email>\",\n  \"name\": \"<string>\",\n  \"role\": \"developer\",\n  \"added_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-df685694-cab5-45d3-8982-06b4cd27b467"
+                    },
+                    {
+                      "id": "edfb485d-8042-474c-9b61-1246bdff80c6",
+                      "name": "Error Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/users/:user_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "users",
+                            ":user_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-edfb485d-8042-474c-9b61-1246bdff80c6"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-47eef5a6-955f-4769-b3aa-a780ebecb105"
+                },
+                {
+                  "name": "Anthropic Update Organization Member",
+                  "id": "102ff7f9-2650-43e7-a869-675e2d2fcd37",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"role\": \"developer\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/users/:user_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "users",
+                        ":user_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "1eea86a0-2726-4834-af22-ebe1e1f41a97",
+                          "key": "user_id",
+                          "value": "<string>",
+                          "description": "(Required) Unique identifier for the user"
+                        }
+                      ]
+                    },
+                    "description": "Updates user information for a specific user within an organization."
+                  },
+                  "response": [
+                    {
+                      "id": "797780fa-ed31-4662-979d-059a8ead0b1f",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"role\": \"developer\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/users/:user_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "users",
+                            ":user_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"user\",\n  \"email\": \"<email>\",\n  \"name\": \"<string>\",\n  \"role\": \"developer\",\n  \"added_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-797780fa-ed31-4662-979d-059a8ead0b1f"
+                    },
+                    {
+                      "id": "deb1dcc4-5782-4a4d-b866-3615b79e3270",
+                      "name": "Error Response",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"role\": \"developer\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/users/:user_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "users",
+                            ":user_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-deb1dcc4-5782-4a4d-b866-3615b79e3270"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-102ff7f9-2650-43e7-a869-675e2d2fcd37"
+                },
+                {
+                  "name": "Anthropic Remove Organization Member",
+                  "id": "7562a14f-e876-4632-9f88-f37a094a0d2a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/users/:user_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "users",
+                        ":user_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "c3b8de23-852c-4e30-b3ec-84edbb4ee3d5",
+                          "key": "user_id",
+                          "value": "<string>",
+                          "description": "(Required) Unique identifier for the user"
+                        }
+                      ]
+                    },
+                    "description": "Removes a specific user from an organization."
+                  },
+                  "response": [
+                    {
+                      "id": "d5dc233e-62ab-4265-a611-712ea1d4bfab",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/users/:user_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "users",
+                            ":user_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"user_deleted\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-d5dc233e-62ab-4265-a611-712ea1d4bfab"
+                    },
+                    {
+                      "id": "f321fd50-2992-4053-8c4b-b08955f069b8",
+                      "name": "Error Response",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/users/:user_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "users",
+                            ":user_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-f321fd50-2992-4053-8c4b-b08955f069b8"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-7562a14f-e876-4632-9f88-f37a094a0d2a"
+                }
+              ],
+              "id": "bb972384-b6fe-4896-8556-6a8dfb3930d6",
+              "createdAt": "2026-06-05T15:05:30.000Z",
+              "updatedAt": "2026-06-05T15:05:30.000Z",
+              "uid": "35240-bb972384-b6fe-4896-8556-6a8dfb3930d6"
+            },
+            {
+              "name": "Anthropic List Organization Members",
+              "id": "1b158317-4749-4127-8fcd-f987458499c0",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use",
+                    "key": "anthropic-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/organizations/users?limit=20&before_id=<string>&after_id=<string>&email=<email>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "organizations",
+                    "users"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
+                      "key": "before_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
+                      "key": "after_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter by user email",
+                      "key": "email",
+                      "value": "<email>"
+                    }
+                  ]
+                },
+                "description": "Retrieves a paginated list of users associated with the organization."
+              },
+              "response": [
+                {
+                  "id": "4e9090aa-ad47-46c8-9426-3d938e3647a5",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/users?limit=20&before_id=<string>&after_id=<string>&email=<email>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "users"
+                      ],
+                      "query": [
+                        {
+                          "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                          "key": "limit",
+                          "value": "20"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
+                          "key": "before_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
+                          "key": "after_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by user email",
+                          "key": "email",
+                          "value": "<email>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"user\",\n      \"email\": \"<email>\",\n      \"name\": \"<string>\",\n      \"role\": \"admin\",\n      \"added_at\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"user\",\n      \"email\": \"<email>\",\n      \"name\": \"<string>\",\n      \"role\": \"developer\",\n      \"added_at\": \"<dateTime>\"\n    }\n  ],\n  \"has_more\": \"<boolean>\",\n  \"first_id\": \"<string>\",\n  \"last_id\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-4e9090aa-ad47-46c8-9426-3d938e3647a5"
+                },
+                {
+                  "id": "f8815104-0b0c-4145-ac2c-2410508f7a0a",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/users?limit=20&before_id=<string>&after_id=<string>&email=<email>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "users"
+                      ],
+                      "query": [
+                        {
+                          "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                          "key": "limit",
+                          "value": "20"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
+                          "key": "before_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
+                          "key": "after_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by user email",
+                          "key": "email",
+                          "value": "<email>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-f8815104-0b0c-4145-ac2c-2410508f7a0a"
+                }
+              ],
+              "createdAt": "2026-06-05T15:05:31.000Z",
+              "updatedAt": "2026-06-05T15:05:31.000Z",
+              "uid": "35240-1b158317-4749-4127-8fcd-f987458499c0"
+            }
+          ],
+          "id": "fe114081-5c83-4db0-a287-71e550c425eb",
+          "createdAt": "2026-06-05T15:05:30.000Z",
+          "updatedAt": "2026-06-05T15:05:30.000Z",
+          "uid": "35240-fe114081-5c83-4db0-a287-71e550c425eb"
+        },
+        {
+          "name": "invites",
+          "item": [
+            {
+              "name": "{invite_id}",
+              "item": [
+                {
+                  "name": "Anthropic Get Organization Invite",
+                  "id": "a29a8623-c4a7-4780-aff9-c46c7037cbbf",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/invites/:invite_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "invites",
+                        ":invite_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "578e982e-8966-4df1-a92c-aef265ac9221",
+                          "key": "invite_id",
+                          "value": "<string>",
+                          "description": "(Required) Unique identifier for the invite"
+                        }
+                      ]
+                    },
+                    "description": "Retrieves detailed information about a specific organization invite."
+                  },
+                  "response": [
+                    {
+                      "id": "0cdb7e7f-eaef-4115-8226-8ae20751bdae",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/invites/:invite_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "invites",
+                            ":invite_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invite_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"invite\",\n  \"email\": \"<email>\",\n  \"role\": \"claude_code_user\",\n  \"status\": \"pending\",\n  \"invited_at\": \"<dateTime>\",\n  \"expires_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-0cdb7e7f-eaef-4115-8226-8ae20751bdae"
+                    },
+                    {
+                      "id": "1895c7b2-6746-4bb7-8f77-5890b8de66cb",
+                      "name": "Error Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/invites/:invite_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "invites",
+                            ":invite_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invite_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-1895c7b2-6746-4bb7-8f77-5890b8de66cb"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-a29a8623-c4a7-4780-aff9-c46c7037cbbf"
+                },
+                {
+                  "name": "Anthropic Delete Organization Invite",
+                  "id": "544d5e5e-8ede-4b46-8c07-0b639b97abde",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/invites/:invite_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "invites",
+                        ":invite_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "0a3ed38a-fed0-424b-9db6-f427a61b13c8",
+                          "key": "invite_id",
+                          "value": "<string>",
+                          "description": "(Required) Unique identifier for the invite"
+                        }
+                      ]
+                    },
+                    "description": "Deletes a specific organization invite, preventing the recipient from accepting it."
+                  },
+                  "response": [
+                    {
+                      "id": "c3822912-b310-4dbb-a0eb-f5975a814492",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/invites/:invite_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "invites",
+                            ":invite_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invite_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"invite_deleted\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-c3822912-b310-4dbb-a0eb-f5975a814492"
+                    },
+                    {
+                      "id": "f20630ff-f230-45da-8f20-96f4a0df9857",
+                      "name": "Error Response",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/invites/:invite_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "invites",
+                            ":invite_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invite_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-f20630ff-f230-45da-8f20-96f4a0df9857"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-544d5e5e-8ede-4b46-8c07-0b639b97abde"
+                }
+              ],
+              "id": "85d40666-8fa0-489f-ab9c-425d70671d2c",
+              "createdAt": "2026-06-05T15:05:30.000Z",
+              "updatedAt": "2026-06-05T15:05:30.000Z",
+              "uid": "35240-85d40666-8fa0-489f-ab9c-425d70671d2c"
+            },
+            {
+              "name": "Anthropic List Organization Invites",
+              "id": "7edce539-1b79-40d1-9d0e-a12eca2a8e52",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use",
+                    "key": "anthropic-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/organizations/invites?limit=20&before_id=<string>&after_id=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "organizations",
+                    "invites"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
+                      "key": "before_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
+                      "key": "after_id",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Retrieves a paginated list of pending invitations for the organization."
+              },
+              "response": [
+                {
+                  "id": "c1494a41-c887-4ecb-a548-3460fa440bc5",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/invites?limit=20&before_id=<string>&after_id=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "invites"
+                      ],
+                      "query": [
+                        {
+                          "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                          "key": "limit",
+                          "value": "20"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
+                          "key": "before_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
+                          "key": "after_id",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"invite\",\n      \"email\": \"<email>\",\n      \"role\": \"user\",\n      \"status\": \"pending\",\n      \"invited_at\": \"<dateTime>\",\n      \"expires_at\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"invite\",\n      \"email\": \"<email>\",\n      \"role\": \"user\",\n      \"status\": \"expired\",\n      \"invited_at\": \"<dateTime>\",\n      \"expires_at\": \"<dateTime>\"\n    }\n  ],\n  \"has_more\": \"<boolean>\",\n  \"first_id\": \"<string>\",\n  \"last_id\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-c1494a41-c887-4ecb-a548-3460fa440bc5"
+                },
+                {
+                  "id": "096547d3-f78d-4bfe-8edb-2a35cb9f2843",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/invites?limit=20&before_id=<string>&after_id=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "invites"
+                      ],
+                      "query": [
+                        {
+                          "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                          "key": "limit",
+                          "value": "20"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
+                          "key": "before_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
+                          "key": "after_id",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-096547d3-f78d-4bfe-8edb-2a35cb9f2843"
+                }
+              ],
+              "createdAt": "2026-06-05T15:05:31.000Z",
+              "updatedAt": "2026-06-05T15:05:31.000Z",
+              "uid": "35240-7edce539-1b79-40d1-9d0e-a12eca2a8e52"
+            },
+            {
+              "name": "Anthropic Create Organization Invite",
+              "id": "11f8b80f-b1f0-4eba-a75e-4ad68861bc9f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use",
+                    "key": "anthropic-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<email>\",\n  \"role\": \"admin\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/organizations/invites",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "organizations",
+                    "invites"
+                  ]
+                },
+                "description": "Creates and sends an invitation to a new member to join the organization."
+              },
+              "response": [
+                {
+                  "id": "be2baf7a-73f3-4892-bde4-2bd0965e5e3a",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"<email>\",\n  \"role\": \"admin\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/invites",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "invites"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"invite\",\n  \"email\": \"<email>\",\n  \"role\": \"claude_code_user\",\n  \"status\": \"pending\",\n  \"invited_at\": \"<dateTime>\",\n  \"expires_at\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-be2baf7a-73f3-4892-bde4-2bd0965e5e3a"
+                },
+                {
+                  "id": "eb990652-40d2-40ef-a6fa-094c83738da4",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"<email>\",\n  \"role\": \"admin\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/invites",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "invites"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-eb990652-40d2-40ef-a6fa-094c83738da4"
+                }
+              ],
+              "createdAt": "2026-06-05T15:05:31.000Z",
+              "updatedAt": "2026-06-05T15:05:31.000Z",
+              "uid": "35240-11f8b80f-b1f0-4eba-a75e-4ad68861bc9f"
+            }
+          ],
+          "id": "c93d5d27-074a-4797-85ef-6d70a5e2eda0",
+          "createdAt": "2026-06-05T15:05:30.000Z",
+          "updatedAt": "2026-06-05T15:05:30.000Z",
+          "uid": "35240-c93d5d27-074a-4797-85ef-6d70a5e2eda0"
+        },
+        {
+          "name": "workspaces",
+          "item": [
+            {
+              "name": "{workspace_id}",
+              "item": [
+                {
+                  "name": "archive",
+                  "item": [
+                    {
+                      "name": "Anthropic Archive Workspace",
+                      "id": "99ca4527-17fd-4dcb-9ca5-30452d406f8b",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/archive",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "workspaces",
+                            ":workspace_id",
+                            "archive"
+                          ],
+                          "variable": [
+                            {
+                              "id": "d81165d1-9be9-4853-9b62-49dae4c823ec",
+                              "key": "workspace_id",
+                              "value": "<string>",
+                              "description": "(Required) Unique identifier for the workspace"
+                            }
+                          ]
+                        },
+                        "description": "Archives a specific workspace, making it read-only."
+                      },
+                      "response": [
+                        {
+                          "id": "b8e1cbdb-8c8e-452c-a9b1-3c858fc61a5f",
+                          "name": "Successful Response",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) The version of the Anthropic API to use",
+                                "key": "anthropic-version",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "x-api-key",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/archive",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "organizations",
+                                "workspaces",
+                                ":workspace_id",
+                                "archive"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "workspace_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"workspace\",\n  \"name\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"archived_at\": \"<dateTime>\",\n  \"display_color\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:05:31.000Z",
+                          "updatedAt": "2026-06-05T15:05:31.000Z",
+                          "uid": "35240-b8e1cbdb-8c8e-452c-a9b1-3c858fc61a5f"
+                        },
+                        {
+                          "id": "31c6c11c-83bf-44e1-996c-b41a7f92dfe8",
+                          "name": "Error Response",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) The version of the Anthropic API to use",
+                                "key": "anthropic-version",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "x-api-key",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/archive",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "organizations",
+                                "workspaces",
+                                ":workspace_id",
+                                "archive"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "workspace_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:05:31.000Z",
+                          "updatedAt": "2026-06-05T15:05:31.000Z",
+                          "uid": "35240-31c6c11c-83bf-44e1-996c-b41a7f92dfe8"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-99ca4527-17fd-4dcb-9ca5-30452d406f8b"
+                    }
+                  ],
+                  "id": "a08e0c34-931e-4fef-83a7-355bd0e8576a",
+                  "createdAt": "2026-06-05T15:05:30.000Z",
+                  "updatedAt": "2026-06-05T15:05:30.000Z",
+                  "uid": "35240-a08e0c34-931e-4fef-83a7-355bd0e8576a"
+                },
+                {
+                  "name": "members",
+                  "item": [
+                    {
+                      "name": "{user_id}",
+                      "item": [
+                        {
+                          "name": "Anthropic Get Workspace Member",
+                          "id": "4c7a7d59-ddec-4f9e-bbb9-be574a714551",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) The version of the Anthropic API to use",
+                                "key": "anthropic-version",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/members/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "organizations",
+                                "workspaces",
+                                ":workspace_id",
+                                "members",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "afb59733-c302-4392-9006-8c7fdc546ccf",
+                                  "key": "workspace_id",
+                                  "value": "<string>",
+                                  "description": "(Required) Unique identifier for the workspace"
+                                },
+                                {
+                                  "id": "2003027f-6221-47f1-9056-c8ac5e25b605",
+                                  "key": "user_id",
+                                  "value": "<string>",
+                                  "description": "(Required) Unique identifier for the user"
+                                }
+                              ]
+                            },
+                            "description": "Retrieves membership details for a specific user in a workspace."
+                          },
+                          "response": [
+                            {
+                              "id": "53283238-39e3-42ad-a16a-3f4228602607",
+                              "name": "Successful Response",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "(Required) The version of the Anthropic API to use",
+                                    "key": "anthropic-version",
+                                    "value": "<string>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/members/:user_id",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "organizations",
+                                    "workspaces",
+                                    ":workspace_id",
+                                    "members",
+                                    ":user_id"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "workspace_id"
+                                    },
+                                    {
+                                      "key": "user_id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"type\": \"workspace_member\",\n  \"user_id\": \"<string>\",\n  \"workspace_id\": \"<string>\",\n  \"workspace_role\": \"workspace_developer\"\n}",
+                              "createdAt": "2026-06-05T15:05:31.000Z",
+                              "updatedAt": "2026-06-05T15:05:31.000Z",
+                              "uid": "35240-53283238-39e3-42ad-a16a-3f4228602607"
+                            },
+                            {
+                              "id": "ce6cf0eb-a4e9-4b9c-9516-6d2d21253957",
+                              "name": "Error Response",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "(Required) The version of the Anthropic API to use",
+                                    "key": "anthropic-version",
+                                    "value": "<string>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/members/:user_id",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "organizations",
+                                    "workspaces",
+                                    ":workspace_id",
+                                    "members",
+                                    ":user_id"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "workspace_id"
+                                    },
+                                    {
+                                      "key": "user_id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-06-05T15:05:31.000Z",
+                              "updatedAt": "2026-06-05T15:05:31.000Z",
+                              "uid": "35240-ce6cf0eb-a4e9-4b9c-9516-6d2d21253957"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T15:05:31.000Z",
+                          "updatedAt": "2026-06-05T15:05:31.000Z",
+                          "uid": "35240-4c7a7d59-ddec-4f9e-bbb9-be574a714551"
+                        },
+                        {
+                          "name": "Anthropic Update Workspace Member",
+                          "id": "04218016-0d01-4d3c-817a-49b60af5b1b0",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) The version of the Anthropic API to use",
+                                "key": "anthropic-version",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"workspace_role\": \"workspace_user\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/members/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "organizations",
+                                "workspaces",
+                                ":workspace_id",
+                                "members",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "21da4f88-4bc9-4a80-b6d2-8357aa61c968",
+                                  "key": "workspace_id",
+                                  "value": "<string>",
+                                  "description": "(Required) Unique identifier for the workspace"
+                                },
+                                {
+                                  "id": "7ac88178-663d-49f7-a610-566ca931ef63",
+                                  "key": "user_id",
+                                  "value": "<string>",
+                                  "description": "(Required) Unique identifier for the user"
+                                }
+                              ]
+                            },
+                            "description": "Updates the role of a workspace member."
+                          },
+                          "response": [
+                            {
+                              "id": "a072bca5-25b5-4729-b170-d4a5e68eb5de",
+                              "name": "Successful Response",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "description": "(Required) The version of the Anthropic API to use",
+                                    "key": "anthropic-version",
+                                    "value": "<string>"
+                                  },
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"workspace_role\": \"workspace_user\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/members/:user_id",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "organizations",
+                                    "workspaces",
+                                    ":workspace_id",
+                                    "members",
+                                    ":user_id"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "workspace_id"
+                                    },
+                                    {
+                                      "key": "user_id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"type\": \"workspace_member\",\n  \"user_id\": \"<string>\",\n  \"workspace_id\": \"<string>\",\n  \"workspace_role\": \"workspace_developer\"\n}",
+                              "createdAt": "2026-06-05T15:05:31.000Z",
+                              "updatedAt": "2026-06-05T15:05:31.000Z",
+                              "uid": "35240-a072bca5-25b5-4729-b170-d4a5e68eb5de"
+                            },
+                            {
+                              "id": "4cc56891-d2e5-4c5d-817c-f85e2d7cf899",
+                              "name": "Error Response",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "description": "(Required) The version of the Anthropic API to use",
+                                    "key": "anthropic-version",
+                                    "value": "<string>"
+                                  },
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"workspace_role\": \"workspace_user\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/members/:user_id",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "organizations",
+                                    "workspaces",
+                                    ":workspace_id",
+                                    "members",
+                                    ":user_id"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "workspace_id"
+                                    },
+                                    {
+                                      "key": "user_id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-06-05T15:05:31.000Z",
+                              "updatedAt": "2026-06-05T15:05:31.000Z",
+                              "uid": "35240-4cc56891-d2e5-4c5d-817c-f85e2d7cf899"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T15:05:31.000Z",
+                          "updatedAt": "2026-06-05T15:05:31.000Z",
+                          "uid": "35240-04218016-0d01-4d3c-817a-49b60af5b1b0"
+                        },
+                        {
+                          "name": "Anthropic Remove Workspace Member",
+                          "id": "067f8e76-a80b-4e85-97b2-dfa3db32cf6b",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "(Required) The version of the Anthropic API to use",
+                                "key": "anthropic-version",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/members/:user_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "organizations",
+                                "workspaces",
+                                ":workspace_id",
+                                "members",
+                                ":user_id"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "8766ecdf-ebf9-4279-b705-39bc4fe1ff2c",
+                                  "key": "workspace_id",
+                                  "value": "<string>",
+                                  "description": "(Required) Unique identifier for the workspace"
+                                },
+                                {
+                                  "id": "de122c6b-afb7-4ad6-9062-e28732860ea7",
+                                  "key": "user_id",
+                                  "value": "<string>",
+                                  "description": "(Required) Unique identifier for the user"
+                                }
+                              ]
+                            },
+                            "description": "Removes a user from a workspace."
+                          },
+                          "response": [
+                            {
+                              "id": "ee09ccf9-3388-4789-9867-2d7526b965fd",
+                              "name": "Successful Response",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "description": "(Required) The version of the Anthropic API to use",
+                                    "key": "anthropic-version",
+                                    "value": "<string>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/members/:user_id",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "organizations",
+                                    "workspaces",
+                                    ":workspace_id",
+                                    "members",
+                                    ":user_id"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "workspace_id"
+                                    },
+                                    {
+                                      "key": "user_id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"type\": \"workspace_member_deleted\",\n  \"user_id\": \"<string>\",\n  \"workspace_id\": \"<string>\"\n}",
+                              "createdAt": "2026-06-05T15:05:31.000Z",
+                              "updatedAt": "2026-06-05T15:05:31.000Z",
+                              "uid": "35240-ee09ccf9-3388-4789-9867-2d7526b965fd"
+                            },
+                            {
+                              "id": "1d91db37-58f2-45e5-bbc3-12cf6563645f",
+                              "name": "Error Response",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "description": "(Required) The version of the Anthropic API to use",
+                                    "key": "anthropic-version",
+                                    "value": "<string>"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/members/:user_id",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "organizations",
+                                    "workspaces",
+                                    ":workspace_id",
+                                    "members",
+                                    ":user_id"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "workspace_id"
+                                    },
+                                    {
+                                      "key": "user_id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-06-05T15:05:31.000Z",
+                              "updatedAt": "2026-06-05T15:05:31.000Z",
+                              "uid": "35240-1d91db37-58f2-45e5-bbc3-12cf6563645f"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T15:05:31.000Z",
+                          "updatedAt": "2026-06-05T15:05:31.000Z",
+                          "uid": "35240-067f8e76-a80b-4e85-97b2-dfa3db32cf6b"
+                        }
+                      ],
+                      "id": "cc63cb7e-61f7-4fc5-a2a2-f156cfc3ea0d",
+                      "createdAt": "2026-06-05T15:05:30.000Z",
+                      "updatedAt": "2026-06-05T15:05:30.000Z",
+                      "uid": "35240-cc63cb7e-61f7-4fc5-a2a2-f156cfc3ea0d"
+                    },
+                    {
+                      "name": "Anthropic List Workspace Members",
+                      "id": "51479e57-2890-44f4-a696-8a26c505cb75",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/members?limit=20&before_id=<string>&after_id=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "workspaces",
+                            ":workspace_id",
+                            "members"
+                          ],
+                          "query": [
+                            {
+                              "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                              "key": "limit",
+                              "value": "20"
+                            },
+                            {
+                              "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
+                              "key": "before_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
+                              "key": "after_id",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "9111fe2b-15e8-4c12-a02a-a49f86e16b74",
+                              "key": "workspace_id",
+                              "value": "<string>",
+                              "description": "(Required) Unique identifier for the workspace"
+                            }
+                          ]
+                        },
+                        "description": "Retrieves a paginated list of members for a specific workspace."
+                      },
+                      "response": [
+                        {
+                          "id": "b7ab23dd-a415-4bf9-a6b7-f30a53e34fd9",
+                          "name": "Successful Response",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) The version of the Anthropic API to use",
+                                "key": "anthropic-version",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "x-api-key",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/members?limit=20&before_id=<string>&after_id=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "organizations",
+                                "workspaces",
+                                ":workspace_id",
+                                "members"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                                  "key": "limit",
+                                  "value": "20"
+                                },
+                                {
+                                  "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
+                                  "key": "before_id",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
+                                  "key": "after_id",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "workspace_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"data\": [\n    {\n      \"type\": \"workspace_member\",\n      \"user_id\": \"<string>\",\n      \"workspace_id\": \"<string>\",\n      \"workspace_role\": \"workspace_developer\"\n    },\n    {\n      \"type\": \"workspace_member\",\n      \"user_id\": \"<string>\",\n      \"workspace_id\": \"<string>\",\n      \"workspace_role\": \"workspace_developer\"\n    }\n  ],\n  \"has_more\": \"<boolean>\",\n  \"first_id\": \"<string>\",\n  \"last_id\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:05:31.000Z",
+                          "updatedAt": "2026-06-05T15:05:31.000Z",
+                          "uid": "35240-b7ab23dd-a415-4bf9-a6b7-f30a53e34fd9"
+                        },
+                        {
+                          "id": "1151f6fe-6577-476d-a976-b67f18772413",
+                          "name": "Error Response",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) The version of the Anthropic API to use",
+                                "key": "anthropic-version",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "x-api-key",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/members?limit=20&before_id=<string>&after_id=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "organizations",
+                                "workspaces",
+                                ":workspace_id",
+                                "members"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                                  "key": "limit",
+                                  "value": "20"
+                                },
+                                {
+                                  "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
+                                  "key": "before_id",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
+                                  "key": "after_id",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "workspace_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:05:31.000Z",
+                          "updatedAt": "2026-06-05T15:05:31.000Z",
+                          "uid": "35240-1151f6fe-6577-476d-a976-b67f18772413"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-51479e57-2890-44f4-a696-8a26c505cb75"
+                    },
+                    {
+                      "name": "Anthropic Add Workspace Member",
+                      "id": "69739c74-aa77-4f20-ac04-84e1b518c411",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"user_id\": \"<string>\",\n  \"workspace_role\": \"workspace_billing\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/members",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "workspaces",
+                            ":workspace_id",
+                            "members"
+                          ],
+                          "variable": [
+                            {
+                              "id": "0c8b96f1-da25-42be-8900-84c063be66a9",
+                              "key": "workspace_id",
+                              "value": "<string>",
+                              "description": "(Required) Unique identifier for the workspace"
+                            }
+                          ]
+                        },
+                        "description": "Adds a user as a member of a workspace."
+                      },
+                      "response": [
+                        {
+                          "id": "64d725d6-c583-4b56-919c-7968a0f76f67",
+                          "name": "Successful Response",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) The version of the Anthropic API to use",
+                                "key": "anthropic-version",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "x-api-key",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"user_id\": \"<string>\",\n  \"workspace_role\": \"workspace_billing\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/members",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "organizations",
+                                "workspaces",
+                                ":workspace_id",
+                                "members"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "workspace_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"type\": \"workspace_member\",\n  \"user_id\": \"<string>\",\n  \"workspace_id\": \"<string>\",\n  \"workspace_role\": \"workspace_developer\"\n}",
+                          "createdAt": "2026-06-05T15:05:31.000Z",
+                          "updatedAt": "2026-06-05T15:05:31.000Z",
+                          "uid": "35240-64d725d6-c583-4b56-919c-7968a0f76f67"
+                        },
+                        {
+                          "id": "409d97d1-0c68-47d4-92f5-3a94988b5ac2",
+                          "name": "Error Response",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) The version of the Anthropic API to use",
+                                "key": "anthropic-version",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "x-api-key",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"user_id\": \"<string>\",\n  \"workspace_role\": \"workspace_billing\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id/members",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "organizations",
+                                "workspaces",
+                                ":workspace_id",
+                                "members"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "workspace_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:05:31.000Z",
+                          "updatedAt": "2026-06-05T15:05:31.000Z",
+                          "uid": "35240-409d97d1-0c68-47d4-92f5-3a94988b5ac2"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-69739c74-aa77-4f20-ac04-84e1b518c411"
+                    }
+                  ],
+                  "id": "de77d371-e448-4c57-8335-92b275dfb5ff",
+                  "createdAt": "2026-06-05T15:05:30.000Z",
+                  "updatedAt": "2026-06-05T15:05:30.000Z",
+                  "uid": "35240-de77d371-e448-4c57-8335-92b275dfb5ff"
+                },
+                {
+                  "name": "Anthropic Get Workspace",
+                  "id": "0c8e755b-2873-44de-bfd7-d880fa858f0c",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "workspaces",
+                        ":workspace_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "780f1fc2-53cd-4c50-acb6-a6899e7abba0",
+                          "key": "workspace_id",
+                          "value": "<string>",
+                          "description": "(Required) Unique identifier for the workspace"
+                        }
+                      ]
+                    },
+                    "description": "Retrieves detailed information about a specific workspace."
+                  },
+                  "response": [
+                    {
+                      "id": "28254257-d27b-4fdd-b328-83c45721bfe2",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "workspaces",
+                            ":workspace_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"workspace\",\n  \"name\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"archived_at\": \"<dateTime>\",\n  \"display_color\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-28254257-d27b-4fdd-b328-83c45721bfe2"
+                    },
+                    {
+                      "id": "77c0c88b-40b8-4a63-a461-0f3e23074081",
+                      "name": "Error Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "workspaces",
+                            ":workspace_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-77c0c88b-40b8-4a63-a461-0f3e23074081"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-0c8e755b-2873-44de-bfd7-d880fa858f0c"
+                },
+                {
+                  "name": "Anthropic Update Workspace",
+                  "id": "ac0fb2e7-53c6-40b3-a497-da7fce938d5e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "workspaces",
+                        ":workspace_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "44b8aa3b-433b-491b-8096-7ed3e6d5ce2a",
+                          "key": "workspace_id",
+                          "value": "<string>",
+                          "description": "(Required) Unique identifier for the workspace"
+                        }
+                      ]
+                    },
+                    "description": "Updates configuration for a specific workspace."
+                  },
+                  "response": [
+                    {
+                      "id": "be11db88-4191-46da-b401-73135006f954",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "workspaces",
+                            ":workspace_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"workspace\",\n  \"name\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"archived_at\": \"<dateTime>\",\n  \"display_color\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-be11db88-4191-46da-b401-73135006f954"
+                    },
+                    {
+                      "id": "379851f1-fe11-4322-ba2d-9b66f295d8a9",
+                      "name": "Error Response",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/workspaces/:workspace_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "workspaces",
+                            ":workspace_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-379851f1-fe11-4322-ba2d-9b66f295d8a9"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-ac0fb2e7-53c6-40b3-a497-da7fce938d5e"
+                }
+              ],
+              "id": "c9def16e-bf5e-4551-acfa-96ee42e3e0a9",
+              "createdAt": "2026-06-05T15:05:30.000Z",
+              "updatedAt": "2026-06-05T15:05:30.000Z",
+              "uid": "35240-c9def16e-bf5e-4551-acfa-96ee42e3e0a9"
+            },
+            {
+              "name": "Anthropic List Workspaces",
+              "id": "4941579e-af16-4532-a5ca-8b82fdfff15f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use",
+                    "key": "anthropic-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/organizations/workspaces?limit=20&before_id=<string>&after_id=<string>&include_archived=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "organizations",
+                    "workspaces"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
+                      "key": "before_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
+                      "key": "after_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Whether to include archived workspaces in the response",
+                      "key": "include_archived",
+                      "value": "false"
+                    }
+                  ]
+                },
+                "description": "Retrieves a paginated list of workspaces associated with the organization."
+              },
+              "response": [
+                {
+                  "id": "ac5fce09-8b01-4f59-a125-d060470dfe06",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/workspaces?limit=20&before_id=<string>&after_id=<string>&include_archived=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "workspaces"
+                      ],
+                      "query": [
+                        {
+                          "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                          "key": "limit",
+                          "value": "20"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
+                          "key": "before_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
+                          "key": "after_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Whether to include archived workspaces in the response",
+                          "key": "include_archived",
+                          "value": "false"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"workspace\",\n      \"name\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"archived_at\": \"<dateTime>\",\n      \"display_color\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"workspace\",\n      \"name\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"archived_at\": \"<dateTime>\",\n      \"display_color\": \"<string>\"\n    }\n  ],\n  \"has_more\": \"<boolean>\",\n  \"first_id\": \"<string>\",\n  \"last_id\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-ac5fce09-8b01-4f59-a125-d060470dfe06"
+                },
+                {
+                  "id": "fce7e17f-28fb-4261-9d5a-c33a4121d60c",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/workspaces?limit=20&before_id=<string>&after_id=<string>&include_archived=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "workspaces"
+                      ],
+                      "query": [
+                        {
+                          "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                          "key": "limit",
+                          "value": "20"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
+                          "key": "before_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
+                          "key": "after_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Whether to include archived workspaces in the response",
+                          "key": "include_archived",
+                          "value": "false"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-fce7e17f-28fb-4261-9d5a-c33a4121d60c"
+                }
+              ],
+              "createdAt": "2026-06-05T15:05:31.000Z",
+              "updatedAt": "2026-06-05T15:05:31.000Z",
+              "uid": "35240-4941579e-af16-4532-a5ca-8b82fdfff15f"
+            },
+            {
+              "name": "Anthropic Create Workspace",
+              "id": "ae6d2964-8491-45e5-bf9c-7c004237ddff",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use",
+                    "key": "anthropic-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/organizations/workspaces",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "organizations",
+                    "workspaces"
+                  ]
+                },
+                "description": "Creates a new workspace within the organization."
+              },
+              "response": [
+                {
+                  "id": "8eb9a281-e0b3-4de6-b9d7-32846e79606c",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/workspaces",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "workspaces"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"workspace\",\n  \"name\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"archived_at\": \"<dateTime>\",\n  \"display_color\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-8eb9a281-e0b3-4de6-b9d7-32846e79606c"
+                },
+                {
+                  "id": "60077c49-8658-435f-9517-4a8260599297",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/workspaces",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "workspaces"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-60077c49-8658-435f-9517-4a8260599297"
+                }
+              ],
+              "createdAt": "2026-06-05T15:05:31.000Z",
+              "updatedAt": "2026-06-05T15:05:31.000Z",
+              "uid": "35240-ae6d2964-8491-45e5-bf9c-7c004237ddff"
+            }
+          ],
+          "id": "85f79b48-1b08-4570-b627-c63e94bf633b",
+          "createdAt": "2026-06-05T15:05:30.000Z",
+          "updatedAt": "2026-06-05T15:05:30.000Z",
+          "uid": "35240-85f79b48-1b08-4570-b627-c63e94bf633b"
+        },
+        {
+          "name": "api_keys",
+          "item": [
+            {
+              "name": "{api_key_id}",
+              "item": [
+                {
+                  "name": "Anthropic Get Api Key",
+                  "id": "128fb1b4-ca25-47c2-bd9d-50bb41230a62",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/api_keys/:api_key_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "api_keys",
+                        ":api_key_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "114383cc-d8b2-43e0-a548-966e0d25b387",
+                          "key": "api_key_id",
+                          "value": "<string>",
+                          "description": "(Required) Unique identifier for the API key"
+                        }
+                      ]
+                    },
+                    "description": "Retrieves details about a specific API key."
+                  },
+                  "response": [
+                    {
+                      "id": "ecc9fb34-dbfe-44e8-b50e-18a78f67440d",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/api_keys/:api_key_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "api_keys",
+                            ":api_key_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "api_key_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"api_key\",\n  \"name\": \"<string>\",\n  \"workspace_id\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"created_by\": {\n    \"id\": \"<string>\",\n    \"type\": \"user\"\n  },\n  \"status\": \"inactive\",\n  \"last_used_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-ecc9fb34-dbfe-44e8-b50e-18a78f67440d"
+                    },
+                    {
+                      "id": "5191d4b2-b90a-4091-aced-a570c7853561",
+                      "name": "Error Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/api_keys/:api_key_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "api_keys",
+                            ":api_key_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "api_key_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-5191d4b2-b90a-4091-aced-a570c7853561"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-128fb1b4-ca25-47c2-bd9d-50bb41230a62"
+                },
+                {
+                  "name": "Anthropic Update Api Key",
+                  "id": "bdf3d873-2b8f-4a74-8cd8-0fbb4a9debfb",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"status\": \"active\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/api_keys/:api_key_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "api_keys",
+                        ":api_key_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "019be797-a2bb-4d7f-9ba8-19787bfefd34",
+                          "key": "api_key_id",
+                          "value": "<string>",
+                          "description": "(Required) Unique identifier for the API key"
+                        }
+                      ]
+                    },
+                    "description": "Updates an API key's name or status."
+                  },
+                  "response": [
+                    {
+                      "id": "5442e66b-4a7e-4a0c-a9db-c396ca7f346e",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"status\": \"active\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/api_keys/:api_key_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "api_keys",
+                            ":api_key_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "api_key_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"api_key\",\n  \"name\": \"<string>\",\n  \"workspace_id\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"created_by\": {\n    \"id\": \"<string>\",\n    \"type\": \"user\"\n  },\n  \"status\": \"inactive\",\n  \"last_used_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-5442e66b-4a7e-4a0c-a9db-c396ca7f346e"
+                    },
+                    {
+                      "id": "dd435cf6-eec6-4f4f-98a8-d7aa2cd44c6f",
+                      "name": "Error Response",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) The version of the Anthropic API to use",
+                            "key": "anthropic-version",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"status\": \"active\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/organizations/api_keys/:api_key_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "organizations",
+                            "api_keys",
+                            ":api_key_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "api_key_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:05:31.000Z",
+                      "updatedAt": "2026-06-05T15:05:31.000Z",
+                      "uid": "35240-dd435cf6-eec6-4f4f-98a8-d7aa2cd44c6f"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-bdf3d873-2b8f-4a74-8cd8-0fbb4a9debfb"
+                }
+              ],
+              "id": "9d1e1b2d-3981-4b6b-aa0b-29c1b3a79468",
+              "createdAt": "2026-06-05T15:05:30.000Z",
+              "updatedAt": "2026-06-05T15:05:30.000Z",
+              "uid": "35240-9d1e1b2d-3981-4b6b-aa0b-29c1b3a79468"
+            },
+            {
+              "name": "Anthropic List Api Keys",
+              "id": "48843699-c696-4502-9b75-68f006826350",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) The version of the Anthropic API to use",
+                    "key": "anthropic-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/organizations/api_keys?limit=20&before_id=<string>&after_id=<string>&workspace_id=<string>&status=inactive&created_by_user_id=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "organizations",
+                    "api_keys"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
+                      "key": "before_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
+                      "key": "after_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter by workspace ID",
+                      "key": "workspace_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter by API key status",
+                      "key": "status",
+                      "value": "inactive"
+                    },
+                    {
+                      "description": "Filter by the user who created the API key",
+                      "key": "created_by_user_id",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Retrieves a paginated list of API keys for the organization."
+              },
+              "response": [
+                {
+                  "id": "3520c6a9-7ef6-42dc-984f-0b1733f06302",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/api_keys?limit=20&before_id=<string>&after_id=<string>&workspace_id=<string>&status=inactive&created_by_user_id=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "api_keys"
+                      ],
+                      "query": [
+                        {
+                          "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                          "key": "limit",
+                          "value": "20"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
+                          "key": "before_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
+                          "key": "after_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by workspace ID",
+                          "key": "workspace_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by API key status",
+                          "key": "status",
+                          "value": "inactive"
+                        },
+                        {
+                          "description": "Filter by the user who created the API key",
+                          "key": "created_by_user_id",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"api_key\",\n      \"name\": \"<string>\",\n      \"workspace_id\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"created_by\": {\n        \"id\": \"<string>\",\n        \"type\": \"user\"\n      },\n      \"status\": \"inactive\",\n      \"last_used_at\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"api_key\",\n      \"name\": \"<string>\",\n      \"workspace_id\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"created_by\": {\n        \"id\": \"<string>\",\n        \"type\": \"user\"\n      },\n      \"status\": \"archived\",\n      \"last_used_at\": \"<dateTime>\"\n    }\n  ],\n  \"has_more\": \"<boolean>\",\n  \"first_id\": \"<string>\",\n  \"last_id\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-3520c6a9-7ef6-42dc-984f-0b1733f06302"
+                },
+                {
+                  "id": "91967d8a-b21d-4552-a432-d5c72ebc0620",
+                  "name": "Error Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) The version of the Anthropic API to use",
+                        "key": "anthropic-version",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organizations/api_keys?limit=20&before_id=<string>&after_id=<string>&workspace_id=<string>&status=inactive&created_by_user_id=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organizations",
+                        "api_keys"
+                      ],
+                      "query": [
+                        {
+                          "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.",
+                          "key": "limit",
+                          "value": "20"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.",
+                          "key": "before_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.",
+                          "key": "after_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by workspace ID",
+                          "key": "workspace_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by API key status",
+                          "key": "status",
+                          "value": "inactive"
+                        },
+                        {
+                          "description": "Filter by the user who created the API key",
+                          "key": "created_by_user_id",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:05:31.000Z",
+                  "updatedAt": "2026-06-05T15:05:31.000Z",
+                  "uid": "35240-91967d8a-b21d-4552-a432-d5c72ebc0620"
+                }
+              ],
+              "createdAt": "2026-06-05T15:05:31.000Z",
+              "updatedAt": "2026-06-05T15:05:31.000Z",
+              "uid": "35240-48843699-c696-4502-9b75-68f006826350"
+            }
+          ],
+          "id": "70c9ecda-2770-4899-b134-db1247540a5d",
+          "createdAt": "2026-06-05T15:05:30.000Z",
+          "updatedAt": "2026-06-05T15:05:30.000Z",
+          "uid": "35240-70c9ecda-2770-4899-b134-db1247540a5d"
+        }
+      ],
+      "id": "d0038ae3-9ce8-4460-b193-58183919a86f",
+      "createdAt": "2026-06-05T15:05:30.000Z",
+      "updatedAt": "2026-06-05T15:05:30.000Z",
+      "uid": "35240-d0038ae3-9ce8-4460-b193-58183919a86f"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.anthropic.com/v1"
+    }
+  ]
+}

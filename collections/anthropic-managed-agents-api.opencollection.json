@@ -1,0 +1,583 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Anthropic Managed Agents API",
+    "version": "Tue Mar 31 2026 20:00:00 GMT-0400 (Eastern Daylight Time)"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Agents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic List Agents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/agents",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Paginated list of agents in the workspace."
+        },
+        {
+          "info": {
+            "name": "Anthropic Create Agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/agents",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Define a reusable, versioned agent."
+        },
+        {
+          "info": {
+            "name": "Anthropic Get Agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/agents/:agent_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve an agent's latest version."
+        },
+        {
+          "info": {
+            "name": "Anthropic Update Agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/agents/:agent_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an agent. Pass the current version to optimistically lock the update. A new version is created when fields change.\n"
+        },
+        {
+          "info": {
+            "name": "Anthropic Archive Agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/agents/:agent_id/archive",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Archive an agent; existing sessions continue running."
+        },
+        {
+          "info": {
+            "name": "Anthropic List Agent Versions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/agents/:agent_id/versions",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Full version history for the agent."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Environments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic List Environments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/environments",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Paginated list of environments."
+        },
+        {
+          "info": {
+            "name": "Anthropic Create Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/environments",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a container configuration for sessions."
+        },
+        {
+          "info": {
+            "name": "Anthropic Get Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/environments/:environment_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "environment_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Anthropic Get Environment"
+        },
+        {
+          "info": {
+            "name": "Anthropic Delete Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.anthropic.com/v1/environments/:environment_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "environment_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Anthropic Delete Environment"
+        },
+        {
+          "info": {
+            "name": "Anthropic Archive Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/environments/:environment_id/archive",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "environment_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Anthropic Archive Environment"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Sessions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic List Sessions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/sessions",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Anthropic List Sessions"
+        },
+        {
+          "info": {
+            "name": "Anthropic Create Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/sessions",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a stateful agent execution instance."
+        },
+        {
+          "info": {
+            "name": "Anthropic Get Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/sessions/:session_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Anthropic Get Session"
+        },
+        {
+          "info": {
+            "name": "Anthropic Update Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/sessions/:session_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a session's tools, mcp_servers, or other config."
+        },
+        {
+          "info": {
+            "name": "Anthropic Delete Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.anthropic.com/v1/sessions/:session_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Anthropic Delete Session"
+        },
+        {
+          "info": {
+            "name": "Anthropic Archive Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/sessions/:session_id/archive",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Anthropic Archive Session"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic Send Session Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/sessions/:session_id/events",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send user events to drive session execution. Event types include user.message, tool.result, and interrupt.\n"
+        },
+        {
+          "info": {
+            "name": "Anthropic Stream Session Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/sessions/:session_id/stream",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Server-sent events stream of agent execution: assistant messages, tool calls, tool results, and status changes.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

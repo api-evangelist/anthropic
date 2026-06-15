@@ -1,0 +1,734 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Anthropic Admin API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Organization",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic Get Current Organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/me",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Retrieves information about the current authenticated user's organization."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Organization Members",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic List Organization Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/users",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000."
+              },
+              {
+                "name": "before_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object."
+              },
+              {
+                "name": "after_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object."
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Filter by user email"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of users associated with the organization."
+        },
+        {
+          "info": {
+            "name": "Anthropic Get Organization Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/users/:user_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "user_id",
+                "value": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                "type": "path",
+                "description": "Unique identifier for the user"
+              }
+            ]
+          },
+          "docs": "Retrieves detailed information about a specific user within an organization."
+        },
+        {
+          "info": {
+            "name": "Anthropic Update Organization Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/organizations/users/:user_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "user_id",
+                "value": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                "type": "path",
+                "description": "Unique identifier for the user"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates user information for a specific user within an organization."
+        },
+        {
+          "info": {
+            "name": "Anthropic Remove Organization Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.anthropic.com/v1/organizations/users/:user_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "user_id",
+                "value": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                "type": "path",
+                "description": "Unique identifier for the user"
+              }
+            ]
+          },
+          "docs": "Removes a specific user from an organization."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Organization Invites",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic List Organization Invites",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/invites",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000."
+              },
+              {
+                "name": "before_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object."
+              },
+              {
+                "name": "after_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object."
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of pending invitations for the organization."
+        },
+        {
+          "info": {
+            "name": "Anthropic Create Organization Invite",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/organizations/invites",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates and sends an invitation to a new member to join the organization."
+        },
+        {
+          "info": {
+            "name": "Anthropic Get Organization Invite",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/invites/:invite_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "invite_id",
+                "value": "invite_015gWxCN9Hfg2QhZwTK7Mdeu",
+                "type": "path",
+                "description": "Unique identifier for the invite"
+              }
+            ]
+          },
+          "docs": "Retrieves detailed information about a specific organization invite."
+        },
+        {
+          "info": {
+            "name": "Anthropic Delete Organization Invite",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.anthropic.com/v1/organizations/invites/:invite_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "invite_id",
+                "value": "invite_015gWxCN9Hfg2QhZwTK7Mdeu",
+                "type": "path",
+                "description": "Unique identifier for the invite"
+              }
+            ]
+          },
+          "docs": "Deletes a specific organization invite, preventing the recipient from accepting it."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Workspaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic List Workspaces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/workspaces",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000."
+              },
+              {
+                "name": "before_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object."
+              },
+              {
+                "name": "after_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object."
+              },
+              {
+                "name": "include_archived",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include archived workspaces in the response"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of workspaces associated with the organization."
+        },
+        {
+          "info": {
+            "name": "Anthropic Create Workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/organizations/workspaces",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new workspace within the organization."
+        },
+        {
+          "info": {
+            "name": "Anthropic Get Workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/workspaces/:workspace_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+                "type": "path",
+                "description": "Unique identifier for the workspace"
+              }
+            ]
+          },
+          "docs": "Retrieves detailed information about a specific workspace."
+        },
+        {
+          "info": {
+            "name": "Anthropic Update Workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/organizations/workspaces/:workspace_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+                "type": "path",
+                "description": "Unique identifier for the workspace"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates configuration for a specific workspace."
+        },
+        {
+          "info": {
+            "name": "Anthropic Archive Workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/organizations/workspaces/:workspace_id/archive",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+                "type": "path",
+                "description": "Unique identifier for the workspace"
+              }
+            ]
+          },
+          "docs": "Archives a specific workspace, making it read-only."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Workspace Members",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic List Workspace Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/workspaces/:workspace_id/members",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+                "type": "path",
+                "description": "Unique identifier for the workspace"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000."
+              },
+              {
+                "name": "before_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object."
+              },
+              {
+                "name": "after_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object."
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of members for a specific workspace."
+        },
+        {
+          "info": {
+            "name": "Anthropic Add Workspace Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/organizations/workspaces/:workspace_id/members",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+                "type": "path",
+                "description": "Unique identifier for the workspace"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a user as a member of a workspace."
+        },
+        {
+          "info": {
+            "name": "Anthropic Get Workspace Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/workspaces/:workspace_id/members/:user_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+                "type": "path",
+                "description": "Unique identifier for the workspace"
+              },
+              {
+                "name": "user_id",
+                "value": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                "type": "path",
+                "description": "Unique identifier for the user"
+              }
+            ]
+          },
+          "docs": "Retrieves membership details for a specific user in a workspace."
+        },
+        {
+          "info": {
+            "name": "Anthropic Update Workspace Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/organizations/workspaces/:workspace_id/members/:user_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+                "type": "path",
+                "description": "Unique identifier for the workspace"
+              },
+              {
+                "name": "user_id",
+                "value": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                "type": "path",
+                "description": "Unique identifier for the user"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the role of a workspace member."
+        },
+        {
+          "info": {
+            "name": "Anthropic Remove Workspace Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.anthropic.com/v1/organizations/workspaces/:workspace_id/members/:user_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+                "type": "path",
+                "description": "Unique identifier for the workspace"
+              },
+              {
+                "name": "user_id",
+                "value": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                "type": "path",
+                "description": "Unique identifier for the user"
+              }
+            ]
+          },
+          "docs": "Removes a user from a workspace."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Api Keys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic List Api Keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/api_keys",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000."
+              },
+              {
+                "name": "before_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object."
+              },
+              {
+                "name": "after_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object."
+              },
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by workspace ID"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by API key status"
+              },
+              {
+                "name": "created_by_user_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the user who created the API key"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of API keys for the organization."
+        },
+        {
+          "info": {
+            "name": "Anthropic Get Api Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/api_keys/:api_key_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "api_key_id",
+                "value": "apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9",
+                "type": "path",
+                "description": "Unique identifier for the API key"
+              }
+            ]
+          },
+          "docs": "Retrieves details about a specific API key."
+        },
+        {
+          "info": {
+            "name": "Anthropic Update Api Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/organizations/api_keys/:api_key_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "api_key_id",
+                "value": "apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9",
+                "type": "path",
+                "description": "Unique identifier for the API key"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an API key's name or status."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

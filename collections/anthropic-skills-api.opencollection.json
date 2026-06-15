@@ -1,0 +1,251 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Anthropic Skills API",
+    "version": "Wed Oct 01 2025 20:00:00 GMT-0400 (Eastern Daylight Time)"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Skills",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic List Skills",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/skills",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "before_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "after_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Paginated list of all Skills in the current workspace."
+        },
+        {
+          "info": {
+            "name": "Anthropic Create Skill",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/skills",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload a new Skill as a zip archive containing SKILL.md plus any supporting files. The Skill is added to the workspace catalog and becomes available to all workspace members.\n"
+        },
+        {
+          "info": {
+            "name": "Anthropic Get Skill",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/skills/:skill_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "skill_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve metadata for a single Skill."
+        },
+        {
+          "info": {
+            "name": "Anthropic Delete Skill",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.anthropic.com/v1/skills/:skill_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "skill_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a Skill from the workspace. All versions are removed."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Skill Versions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic List Skill Versions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/skills/:skill_id/versions",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "skill_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Paginated list of versions for the given Skill."
+        },
+        {
+          "info": {
+            "name": "Anthropic Create Skill Version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/skills/:skill_id/versions",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "skill_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload a new version of an existing Skill."
+        },
+        {
+          "info": {
+            "name": "Anthropic Get Skill Version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/skills/:skill_id/versions/:version",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "skill_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve metadata for a specific Skill version."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
