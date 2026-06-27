@@ -223,53 +223,39 @@ access: 3rd-Party
 common:
 - type: PostmanWorkspace
   url: https://www.postman.com/kinlaneapi/anthropic/overview
-- type: ArazzoWorkflows
-  url: arazzo/
-  workflows:
-  - url: arazzo/anthropic-batch-cancel-and-confirm-workflow.yml
-    name: Anthropic Cancel a Message Batch and Confirm
-    summary: Create a batch, request cancellation, then poll until it leaves the canceling
-      state.
-  - url: arazzo/anthropic-batch-create-poll-results-workflow.yml
-    name: Anthropic Create Batch, Poll, and Retrieve Results
-    summary: Submit a message batch, poll until processing ends, then fetch the JSONL
-      results.
-  - url: arazzo/anthropic-count-tokens-then-message-workflow.yml
-    name: Anthropic Count Tokens Then Create Message
-    summary: Estimate input token usage for a prompt, then send the message only when
-      it fits a budget.
-  - url: arazzo/anthropic-create-workspace-and-add-member-workflow.yml
-    name: Anthropic Create Workspace and Add a Member
-    summary: Create a workspace, add a user to it, then confirm the member appears
-      in the roster.
-  - url: arazzo/anthropic-discover-model-and-message-workflow.yml
-    name: Anthropic Discover a Model and Send a Message
-    summary: List available models, confirm a chosen model exists, then create a message
-      with it.
-  - url: arazzo/anthropic-invite-org-member-and-confirm-workflow.yml
-    name: Anthropic Invite an Org Member and Confirm
-    summary: Send an organization invite, then read it back and branch on whether
-      it is still pending.
-  - url: arazzo/anthropic-list-batches-and-fetch-latest-results-workflow.yml
-    name: Anthropic List Batches and Fetch Latest Results
-    summary: List message batches, inspect the most recent one, and pull its results
-      if it has ended.
-  - url: arazzo/anthropic-onboard-member-to-workspace-workflow.yml
-    name: Anthropic Onboard an Org Member into a Workspace
-    summary: Find an org member by email, create a workspace, and add that member
-      to it.
-  - url: arazzo/anthropic-provision-and-promote-workspace-member-workflow.yml
-    name: Anthropic Provision and Promote a Workspace Member
-    summary: Create a workspace, add a member as a developer, then promote them to
-      workspace admin.
-  - url: arazzo/anthropic-upload-list-and-cleanup-file-workflow.yml
-    name: Anthropic Upload, List, and Clean Up a File
-    summary: Upload a file, confirm it appears in the file list, then delete it to
-      clean up.
-  - url: arazzo/anthropic-upload-verify-download-file-workflow.yml
-    name: Anthropic Upload, Verify, and Download a File
-    summary: Upload a file, read back its metadata, and download its content when
-      it is downloadable.
+- type: Arazzo
+  url: arazzo/anthropic-batch-cancel-and-confirm-workflow.yml
+  name: Anthropic Cancel a Message Batch and Confirm
+- type: Arazzo
+  url: arazzo/anthropic-batch-create-poll-results-workflow.yml
+  name: Anthropic Create Batch, Poll, and Retrieve Results
+- type: Arazzo
+  url: arazzo/anthropic-count-tokens-then-message-workflow.yml
+  name: Anthropic Count Tokens Then Create Message
+- type: Arazzo
+  url: arazzo/anthropic-create-workspace-and-add-member-workflow.yml
+  name: Anthropic Create Workspace and Add a Member
+- type: Arazzo
+  url: arazzo/anthropic-discover-model-and-message-workflow.yml
+  name: Anthropic Discover a Model and Send a Message
+- type: Arazzo
+  url: arazzo/anthropic-invite-org-member-and-confirm-workflow.yml
+  name: Anthropic Invite an Org Member and Confirm
+- type: Arazzo
+  url: arazzo/anthropic-list-batches-and-fetch-latest-results-workflow.yml
+  name: Anthropic List Batches and Fetch Latest Results
+- type: Arazzo
+  url: arazzo/anthropic-onboard-member-to-workspace-workflow.yml
+  name: Anthropic Onboard an Org Member into a Workspace
+- type: Arazzo
+  url: arazzo/anthropic-provision-and-promote-workspace-member-workflow.yml
+  name: Anthropic Provision and Promote a Workspace Member
+- type: Arazzo
+  url: arazzo/anthropic-upload-list-and-cleanup-file-workflow.yml
+  name: Anthropic Upload, List, and Clean Up a File
+- type: Arazzo
+  url: arazzo/anthropic-upload-verify-download-file-workflow.yml
+  name: Anthropic Upload, Verify, and Download a File
 - type: LinkedIn
   url: https://www.linkedin.com/company/anthropicresearch
 - url: https://github.com/anthropics/anthropic-quickstarts
@@ -298,7 +284,7 @@ common:
   type: Tiers
 - url: https://docs.anthropic.com/en/api/errors
   name: Errors - Anthropic
-  type: Errors
+  type: ErrorCodes
 - url: https://docs.anthropic.com/en/api/client-sdks
   name: Client SDKs - Anthropic
   type: Documentation
@@ -638,10 +624,10 @@ common:
 - url: https://www.anthropic.com/engineering
   type: Blog
 - url: https://console.anthropic.com/
-  type: SignUp
+  type: Signup
 - url: https://platform.claude.com/
   name: Claude Console
-  type: SignUp
+  type: Signup
 - url: https://platform.claude.com/workbench
   type: Sandbox
 - url: https://docs.anthropic.com/en/api/beta-headers
@@ -660,37 +646,37 @@ common:
   type: GitHubOrganization
 - url: https://github.com/anthropics/anthropic-sdk-python
   name: Python SDK
-  type: SDK
+  type: SDKs
 - url: https://github.com/anthropics/anthropic-sdk-typescript
   name: TypeScript SDK
-  type: SDK
+  type: SDKs
 - url: https://github.com/anthropics/anthropic-sdk-java
   name: Java SDK
-  type: SDK
+  type: SDKs
 - url: https://github.com/anthropics/anthropic-sdk-go
   name: Go SDK
-  type: SDK
+  type: SDKs
 - url: https://github.com/anthropics/anthropic-sdk-ruby
   name: Ruby SDK
-  type: SDK
+  type: SDKs
 - url: https://github.com/anthropics/anthropic-sdk-csharp
   name: C# SDK
-  type: SDK
+  type: SDKs
 - url: https://github.com/anthropics/anthropic-sdk-php
   name: PHP SDK
-  type: SDK
+  type: SDKs
 - url: https://github.com/anthropics/claude-agent-sdk-python
   name: Claude Agent SDK (Python)
-  type: SDK
+  type: SDKs
 - url: https://github.com/anthropics/claude-code
   name: Claude Code
-  type: Tool
+  type: Tools
 - url: https://github.com/anthropics/claude-code-action
   name: Claude Code GitHub Action
-  type: Tool
+  type: Tools
 - url: https://github.com/anthropics/skills
   name: Public Skills repository
-  type: Tool
+  type: Tools
 - url: https://github.com/anthropics/claude-cookbooks
   name: Claude Cookbooks
   type: CodeExamples
@@ -715,7 +701,7 @@ common:
 - url: https://www.anthropic.com/learn
   type: Training
 - url: https://discord.com/invite/6PPFFzqPDZ
-  type: Forum
+  type: Forums
 - url: https://www.postman.com/postman/anthropic-apis/overview
   name: Postman Workspace
   type: Documentation
@@ -757,10 +743,10 @@ common:
   type: Models
 - url: https://docs.anthropic.com/en/docs/claude-code/sdk
   name: Claude Code SDK
-  type: SDK
+  type: SDKs
 - url: https://docs.anthropic.com/en/api/sdks/cli
   name: ant CLI
-  type: SDK
+  type: SDKs
 - url: https://modelcontextprotocol.io
   name: Model Context Protocol
   type: Documentation
