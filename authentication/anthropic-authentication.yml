@@ -1,0 +1,30 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/anthropic-admin-api-openapi.yml, openapi/anthropic-claude-code-analytics-api-openapi.yml,
+  openapi/anthropic-files-api-openapi.yml, openapi/anthropic-managed-agents-api-openapi.yml,
+  openapi/anthropic-message-batches-api-openapi.yml, openapi/anthropic-messages-api-openapi.yml,
+  openapi/anthropic-models-api-openapi.yml, openapi/anthropic-prompts-api-openapi.yml, openapi/anthropic-skills-api-openapi.yml,
+  openapi/anthropic-token-counting-api-openapi.yml, openapi/anthropic-usage-cost-api-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: AdminApiKeyAuth
+  type: apiKey
+  in: header
+  parameter: x-api-key
+  description: Your Admin API key for authentication (starts with sk-ant-admin...).
+  sources:
+  - openapi/anthropic-admin-api-openapi.yml
+  - openapi/anthropic-claude-code-analytics-api-openapi.yml
+  - openapi/anthropic-files-api-openapi.yml
+  - openapi/anthropic-managed-agents-api-openapi.yml
+  - openapi/anthropic-message-batches-api-openapi.yml
+  - openapi/anthropic-messages-api-openapi.yml
+  - openapi/anthropic-models-api-openapi.yml
+  - openapi/anthropic-prompts-api-openapi.yml
+  - openapi/anthropic-skills-api-openapi.yml
+  - openapi/anthropic-token-counting-api-openapi.yml
+  - openapi/anthropic-usage-cost-api-openapi.yml
