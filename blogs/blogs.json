@@ -3,18 +3,20 @@
   "feeds": [
     {
       "source": "https://www.anthropic.com/news",
-      "feed_url": "",
-      "saved": 1,
-      "method": "agent-scrape"
+      "feed_url": "https://www.anthropic.com/news",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     },
     {
       "source": "https://www.anthropic.com/engineering",
-      "feed_url": "",
+      "feed_url": "https://www.anthropic.com/engineering",
+      "title": "",
       "saved": 0,
-      "method": "agent-scrape"
+      "method": "none"
     }
   ],
-  "post_count": 14,
-  "fetched": "2026-06-27T12:23:28Z",
+  "post_count": 18,
+  "fetched": "2026-07-11T11:50:51Z",
   "agent_pulled": "2026-06-27"
 }
