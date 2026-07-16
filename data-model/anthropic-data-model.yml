@@ -1,0 +1,75 @@
+generated: '2026-06-20'
+method: derived
+source: openapi/*.yml
+notes: Entity-relationship graph derived from OpenAPI component schemas and id-reference
+  fields across the Claude API surface. Object id prefixes captured where documented
+  (msgbatch_, file_, skill_, apikey_).
+entities:
+- name: Message
+  spec: openapi/anthropic-messages-api-openapi.yml
+  description: A model response containing content blocks (text, tool_use, thinking).
+  relationships:
+  - {type: has_many, target: ContentBlock, via: content}
+  - {type: has_one, target: Usage, via: usage}
+  - {type: belongs_to, target: Model, via: model}
+- name: Model
+  spec: openapi/anthropic-models-api-openapi.yml
+  description: A Claude model with capabilities, max_input_tokens, and max_tokens.
+- name: MessageBatch
+  spec: openapi/anthropic-message-batches-api-openapi.yml
+  id_prefix: msgbatch_
+  description: A batch of message-creation requests processed asynchronously.
+  relationships:
+  - {type: has_many, target: MessageBatchIndividualRequest, via: requests}
+  - {type: has_one, target: RequestCounts, via: request_counts}
+- name: File
+  spec: openapi/anthropic-files-api-openapi.yml
+  id_prefix: file_
+  description: An uploaded file reusable across Messages, Batches, and Agents.
+- name: Skill
+  spec: openapi/anthropic-skills-api-openapi.yml
+  id_prefix: skill_
+  description: A custom Agent Skill (filesystem directory of instructions/scripts).
+  relationships:
+  - {type: has_many, target: SkillVersion, via: versions}
+- name: Agent
+  spec: openapi/anthropic-managed-agents-api-openapi.yml
+  description: A managed agent configuration.
+  relationships:
+  - {type: has_many, target: AgentVersion, via: versions}
+  - {type: has_many, target: Session, via: sessions}
+- name: Session
+  spec: openapi/anthropic-managed-agents-api-openapi.yml
+  description: A running instance of a managed agent.
+  relationships:
+  - {type: belongs_to, target: Agent, via: agent_id}
+  - {type: belongs_to, target: Environment, via: environment_id}
+  - {type: has_many, target: EventBatch, via: events}
+- name: Environment
+  spec: openapi/anthropic-managed-agents-api-openapi.yml
+  description: A sandbox environment for managed agent execution.
+- name: Organization
+  spec: openapi/anthropic-admin-api-openapi.yml
+  description: The Anthropic organization (admin surface).
+  relationships:
+  - {type: has_many, target: OrganizationMember, via: members}
+  - {type: has_many, target: OrganizationInvite, via: invites}
+  - {type: has_many, target: Workspace, via: workspaces}
+  - {type: has_many, target: ApiKey, via: api_keys}
+- name: Workspace
+  spec: openapi/anthropic-admin-api-openapi.yml
+  description: A workspace grouping members and API keys within an organization.
+  relationships:
+  - {type: has_many, target: WorkspaceMember, via: members}
+  - {type: belongs_to, target: Organization}
+- name: ApiKey
+  spec: openapi/anthropic-admin-api-openapi.yml
+  id_prefix: apikey_
+  description: An API key belonging to a workspace/organization, with status and expires_at.
+  relationships:
+  - {type: belongs_to, target: Workspace, via: workspace_id}
+- name: OrganizationMember
+  spec: openapi/anthropic-admin-api-openapi.yml
+  description: A member of the organization with a role.
+  relationships:
+  - {type: belongs_to, target: Organization}

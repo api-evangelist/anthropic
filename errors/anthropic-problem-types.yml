@@ -1,0 +1,78 @@
+generated: '2026-06-20'
+method: searched
+source: openapi/anthropic-messages-api-openapi.yml
+docs: https://platform.claude.com/docs/en/api/errors
+format: anthropic-error
+envelope:
+  description: The API always returns errors as JSON with a top-level error object
+    that includes a type and message, plus a request_id for tracking.
+  shape: |
+    {
+      "type": "error",
+      "error": { "type": "not_found_error", "message": "..." },
+      "request_id": "req_011CSHoEeqs5C35K2UUqR7Fy"
+    }
+  fields:
+    type: Always "error" at the top level.
+    error.type: The specific error type (see problems[]).
+    error.message: Human-readable error message.
+    request_id: Unique request identifier, also returned in the request-id response header.
+retry:
+  header: retry-after
+  guidance: Official SDKs auto-retry transient failures (connection errors, rate limits,
+    5xx) with exponential backoff, twice by default, honoring retry-after.
+problems:
+- status: 400
+  type: invalid_request_error
+  title: Invalid request
+  remediation: There was an issue with the format or content of the request. Also used
+    for other 4XX status codes not otherwise listed.
+- status: 401
+  type: authentication_error
+  title: Authentication failed
+  remediation: The API key is malformed, revoked, or expired. On Claude Platform on
+    AWS, may indicate an AWS credential or SigV4 signature problem.
+- status: 402
+  type: billing_error
+  title: Billing error
+  remediation: Issue with billing or payment information. Check payment details in the
+    Claude Console or AWS Marketplace.
+- status: 403
+  type: permission_error
+  title: Permission denied
+  remediation: The API key lacks permission for the specified resource. Check organization
+    access and workspace settings.
+- status: 404
+  type: not_found_error
+  title: Resource not found
+  remediation: Check the endpoint path and any resource IDs in the request URL.
+- status: 409
+  type: conflict_error
+  title: Conflict
+  remediation: The request conflicts with the current resource state (concurrent modification
+    or unique-value collision). Resolve and retry.
+- status: 413
+  type: request_too_large
+  title: Request too large
+  remediation: Request exceeds max bytes (Messages/Token Counting 32MB, Batch 256MB,
+    Files 500MB). On the direct API, Cloudflare returns this before the API servers.
+- status: 429
+  type: rate_limit_error
+  title: Rate limit exceeded
+  remediation: Account hit a rate limit; honor retry-after and back off. Sharp usage
+    spikes can trigger acceleration limits.
+- status: 500
+  type: api_error
+  title: Internal server error
+  remediation: Unexpected internal error. Retry with exponential backoff; if it persists,
+    contact support with the request ID.
+- status: 504
+  type: timeout_error
+  title: Request timed out
+  remediation: Request timed out while processing. Use the streaming Messages API or
+    Message Batches API for long-running requests.
+- status: 529
+  type: overloaded_error
+  title: API overloaded
+  remediation: The API is temporarily overloaded due to high traffic across all users.
+    Back off and retry.

@@ -1,0 +1,85 @@
+generated: '2026-06-20'
+method: searched
+source: https://platform.claude.com/docs/en/api/client-sdks
+docs: https://docs.anthropic.com/en/api/client-sdks
+packages:
+- language: python
+  registry: pypi
+  name: anthropic
+  url: https://pypi.org/project/anthropic/
+  install: pip install anthropic
+  repo: https://github.com/anthropics/anthropic-sdk-python
+  official: true
+- language: javascript
+  registry: npm
+  name: "@anthropic-ai/sdk"
+  url: https://www.npmjs.com/package/@anthropic-ai/sdk
+  install: npm install @anthropic-ai/sdk
+  repo: https://github.com/anthropics/anthropic-sdk-typescript
+  official: true
+- language: java
+  registry: maven-central
+  name: com.anthropic:anthropic-java
+  url: https://central.sonatype.com/artifact/com.anthropic/anthropic-java
+  install: "implementation(\"com.anthropic:anthropic-java:2.49.0\")"
+  repo: https://github.com/anthropics/anthropic-sdk-java
+  official: true
+- language: go
+  registry: pkg.go.dev
+  name: github.com/anthropics/anthropic-sdk-go
+  url: https://pkg.go.dev/github.com/anthropics/anthropic-sdk-go
+  install: go get github.com/anthropics/anthropic-sdk-go
+  repo: https://github.com/anthropics/anthropic-sdk-go
+  official: true
+- language: ruby
+  registry: rubygems
+  name: anthropic
+  url: https://rubygems.org/gems/anthropic
+  install: gem install anthropic
+  repo: https://github.com/anthropics/anthropic-sdk-ruby
+  official: true
+- language: csharp
+  registry: nuget
+  name: Anthropic
+  url: https://www.nuget.org/packages/Anthropic
+  install: dotnet add package Anthropic
+  repo: https://github.com/anthropics/anthropic-sdk-csharp
+  official: true
+- language: php
+  registry: packagist
+  name: anthropic-ai/sdk
+  url: https://packagist.org/packages/anthropic-ai/sdk
+  install: composer require anthropic-ai/sdk
+  repo: https://github.com/anthropics/anthropic-sdk-php
+  official: true
+- language: javascript
+  registry: npm
+  name: "@anthropic-ai/claude-agent-sdk"
+  url: https://www.npmjs.com/package/@anthropic-ai/claude-agent-sdk
+  install: npm install @anthropic-ai/claude-agent-sdk
+  repo: https://github.com/anthropics/claude-agent-sdk-typescript
+  official: true
+  note: Higher-level agent-loop SDK, not a Messages API client.
+- language: python
+  registry: pypi
+  name: claude-agent-sdk
+  url: https://pypi.org/project/claude-agent-sdk/
+  install: pip install claude-agent-sdk
+  repo: https://github.com/anthropics/claude-agent-sdk-python
+  official: true
+  note: Higher-level agent-loop SDK, not a Messages API client.
+- language: javascript
+  registry: npm
+  name: "@anthropic-ai/claude-code"
+  url: https://www.npmjs.com/package/@anthropic-ai/claude-code
+  install: npm install -g @anthropic-ai/claude-code
+  repo: https://github.com/anthropics/claude-code
+  official: true
+  note: Claude Code terminal agent (ships the CLI binary).
+- language: swift
+  registry: swift-package-manager
+  name: anthropic-sdk-swift
+  url: https://docs.anthropic.com/en/cli-sdks-libraries/libraries/apple-foundation-models
+  install: "Swift Package Manager (Apple Foundation Models LanguageModel adapter, beta)"
+  official: true
+  note: Beta Swift package exposing Claude as a server-side LanguageModel in Apple's Foundation Models framework.

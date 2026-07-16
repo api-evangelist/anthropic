@@ -1,0 +1,20 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Anthropic Messages API
+  version: 1.0.0
+extends: openapi/anthropic-messages-api-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-enriched: '2026-06-20'
+    x-apievangelist-provider: anthropic
+    x-apievangelist-artifacts:
+      authentication: authentication/anthropic-authentication.yml
+      errors: errors/anthropic-problem-types.yml
+      conventions: conventions/anthropic-conventions.yml
+      lifecycle: lifecycle/anthropic-lifecycle.yml
+      data_model: data-model/anthropic-data-model.yml
+- target: $.info
+  update:
+    x-apievangelist-versioning-header: anthropic-version
+    x-apievangelist-beta-header: anthropic-beta

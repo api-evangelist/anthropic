@@ -1,0 +1,24 @@
+generated: '2026-06-20'
+method: searched
+source: live fetch of /.well-known/* on Anthropic hosts
+hosts:
+- host: https://www.anthropic.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: anthropic-security.txt
+    standard: RFC 9116
+- host: https://api.anthropic.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+notes: Anthropic publishes a canonical security.txt at anthropic.com. The Claude
+  API (api.anthropic.com) authenticates with x-api-key and does not expose OIDC/OAuth
+  discovery documents; MCP OAuth discovery is served per remote MCP server, not on
+  the API host.

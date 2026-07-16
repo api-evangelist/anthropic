@@ -1,0 +1,55 @@
+generated: '2026-06-20'
+method: searched
+source: openapi/*.yml, https://platform.claude.com/docs/en/api/overview, https://platform.claude.com/docs/en/api/errors
+base_url: https://api.anthropic.com
+authentication:
+  style: api-key-header
+  header: x-api-key
+  admin_header: x-api-key (Admin API key, sk-ant-admin...)
+  alternatives: Workload Identity Federation (short-lived OIDC bearer tokens); SigV4
+    on Claude Platform on AWS.
+  ref: authentication/anthropic-authentication.yml
+versioning:
+  style: date-header
+  header: anthropic-version
+  current: '2023-06-01'
+  ref: lifecycle/anthropic-lifecycle.yml
+beta_opt_in:
+  header: anthropic-beta
+  style: comma-separated dated identifiers
+idempotency:
+  supported: false
+  notes: No idempotency-key header on the Messages API. Message Batches provide at-most-once
+    semantics via per-request custom_id.
+pagination:
+  style: cursor
+  params: [before_id, after_id, limit]
+  response_fields: [data, has_more, first_id, last_id]
+  managed_agents: Sessions/events use next_page and prev_page cursors passed via the
+    page parameter.
+request_tracing:
+  header: request-id
+  body_field: request_id
+  notes: Every response includes a unique request-id header, mirrored as request_id
+    in error bodies. On Claude Platform on AWS a second x-amzn-requestid header is
+    returned for CloudTrail.
+error_envelope:
+  shape: '{ "type": "error", "error": { "type": "...", "message": "..." }, "request_id":
+    "..." }'
+  ref: errors/anthropic-problem-types.yml
+rate_limit_signaling:
+  headers: [retry-after]
+  model: Token-bucket with cache-aware ITPM (cache reads excluded on most models);
+    RPM/ITPM/OTPM limits per usage tier.
+  ref: rate-limits/anthropic-rate-limits.yml
+streaming:
+  style: server-sent-events
+  events: [message_start, content_block_start, content_block_delta, content_block_stop,
+    message_delta, message_stop, error, ping]
+  notes: Errors can occur mid-stream after a 200; handle error events separately.
+content_type: application/json
+request_size_limits:
+  messages: 32MB
+  token_counting: 32MB
+  batches: 256MB
+  files: 500MB

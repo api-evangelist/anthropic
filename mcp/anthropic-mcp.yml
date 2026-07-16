@@ -1,0 +1,63 @@
+generated: '2026-06-20'
+method: derived
+status: candidate
+source: openapi/*.yml
+notes: Anthropic authors and stewards the open Model Context Protocol (modelcontextprotocol.io)
+  and Claude consumes remote MCP servers, but Anthropic does not publish an official
+  hosted MCP server that fronts its own REST API. The tools below are a candidate set
+  derived one-per-operation from the OpenAPI specs, illustrating how the Claude API
+  could be exposed over MCP. Managed Agents can also attach arbitrary MCP servers as
+  tools.
+references:
+  spec: https://modelcontextprotocol.io
+  github: https://github.com/modelcontextprotocol
+  managed_agents_mcp: https://platform.claude.com/docs/en/managed-agents/overview
+server:
+  name: anthropic-claude-api
+  transport: http
+tools:
+- name: create_message
+  description: Create a message (chat completion) with a Claude model.
+  source_operation: openapi/anthropic-messages-api-openapi.yml#createMessage
+- name: count_tokens
+  description: Count tokens for a Messages request without creating it.
+  source_operation: openapi/anthropic-token-counting-api-openapi.yml#countTokens
+- name: list_models
+  description: List available Claude models.
+  source_operation: openapi/anthropic-models-api-openapi.yml#listModels
+- name: get_model
+  description: Retrieve a model's metadata and capabilities.
+  source_operation: openapi/anthropic-models-api-openapi.yml#getModel
+- name: create_message_batch
+  description: Submit a batch of message-creation requests at 50% cost.
+  source_operation: openapi/anthropic-message-batches-api-openapi.yml#createMessageBatch
+- name: list_message_batches
+  description: List message batches.
+  source_operation: openapi/anthropic-message-batches-api-openapi.yml#listMessageBatches
+- name: upload_file
+  description: Upload a file for reuse across Messages, Batches, and Agents.
+  source_operation: openapi/anthropic-files-api-openapi.yml#createFile
+- name: list_files
+  description: List uploaded files.
+  source_operation: openapi/anthropic-files-api-openapi.yml#listFiles
+- name: create_skill
+  description: Create a custom Agent Skill.
+  source_operation: openapi/anthropic-skills-api-openapi.yml#createSkill
+- name: list_skills
+  description: List Agent Skills.
+  source_operation: openapi/anthropic-skills-api-openapi.yml#listSkills
+- name: create_agent
+  description: Create a Managed Agent.
+  source_operation: openapi/anthropic-managed-agents-api-openapi.yml#createAgent
+- name: create_session
+  description: Start a Managed Agent session.
+  source_operation: openapi/anthropic-managed-agents-api-openapi.yml#createSession
+- name: get_usage_report
+  description: Retrieve organization token usage report.
+  source_operation: openapi/anthropic-usage-cost-api-openapi.yml#getUsageReport
+- name: get_cost_report
+  description: Retrieve organization cost report.
+  source_operation: openapi/anthropic-usage-cost-api-openapi.yml#getCostReport
+- name: list_workspaces
+  description: List organization workspaces (Admin API).
+  source_operation: openapi/anthropic-admin-api-openapi.yml#listWorkspaces

@@ -1,0 +1,64 @@
+generated: '2026-06-20'
+method: searched
+source: https://platform.claude.com/docs/en/release-notes/api
+scheme: date-based
+current_version: '2023-06-01'
+notes: The Claude Platform release notes are the source of truth; this captures the
+  recent window only. Claude Code has a separate CHANGELOG.md, and Claude Apps have
+  separate release notes.
+entries:
+- date: '2026-07-15'
+  highlights: Mid-conversation system messages available on Claude Fable 5, Mythos 5,
+    and Opus 4.8 across Claude API, Bedrock, and Vertex AI (no beta header).
+  breaking: false
+- date: '2026-07-14'
+  highlights: Admin API user management for Claude Enterprise (claude.ai) orgs in beta
+    — list/lookup members, change roles, invites, groups, custom roles.
+  breaking: false
+- date: '2026-07-10'
+  highlights: Dreams (research preview) adds Fable 5 and Sonnet 5; Access Transparency
+    cmek_preserve events expanded.
+  breaking: false
+- date: '2026-07-08'
+  highlights: API key and Admin API key expiration dates configurable in the Console;
+    Admin API reports expires_at.
+  breaking: false
+- date: '2026-07-02'
+  highlights: New agent-memory-2026-07-22 beta header changes memory list behavior;
+    SDKs updated (Python 0.116.0, TS 0.110.0, Go 1.56.0, Java 2.48.0, Ruby 1.55.0,
+    PHP 0.36.0, C# 12.35.0, CLI 1.16.0).
+  breaking: true
+- date: '2026-07-01'
+  highlights: Restored access to Claude Fable 5 and Claude Mythos 5.
+  breaking: false
+- date: '2026-06-30'
+  highlights: Launched Claude Sonnet 5 (claude-sonnet-5) with 1M context, 128k output,
+    new tokenizer (~30% more tokens), adaptive thinking on by default; manual extended
+    thinking removed (400 error).
+  breaking: true
+- date: '2026-06-29'
+  highlights: Removed fast mode for Claude Opus 4.6 (requests run at standard speed/rates,
+    no error).
+  breaking: true
+- date: '2026-06-26'
+  highlights: Rate limits raised across the API; usage tiers consolidated into three
+    (Start, Build, Scale).
+  breaking: false
+- date: '2026-06-22'
+  highlights: MCP tunnels management API moved from Admin API /v1/organizations/tunnels
+    to Claude API /v1/tunnels (mcp-tunnels-2026-06-22 header, workspace:manage_tunnels
+    WIF scope).
+  breaking: true
+- date: '2026-06-18'
+  highlights: SDKs add code_execution_20260120 (REPL state persistence; minimum for
+    programmatic tool calling).
+  breaking: false
+- date: '2026-06-15'
+  highlights: Retired Claude Sonnet 4 (claude-sonnet-4-20250514) and Claude Opus 4
+    (claude-opus-4-20250514); requests now error.
+  breaking: true
+- date: '2026-06-09'
+  highlights: Launched Claude Fable 5 (claude-fable-5) and Claude Mythos 5 (claude-mythos-5)
+    with 1M context, always-on adaptive thinking; released beta Apple Foundation Models
+    Swift package.
+  breaking: false

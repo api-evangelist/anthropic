@@ -1,0 +1,33 @@
+generated: '2026-06-20'
+method: searched
+source: https://platform.claude.com/docs/en/api/client-sdks, https://docs.anthropic.com/en/cli-sdks-libraries/cli/quickstart
+clis:
+- name: ant
+  description: Official Claude API command-line tool for shell scripting and interactive
+    use, with typed flags and response transforms. Maps to the Messages API and related
+    endpoints.
+  docs: https://docs.anthropic.com/en/cli-sdks-libraries/cli/quickstart
+  auth: ANTHROPIC_API_KEY environment variable
+  commands:
+  - group: messages
+    examples:
+    - 'ant messages create --model claude-sonnet-5 --max-tokens 1024 --message ''{role: user, content: "Hello, Claude"}'''
+    - ant messages create --stream --format jsonl
+  flags:
+  - --model
+  - --max-tokens
+  - --message
+  - --stream
+  - --format (json | jsonl)
+  - --debug (prints request-id to stderr)
+- name: claude
+  description: Claude Code — the agentic coding tool that runs in the terminal, delegating
+    coding tasks to Claude. Distinct from the ant API CLI; operates the full agent
+    loop and tool execution.
+  install: npm install -g @anthropic-ai/claude-code
+  repo: https://github.com/anthropics/claude-code
+  docs: https://code.claude.com/docs/en/overview
+  changelog: https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+notes: The CLI binaries are also catalogued in packages/anthropic-packages.yml. The
+  ant CLI is a first-party Messages API client; claude (Claude Code) is a higher-level
+  agent runtime.

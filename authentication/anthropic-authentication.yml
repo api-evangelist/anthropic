@@ -1,5 +1,6 @@
-generated: '2026-07-11'
-method: derived
+generated: '2026-06-20'
+method: searched
+docs: https://docs.anthropic.com/en/manage-claude/authentication
 source: openapi/anthropic-admin-api-openapi.yml, openapi/anthropic-claude-code-analytics-api-openapi.yml,
   openapi/anthropic-files-api-openapi.yml, openapi/anthropic-managed-agents-api-openapi.yml,
   openapi/anthropic-message-batches-api-openapi.yml, openapi/anthropic-messages-api-openapi.yml,
@@ -10,6 +11,23 @@ summary:
   - apiKey
   api_key_in:
   - header
+  additional_mechanisms:
+  - name: Admin API key
+    description: Privileged key (sk-ant-admin...) required for the Admin, Usage/Cost,
+      and Claude Code Analytics APIs, sent as x-api-key.
+  - name: Workload Identity Federation (WIF)
+    description: GA. Exchange short-lived OIDC tokens from an external IdP (AWS IAM,
+      GCP, GitHub Actions, Kubernetes, Microsoft Entra ID, Okta, SPIFFE) for API access
+      instead of long-lived keys; SDKs handle token exchange and refresh.
+    docs: https://docs.anthropic.com/en/manage-claude/workload-identity-federation
+  - name: AWS SigV4
+    description: On Claude Platform on AWS, requests authenticate with AWS credentials
+      and SigV4 signatures via native AWS endpoints.
+  - name: MCP OAuth
+    description: Remote MCP servers and Managed Agents vault credentials use OAuth 2.0
+      (mcp_oauth), separate from the REST API key auth.
+  key_expiration: API keys and Admin API keys support optional expiration (expires_at)
+    configurable in the Claude Console.
 schemes:
 - name: AdminApiKeyAuth
   type: apiKey
