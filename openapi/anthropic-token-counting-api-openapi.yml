@@ -1,43 +1,38 @@
 openapi: 3.1.0
 info:
-  title: Anthropic Token Counting API
-  description: >
-    Count the number of tokens in a Message, including tools, images, and
-    documents, without creating it. The Token Count API accepts the same
-    structured list of inputs for creating a message, including support for
-    system prompts, tools, images, and PDFs. Token counting is free to use
-    but subject to requests-per-minute rate limits.
-  version: 2023-06-01
+  title: Anthropic Admin Agents Token Counting API
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  version: 1.0.0
   contact:
-    name: Anthropic Support
-    url: https://support.claude.com
+    name: Anthropic
+    url: https://www.anthropic.com
+    email: support@anthropic.com
   license:
-    name: Anthropic Terms of Service
+    name: Anthropic API License
     url: https://www.anthropic.com/terms
 servers:
-  - url: https://api.anthropic.com
-    description: Production Server
+- url: https://api.anthropic.com/v1
+  description: Production Server
 security:
-  - ApiKeyAuth: []
+- AdminApiKeyAuth: []
 tags:
-  - name: Token Counting
-    description: Count tokens before sending a Message request
+- name: Token Counting
+  description: Count tokens before sending a Message request
 paths:
   /v1/messages/count_tokens:
     post:
       summary: Anthropic Count Message Tokens
-      description: >
-        Count tokens for a prospective Message request, including any tools,
-        images, and documents. Returns the input token total without creating
-        the message or charging output tokens.
+      description: 'Count tokens for a prospective Message request, including any tools, images, and documents. Returns the input token total without creating the message or charging output tokens.
+
+        '
       operationId: countMessageTokens
       tags:
-        - Token Counting
+      - Token Counting
       parameters:
-        - $ref: '#/components/parameters/AnthropicVersion'
-        - $ref: '#/components/parameters/AnthropicBeta'
-        - $ref: '#/components/parameters/ApiKey'
-        - $ref: '#/components/parameters/ContentType'
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/ApiKey'
+      - $ref: '#/components/parameters/ContentType'
       requestBody:
         required: true
         content:
@@ -57,14 +52,28 @@ paths:
               examples:
                 Default:
                   $ref: '#/components/examples/CountTokensResponseExample'
-        '4XX':
+        4XX:
           $ref: '#/components/responses/ErrorResponse'
 components:
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: x-api-key
+  examples:
+    CountTokensResponseExample:
+      summary: Token count response
+      value:
+        input_tokens: 9
+    SimpleCountTokensExample:
+      summary: Simple token count
+      value:
+        model: claude-opus-4-7
+        messages:
+        - role: user
+          content: How many tokens is this prompt?
+  responses:
+    ErrorResponse:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     AnthropicVersion:
       name: anthropic-version
@@ -73,19 +82,19 @@ components:
       description: API version date.
       schema:
         type: string
-        default: "2023-06-01"
-    AnthropicBeta:
-      name: anthropic-beta
-      in: header
-      required: false
-      description: Comma-separated beta feature headers.
-      schema:
-        type: string
+        default: '2023-06-01'
     ApiKey:
       name: x-api-key
       in: header
       required: true
       description: Anthropic API key.
+      schema:
+        type: string
+    AnthropicBeta:
+      name: anthropic-beta
+      in: header
+      required: false
+      description: Comma-separated beta feature headers.
       schema:
         type: string
     ContentType:
@@ -97,11 +106,18 @@ components:
         type: string
         default: application/json
   schemas:
+    CountTokensResponse:
+      type: object
+      properties:
+        input_tokens:
+          type: integer
+          description: Total input tokens for the prospective request.
+          example: 2095
     CountTokensRequest:
       type: object
       required:
-        - model
-        - messages
+      - model
+      - messages
       properties:
         model:
           type: string
@@ -116,33 +132,26 @@ components:
               role:
                 type: string
                 enum:
-                  - user
-                  - assistant
+                - user
+                - assistant
               content:
                 oneOf:
-                  - type: string
-                  - type: array
-                    items:
-                      type: object
+                - type: string
+                - type: array
+                  items:
+                    type: object
         system:
           oneOf:
-            - type: string
-            - type: array
-              items:
-                type: object
+          - type: string
+          - type: array
+            items:
+              type: object
           description: Optional system prompt(s).
         tools:
           type: array
           description: Tool definitions to include in the count.
           items:
             type: object
-    CountTokensResponse:
-      type: object
-      properties:
-        input_tokens:
-          type: integer
-          description: Total input tokens for the prospective request.
-          example: 2095
     Error:
       type: object
       properties:
@@ -155,22 +164,9 @@ components:
               type: string
             message:
               type: string
-  responses:
-    ErrorResponse:
-      description: Error response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  examples:
-    SimpleCountTokensExample:
-      summary: Simple token count
-      value:
-        model: claude-opus-4-7
-        messages:
-          - role: user
-            content: How many tokens is this prompt?
-    CountTokensResponseExample:
-      summary: Token count response
-      value:
-        input_tokens: 9
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your Admin API key for authentication (starts with sk-ant-admin...).

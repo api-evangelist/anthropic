@@ -1,0 +1,327 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Admin Agents Api Keys API
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  version: 1.0.0
+  contact:
+    name: Anthropic
+    url: https://www.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API License
+    url: https://www.anthropic.com/terms
+servers:
+- url: https://api.anthropic.com/v1
+  description: Production Server
+security:
+- AdminApiKeyAuth: []
+tags:
+- name: Api Keys
+  description: Monitor and manage API keys
+paths:
+  /organizations/api_keys:
+    get:
+      summary: Anthropic List Api Keys
+      description: Retrieves a paginated list of API keys for the organization.
+      operationId: listApiKeys
+      tags:
+      - Api Keys
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/BeforeId'
+      - $ref: '#/components/parameters/AfterId'
+      - name: workspace_id
+        in: query
+        required: false
+        description: Filter by workspace ID
+        schema:
+          type: string
+      - name: status
+        in: query
+        required: false
+        description: Filter by API key status
+        schema:
+          type: string
+          enum:
+          - active
+          - inactive
+          - archived
+      - name: created_by_user_id
+        in: query
+        required: false
+        description: Filter by the user who created the API key
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyList'
+              examples:
+                ApiKeyListExample:
+                  $ref: '#/components/examples/ApiKeyListExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"ApiKeyListExample\"\n}\n"
+  /organizations/api_keys/{api_key_id}:
+    get:
+      summary: Anthropic Get Api Key
+      description: Retrieves details about a specific API key.
+      operationId: getApiKey
+      tags:
+      - Api Keys
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/ApiKeyId'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+              examples:
+                ApiKeyExample:
+                  $ref: '#/components/examples/ApiKeyExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"ApiKeyExample\"\n}\n"
+    post:
+      summary: Anthropic Update Api Key
+      description: Updates an API key's name or status.
+      operationId: updateApiKey
+      tags:
+      - Api Keys
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/ApiKeyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateApiKeyRequest'
+            examples:
+              UpdateApiKeyRequestExample:
+                $ref: '#/components/examples/UpdateApiKeyRequestExample'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+              examples:
+                ApiKeyExample:
+                  $ref: '#/components/examples/ApiKeyExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"ApiKeyExample\"\n}\n"
+components:
+  examples:
+    UpdateApiKeyRequestExample:
+      summary: Update Api Key Request
+      value:
+        name: Production API Key - Renamed
+        status: active
+    ApiKeyExample:
+      summary: Api Key Response
+      value:
+        id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+        type: api_key
+        name: Production API Key
+        workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        created_at: '2024-10-30T23:58:27.427722Z'
+        created_by:
+          id: user_01WCz1FkmYMm4gnmykNKUu3Q
+          type: user
+        status: active
+        last_used_at: '2024-11-15T10:30:00.000000Z'
+    ApiKeyListExample:
+      summary: Api Key List Response
+      value:
+        data:
+        - id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+          type: api_key
+          name: Production API Key
+          workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+          created_at: '2024-10-30T23:58:27.427722Z'
+          created_by:
+            id: user_01WCz1FkmYMm4gnmykNKUu3Q
+            type: user
+          status: active
+          last_used_at: '2024-11-15T10:30:00.000000Z'
+        first_id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+        has_more: false
+        last_id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The request was invalid or malformed.
+  schemas:
+    ApiKeyStatus:
+      type: string
+      enum:
+      - active
+      - inactive
+      - archived
+      description: Current status of the API key
+    ApiKey:
+      type: object
+      required:
+      - id
+      - type
+      - name
+      - workspace_id
+      - created_at
+      - created_by
+      - status
+      properties:
+        id:
+          type: string
+          description: Unique API key identifier
+        type:
+          type: string
+          enum:
+          - api_key
+          default: api_key
+          description: Object type identifier
+        name:
+          type: string
+          description: Display name for the API key
+        workspace_id:
+          type: string
+          description: ID of the workspace this key belongs to
+        created_at:
+          type: string
+          format: date-time
+          description: RFC 3339 datetime when key was created
+        created_by:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID of the user who created the key
+            type:
+              type: string
+              enum:
+              - user
+          description: User who created the API key
+        status:
+          $ref: '#/components/schemas/ApiKeyStatus'
+        last_used_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: RFC 3339 datetime when key was last used
+    ApiKeyList:
+      type: object
+      required:
+      - data
+      - has_more
+      - first_id
+      - last_id
+      properties:
+        data:
+          type: array
+          description: List of API keys
+          items:
+            $ref: '#/components/schemas/ApiKey'
+        first_id:
+          type: string
+          nullable: true
+          description: First ID in the data list for pagination
+        has_more:
+          type: boolean
+          description: Indicates if there are more results available
+        last_id:
+          type: string
+          nullable: true
+          description: Last ID in the data list for pagination
+    UpdateApiKeyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Updated display name for the API key
+        status:
+          $ref: '#/components/schemas/ApiKeyStatus'
+    Error:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type identifier
+        message:
+          type: string
+          description: Human-readable error message
+  responses:
+    ErrorResponse:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
+  parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
+      schema:
+        type: string
+        example: '2023-06-01'
+    BeforeId:
+      name: before_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
+      schema:
+        type: string
+    ApiKeyId:
+      name: api_key_id
+      in: path
+      required: true
+      description: Unique identifier for the API key
+      schema:
+        type: string
+      example: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 1000
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
+      schema:
+        type: string
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your Admin API key for authentication (starts with sk-ant-admin...).

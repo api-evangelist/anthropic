@@ -1,0 +1,372 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Admin Agents Workspaces API
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  version: 1.0.0
+  contact:
+    name: Anthropic
+    url: https://www.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API License
+    url: https://www.anthropic.com/terms
+servers:
+- url: https://api.anthropic.com/v1
+  description: Production Server
+security:
+- AdminApiKeyAuth: []
+tags:
+- name: Workspaces
+  description: Create and manage workspaces within an organization
+paths:
+  /organizations/workspaces:
+    get:
+      summary: Anthropic List Workspaces
+      description: Retrieves a paginated list of workspaces associated with the organization.
+      operationId: listWorkspaces
+      tags:
+      - Workspaces
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/BeforeId'
+      - $ref: '#/components/parameters/AfterId'
+      - name: include_archived
+        in: query
+        required: false
+        description: Whether to include archived workspaces in the response
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceList'
+              examples:
+                WorkspaceListExample:
+                  $ref: '#/components/examples/WorkspaceListExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"WorkspaceListExample\"\n}\n"
+    post:
+      summary: Anthropic Create Workspace
+      description: Creates a new workspace within the organization.
+      operationId: createWorkspace
+      tags:
+      - Workspaces
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWorkspaceRequest'
+            examples:
+              CreateWorkspaceRequestExample:
+                $ref: '#/components/examples/CreateWorkspaceRequestExample'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+              examples:
+                WorkspaceExample:
+                  $ref: '#/components/examples/WorkspaceExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"WorkspaceExample\"\n}\n"
+  /organizations/workspaces/{workspace_id}:
+    get:
+      summary: Anthropic Get Workspace
+      description: Retrieves detailed information about a specific workspace.
+      operationId: getWorkspace
+      tags:
+      - Workspaces
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/WorkspaceId'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+              examples:
+                WorkspaceExample:
+                  $ref: '#/components/examples/WorkspaceExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"WorkspaceExample\"\n}\n"
+    post:
+      summary: Anthropic Update Workspace
+      description: Updates configuration for a specific workspace.
+      operationId: updateWorkspace
+      tags:
+      - Workspaces
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/WorkspaceId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateWorkspaceRequest'
+            examples:
+              UpdateWorkspaceRequestExample:
+                $ref: '#/components/examples/UpdateWorkspaceRequestExample'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+              examples:
+                WorkspaceExample:
+                  $ref: '#/components/examples/WorkspaceExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"WorkspaceExample\"\n}\n"
+  /organizations/workspaces/{workspace_id}/archive:
+    post:
+      summary: Anthropic Archive Workspace
+      description: Archives a specific workspace, making it read-only.
+      operationId: archiveWorkspace
+      tags:
+      - Workspaces
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/WorkspaceId'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+              examples:
+                ArchivedWorkspaceExample:
+                  $ref: '#/components/examples/ArchivedWorkspaceExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"ArchivedWorkspaceExample\"\n}\n"
+components:
+  examples:
+    ArchivedWorkspaceExample:
+      summary: Archived Workspace Response
+      value:
+        id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        type: workspace
+        name: Engineering Team
+        display_color: '#6C5BB9'
+        created_at: '2024-10-30T23:58:27.427722Z'
+        archived_at: '2024-11-01T23:59:27.427722Z'
+    WorkspaceExample:
+      summary: Workspace Response
+      value:
+        id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        type: workspace
+        name: Engineering Team
+        display_color: '#6C5BB9'
+        created_at: '2024-10-30T23:58:27.427722Z'
+        archived_at: null
+    WorkspaceListExample:
+      summary: Workspace List Response
+      value:
+        data:
+        - id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+          type: workspace
+          name: Engineering Team
+          display_color: '#6C5BB9'
+          created_at: '2024-10-30T23:58:27.427722Z'
+          archived_at: null
+        - id: wrkspc_02KxRvs8sQMB6BHy4ILGgGVK
+          type: workspace
+          name: Marketing Team
+          display_color: '#4A90D9'
+          created_at: '2024-09-15T14:20:00.000000Z'
+          archived_at: null
+        first_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        has_more: false
+        last_id: wrkspc_02KxRvs8sQMB6BHy4ILGgGVK
+    UpdateWorkspaceRequestExample:
+      summary: Update Workspace Request
+      value:
+        name: Engineering Team - Updated
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The request was invalid or malformed.
+    CreateWorkspaceRequestExample:
+      summary: Create Workspace Request
+      value:
+        name: Engineering Team
+  schemas:
+    UpdateWorkspaceRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 40
+          description: Updated name for the workspace
+    WorkspaceList:
+      type: object
+      required:
+      - data
+      - has_more
+      - first_id
+      - last_id
+      properties:
+        data:
+          type: array
+          description: List of workspaces
+          items:
+            $ref: '#/components/schemas/Workspace'
+        first_id:
+          type: string
+          nullable: true
+          description: First ID in the data list for pagination
+        has_more:
+          type: boolean
+          description: Indicates if there are more results available
+        last_id:
+          type: string
+          nullable: true
+          description: Last ID in the data list for pagination
+    CreateWorkspaceRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 40
+          description: Name for the new workspace
+    Workspace:
+      type: object
+      required:
+      - id
+      - type
+      - name
+      - created_at
+      - archived_at
+      - display_color
+      properties:
+        id:
+          type: string
+          description: Unique workspace identifier
+        type:
+          type: string
+          enum:
+          - workspace
+          default: workspace
+          description: Object type identifier
+        name:
+          type: string
+          minLength: 1
+          maxLength: 40
+          description: Workspace name
+        display_color:
+          type: string
+          description: Hex color code for UI display
+        created_at:
+          type: string
+          format: date-time
+          description: RFC 3339 datetime when workspace was created
+        archived_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: RFC 3339 datetime when workspace was archived, or null if active
+    Error:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type identifier
+        message:
+          type: string
+          description: Human-readable error message
+  responses:
+    ErrorResponse:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
+  parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
+      schema:
+        type: string
+        example: '2023-06-01'
+    BeforeId:
+      name: before_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
+      schema:
+        type: string
+    WorkspaceId:
+      name: workspace_id
+      in: path
+      required: true
+      description: Unique identifier for the workspace
+      schema:
+        type: string
+      example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 1000
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
+      schema:
+        type: string
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your Admin API key for authentication (starts with sk-ant-admin...).

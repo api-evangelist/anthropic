@@ -1,0 +1,468 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Admin Agents Tokens API
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  version: 1.0.0
+  contact:
+    name: Anthropic
+    url: https://www.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API License
+    url: https://www.anthropic.com/terms
+servers:
+- url: https://api.anthropic.com/v1
+  description: Production Server
+security:
+- AdminApiKeyAuth: []
+tags:
+- name: Tokens
+  description: APIs for counting tokens in messages
+paths:
+  /v1/messages/count_tokens:
+    post:
+      summary: Anthropic Count Tokens In A Message
+      description: 'Count the number of tokens in a message before sending it.
+
+        This allows you to make informed decisions about message length
+
+        and manage your token budget effectively.
+
+        '
+      operationId: countTokens
+      tags:
+      - Tokens
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: ''
+        delay: 100
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersionHeader'
+      - $ref: '#/components/parameters/AnthropicBetaHeader'
+      - $ref: '#/components/parameters/ApiKeyHeader'
+      - $ref: '#/components/parameters/ContentTypeHeader'
+      - $ref: '#/components/parameters/BrowserAccessHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CountTokensRequest'
+            examples:
+              CountTokensExample:
+                $ref: '#/components/examples/CountTokensRequestExample'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountTokensResponse'
+              examples:
+                CountTokensSuccessExample:
+                  $ref: '#/components/examples/CountTokensResponseExample'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                BadRequestExample:
+                  $ref: '#/components/examples/ErrorBadRequestExample'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                UnauthorizedExample:
+                  $ref: '#/components/examples/ErrorUnauthorizedExample'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                RateLimitExample:
+                  $ref: '#/components/examples/ErrorRateLimitExample'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                ServerErrorExample:
+                  $ref: '#/components/examples/ErrorServerExample'
+components:
+  schemas:
+    TextContentBlock:
+      type: object
+      required:
+      - type
+      - text
+      properties:
+        type:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
+          description: The text content
+    ToolUseContentBlock:
+      type: object
+      required:
+      - type
+      - id
+      - name
+      - input
+      properties:
+        type:
+          type: string
+          enum:
+          - tool_use
+        id:
+          type: string
+          description: Unique identifier for this tool use
+        name:
+          type: string
+          description: Name of the tool to use
+        input:
+          type: object
+          description: Input parameters for the tool
+    ThinkingConfig:
+      type: object
+      description: 'Configuration for enabling Claude''s extended thinking. When enabled,
+
+        responses include thinking content blocks showing Claude''s thinking
+
+        process before the final answer.
+
+        '
+      properties:
+        enabled:
+          type: boolean
+          description: Whether to enable extended thinking
+    ToolChoice:
+      oneOf:
+      - $ref: '#/components/schemas/ToolChoiceAuto'
+      - $ref: '#/components/schemas/ToolChoiceAny'
+      - $ref: '#/components/schemas/ToolChoiceTool'
+      - $ref: '#/components/schemas/ToolChoiceNone'
+    ToolDefinition:
+      type: object
+      required:
+      - name
+      - input_schema
+      properties:
+        name:
+          type: string
+          description: Name of the tool
+        description:
+          type: string
+          description: Optional, but strongly-recommended description of the tool
+        input_schema:
+          type: object
+          description: JSON schema for the tool input shape
+          properties:
+            type:
+              type: string
+              enum:
+              - object
+            properties:
+              type: object
+            required:
+              type: array
+              items:
+                type: string
+    ImageSourceBlock:
+      type: object
+      required:
+      - type
+      - media_type
+      - data
+      properties:
+        type:
+          type: string
+          enum:
+          - base64
+        media_type:
+          type: string
+          enum:
+          - image/jpeg
+          - image/png
+          - image/gif
+          - image/webp
+        data:
+          type: string
+          format: byte
+          description: Base64 encoded image data
+    ToolChoiceAny:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - any
+    ToolChoiceNone:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - none
+    CountTokensResponse:
+      type: object
+      required:
+      - input_tokens
+      properties:
+        input_tokens:
+          type: integer
+          description: 'The total number of tokens across the provided list of messages,
+
+            system prompt, and tools.
+
+            '
+    ToolChoiceAuto:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - auto
+    SystemContentBlock:
+      type: object
+      required:
+      - type
+      - text
+      properties:
+        type:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
+    ErrorResponse:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: The type of error
+        message:
+          type: string
+          description: A human-readable error message
+    ToolResultContentBlock:
+      type: object
+      required:
+      - type
+      - tool_use_id
+      - content
+      properties:
+        type:
+          type: string
+          enum:
+          - tool_result
+        tool_use_id:
+          type: string
+          description: ID of the tool use this result corresponds to
+        content:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              $ref: '#/components/schemas/ContentBlock'
+        is_error:
+          type: boolean
+          description: Whether this tool result represents an error
+    InputMessage:
+      type: object
+      required:
+      - role
+      - content
+      properties:
+        role:
+          type: string
+          enum:
+          - user
+          - assistant
+          description: The role of the message author
+        content:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              $ref: '#/components/schemas/ContentBlock'
+          description: 'The content of the message. Can be a single string or an array of content blocks.
+
+            '
+    ToolChoiceTool:
+      type: object
+      required:
+      - type
+      - name
+      properties:
+        type:
+          type: string
+          enum:
+          - tool
+        name:
+          type: string
+          description: Name of the specific tool to use
+    ImageContentBlock:
+      type: object
+      required:
+      - type
+      - source
+      properties:
+        type:
+          type: string
+          enum:
+          - image
+        source:
+          $ref: '#/components/schemas/ImageSourceBlock'
+    CountTokensRequest:
+      type: object
+      required:
+      - model
+      - messages
+      properties:
+        messages:
+          type: array
+          description: 'Input messages to count tokens for.
+
+            '
+          maxItems: 100000
+          items:
+            $ref: '#/components/schemas/InputMessage'
+        model:
+          type: string
+          description: 'The model that will complete your prompt.
+
+            '
+          minLength: 1
+          maxLength: 256
+        system:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              $ref: '#/components/schemas/SystemContentBlock'
+          description: System prompt to include in token count.
+        thinking:
+          $ref: '#/components/schemas/ThinkingConfig'
+        tool_choice:
+          $ref: '#/components/schemas/ToolChoice'
+        tools:
+          type: array
+          description: Tools to include in token count.
+          items:
+            $ref: '#/components/schemas/ToolDefinition'
+    ContentBlock:
+      oneOf:
+      - $ref: '#/components/schemas/TextContentBlock'
+      - $ref: '#/components/schemas/ImageContentBlock'
+      - $ref: '#/components/schemas/ToolUseContentBlock'
+      - $ref: '#/components/schemas/ToolResultContentBlock'
+  examples:
+    ErrorServerExample:
+      summary: Server error
+      value:
+        type: api_error
+        message: An internal server error occurred
+    ErrorRateLimitExample:
+      summary: Rate limit error
+      value:
+        type: rate_limit_error
+        message: Rate limit exceeded. Please retry after some time.
+    CountTokensResponseExample:
+      summary: Count tokens response
+      value:
+        input_tokens: 2095
+    ErrorBadRequestExample:
+      summary: Bad request error
+      value:
+        type: invalid_request_error
+        message: Invalid request format
+    ErrorUnauthorizedExample:
+      summary: Unauthorized error
+      value:
+        type: authentication_error
+        message: Invalid or missing API key
+    CountTokensRequestExample:
+      summary: Count tokens request
+      value:
+        model: claude-sonnet-4-20250514
+        messages:
+        - role: user
+          content: Hello, how are you?
+  parameters:
+    BrowserAccessHeader:
+      name: anthropic-dangerous-direct-browser-access
+      in: header
+      required: false
+      description: Enable CORS.
+      schema:
+        type: string
+        default: 'true'
+    AnthropicVersionHeader:
+      name: anthropic-version
+      in: header
+      required: true
+      description: 'The version of the Anthropic API you want to use. Read more about
+
+        versioning and our version history here.
+
+        '
+      schema:
+        type: string
+        default: '2023-06-01'
+    ContentTypeHeader:
+      name: Content-Type
+      in: header
+      required: true
+      description: The content type.
+      schema:
+        type: string
+        default: application/json
+    AnthropicBetaHeader:
+      name: anthropic-beta
+      in: header
+      description: 'Optional header to specify the beta version(s) you want to use. To
+
+        use multiple betas, use a comma separated list like beta1,beta2 or
+
+        specify the header multiple times for each beta.
+
+        '
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+      style: simple
+      explode: false
+    ApiKeyHeader:
+      name: x-api-key
+      in: header
+      required: true
+      description: A valid API token.
+      schema:
+        type: string
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your Admin API key for authentication (starts with sk-ant-admin...).

@@ -1,0 +1,331 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Admin Agents API
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  version: 1.0.0
+  contact:
+    name: Anthropic
+    url: https://www.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API License
+    url: https://www.anthropic.com/terms
+servers:
+- url: https://api.anthropic.com/v1
+  description: Production Server
+security:
+- AdminApiKeyAuth: []
+tags:
+- name: Agents
+  description: Reusable, versioned agent configurations
+paths:
+  /v1/agents:
+    post:
+      summary: Anthropic Create Agent
+      description: Define a reusable, versioned agent.
+      operationId: createAgent
+      tags:
+      - Agents
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAgentRequest'
+      responses:
+        '200':
+          description: Agent created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+    get:
+      summary: Anthropic List Agents
+      description: Paginated list of agents in the workspace.
+      operationId: listAgents
+      tags:
+      - Agents
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: List of agents.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentList'
+  /v1/agents/{agent_id}:
+    get:
+      summary: Anthropic Get Agent
+      description: Retrieve an agent's latest version.
+      operationId: getAgent
+      tags:
+      - Agents
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/AgentIdPath'
+      responses:
+        '200':
+          description: Agent retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+    post:
+      summary: Anthropic Update Agent
+      description: 'Update an agent. Pass the current version to optimistically lock the update. A new version is created when fields change.
+
+        '
+      operationId: updateAgent
+      tags:
+      - Agents
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/AgentIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAgentRequest'
+      responses:
+        '200':
+          description: Agent updated; new version returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+  /v1/agents/{agent_id}/archive:
+    post:
+      summary: Anthropic Archive Agent
+      description: Archive an agent; existing sessions continue running.
+      operationId: archiveAgent
+      tags:
+      - Agents
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/AgentIdPath'
+      responses:
+        '200':
+          description: Agent archived.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+  /v1/agents/{agent_id}/versions:
+    get:
+      summary: Anthropic List Agent Versions
+      description: Full version history for the agent.
+      operationId: listAgentVersions
+      tags:
+      - Agents
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/AgentIdPath'
+      responses:
+        '200':
+          description: Agent versions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentList'
+components:
+  responses:
+    ErrorResponse:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: '2023-06-01'
+    AgentIdPath:
+      name: agent_id
+      in: path
+      required: true
+      schema:
+        type: string
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 20
+    AnthropicBeta:
+      name: anthropic-beta
+      in: header
+      required: true
+      description: Must include managed-agents-2026-04-01.
+      schema:
+        type: string
+        default: managed-agents-2026-04-01
+  schemas:
+    UpdateAgentRequest:
+      type: object
+      required:
+      - version
+      properties:
+        version:
+          type: integer
+        name:
+          type: string
+        model:
+          oneOf:
+          - type: string
+          - type: object
+        system:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        tools:
+          type: array
+          items:
+            type: object
+        mcp_servers:
+          type: array
+          items:
+            type: object
+        skills:
+          type: array
+          items:
+            type: object
+        metadata:
+          type: object
+    Agent:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          example: agent
+        name:
+          type: string
+        model:
+          type: object
+          properties:
+            id:
+              type: string
+            speed:
+              type: string
+        system:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        tools:
+          type: array
+          items:
+            type: object
+        skills:
+          type: array
+          items:
+            type: object
+        mcp_servers:
+          type: array
+          items:
+            type: object
+        metadata:
+          type: object
+        version:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        archived_at:
+          type: string
+          format: date-time
+          nullable: true
+    CreateAgentRequest:
+      type: object
+      required:
+      - name
+      - model
+      properties:
+        name:
+          type: string
+          example: Coding Assistant
+        model:
+          oneOf:
+          - type: string
+            example: claude-opus-4-7
+          - type: object
+            properties:
+              id:
+                type: string
+              speed:
+                type: string
+                enum:
+                - standard
+                - fast
+        system:
+          type: string
+        description:
+          type: string
+        tools:
+          type: array
+          items:
+            type: object
+        mcp_servers:
+          type: array
+          items:
+            type: object
+        skills:
+          type: array
+          items:
+            type: object
+        multiagent:
+          type: object
+        metadata:
+          type: object
+    AgentList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Agent'
+        has_more:
+          type: boolean
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+            message:
+              type: string
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your Admin API key for authentication (starts with sk-ant-admin...).

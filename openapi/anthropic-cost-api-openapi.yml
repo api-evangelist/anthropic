@@ -1,0 +1,198 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Admin Agents Cost API
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  version: 1.0.0
+  contact:
+    name: Anthropic
+    url: https://www.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API License
+    url: https://www.anthropic.com/terms
+servers:
+- url: https://api.anthropic.com/v1
+  description: Production Server
+security:
+- AdminApiKeyAuth: []
+tags:
+- name: Cost
+  description: Service-level cost reporting
+paths:
+  /v1/organizations/cost_report:
+    get:
+      summary: Anthropic Get Cost Report
+      description: 'Service-level cost breakdowns for the organization in USD, including Messages, Batches, Files, Skills, and Claude Code line items.
+
+        '
+      operationId: getCostReport
+      tags:
+      - Cost
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/StartingAt'
+      - $ref: '#/components/parameters/EndingAt'
+      - $ref: '#/components/parameters/Bucket'
+      - $ref: '#/components/parameters/GroupBy'
+      - $ref: '#/components/parameters/WorkspaceIds'
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: Cost report.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostReport'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  responses:
+    ErrorResponse:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: '2023-06-01'
+    GroupBy:
+      name: group_by
+      in: query
+      required: false
+      description: Dimensions to group the report by.
+      explode: true
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+          - workspace_id
+          - api_key_id
+          - model
+          - service_tier
+          - context_window
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: string
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 20
+    Bucket:
+      name: bucket_width
+      in: query
+      required: false
+      description: Aggregation bucket size.
+      schema:
+        type: string
+        enum:
+        - 1h
+        - 1d
+        default: 1d
+    StartingAt:
+      name: starting_at
+      in: query
+      required: true
+      description: RFC3339 inclusive lower bound for the report window.
+      schema:
+        type: string
+        format: date-time
+    EndingAt:
+      name: ending_at
+      in: query
+      required: false
+      description: RFC3339 exclusive upper bound for the report window.
+      schema:
+        type: string
+        format: date-time
+    WorkspaceIds:
+      name: workspace_ids
+      in: query
+      required: false
+      explode: true
+      schema:
+        type: array
+        items:
+          type: string
+  schemas:
+    CostReport:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              starting_at:
+                type: string
+                format: date-time
+              ending_at:
+                type: string
+                format: date-time
+              results:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    workspace_id:
+                      type: string
+                      nullable: true
+                    description:
+                      type: string
+                    cost_type:
+                      type: string
+                    context_window:
+                      type: string
+                      nullable: true
+                    model:
+                      type: string
+                      nullable: true
+                    service_tier:
+                      type: string
+                      nullable: true
+                    token_type:
+                      type: string
+                      nullable: true
+                    currency:
+                      type: string
+                      default: USD
+                    amount:
+                      type: string
+        has_more:
+          type: boolean
+        next_page:
+          type: string
+          nullable: true
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+            message:
+              type: string
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your Admin API key for authentication (starts with sk-ant-admin...).

@@ -1,0 +1,230 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Admin Agents Sessions API
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  version: 1.0.0
+  contact:
+    name: Anthropic
+    url: https://www.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API License
+    url: https://www.anthropic.com/terms
+servers:
+- url: https://api.anthropic.com/v1
+  description: Production Server
+security:
+- AdminApiKeyAuth: []
+tags:
+- name: Sessions
+  description: Stateful agent execution instances
+paths:
+  /v1/sessions:
+    post:
+      summary: Anthropic Create Session
+      description: Create a stateful agent execution instance.
+      operationId: createSession
+      tags:
+      - Sessions
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSessionRequest'
+      responses:
+        '200':
+          description: Session created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+    get:
+      summary: Anthropic List Sessions
+      operationId: listSessions
+      tags:
+      - Sessions
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - name: agent_id
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - idle
+          - running
+          - rescheduling
+          - terminated
+      responses:
+        '200':
+          description: Sessions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionList'
+  /v1/sessions/{session_id}:
+    get:
+      summary: Anthropic Get Session
+      operationId: getSession
+      tags:
+      - Sessions
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/SessionIdPath'
+      responses:
+        '200':
+          description: Session.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+    post:
+      summary: Anthropic Update Session
+      description: Update a session's tools, mcp_servers, or other config.
+      operationId: updateSession
+      tags:
+      - Sessions
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/SessionIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Session updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+    delete:
+      summary: Anthropic Delete Session
+      operationId: deleteSession
+      tags:
+      - Sessions
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/SessionIdPath'
+      responses:
+        '200':
+          description: Session deleted.
+  /v1/sessions/{session_id}/archive:
+    post:
+      summary: Anthropic Archive Session
+      operationId: archiveSession
+      tags:
+      - Sessions
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/SessionIdPath'
+      responses:
+        '200':
+          description: Session archived.
+components:
+  parameters:
+    SessionIdPath:
+      name: session_id
+      in: path
+      required: true
+      schema:
+        type: string
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: '2023-06-01'
+    AnthropicBeta:
+      name: anthropic-beta
+      in: header
+      required: true
+      description: Must include managed-agents-2026-04-01.
+      schema:
+        type: string
+        default: managed-agents-2026-04-01
+  schemas:
+    SessionList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Session'
+        has_more:
+          type: boolean
+    Session:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          example: session
+        agent:
+          type: object
+        environment_id:
+          type: string
+        status:
+          type: string
+          enum:
+          - idle
+          - running
+          - rescheduling
+          - terminated
+        created_at:
+          type: string
+          format: date-time
+        archived_at:
+          type: string
+          format: date-time
+          nullable: true
+    CreateSessionRequest:
+      type: object
+      required:
+      - agent
+      - environment_id
+      properties:
+        agent:
+          oneOf:
+          - type: string
+            description: Agent ID; uses the latest version.
+          - type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - agent
+              id:
+                type: string
+              version:
+                type: integer
+        environment_id:
+          type: string
+        vault_ids:
+          type: array
+          items:
+            type: string
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your Admin API key for authentication (starts with sk-ant-admin...).

@@ -1,0 +1,113 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Admin Agents Events API
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  version: 1.0.0
+  contact:
+    name: Anthropic
+    url: https://www.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API License
+    url: https://www.anthropic.com/terms
+servers:
+- url: https://api.anthropic.com/v1
+  description: Production Server
+security:
+- AdminApiKeyAuth: []
+tags:
+- name: Events
+  description: User messages and tool results sent to a session
+paths:
+  /v1/sessions/{session_id}/events:
+    post:
+      summary: Anthropic Send Session Events
+      description: 'Send user events to drive session execution. Event types include user.message, tool.result, and interrupt.
+
+        '
+      operationId: sendSessionEvents
+      tags:
+      - Events
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/SessionIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventBatch'
+      responses:
+        '200':
+          description: Events accepted.
+  /v1/sessions/{session_id}/stream:
+    get:
+      summary: Anthropic Stream Session Events
+      description: 'Server-sent events stream of agent execution: assistant messages, tool calls, tool results, and status changes.
+
+        '
+      operationId: streamSession
+      tags:
+      - Events
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/SessionIdPath'
+      responses:
+        '200':
+          description: SSE stream of session events.
+          content:
+            text/event-stream:
+              schema:
+                type: string
+components:
+  parameters:
+    SessionIdPath:
+      name: session_id
+      in: path
+      required: true
+      schema:
+        type: string
+    AnthropicBeta:
+      name: anthropic-beta
+      in: header
+      required: true
+      description: Must include managed-agents-2026-04-01.
+      schema:
+        type: string
+        default: managed-agents-2026-04-01
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: '2023-06-01'
+  schemas:
+    EventBatch:
+      type: object
+      required:
+      - events
+      properties:
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - user.message
+                - tool.result
+                - interrupt
+              content:
+                type: array
+                items:
+                  type: object
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your Admin API key for authentication (starts with sk-ant-admin...).

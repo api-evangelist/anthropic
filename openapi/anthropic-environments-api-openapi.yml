@@ -1,0 +1,200 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Admin Agents Environments API
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  version: 1.0.0
+  contact:
+    name: Anthropic
+    url: https://www.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API License
+    url: https://www.anthropic.com/terms
+servers:
+- url: https://api.anthropic.com/v1
+  description: Production Server
+security:
+- AdminApiKeyAuth: []
+tags:
+- name: Environments
+  description: Container configuration for agent sessions
+paths:
+  /v1/environments:
+    post:
+      summary: Anthropic Create Environment
+      description: Create a container configuration for sessions.
+      operationId: createEnvironment
+      tags:
+      - Environments
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEnvironmentRequest'
+      responses:
+        '200':
+          description: Environment created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+    get:
+      summary: Anthropic List Environments
+      description: Paginated list of environments.
+      operationId: listEnvironments
+      tags:
+      - Environments
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      responses:
+        '200':
+          description: Environments.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvironmentList'
+  /v1/environments/{environment_id}:
+    get:
+      summary: Anthropic Get Environment
+      operationId: getEnvironment
+      tags:
+      - Environments
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/EnvironmentIdPath'
+      responses:
+        '200':
+          description: Environment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+    delete:
+      summary: Anthropic Delete Environment
+      operationId: deleteEnvironment
+      tags:
+      - Environments
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/EnvironmentIdPath'
+      responses:
+        '200':
+          description: Environment deleted.
+  /v1/environments/{environment_id}/archive:
+    post:
+      summary: Anthropic Archive Environment
+      operationId: archiveEnvironment
+      tags:
+      - Environments
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/EnvironmentIdPath'
+      responses:
+        '200':
+          description: Environment archived.
+components:
+  schemas:
+    Environment:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          example: environment
+        name:
+          type: string
+        config:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        archived_at:
+          type: string
+          format: date-time
+          nullable: true
+    EnvironmentList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Environment'
+        has_more:
+          type: boolean
+    CreateEnvironmentRequest:
+      type: object
+      required:
+      - name
+      - config
+      properties:
+        name:
+          type: string
+        config:
+          type: object
+          required:
+          - type
+          properties:
+            type:
+              type: string
+              enum:
+              - cloud
+              - self_hosted
+            packages:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  type: string
+            networking:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                  - unrestricted
+                  - limited
+                allowed_hosts:
+                  type: array
+                  items:
+                    type: string
+                allow_mcp_servers:
+                  type: boolean
+                allow_package_managers:
+                  type: boolean
+  parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: '2023-06-01'
+    EnvironmentIdPath:
+      name: environment_id
+      in: path
+      required: true
+      schema:
+        type: string
+    AnthropicBeta:
+      name: anthropic-beta
+      in: header
+      required: true
+      description: Must include managed-agents-2026-04-01.
+      schema:
+        type: string
+        default: managed-agents-2026-04-01
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your Admin API key for authentication (starts with sk-ant-admin...).

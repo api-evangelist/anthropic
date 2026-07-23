@@ -1,0 +1,115 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Admin Agents Organization API
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  version: 1.0.0
+  contact:
+    name: Anthropic
+    url: https://www.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API License
+    url: https://www.anthropic.com/terms
+servers:
+- url: https://api.anthropic.com/v1
+  description: Production Server
+security:
+- AdminApiKeyAuth: []
+tags:
+- name: Organization
+  description: Retrieve organization information and settings
+paths:
+  /organizations/me:
+    get:
+      summary: Anthropic Get Current Organization
+      description: Retrieves information about the current authenticated user's organization.
+      operationId: getCurrentOrganization
+      tags:
+      - Organization
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+              examples:
+                OrganizationExample:
+                  $ref: '#/components/examples/OrganizationExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"OrganizationExample\"\n}\n"
+components:
+  responses:
+    ErrorResponse:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
+  parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
+      schema:
+        type: string
+        example: '2023-06-01'
+  examples:
+    OrganizationExample:
+      summary: Organization Response
+      value:
+        id: 12345678-1234-5678-1234-567812345678
+        type: organization
+        name: Acme Corporation
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The request was invalid or malformed.
+  schemas:
+    Organization:
+      type: object
+      required:
+      - id
+      - type
+      - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique organization identifier
+        type:
+          type: string
+          enum:
+          - organization
+          description: Object type identifier
+        name:
+          type: string
+          description: Organization name
+    Error:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type identifier
+        message:
+          type: string
+          description: Human-readable error message
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your Admin API key for authentication (starts with sk-ant-admin...).

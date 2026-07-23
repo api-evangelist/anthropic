@@ -1,0 +1,400 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Admin Agents Prompt Improvement API
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  version: 1.0.0
+  contact:
+    name: Anthropic
+    url: https://www.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API License
+    url: https://www.anthropic.com/terms
+servers:
+- url: https://api.anthropic.com/v1
+  description: Production Server
+security:
+- AdminApiKeyAuth: []
+tags:
+- name: Prompt Improvement
+  description: APIs for enhancing existing prompts with feedback
+paths:
+  /v1/experimental/improve_prompt:
+    post:
+      summary: Anthropic Improve A Prompt
+      description: 'Create a new-and-improved prompt guided by feedback. This API takes an
+
+        existing prompt and enhances it based on provided feedback or general
+
+        prompt engineering best practices.
+
+
+        **Requirements:**
+
+        - Must have joined the closed research preview for prompt tools APIs
+
+        - Must use the API directly (not available in SDK)
+
+        - Must include the beta header `prompt-tools-2025-04-02`
+
+        - Messages must contain only text-only content blocks
+
+        - No tool calls, images, or prompt caching blocks allowed
+
+        - Only contiguous user messages with text content are permitted
+
+        '
+      operationId: improvePrompt
+      tags:
+      - Prompt Improvement
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: ''
+        delay: 100
+      parameters:
+      - $ref: '#/components/parameters/AnthropicBetaHeader'
+      - $ref: '#/components/parameters/ApiKeyHeader'
+      - $ref: '#/components/parameters/ContentTypeHeader'
+      - $ref: '#/components/parameters/BrowserAccessHeader'
+      - $ref: '#/components/parameters/AnthropicVersionHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImprovePromptRequest'
+            examples:
+              DefaultExample:
+                $ref: '#/components/examples/ImprovePromptRequestDefaultExample'
+              RecipeWithExampleExample:
+                $ref: '#/components/examples/ImprovePromptRequestRecipeExample'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImprovePromptResponse'
+              examples:
+                ImprovedRecipeResponse:
+                  $ref: '#/components/examples/ImprovePromptResponseExample'
+        '400':
+          description: Bad Request - Invalid input parameters or unsupported content types
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                BadRequestExample:
+                  $ref: '#/components/examples/ErrorBadRequestExample'
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                UnauthorizedExample:
+                  $ref: '#/components/examples/ErrorUnauthorizedExample'
+        '403':
+          description: Forbidden - Access denied or not in closed research preview
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                ForbiddenExample:
+                  $ref: '#/components/examples/ErrorForbiddenExample'
+        '429':
+          description: Too Many Requests - Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                RateLimitExample:
+                  $ref: '#/components/examples/ErrorRateLimitExample'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                ServerErrorExample:
+                  $ref: '#/components/examples/ErrorServerExample'
+components:
+  schemas:
+    TextContentBlock:
+      type: object
+      required:
+      - type
+      - text
+      properties:
+        type:
+          type: string
+          enum:
+          - text
+          description: The type of content block
+        text:
+          type: string
+          description: The text content
+    UsageInfo:
+      type: object
+      description: Usage information
+      required:
+      - input_tokens
+      - output_tokens
+      properties:
+        input_tokens:
+          type: integer
+          description: Number of input tokens used
+          minimum: 0
+        output_tokens:
+          type: integer
+          description: Number of output tokens generated
+          minimum: 0
+    ErrorResponse:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: The type of error
+        message:
+          type: string
+          description: A human-readable error message
+    PromptMessage:
+      type: object
+      required:
+      - role
+      - content
+      properties:
+        role:
+          type: string
+          enum:
+          - user
+          - assistant
+          description: The role of the message sender
+        content:
+          type: array
+          description: The content of the message
+          items:
+            $ref: '#/components/schemas/TextContentBlock'
+    ImprovePromptResponse:
+      type: object
+      required:
+      - messages
+      - system
+      - usage
+      properties:
+        messages:
+          type: array
+          description: 'The improved prompt, incorporating the provided feedback
+
+            and prompt engineering best practices.
+
+            '
+          items:
+            $ref: '#/components/schemas/PromptMessage'
+        system:
+          type: string
+          description: 'Currently, the system field is always returned as an empty
+
+            string (""). In future iterations, this field may contain
+
+            generated system prompts.
+
+            '
+        usage:
+          $ref: '#/components/schemas/UsageInfo'
+    ImprovePromptRequest:
+      type: object
+      required:
+      - messages
+      properties:
+        messages:
+          type: array
+          description: 'The prompt to improve, structured as a list of message objects.
+
+            Each message must contain only text-only content blocks and
+
+            not include tool calls, images, or prompt caching blocks.
+
+            Only contiguous user messages with text content are allowed.
+
+            Assistant prefill is permitted.
+
+            '
+          items:
+            $ref: '#/components/schemas/PromptMessage'
+        feedback:
+          type: string
+          nullable: true
+          description: 'Feedback for improving the prompt.
+
+            Use this parameter to share specific guidance on what
+
+            aspects of the prompt should be enhanced or modified.
+
+            When not set, the API will improve the prompt using general
+
+            prompt engineering best practices.
+
+            '
+        system:
+          type: string
+          nullable: true
+          description: 'The existing system prompt to incorporate, if any.
+
+            Note that while system prompts typically appear as separate
+
+            parameters in standard API calls, in the improve_prompt
+
+            response, the system content will be incorporated directly
+
+            into the returned user message.
+
+            '
+        target_model:
+          type: string
+          nullable: true
+          default: null
+          description: 'The model this prompt will be used for. This optional
+
+            parameter helps us understand which models our prompt tools
+
+            are being used with, but it doesn''t currently affect
+
+            functionality.
+
+            '
+          minLength: 1
+          maxLength: 256
+  examples:
+    ImprovePromptRequestDefaultExample:
+      summary: Simple recipe prompt improvement
+      value:
+        messages:
+        - role: user
+          content:
+          - type: text
+            text: Concise recipe for {{food}}
+        feedback: Make the recipes shorter
+    ImprovePromptResponseExample:
+      summary: Improved recipe prompt response
+      value:
+        messages:
+        - role: user
+          content:
+          - type: text
+            text: You are a professional meal prep chef. Create a detailed recipe for {{food}} including preparation time, cooking time, and step-by-step instructions with specific temperatures and timing for each step.
+        - role: assistant
+          content:
+          - type: text
+            text: Here's a detailed recipe for
+        system: ''
+        usage:
+          input_tokens: 45
+          output_tokens: 180
+    ErrorServerExample:
+      summary: Server error
+      value:
+        type: api_error
+        message: An internal server error occurred
+    ErrorRateLimitExample:
+      summary: Rate limit error
+      value:
+        type: rate_limit_error
+        message: Rate limit exceeded. Please retry after some time.
+    ImprovePromptRequestRecipeExample:
+      summary: Recipe prompt with example interaction
+      value:
+        messages:
+        - role: user
+          content:
+          - type: text
+            text: 'Concise for {{food}}.
+
+
+              example
+
+
+              mandu: Put the mandu in the air fryer at 380F for 7 minutes.'
+        system: You are a professional meal prep chef
+        feedback: Make it more detailed and include cooking times
+        target_model: claude-3-7-sonnet-20250219
+    ErrorBadRequestExample:
+      summary: Bad request error
+      value:
+        type: invalid_request_error
+        message: Invalid request format
+    ErrorUnauthorizedExample:
+      summary: Unauthorized error
+      value:
+        type: authentication_error
+        message: Invalid or missing API key
+    ErrorForbiddenExample:
+      summary: Forbidden error
+      value:
+        type: permission_error
+        message: Access denied or not in closed research preview
+  parameters:
+    BrowserAccessHeader:
+      name: anthropic-dangerous-direct-browser-access
+      in: header
+      required: false
+      description: Enable CORS.
+      schema:
+        type: string
+        default: 'true'
+    AnthropicVersionHeader:
+      name: anthropic-version
+      in: header
+      required: true
+      description: Which version of the Anthropic API to use.
+      schema:
+        type: string
+        default: '2023-06-01'
+    ContentTypeHeader:
+      name: Content-Type
+      in: header
+      required: true
+      description: The content type.
+      schema:
+        type: string
+        default: application/json
+    AnthropicBetaHeader:
+      name: anthropic-beta
+      in: header
+      description: 'Optional header to specify the beta version(s) you want to use.
+
+        To use multiple betas, use a comma separated list like `beta1,beta2`
+
+        or specify the header multiple times for each beta.
+
+        '
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+        example:
+        - prompt-tools-2025-04-02
+      style: simple
+      explode: false
+    ApiKeyHeader:
+      name: x-api-key
+      in: header
+      required: true
+      description: A valid API token.
+      schema:
+        type: string
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your Admin API key for authentication (starts with sk-ant-admin...).

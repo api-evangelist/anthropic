@@ -1,0 +1,338 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Admin Agents Organization Members API
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  version: 1.0.0
+  contact:
+    name: Anthropic
+    url: https://www.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API License
+    url: https://www.anthropic.com/terms
+servers:
+- url: https://api.anthropic.com/v1
+  description: Production Server
+security:
+- AdminApiKeyAuth: []
+tags:
+- name: Organization Members
+  description: Manage organization members and their roles
+paths:
+  /organizations/users:
+    get:
+      summary: Anthropic List Organization Members
+      description: Retrieves a paginated list of users associated with the organization.
+      operationId: listOrganizationMembers
+      tags:
+      - Organization Members
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/BeforeId'
+      - $ref: '#/components/parameters/AfterId'
+      - name: email
+        in: query
+        required: false
+        description: Filter by user email
+        schema:
+          type: string
+          format: email
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationMemberList'
+              examples:
+                OrganizationMemberListExample:
+                  $ref: '#/components/examples/OrganizationMemberListExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"OrganizationMemberListExample\"\n}\n"
+  /organizations/users/{user_id}:
+    get:
+      summary: Anthropic Get Organization Member
+      description: Retrieves detailed information about a specific user within an organization.
+      operationId: getOrganizationMember
+      tags:
+      - Organization Members
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationMember'
+              examples:
+                OrganizationMemberExample:
+                  $ref: '#/components/examples/OrganizationMemberExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"OrganizationMemberExample\"\n}\n"
+    post:
+      summary: Anthropic Update Organization Member
+      description: Updates user information for a specific user within an organization.
+      operationId: updateOrganizationMember
+      tags:
+      - Organization Members
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrganizationMemberRequest'
+            examples:
+              UpdateOrganizationMemberRequestExample:
+                $ref: '#/components/examples/UpdateOrganizationMemberRequestExample'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationMember'
+              examples:
+                OrganizationMemberExample:
+                  $ref: '#/components/examples/OrganizationMemberExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"OrganizationMemberExample\"\n}\n"
+    delete:
+      summary: Anthropic Remove Organization Member
+      description: Removes a specific user from an organization.
+      operationId: removeOrganizationMember
+      tags:
+      - Organization Members
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDeletedResponse'
+              examples:
+                UserDeletedResponseExample:
+                  $ref: '#/components/examples/UserDeletedResponseExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"UserDeletedResponseExample\"\n}\n"
+components:
+  schemas:
+    OrganizationRole:
+      type: string
+      enum:
+      - user
+      - claude_code_user
+      - developer
+      - billing
+      - admin
+      description: Role within the organization
+    UpdateOrganizationMemberRequest:
+      type: object
+      required:
+      - role
+      properties:
+        role:
+          $ref: '#/components/schemas/OrganizationRole'
+    OrganizationMemberList:
+      type: object
+      required:
+      - data
+      - has_more
+      - first_id
+      - last_id
+      properties:
+        data:
+          type: array
+          description: List of organization members
+          items:
+            $ref: '#/components/schemas/OrganizationMember'
+        first_id:
+          type: string
+          nullable: true
+          description: First ID in the data list for pagination
+        has_more:
+          type: boolean
+          description: Indicates if there are more results available
+        last_id:
+          type: string
+          nullable: true
+          description: Last ID in the data list for pagination
+    OrganizationMember:
+      type: object
+      required:
+      - id
+      - type
+      - email
+      - name
+      - role
+      - added_at
+      properties:
+        id:
+          type: string
+          description: Unique user identifier
+        type:
+          type: string
+          enum:
+          - user
+          default: user
+          description: Object type identifier
+        email:
+          type: string
+          format: email
+          description: User email address
+        name:
+          type: string
+          description: User display name
+        role:
+          $ref: '#/components/schemas/OrganizationRole'
+        added_at:
+          type: string
+          format: date-time
+          description: RFC 3339 datetime when user joined the organization
+    UserDeletedResponse:
+      type: object
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: ID of the deleted user
+        type:
+          type: string
+          enum:
+          - user_deleted
+          default: user_deleted
+          description: Deletion confirmation type
+    Error:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type identifier
+        message:
+          type: string
+          description: Human-readable error message
+  responses:
+    ErrorResponse:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
+  parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
+      schema:
+        type: string
+        example: '2023-06-01'
+    BeforeId:
+      name: before_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
+      schema:
+        type: string
+    UserId:
+      name: user_id
+      in: path
+      required: true
+      description: Unique identifier for the user
+      schema:
+        type: string
+      example: user_01WCz1FkmYMm4gnmykNKUu3Q
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 1000
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
+      schema:
+        type: string
+  examples:
+    OrganizationMemberListExample:
+      summary: Organization Member List Response
+      value:
+        data:
+        - id: user_01WCz1FkmYMm4gnmykNKUu3Q
+          type: user
+          email: jane.doe@example.com
+          name: Jane Doe
+          role: developer
+          added_at: '2024-10-30T23:58:27.427722Z'
+        - id: user_02XDa2GlnYNn5hoozlNLVu4R
+          type: user
+          email: john.smith@example.com
+          name: John Smith
+          role: user
+          added_at: '2024-10-15T10:30:00.000000Z'
+        first_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+        has_more: false
+        last_id: user_02XDa2GlnYNn5hoozlNLVu4R
+    UserDeletedResponseExample:
+      summary: User Deleted Response
+      value:
+        id: user_01WCz1FkmYMm4gnmykNKUu3Q
+        type: user_deleted
+    OrganizationMemberExample:
+      summary: Organization Member Response
+      value:
+        id: user_01WCz1FkmYMm4gnmykNKUu3Q
+        type: user
+        email: jane.doe@example.com
+        name: Jane Doe
+        role: developer
+        added_at: '2024-10-30T23:58:27.427722Z'
+    UpdateOrganizationMemberRequestExample:
+      summary: Update Organization Member Request
+      value:
+        role: developer
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The request was invalid or malformed.
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your Admin API key for authentication (starts with sk-ant-admin...).

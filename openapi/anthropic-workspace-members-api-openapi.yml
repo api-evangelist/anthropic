@@ -1,0 +1,380 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Admin Agents Workspace Members API
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  version: 1.0.0
+  contact:
+    name: Anthropic
+    url: https://www.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API License
+    url: https://www.anthropic.com/terms
+servers:
+- url: https://api.anthropic.com/v1
+  description: Production Server
+security:
+- AdminApiKeyAuth: []
+tags:
+- name: Workspace Members
+  description: Manage workspace membership and roles
+paths:
+  /organizations/workspaces/{workspace_id}/members:
+    get:
+      summary: Anthropic List Workspace Members
+      description: Retrieves a paginated list of members for a specific workspace.
+      operationId: listWorkspaceMembers
+      tags:
+      - Workspace Members
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/WorkspaceId'
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/BeforeId'
+      - $ref: '#/components/parameters/AfterId'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceMemberList'
+              examples:
+                WorkspaceMemberListExample:
+                  $ref: '#/components/examples/WorkspaceMemberListExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"WorkspaceMemberListExample\"\n}\n"
+    post:
+      summary: Anthropic Add Workspace Member
+      description: Adds a user as a member of a workspace.
+      operationId: addWorkspaceMember
+      tags:
+      - Workspace Members
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/WorkspaceId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddWorkspaceMemberRequest'
+            examples:
+              AddWorkspaceMemberRequestExample:
+                $ref: '#/components/examples/AddWorkspaceMemberRequestExample'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceMember'
+              examples:
+                WorkspaceMemberExample:
+                  $ref: '#/components/examples/WorkspaceMemberExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"WorkspaceMemberExample\"\n}\n"
+  /organizations/workspaces/{workspace_id}/members/{user_id}:
+    get:
+      summary: Anthropic Get Workspace Member
+      description: Retrieves membership details for a specific user in a workspace.
+      operationId: getWorkspaceMember
+      tags:
+      - Workspace Members
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/WorkspaceId'
+      - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceMember'
+              examples:
+                WorkspaceMemberExample:
+                  $ref: '#/components/examples/WorkspaceMemberExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"WorkspaceMemberExample\"\n}\n"
+    post:
+      summary: Anthropic Update Workspace Member
+      description: Updates the role of a workspace member.
+      operationId: updateWorkspaceMember
+      tags:
+      - Workspace Members
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/WorkspaceId'
+      - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateWorkspaceMemberRequest'
+            examples:
+              UpdateWorkspaceMemberRequestExample:
+                $ref: '#/components/examples/UpdateWorkspaceMemberRequestExample'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceMember'
+              examples:
+                WorkspaceMemberExample:
+                  $ref: '#/components/examples/WorkspaceMemberExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"WorkspaceMemberExample\"\n}\n"
+    delete:
+      summary: Anthropic Remove Workspace Member
+      description: Removes a user from a workspace.
+      operationId: removeWorkspaceMember
+      tags:
+      - Workspace Members
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/WorkspaceId'
+      - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceMemberDeletedResponse'
+              examples:
+                WorkspaceMemberDeletedResponseExample:
+                  $ref: '#/components/examples/WorkspaceMemberDeletedResponseExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"WorkspaceMemberDeletedResponseExample\"\n}\n"
+components:
+  responses:
+    ErrorResponse:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
+  examples:
+    AddWorkspaceMemberRequestExample:
+      summary: Add Workspace Member Request
+      value:
+        user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+        workspace_role: workspace_developer
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The request was invalid or malformed.
+    WorkspaceMemberDeletedResponseExample:
+      summary: Workspace Member Deleted Response
+      value:
+        type: workspace_member_deleted
+        user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+        workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+    UpdateWorkspaceMemberRequestExample:
+      summary: Update Workspace Member Request
+      value:
+        workspace_role: workspace_admin
+    WorkspaceMemberExample:
+      summary: Workspace Member Response
+      value:
+        type: workspace_member
+        user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+        workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        workspace_role: workspace_developer
+    WorkspaceMemberListExample:
+      summary: Workspace Member List Response
+      value:
+        data:
+        - type: workspace_member
+          user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+          workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+          workspace_role: workspace_developer
+        - type: workspace_member
+          user_id: user_02XDa2GlnYNn5hoozlNLVu4R
+          workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+          workspace_role: workspace_user
+        first_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+        has_more: false
+        last_id: user_02XDa2GlnYNn5hoozlNLVu4R
+  parameters:
+    BeforeId:
+      name: before_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
+      schema:
+        type: string
+    WorkspaceId:
+      name: workspace_id
+      in: path
+      required: true
+      description: Unique identifier for the workspace
+      schema:
+        type: string
+      example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 1000
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
+      schema:
+        type: string
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
+      schema:
+        type: string
+        example: '2023-06-01'
+    UserId:
+      name: user_id
+      in: path
+      required: true
+      description: Unique identifier for the user
+      schema:
+        type: string
+      example: user_01WCz1FkmYMm4gnmykNKUu3Q
+  schemas:
+    WorkspaceMemberDeletedResponse:
+      type: object
+      required:
+      - type
+      - user_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          enum:
+          - workspace_member_deleted
+          default: workspace_member_deleted
+          description: Deletion confirmation type
+        user_id:
+          type: string
+          description: ID of the removed user
+        workspace_id:
+          type: string
+          description: ID of the workspace
+    WorkspaceMemberList:
+      type: object
+      required:
+      - data
+      - has_more
+      - first_id
+      - last_id
+      properties:
+        data:
+          type: array
+          description: List of workspace members
+          items:
+            $ref: '#/components/schemas/WorkspaceMember'
+        first_id:
+          type: string
+          nullable: true
+          description: First ID in the data list for pagination
+        has_more:
+          type: boolean
+          description: Indicates if there are more results available
+        last_id:
+          type: string
+          nullable: true
+          description: Last ID in the data list for pagination
+    WorkspaceRole:
+      type: string
+      enum:
+      - workspace_user
+      - workspace_developer
+      - workspace_admin
+      - workspace_billing
+      description: Role within the workspace
+    AddWorkspaceMemberRequest:
+      type: object
+      required:
+      - user_id
+      - workspace_role
+      properties:
+        user_id:
+          type: string
+          description: ID of the user to add
+        workspace_role:
+          $ref: '#/components/schemas/WorkspaceRole'
+    WorkspaceMember:
+      type: object
+      required:
+      - type
+      - user_id
+      - workspace_id
+      - workspace_role
+      properties:
+        type:
+          type: string
+          enum:
+          - workspace_member
+          default: workspace_member
+          description: Object type identifier
+        user_id:
+          type: string
+          description: Unique user identifier
+        workspace_id:
+          type: string
+          description: Unique workspace identifier
+        workspace_role:
+          $ref: '#/components/schemas/WorkspaceRole'
+    UpdateWorkspaceMemberRequest:
+      type: object
+      required:
+      - workspace_role
+      properties:
+        workspace_role:
+          $ref: '#/components/schemas/WorkspaceRole'
+    Error:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type identifier
+        message:
+          type: string
+          description: Human-readable error message
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your Admin API key for authentication (starts with sk-ant-admin...).

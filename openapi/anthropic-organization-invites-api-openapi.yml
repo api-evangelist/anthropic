@@ -1,0 +1,344 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Admin Agents Organization Invites API
+  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  version: 1.0.0
+  contact:
+    name: Anthropic
+    url: https://www.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API License
+    url: https://www.anthropic.com/terms
+servers:
+- url: https://api.anthropic.com/v1
+  description: Production Server
+security:
+- AdminApiKeyAuth: []
+tags:
+- name: Organization Invites
+  description: Create and manage organization invitations
+paths:
+  /organizations/invites:
+    get:
+      summary: Anthropic List Organization Invites
+      description: Retrieves a paginated list of pending invitations for the organization.
+      operationId: listOrganizationInvites
+      tags:
+      - Organization Invites
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/BeforeId'
+      - $ref: '#/components/parameters/AfterId'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationInviteList'
+              examples:
+                OrganizationInviteListExample:
+                  $ref: '#/components/examples/OrganizationInviteListExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"OrganizationInviteListExample\"\n}\n"
+    post:
+      summary: Anthropic Create Organization Invite
+      description: Creates and sends an invitation to a new member to join the organization.
+      operationId: createOrganizationInvite
+      tags:
+      - Organization Invites
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrganizationInviteRequest'
+            examples:
+              CreateOrganizationInviteRequestExample:
+                $ref: '#/components/examples/CreateOrganizationInviteRequestExample'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationInvite'
+              examples:
+                OrganizationInviteExample:
+                  $ref: '#/components/examples/OrganizationInviteExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"OrganizationInviteExample\"\n}\n"
+  /organizations/invites/{invite_id}:
+    get:
+      summary: Anthropic Get Organization Invite
+      description: Retrieves detailed information about a specific organization invite.
+      operationId: getOrganizationInvite
+      tags:
+      - Organization Invites
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/InviteId'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationInvite'
+              examples:
+                OrganizationInviteExample:
+                  $ref: '#/components/examples/OrganizationInviteExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"OrganizationInviteExample\"\n}\n"
+    delete:
+      summary: Anthropic Delete Organization Invite
+      description: Deletes a specific organization invite, preventing the recipient from accepting it.
+      operationId: deleteOrganizationInvite
+      tags:
+      - Organization Invites
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/InviteId'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InviteDeletedResponse'
+              examples:
+                InviteDeletedResponseExample:
+                  $ref: '#/components/examples/InviteDeletedResponseExample'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+      x-microcks-operation:
+        dispatcher: FALLBACK
+        dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"InviteDeletedResponseExample\"\n}\n"
+components:
+  examples:
+    OrganizationInviteListExample:
+      summary: Organization Invite List Response
+      value:
+        data:
+        - id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+          type: invite
+          email: newuser@example.com
+          role: user
+          status: pending
+          invited_at: '2024-10-30T23:58:27.427722Z'
+          expires_at: '2024-11-20T23:58:27.427722Z'
+        first_id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+        has_more: false
+        last_id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+    OrganizationInviteExample:
+      summary: Organization Invite Response
+      value:
+        id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+        type: invite
+        email: newuser@example.com
+        role: user
+        status: pending
+        invited_at: '2024-10-30T23:58:27.427722Z'
+        expires_at: '2024-11-20T23:58:27.427722Z'
+    CreateOrganizationInviteRequestExample:
+      summary: Create Organization Invite Request
+      value:
+        email: newuser@example.com
+        role: user
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The request was invalid or malformed.
+    InviteDeletedResponseExample:
+      summary: Invite Deleted Response
+      value:
+        id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+        type: invite_deleted
+  schemas:
+    OrganizationInvite:
+      type: object
+      required:
+      - id
+      - type
+      - email
+      - role
+      - status
+      - invited_at
+      - expires_at
+      properties:
+        id:
+          type: string
+          description: Unique invite identifier
+        type:
+          type: string
+          enum:
+          - invite
+          default: invite
+          description: Object type identifier
+        email:
+          type: string
+          format: email
+          description: Email address of the invitee
+        role:
+          $ref: '#/components/schemas/OrganizationRole'
+        status:
+          $ref: '#/components/schemas/InviteStatus'
+        invited_at:
+          type: string
+          format: date-time
+          description: RFC 3339 datetime when invite was created
+        expires_at:
+          type: string
+          format: date-time
+          description: RFC 3339 datetime when invite expires
+    OrganizationRole:
+      type: string
+      enum:
+      - user
+      - claude_code_user
+      - developer
+      - billing
+      - admin
+      description: Role within the organization
+    OrganizationInviteList:
+      type: object
+      required:
+      - data
+      - has_more
+      - first_id
+      - last_id
+      properties:
+        data:
+          type: array
+          description: List of organization invites
+          items:
+            $ref: '#/components/schemas/OrganizationInvite'
+        first_id:
+          type: string
+          nullable: true
+          description: First ID in the data list for pagination
+        has_more:
+          type: boolean
+          description: Indicates if there are more results available
+        last_id:
+          type: string
+          nullable: true
+          description: Last ID in the data list for pagination
+    InviteStatus:
+      type: string
+      enum:
+      - pending
+      - accepted
+      - expired
+      - deleted
+      description: Current status of the invite
+    CreateOrganizationInviteRequest:
+      type: object
+      required:
+      - email
+      - role
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email address to send the invite to
+        role:
+          $ref: '#/components/schemas/OrganizationRole'
+    InviteDeletedResponse:
+      type: object
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: ID of the deleted invite
+        type:
+          type: string
+          enum:
+          - invite_deleted
+          default: invite_deleted
+          description: Deletion confirmation type
+    Error:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type identifier
+        message:
+          type: string
+          description: Human-readable error message
+  responses:
+    ErrorResponse:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
+  parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
+      schema:
+        type: string
+        example: '2023-06-01'
+    BeforeId:
+      name: before_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
+      schema:
+        type: string
+    InviteId:
+      name: invite_id
+      in: path
+      required: true
+      description: Unique identifier for the invite
+      schema:
+        type: string
+      example: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 1000
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
+      schema:
+        type: string
+  securitySchemes:
+    AdminApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your Admin API key for authentication (starts with sk-ant-admin...).

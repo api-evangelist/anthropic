@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: Anthropic Admin Agents Skills API
+  title: Anthropic Admin Agents Skill Versions API
   description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
   version: 1.0.0
   contact:
@@ -16,94 +16,74 @@ servers:
 security:
 - AdminApiKeyAuth: []
 tags:
-- name: Skills
-  description: Create, list, retrieve, update, and delete Skills
+- name: Skill Versions
+  description: Manage versions of a Skill
 paths:
-  /v1/skills:
-    post:
-      summary: Anthropic Create Skill
-      description: 'Upload a new Skill as a zip archive containing SKILL.md plus any supporting files. The Skill is added to the workspace catalog and becomes available to all workspace members.
-
-        '
-      operationId: createSkill
+  /v1/skills/{skill_id}/versions:
+    get:
+      summary: Anthropic List Skill Versions
+      description: Paginated list of versions for the given Skill.
+      operationId: listSkillVersions
       tags:
-      - Skills
+      - Skill Versions
       parameters:
       - $ref: '#/components/parameters/AnthropicVersion'
       - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/SkillIdPath'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: List of Skill versions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillVersionList'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      summary: Anthropic Create Skill Version
+      description: Upload a new version of an existing Skill.
+      operationId: createSkillVersion
+      tags:
+      - Skill Versions
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - $ref: '#/components/parameters/SkillIdPath'
       requestBody:
         required: true
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CreateSkillRequest'
+              $ref: '#/components/schemas/CreateSkillVersionRequest'
       responses:
         '200':
-          description: Skill created successfully.
+          description: Skill version created.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Skill'
+                $ref: '#/components/schemas/SkillVersion'
         4XX:
           $ref: '#/components/responses/ErrorResponse'
+  /v1/skills/{skill_id}/versions/{version}:
     get:
-      summary: Anthropic List Skills
-      description: Paginated list of all Skills in the current workspace.
-      operationId: listSkills
+      summary: Anthropic Get Skill Version
+      description: Retrieve metadata for a specific Skill version.
+      operationId: getSkillVersion
       tags:
-      - Skills
-      parameters:
-      - $ref: '#/components/parameters/AnthropicVersion'
-      - $ref: '#/components/parameters/AnthropicBeta'
-      - $ref: '#/components/parameters/Limit'
-      - $ref: '#/components/parameters/BeforeId'
-      - $ref: '#/components/parameters/AfterId'
-      responses:
-        '200':
-          description: List of Skills.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SkillList'
-        4XX:
-          $ref: '#/components/responses/ErrorResponse'
-  /v1/skills/{skill_id}:
-    get:
-      summary: Anthropic Get Skill
-      description: Retrieve metadata for a single Skill.
-      operationId: getSkill
-      tags:
-      - Skills
+      - Skill Versions
       parameters:
       - $ref: '#/components/parameters/AnthropicVersion'
       - $ref: '#/components/parameters/AnthropicBeta'
       - $ref: '#/components/parameters/SkillIdPath'
+      - $ref: '#/components/parameters/VersionPath'
       responses:
         '200':
-          description: Skill metadata.
+          description: Skill version metadata.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Skill'
-        4XX:
-          $ref: '#/components/responses/ErrorResponse'
-    delete:
-      summary: Anthropic Delete Skill
-      description: Delete a Skill from the workspace. All versions are removed.
-      operationId: deleteSkill
-      tags:
-      - Skills
-      parameters:
-      - $ref: '#/components/parameters/AnthropicVersion'
-      - $ref: '#/components/parameters/AnthropicBeta'
-      - $ref: '#/components/parameters/SkillIdPath'
-      responses:
-        '200':
-          description: Skill deleted.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeleteResponse'
+                $ref: '#/components/schemas/SkillVersion'
         4XX:
           $ref: '#/components/responses/ErrorResponse'
 components:
@@ -128,10 +108,10 @@ components:
       required: true
       schema:
         type: string
-    BeforeId:
-      name: before_id
-      in: query
-      required: false
+    VersionPath:
+      name: version
+      in: path
+      required: true
       schema:
         type: string
     Limit:
@@ -151,27 +131,8 @@ components:
       schema:
         type: string
         default: skills-2025-10-02
-    AfterId:
-      name: after_id
-      in: query
-      required: false
-      schema:
-        type: string
   schemas:
-    SkillList:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Skill'
-        has_more:
-          type: boolean
-        first_id:
-          type: string
-        last_id:
-          type: string
-    CreateSkillRequest:
+    CreateSkillVersionRequest:
       type: object
       required:
       - skill_archive
@@ -179,36 +140,29 @@ components:
         skill_archive:
           type: string
           format: binary
-          description: Zip archive containing SKILL.md and supporting files.
-    DeleteResponse:
+    SkillVersionList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillVersion'
+        has_more:
+          type: boolean
+    SkillVersion:
       type: object
       properties:
         id:
           type: string
-        type:
+        skill_id:
           type: string
-          example: skill_deleted
-    Skill:
-      type: object
-      properties:
-        id:
-          type: string
-          example: skill_01ABC...
-        type:
-          type: string
-          example: skill
-        display_title:
-          type: string
-        description:
-          type: string
-        latest_version:
+        version:
           type: string
         created_at:
           type: string
           format: date-time
-        updated_at:
-          type: string
-          format: date-time
+        size_bytes:
+          type: integer
     Error:
       type: object
       properties:
