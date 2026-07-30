@@ -25,10 +25,10 @@ apis:
     type: JSONLD
   - url: graphql/anthropic-graphql.md
     type: GraphQL
-  description: Send a structured list of input messages with text and/or image content,
-    and the model will generate the next message in the conversation. The Messages
-    API supports text, images, tool use, extended thinking, streaming, structured
-    outputs, prompt caching, compaction, and the new advisor tool for pairing executor
+  description: >-
+    Send a structured list of input messages with text and/or image content, and the model will generate
+    the next message in the conversation. The Messages API supports text, images, tool use, extended thinking,
+    streaming, structured outputs, prompt caching, compaction, and the new advisor tool for pairing executor
     and higher-intelligence advisor models.
 - aid: anthropic:anthropic-models-api
   name: Anthropic Models API
@@ -42,9 +42,10 @@ apis:
     type: Documentation
   - url: openapi/anthropic-models-api-openapi.yml
     type: OpenAPI
-  description: List and inspect Claude models including Opus 4.7, Sonnet 4.6, and
-    Haiku 4.5. The response includes max_input_tokens, max_tokens, and a capabilities
-    object for every model so clients can discover model properties programmatically.
+  description: >-
+    List and inspect Claude models including Opus 4.7, Sonnet 4.6, and Haiku 4.5. The response includes
+    max_input_tokens, max_tokens, and a capabilities object for every model so clients can discover model
+    properties programmatically.
 - aid: anthropic:anthropic-message-batches-api
   name: Anthropic Message Batches API
   tags:
@@ -58,10 +59,10 @@ apis:
     type: Documentation
   - url: openapi/anthropic-message-batches-api-openapi.yml
     type: OpenAPI
-  description: Send a batch of Message creation requests at 50% off both input and
-    output tokens. Batches can take up to 24 hours to complete. Supports up to 300k
-    output tokens per request on Opus 4.6/4.7 and Sonnet 4.6 with the output-300k-2026-03-24
-    beta header.
+  description: >-
+    Send a batch of Message creation requests at 50% off both input and output tokens. Batches can take
+    up to 24 hours to complete. Supports up to 300k output tokens per request on Opus 4.6/4.7 and Sonnet
+    4.6 with the output-300k-2026-03-24 beta header.
 - aid: anthropic:anthropic-files-api
   name: Anthropic Files API
   tags:
@@ -74,39 +75,10 @@ apis:
     type: Documentation
   - url: openapi/anthropic-files-api-openapi.yml
     type: OpenAPI
-  description: The Files API lets you upload and manage files for reuse across Messages,
-    Batches, code execution, and Managed Agents without re-uploading content. 500
-    MB request limit; supports PDFs, images, Office documents, and plain text.
-- aid: anthropic:anthropic-admin-api
-  name: Anthropic Admin API
-  tags:
-  - Administrative
-  - AI
-  - Artificial Intelligence
-  humanURL: https://docs.anthropic.com/en/api/admin-api/users/get-user
-  properties:
-  - url: https://docs.anthropic.com/en/api/admin-api/users/get-user
-    type: Documentation
-  - url: openapi/anthropic-admin-api-openapi.yml
-    type: OpenAPI
-  description: Programmatically manage administrative resources including organization
-    info, members, invites, workspaces, workspace members, and API keys. Requires
-    an Admin API key (sk-ant-admin...).
-- aid: anthropic:anthropic-prompts-api
-  name: Anthropic Prompts API
-  tags:
-  - AI
-  - Artificial Intelligence
-  - Prompts
-  humanURL: https://docs.anthropic.com/en/api/prompt-tools-generate
-  properties:
-  - url: https://docs.anthropic.com/en/api/prompt-tools-generate
-    type: Documentation
-  - url: openapi/anthropic-prompts-api-openapi.yml
-    type: OpenAPI
-  description: Prompt tools API for generating, improving, and templatizing prompts.
-    Backs the Console Prompt Generator and integrates into the Workbench prompt authoring
-    workflow.
+  description: >-
+    The Files API lets you upload and manage files for reuse across Messages, Batches, code execution,
+    and Managed Agents without re-uploading content. 500 MB request limit; supports PDFs, images, Office
+    documents, and plain text.
 - aid: anthropic:anthropic-token-counting-api
   name: Anthropic Token Counting API
   tags:
@@ -120,10 +92,10 @@ apis:
     type: Documentation
   - url: openapi/anthropic-token-counting-api-openapi.yml
     type: OpenAPI
-  description: Count the number of tokens in a Message, including tools, images, and
-    documents, without creating it. The Token Count API accepts the same structured
-    list of inputs as Messages including system prompts, tools, images, and PDFs.
-    Free to use but subject to requests-per-minute rate limits.
+  description: >-
+    Count the number of tokens in a Message, including tools, images, and documents, without creating
+    it. The Token Count API accepts the same structured list of inputs as Messages including system prompts,
+    tools, images, and PDFs. Free to use but subject to requests-per-minute rate limits.
 - aid: anthropic:anthropic-skills-api
   name: Anthropic Skills API
   tags:
@@ -137,30 +109,10 @@ apis:
     type: Documentation
   - url: openapi/anthropic-skills-api-openapi.yml
     type: OpenAPI
-  description: Create and manage custom Agent Skills. Skills are filesystem-based
-    directories of instructions, scripts, and resources that Claude loads on demand
-    via progressive disclosure. Workspace-wide sharing. The Skills API is currently
-    in beta and requires the skills-2025-10-02 beta header.
-- aid: anthropic:anthropic-usage-cost-api
-  name: Anthropic Usage and Cost API
-  tags:
-  - Administration
-  - AI
-  - Artificial Intelligence
-  - Cost
-  - Usage
-  - FinOps
-  humanURL: https://docs.anthropic.com/en/api/usage-cost-api
-  properties:
-  - url: https://docs.anthropic.com/en/api/usage-cost-api
-    type: Documentation
-  - url: openapi/anthropic-usage-cost-api-openapi.yml
-    type: OpenAPI
-  description: Programmatically access your organization's API usage and cost data
-    with the Usage & Cost Admin API. The Usage API tracks token consumption with breakdowns
-    by model, workspace, and service tier via /v1/organizations/usage_report/messages.
-    The Cost API retrieves service-level USD breakdowns via /v1/organizations/cost_report.
-    Requires an Admin API key.
+  description: >-
+    Create and manage custom Agent Skills. Skills are filesystem-based directories of instructions, scripts,
+    and resources that Claude loads on demand via progressive disclosure. Workspace-wide sharing. The
+    Skills API is currently in beta and requires the skills-2025-10-02 beta header.
 - aid: anthropic:anthropic-claude-code-analytics-api
   name: Anthropic Claude Code Analytics API
   tags:
@@ -176,37 +128,401 @@ apis:
     type: Documentation
   - url: openapi/anthropic-claude-code-analytics-api-openapi.yml
     type: OpenAPI
-  description: Daily aggregated user-level Claude Code productivity metrics — sessions,
-    lines of code, commits, pull requests, tool actions, and estimated costs by model
-    — via /v1/organizations/usage_report/claude_code. Requires an Admin API key.
-- aid: anthropic:anthropic-managed-agents-api
-  name: Anthropic Managed Agents API
+  description: >-
+    Daily aggregated user-level Claude Code productivity metrics — sessions, lines of code, commits, pull
+    requests, tool actions, and estimated costs by model — via /v1/organizations/usage_report/claude_code.
+    Requires an Admin API key.
+- aid: anthropic:anthropic-agents-api
+  name: Anthropic Agents API
+  description: Reusable, versioned agent configurations
+  humanURL: https://docs.anthropic.com/en/api/messages
   tags:
   - Agents
-  - AI
-  - Artificial Intelligence
-  - Beta
-  - Managed Agents
-  - Sessions
-  - Environments
-  humanURL: https://platform.claude.com/docs/en/managed-agents/overview
   properties:
-  - url: https://platform.claude.com/docs/en/managed-agents/overview
-    type: Documentation
-  - url: https://platform.claude.com/docs/en/managed-agents/agent-setup
-    type: Documentation
-  - url: https://platform.claude.com/docs/en/managed-agents/sessions
-    type: Documentation
-  - url: https://platform.claude.com/docs/en/managed-agents/environments
-    type: Documentation
-  - url: openapi/anthropic-managed-agents-api-openapi.yml
-    type: OpenAPI
-  description: Claude Managed Agents — a fully managed agent harness for running Claude
-    as an autonomous agent with secure sandboxing, built-in tools (bash, file ops,
-    web search/fetch, MCP), SSE streaming, vault-managed OAuth credentials, multiagent
-    sessions, and self-hosted sandbox option. Three resources — Agents, Sessions,
-    Environments — plus event streaming. Currently in public beta under the managed-agents-2026-04-01
-    header.
+  - type: OpenAPI
+    url: openapi/anthropic-agents-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-api-keys-api
+  name: Anthropic Api Keys API
+  description: Monitor and manage API keys
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Api Keys
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-api-keys-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-cost-api
+  name: Anthropic Cost API
+  description: Service-level cost reporting
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Cost
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-cost-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-environments-api
+  name: Anthropic Environments API
+  description: Container configuration for agent sessions
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Environments
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-environments-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-events-api
+  name: Anthropic Events API
+  description: User messages and tool results sent to a session
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-events-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-organization-api
+  name: Anthropic Organization API
+  description: Retrieve organization information and settings
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Organization
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-organization-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-organization-invites-api
+  name: Anthropic Organization Invites API
+  description: Create and manage organization invitations
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Organization Invites
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-organization-invites-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-organization-members-api
+  name: Anthropic Organization Members API
+  description: Manage organization members and their roles
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Organization Members
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-organization-members-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-prompt-generation-api
+  name: Anthropic Prompt Generation API
+  description: APIs for generating well-written prompts for specified tasks
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Prompt Generation
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-prompt-generation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-prompt-improvement-api
+  name: Anthropic Prompt Improvement API
+  description: APIs for enhancing existing prompts with feedback
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Prompt Improvement
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-prompt-improvement-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-prompt-templatization-api
+  name: Anthropic Prompt Templatization API
+  description: APIs for converting prompts into reusable templates with variables
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Prompt Templatization
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-prompt-templatization-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-sessions-api
+  name: Anthropic Sessions API
+  description: Stateful agent execution instances
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Sessions
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-sessions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-skill-versions-api
+  name: Anthropic Skill Versions API
+  description: Manage versions of a Skill
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Skill Versions
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-skill-versions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-tokens-api
+  name: Anthropic Tokens API
+  description: APIs for counting tokens in messages
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Tokens
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-tokens-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-usage-api
+  name: Anthropic Usage API
+  description: Token usage and consumption reporting
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Usage
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-usage-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-workspace-members-api
+  name: Anthropic Workspace Members API
+  description: Manage workspace membership and roles
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Workspace Members
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-workspace-members-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
+- aid: anthropic:anthropic-workspaces-api
+  name: Anthropic Workspaces API
+  description: Create and manage workspaces within an organization
+  humanURL: https://docs.anthropic.com/en/api/messages
+  tags:
+  - Workspaces
+  properties:
+  - type: OpenAPI
+    url: openapi/anthropic-workspaces-api-openapi.yml
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/prompt-tools-generate
+  - type: Documentation
+    url: https://docs.anthropic.com/en/api/usage-cost-api
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/overview
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/sessions
+  - type: Documentation
+    url: https://platform.claude.com/docs/en/managed-agents/environments
 name: Anthropic
 tags:
 - AI
@@ -218,7 +534,20 @@ tags:
 - MCP
 - Agents
 kind: contract
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/anthropic.png
 access: 3rd-Party
 common:
 - type: AgenticAccess
