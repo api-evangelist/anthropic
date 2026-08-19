@@ -1,7 +1,7 @@
 {
   "item": [
     {
-      "id": "792fba6c-67f6-413b-a7a3-bf42a26a7831",
+      "id": "cf22904a-42e2-48a6-8543-f41dbadcdb7a",
       "name": "Token Counting",
       "description": {
         "content": "Count tokens before sending a Message request",
@@ -9,7 +9,7 @@
       },
       "item": [
         {
-          "id": "75a1cf4c-58c6-44fe-bde2-0f2a8ac035c9",
+          "id": "9eb371f9-4cff-46c3-b15f-d6c501a4eab4",
           "name": "Anthropic Count Message Tokens",
           "request": {
             "name": "Anthropic Count Message Tokens",
@@ -71,7 +71,7 @@
           },
           "response": [
             {
-              "id": "0e5ec151-4b99-49c6-be2b-d5b964db8b6d",
+              "id": "d8e744f6-87ad-40d0-902b-b7ca9c878210",
               "name": "Token count returned successfully.",
               "originalRequest": {
                 "url": {
@@ -148,7 +148,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "41d607a6-1a08-4dfc-80f6-d322482ded84",
+              "id": "7e801f94-78ab-491c-b9b8-b981dc30c7b5",
               "name": "Error response.",
               "originalRequest": {
                 "url": {
@@ -238,7 +238,7 @@
   "variable": [
     {
       "type": "string",
-      "value": "https://api.anthropic.com",
+      "value": "https://api.anthropic.com/v1",
       "key": "baseUrl"
     }
   ],
@@ -260,11 +260,11 @@
     ]
   },
   "info": {
-    "_postman_id": "fa804faa-3e6c-4881-9980-b7ab97a35347",
-    "name": "Anthropic Token Counting API",
+    "_postman_id": "2f5e31ef-e5fc-4aa7-b6ae-6071703e1216",
+    "name": "Anthropic Admin Agents Token Counting API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "Count the number of tokens in a Message, including tools, images, and documents, without creating it. The Token Count API accepts the same structured list of inputs for creating a message, including support for system prompts, tools, images, and PDFs. Token counting is free to use but subject to requests-per-minute rate limits.\n\n\nContact Support:\n Name: Anthropic Support",
+      "content": "Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.\n\nContact Support:\n Name: Anthropic\n Email: support@anthropic.com",
       "type": "text/plain"
     }
   }

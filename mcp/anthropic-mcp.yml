@@ -2,12 +2,11 @@ generated: '2026-06-20'
 method: derived
 status: candidate
 source: openapi/*.yml
-notes: Anthropic authors and stewards the open Model Context Protocol (modelcontextprotocol.io)
-  and Claude consumes remote MCP servers, but Anthropic does not publish an official
-  hosted MCP server that fronts its own REST API. The tools below are a candidate set
-  derived one-per-operation from the OpenAPI specs, illustrating how the Claude API
-  could be exposed over MCP. Managed Agents can also attach arbitrary MCP servers as
-  tools.
+notes: Anthropic authors and stewards the open Model Context Protocol (modelcontextprotocol.io) and Claude
+  consumes remote MCP servers, but Anthropic does not publish an official hosted MCP server that fronts
+  its own REST API. The tools below are a candidate set derived one-per-operation from the OpenAPI specs,
+  illustrating how the Claude API could be exposed over MCP. Managed Agents can also attach arbitrary
+  MCP servers as tools.
 references:
   spec: https://modelcontextprotocol.io
   github: https://github.com/modelcontextprotocol
@@ -61,3 +60,9 @@ tools:
 - name: list_workspaces
   description: List organization workspaces (Admin API).
   source_operation: openapi/anthropic-admin-api-openapi.yml#listWorkspaces
+deployment:
+  mode: none
+  verified: derived
+  tools: 15
+  checked: '2026-08-12'
+  source: catalog MCP census

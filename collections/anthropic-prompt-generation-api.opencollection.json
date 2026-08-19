@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Anthropic Admin Agents Messages API",
+    "name": "Anthropic Admin Agents Prompt Generation API",
     "version": "1.0.0"
   },
   "request": {
@@ -15,21 +15,21 @@
   "items": [
     {
       "info": {
-        "name": "Messages",
+        "name": "Prompt Generation",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Anthropic Create A Message",
+            "name": "Anthropic Generate A Prompt",
             "type": "http"
           },
           "http": {
             "method": "POST",
-            "url": "https://api.anthropic.com/v1/v1/messages",
+            "url": "https://api.anthropic.com/v1/v1/experimental/generate_prompt",
             "headers": [
               {
-                "name": "anthropic-version",
+                "name": "anthropic-beta",
                 "value": ""
               },
               {
@@ -41,7 +41,11 @@
                 "value": ""
               },
               {
-                "name": "anthropic-beta",
+                "name": "anthropic-dangerous-direct-browser-access",
+                "value": ""
+              },
+              {
+                "name": "anthropic-version",
                 "value": ""
               }
             ],
@@ -50,7 +54,7 @@
               "data": "{}"
             }
           },
-          "docs": "Send a structured list of input messages with text and/or image content, and the model will generate the next message in the conversation. The Messages API can be used for both single-turn and multi-turn conversations.\n"
+          "docs": "Generate a well-written prompt for a specified task. This API creates\nprompts that can be used directly with the Messages API.\n\n**Requirements:**\n- Must have joined the closed research preview for prompt tools APIs\n- Must use the API directly (not available in SDK)\n- Must include the beta header `prompt-tools-2025-04-02`\n"
         }
       ]
     }

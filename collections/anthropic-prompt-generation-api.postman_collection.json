@@ -1,26 +1,27 @@
 {
   "item": [
     {
-      "id": "04a87b38-8d59-4dd4-90b2-eed62eb6f9b3",
-      "name": "Messages",
+      "id": "76fdde88-0925-4a35-898c-7cd86efbdfb8",
+      "name": "Prompt Generation",
       "description": {
-        "content": "Create messages using Claude models",
+        "content": "APIs for generating well-written prompts for specified tasks",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "a0a8c93a-de07-44e7-8a08-5672d602a974",
-          "name": "Anthropic Create A Message",
+          "id": "43089025-5116-4282-a8bf-bbccc82f8509",
+          "name": "Anthropic Generate A Prompt",
           "request": {
-            "name": "Anthropic Create A Message",
+            "name": "Anthropic Generate A Prompt",
             "description": {
-              "content": "Send a structured list of input messages with text and/or image content, and the model will generate the next message in the conversation. The Messages API can be used for both single-turn and multi-turn conversations.\n",
+              "content": "Generate a well-written prompt for a specified task. This API creates\nprompts that can be used directly with the Messages API.\n\n**Requirements:**\n- Must have joined the closed research preview for prompt tools APIs\n- Must use the API directly (not available in SDK)\n- Must include the beta header `prompt-tools-2025-04-02`\n",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "v1",
-                "messages"
+                "experimental",
+                "generate_prompt"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -31,21 +32,27 @@
             "header": [
               {
                 "disabled": false,
-                "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
-                "key": "anthropic-version",
-                "value": "2023-06-01"
+                "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list like `beta1,beta2`\nor specify the header multiple times for each beta.\n",
+                "key": "anthropic-beta",
+                "value": "<string>,<string>"
               },
               {
                 "disabled": false,
-                "description": "(Required) A valid Anthropic API key.",
+                "description": "(Required) A valid API token.",
                 "key": "x-api-key",
                 "value": "<string>"
               },
               {
                 "disabled": false,
-                "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
-                "key": "anthropic-beta",
-                "value": "<string>,<string>"
+                "description": "Enable CORS.",
+                "key": "anthropic-dangerous-direct-browser-access",
+                "value": "true"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Which version of the Anthropic API to use.",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
               },
               {
                 "key": "Content-Type",
@@ -60,7 +67,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"model\": \"<string>\",\n  \"messages\": [\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\"\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"system\": \"<string>\",\n  \"temperature\": 1,\n  \"top_p\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"stream\": false,\n  \"metadata\": {\n    \"user_id\": \"<string>\"\n  },\n  \"tools\": [\n    {\n      \"name\": \"<string>\",\n      \"input_schema\": {\n        \"type\": \"<string>\",\n        \"properties\": {\n          \"key_0\": \"string\",\n          \"key_1\": 6866.724114929399,\n          \"key_2\": true\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"<string>\",\n        \"ttl\": \"<string>\"\n      }\n    },\n    {\n      \"name\": \"<string>\",\n      \"input_schema\": {\n        \"type\": \"<string>\",\n        \"properties\": {\n          \"key_0\": \"string\",\n          \"key_1\": 3379.7248190686514\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"custom\",\n      \"description\": \"<string>\",\n      \"cache_control\": {\n        \"type\": \"<string>\",\n        \"ttl\": \"<string>\"\n      }\n    }\n  ],\n  \"tool_choice\": {\n    \"type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"disable_parallel_tool_use\": false\n  },\n  \"thinking\": {\n    \"type\": \"<string>\",\n    \"budget_tokens\": \"<integer>\"\n  },\n  \"service_tier\": \"<string>\",\n  \"output_config\": {\n    \"format\": {\n      \"type\": \"<string>\",\n      \"schema\": {\n        \"key_0\": 1828.4855111241882\n      }\n    },\n    \"effort\": \"<string>\"\n  }\n}",
+              "raw": "{\n  \"task\": \"<string>\",\n  \"target_model\": null\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -70,13 +77,14 @@
           },
           "response": [
             {
-              "id": "2ffa852d-490e-4473-8866-122ec040cde0",
-              "name": "Successful message response",
+              "id": "c6feada8-0e98-4cfc-90ba-26e7e692b307",
+              "name": "Successful Response",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
-                    "messages"
+                    "experimental",
+                    "generate_prompt"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -95,27 +103,33 @@
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
-                    "key": "anthropic-version",
-                    "value": "2023-06-01"
+                    "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list like `beta1,beta2`\nor specify the header multiple times for each beta.\n",
+                    "key": "anthropic-beta",
+                    "value": "prompt-tools-2025-04-02"
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) A valid Anthropic API key.",
+                    "description": "(Required) A valid API token.",
                     "key": "x-api-key",
                     "value": "<string>"
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) The content type of the request body.",
+                    "description": "(Required) The content type.",
                     "key": "Content-Type",
                     "value": "application/json"
                   },
                   {
                     "disabled": false,
-                    "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
-                    "key": "anthropic-beta",
-                    "value": "<string>,<string>"
+                    "description": "Enable CORS.",
+                    "key": "anthropic-dangerous-direct-browser-access",
+                    "value": "true"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Which version of the Anthropic API to use.",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
                   },
                   {
                     "key": "Accept",
@@ -125,7 +139,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"model\": \"claude-opus-4-6\",\n  \"max_tokens\": 1024,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Hello, Claude\"\n    }\n  ]\n}",
+                  "raw": "{\n  \"task\": \"a chef for a meal prep planning service\",\n  \"target_model\": \"claude-3-7-sonnet-20250219\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -141,18 +155,19 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"msg_01XFDUDYJgAACzvnptvVoYEL\",\n  \"type\": \"message\",\n  \"role\": \"assistant\",\n  \"content\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"Hi! How can I help you today?\"\n    }\n  ],\n  \"model\": \"claude-opus-4-6\",\n  \"stop_reason\": \"end_turn\",\n  \"stop_sequence\": null,\n  \"usage\": {\n    \"input_tokens\": 10,\n    \"output_tokens\": 15,\n    \"cache_creation_input_tokens\": 0,\n    \"cache_read_input_tokens\": 0\n  }\n}",
+              "body": "{\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": [\n        {\n          \"type\": \"text\",\n          \"text\": \"You are a chef for a meal prep planning service. Your role is to help users plan their weekly meals, create shopping lists, and provide cooking instructions. Always consider dietary restrictions and preferences when making suggestions.\"\n        }\n      ]\n    },\n    {\n      \"role\": \"assistant\",\n      \"content\": [\n        {\n          \"type\": \"text\",\n          \"text\": \"<recipe_planning>\"\n        }\n      ]\n    }\n  ],\n  \"system\": \"\",\n  \"usage\": {\n    \"input_tokens\": 25,\n    \"output_tokens\": 150\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "44c533a3-413c-4256-beaf-67b9d3d43b15",
+              "id": "b0a2fc7d-8a3b-47ae-b62c-5c4938006638",
               "name": "Bad Request - Invalid input parameters",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
-                    "messages"
+                    "experimental",
+                    "generate_prompt"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -171,27 +186,33 @@
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
-                    "key": "anthropic-version",
-                    "value": "2023-06-01"
+                    "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list like `beta1,beta2`\nor specify the header multiple times for each beta.\n",
+                    "key": "anthropic-beta",
+                    "value": "prompt-tools-2025-04-02"
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) A valid Anthropic API key.",
+                    "description": "(Required) A valid API token.",
                     "key": "x-api-key",
                     "value": "<string>"
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) The content type of the request body.",
+                    "description": "(Required) The content type.",
                     "key": "Content-Type",
                     "value": "application/json"
                   },
                   {
                     "disabled": false,
-                    "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
-                    "key": "anthropic-beta",
-                    "value": "<string>,<string>"
+                    "description": "Enable CORS.",
+                    "key": "anthropic-dangerous-direct-browser-access",
+                    "value": "true"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Which version of the Anthropic API to use.",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
                   },
                   {
                     "key": "Accept",
@@ -201,7 +222,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"model\": \"claude-opus-4-6\",\n  \"max_tokens\": 1024,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Hello, Claude\"\n    }\n  ]\n}",
+                  "raw": "{\n  \"task\": \"a chef for a meal prep planning service\",\n  \"target_model\": \"claude-3-7-sonnet-20250219\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -217,18 +238,19 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"type\": \"error\",\n  \"error\": {\n    \"type\": \"invalid_request_error\",\n    \"message\": \"messages: Input messages must have alternating roles\"\n  }\n}",
+              "body": "{\n  \"type\": \"invalid_request_error\",\n  \"message\": \"Invalid request format\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "05173e0d-a7bc-4b69-9391-b34104b63979",
+              "id": "84670bc0-f284-4fa8-b4f1-4ab0998efa1b",
               "name": "Unauthorized - Invalid or missing API key",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
-                    "messages"
+                    "experimental",
+                    "generate_prompt"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -247,27 +269,33 @@
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
-                    "key": "anthropic-version",
-                    "value": "2023-06-01"
+                    "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list like `beta1,beta2`\nor specify the header multiple times for each beta.\n",
+                    "key": "anthropic-beta",
+                    "value": "prompt-tools-2025-04-02"
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) A valid Anthropic API key.",
+                    "description": "(Required) A valid API token.",
                     "key": "x-api-key",
                     "value": "<string>"
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) The content type of the request body.",
+                    "description": "(Required) The content type.",
                     "key": "Content-Type",
                     "value": "application/json"
                   },
                   {
                     "disabled": false,
-                    "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
-                    "key": "anthropic-beta",
-                    "value": "<string>,<string>"
+                    "description": "Enable CORS.",
+                    "key": "anthropic-dangerous-direct-browser-access",
+                    "value": "true"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Which version of the Anthropic API to use.",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
                   },
                   {
                     "key": "Accept",
@@ -277,7 +305,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"model\": \"claude-opus-4-6\",\n  \"max_tokens\": 1024,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Hello, Claude\"\n    }\n  ]\n}",
+                  "raw": "{\n  \"task\": \"a chef for a meal prep planning service\",\n  \"target_model\": \"claude-3-7-sonnet-20250219\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -293,18 +321,19 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"type\": \"error\",\n  \"error\": {\n    \"type\": \"authentication_error\",\n    \"message\": \"Invalid API Key\"\n  }\n}",
+              "body": "{\n  \"type\": \"authentication_error\",\n  \"message\": \"Invalid or missing API key\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "d260d766-db10-405c-ab5a-52e397988ddc",
-              "name": "Forbidden - Access denied",
+              "id": "58253a29-e6e6-4008-b355-4893c54f27f7",
+              "name": "Forbidden - Access denied or not in closed research preview",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
-                    "messages"
+                    "experimental",
+                    "generate_prompt"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -323,27 +352,33 @@
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
-                    "key": "anthropic-version",
-                    "value": "2023-06-01"
+                    "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list like `beta1,beta2`\nor specify the header multiple times for each beta.\n",
+                    "key": "anthropic-beta",
+                    "value": "prompt-tools-2025-04-02"
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) A valid Anthropic API key.",
+                    "description": "(Required) A valid API token.",
                     "key": "x-api-key",
                     "value": "<string>"
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) The content type of the request body.",
+                    "description": "(Required) The content type.",
                     "key": "Content-Type",
                     "value": "application/json"
                   },
                   {
                     "disabled": false,
-                    "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
-                    "key": "anthropic-beta",
-                    "value": "<string>,<string>"
+                    "description": "Enable CORS.",
+                    "key": "anthropic-dangerous-direct-browser-access",
+                    "value": "true"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Which version of the Anthropic API to use.",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
                   },
                   {
                     "key": "Accept",
@@ -353,7 +388,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"model\": \"claude-opus-4-6\",\n  \"max_tokens\": 1024,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Hello, Claude\"\n    }\n  ]\n}",
+                  "raw": "{\n  \"task\": \"a chef for a meal prep planning service\",\n  \"target_model\": \"claude-3-7-sonnet-20250219\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -369,18 +404,19 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"type\": \"error\",\n  \"error\": {\n    \"type\": \"permission_error\",\n    \"message\": \"Your API key does not have permission to use this resource\"\n  }\n}",
+              "body": "{\n  \"type\": \"permission_error\",\n  \"message\": \"Access denied or not in closed research preview\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "e769136d-96a9-4a1a-9370-eb14bbb977c9",
+              "id": "043ed9f4-2642-4f02-b808-cacc4c3ae441",
               "name": "Too Many Requests - Rate limit exceeded",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
-                    "messages"
+                    "experimental",
+                    "generate_prompt"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -399,27 +435,33 @@
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
-                    "key": "anthropic-version",
-                    "value": "2023-06-01"
+                    "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list like `beta1,beta2`\nor specify the header multiple times for each beta.\n",
+                    "key": "anthropic-beta",
+                    "value": "prompt-tools-2025-04-02"
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) A valid Anthropic API key.",
+                    "description": "(Required) A valid API token.",
                     "key": "x-api-key",
                     "value": "<string>"
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) The content type of the request body.",
+                    "description": "(Required) The content type.",
                     "key": "Content-Type",
                     "value": "application/json"
                   },
                   {
                     "disabled": false,
-                    "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
-                    "key": "anthropic-beta",
-                    "value": "<string>,<string>"
+                    "description": "Enable CORS.",
+                    "key": "anthropic-dangerous-direct-browser-access",
+                    "value": "true"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Which version of the Anthropic API to use.",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
                   },
                   {
                     "key": "Accept",
@@ -429,7 +471,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"model\": \"claude-opus-4-6\",\n  \"max_tokens\": 1024,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Hello, Claude\"\n    }\n  ]\n}",
+                  "raw": "{\n  \"task\": \"a chef for a meal prep planning service\",\n  \"target_model\": \"claude-3-7-sonnet-20250219\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -445,18 +487,19 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"type\": \"error\",\n  \"error\": {\n    \"type\": \"rate_limit_error\",\n    \"message\": \"Rate limit exceeded. Please retry after some time.\"\n  }\n}",
+              "body": "{\n  \"type\": \"rate_limit_error\",\n  \"message\": \"Rate limit exceeded. Please retry after some time.\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "862cdda3-1256-4169-9f30-9e157d1d906d",
+              "id": "4773d1f6-e093-42b4-ad61-bc55f5b3c1ad",
               "name": "Internal Server Error",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
-                    "messages"
+                    "experimental",
+                    "generate_prompt"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -475,27 +518,33 @@
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
-                    "key": "anthropic-version",
-                    "value": "2023-06-01"
+                    "description": "Optional header to specify the beta version(s) you want to use.\nTo use multiple betas, use a comma separated list like `beta1,beta2`\nor specify the header multiple times for each beta.\n",
+                    "key": "anthropic-beta",
+                    "value": "prompt-tools-2025-04-02"
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) A valid Anthropic API key.",
+                    "description": "(Required) A valid API token.",
                     "key": "x-api-key",
                     "value": "<string>"
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) The content type of the request body.",
+                    "description": "(Required) The content type.",
                     "key": "Content-Type",
                     "value": "application/json"
                   },
                   {
                     "disabled": false,
-                    "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
-                    "key": "anthropic-beta",
-                    "value": "<string>,<string>"
+                    "description": "Enable CORS.",
+                    "key": "anthropic-dangerous-direct-browser-access",
+                    "value": "true"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Which version of the Anthropic API to use.",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
                   },
                   {
                     "key": "Accept",
@@ -505,7 +554,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"model\": \"claude-opus-4-6\",\n  \"max_tokens\": 1024,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Hello, Claude\"\n    }\n  ]\n}",
+                  "raw": "{\n  \"task\": \"a chef for a meal prep planning service\",\n  \"target_model\": \"claude-3-7-sonnet-20250219\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -521,82 +570,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"type\": \"error\",\n  \"error\": {\n    \"type\": \"api_error\",\n    \"message\": \"An internal server error occurred\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "620c94f6-b33b-4706-bb85-1ca3686ee91e",
-              "name": "API Overloaded",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "v1",
-                    "messages"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "x-api-key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) The version of the Anthropic API to use (e.g. 2023-06-01).",
-                    "key": "anthropic-version",
-                    "value": "2023-06-01"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) A valid Anthropic API key.",
-                    "key": "x-api-key",
-                    "value": "<string>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) The content type of the request body.",
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "Optional header to specify the beta version(s) you want to use. To use multiple betas, use a comma separated list or specify the header multiple times.\n",
-                    "key": "anthropic-beta",
-                    "value": "<string>,<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"model\": \"claude-opus-4-6\",\n  \"max_tokens\": 1024,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Hello, Claude\"\n    }\n  ]\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "code": 529,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"type\": \"error\",\n  \"error\": {\n    \"type\": \"overloaded_error\",\n    \"message\": \"Anthropic's API is temporarily overloaded\"\n  }\n}",
+              "body": "{\n  \"type\": \"api_error\",\n  \"message\": \"An internal server error occurred\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -636,8 +610,8 @@
     ]
   },
   "info": {
-    "_postman_id": "2cccc854-a6bc-42d1-9a01-7ee489f4aa79",
-    "name": "Anthropic Admin Agents Messages API",
+    "_postman_id": "e1a31d15-985f-4885-bc1b-82b9ad808ad7",
+    "name": "Anthropic Admin Agents Prompt Generation API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
       "content": "Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.\n\nContact Support:\n Name: Anthropic\n Email: support@anthropic.com",

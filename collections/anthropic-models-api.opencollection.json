@@ -1,8 +1,8 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Anthropic Models API",
-    "version": "2025-03-05"
+    "name": "Anthropic Admin Agents Models API",
+    "version": "1.0.0"
   },
   "request": {
     "auth": {
@@ -26,7 +26,7 @@
           },
           "http": {
             "method": "GET",
-            "url": "https://api.anthropic.com/v1/models",
+            "url": "https://api.anthropic.com/v1/v1/models",
             "headers": [
               {
                 "name": "anthropic-version",
@@ -79,7 +79,7 @@
           },
           "http": {
             "method": "GET",
-            "url": "https://api.anthropic.com/v1/models/:model_id",
+            "url": "https://api.anthropic.com/v1/v1/models/:model_id",
             "headers": [
               {
                 "name": "anthropic-version",
@@ -112,96 +112,6 @@
             ]
           },
           "docs": "Get a specific model. The Models API response can be used to determine\ninformation about a specific model or resolve a model alias to a model ID.\n"
-        }
-      ]
-    },
-    {
-      "info": {
-        "name": "Messages",
-        "type": "folder"
-      },
-      "items": [
-        {
-          "info": {
-            "name": "Anthropic Create A Message",
-            "type": "http"
-          },
-          "http": {
-            "method": "POST",
-            "url": "https://api.anthropic.com/v1/messages",
-            "headers": [
-              {
-                "name": "anthropic-version",
-                "value": ""
-              },
-              {
-                "name": "anthropic-beta",
-                "value": ""
-              },
-              {
-                "name": "x-api-key",
-                "value": ""
-              },
-              {
-                "name": "Content-Type",
-                "value": ""
-              },
-              {
-                "name": "anthropic-dangerous-direct-browser-access",
-                "value": ""
-              }
-            ],
-            "body": {
-              "type": "json",
-              "data": "{}"
-            }
-          },
-          "docs": "Send a structured list of input messages with text and/or image content,\nand the model will generate the next message in the conversation.\n\nThe Messages API can be used for either single queries or stateless\nmulti-turn conversations.\n"
-        }
-      ]
-    },
-    {
-      "info": {
-        "name": "Tokens",
-        "type": "folder"
-      },
-      "items": [
-        {
-          "info": {
-            "name": "Anthropic Count Tokens In A Message",
-            "type": "http"
-          },
-          "http": {
-            "method": "POST",
-            "url": "https://api.anthropic.com/v1/messages/count_tokens",
-            "headers": [
-              {
-                "name": "anthropic-version",
-                "value": ""
-              },
-              {
-                "name": "anthropic-beta",
-                "value": ""
-              },
-              {
-                "name": "x-api-key",
-                "value": ""
-              },
-              {
-                "name": "Content-Type",
-                "value": ""
-              },
-              {
-                "name": "anthropic-dangerous-direct-browser-access",
-                "value": ""
-              }
-            ],
-            "body": {
-              "type": "json",
-              "data": "{}"
-            }
-          },
-          "docs": "Count the number of tokens in a message before sending it.\nThis allows you to make informed decisions about message length\nand manage your token budget effectively.\n"
         }
       ]
     }

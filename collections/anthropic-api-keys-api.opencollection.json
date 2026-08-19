@@ -1,0 +1,135 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Anthropic Admin Agents Api Keys API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Api Keys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anthropic List Api Keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/api_keys",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000."
+              },
+              {
+                "name": "before_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object."
+              },
+              {
+                "name": "after_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object."
+              },
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by workspace ID"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by API key status"
+              },
+              {
+                "name": "created_by_user_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the user who created the API key"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of API keys for the organization."
+        },
+        {
+          "info": {
+            "name": "Anthropic Get Api Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/organizations/api_keys/:api_key_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "api_key_id",
+                "value": "apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9",
+                "type": "path",
+                "description": "Unique identifier for the API key"
+              }
+            ]
+          },
+          "docs": "Retrieves details about a specific API key."
+        },
+        {
+          "info": {
+            "name": "Anthropic Update Api Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/organizations/api_keys/:api_key_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "api_key_id",
+                "value": "apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9",
+                "type": "path",
+                "description": "Unique identifier for the API key"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an API key's name or status."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

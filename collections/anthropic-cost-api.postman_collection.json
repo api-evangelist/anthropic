@@ -1,28 +1,27 @@
 {
   "item": [
     {
-      "id": "67da3cb5-cfc8-4f2d-abd9-699c69616acf",
-      "name": "Claude Code Analytics",
+      "id": "1bb8f0fd-469b-4c1b-8dca-174308bdb29a",
+      "name": "Cost",
       "description": {
-        "content": "Daily aggregated Claude Code usage and productivity metrics",
+        "content": "Service-level cost reporting",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "531e4cf6-7f37-4556-9112-163f074a3200",
-          "name": "Anthropic Get Claude Code Usage Report",
+          "id": "30a62003-5428-4532-9134-603318564841",
+          "name": "Anthropic Get Cost Report",
           "request": {
-            "name": "Anthropic Get Claude Code Usage Report",
+            "name": "Anthropic Get Cost Report",
             "description": {
-              "content": "Daily aggregated user-level Claude Code usage including session counts, lines of code added/removed, commits, pull requests created, tool actions, and estimated costs by model.\n",
+              "content": "Service-level cost breakdowns for the organization in USD, including Messages, Batches, Files, Skills, and Claude Code line items.\n",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "v1",
                 "organizations",
-                "usage_report",
-                "claude_code"
+                "cost_report"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -32,13 +31,41 @@
                   "disabled": false,
                   "key": "starting_at",
                   "value": "<dateTime>",
-                  "description": "(Required) RFC3339 inclusive lower bound (UTC date) for the report window."
+                  "description": "(Required) RFC3339 inclusive lower bound for the report window."
                 },
                 {
                   "disabled": false,
                   "key": "ending_at",
                   "value": "<dateTime>",
-                  "description": "RFC3339 exclusive upper bound (UTC date) for the report window."
+                  "description": "RFC3339 exclusive upper bound for the report window."
+                },
+                {
+                  "disabled": false,
+                  "key": "bucket_width",
+                  "value": "1d",
+                  "description": "Aggregation bucket size."
+                },
+                {
+                  "disabled": false,
+                  "key": "group_by",
+                  "value": "<string>",
+                  "description": "Dimensions to group the report by."
+                },
+                {
+                  "disabled": false,
+                  "key": "group_by",
+                  "value": "<string>",
+                  "description": "Dimensions to group the report by."
+                },
+                {
+                  "disabled": false,
+                  "key": "workspace_ids",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "workspace_ids",
+                  "value": "<string>"
                 },
                 {
                   "disabled": false,
@@ -70,15 +97,14 @@
           },
           "response": [
             {
-              "id": "02e47df1-a736-4984-ab52-1f2fa8e778cb",
-              "name": "Claude Code analytics report.",
+              "id": "d719f41c-0473-4ceb-8037-710713402161",
+              "name": "Cost report.",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
                     "organizations",
-                    "usage_report",
-                    "claude_code"
+                    "cost_report"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -91,6 +117,26 @@
                     {
                       "key": "ending_at",
                       "value": "<dateTime>"
+                    },
+                    {
+                      "key": "bucket_width",
+                      "value": "1d"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
                     },
                     {
                       "key": "limit",
@@ -134,20 +180,19 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"date\": \"2022-10-02\",\n      \"actor\": {\n        \"type\": \"user_actor\",\n        \"email_address\": \"string\",\n        \"user_id\": \"string\"\n      },\n      \"organization_id\": \"string\",\n      \"terminal_type\": \"string\",\n      \"core_metrics\": {\n        \"num_sessions\": 2953,\n        \"lines_of_code\": {\n          \"added\": 9230,\n          \"removed\": 2068\n        },\n        \"commits_by_claude_code\": 5022,\n        \"pull_requests_by_claude_code\": 3619\n      },\n      \"tool_actions\": {\n        \"edit_tool\": {\n          \"accepted\": 4517,\n          \"rejected\": 5202\n        },\n        \"multi_edit_tool\": {\n          \"accepted\": 1966,\n          \"rejected\": 2957\n        },\n        \"write_tool\": {\n          \"accepted\": 7937,\n          \"rejected\": 4867\n        },\n        \"notebook_edit_tool\": {\n          \"accepted\": 7183,\n          \"rejected\": 7986\n        }\n      },\n      \"model_breakdown\": [\n        {\n          \"model\": \"string\",\n          \"tokens\": {\n            \"input\": 5483,\n            \"output\": 7976,\n            \"cache_read\": 5024,\n            \"cache_creation\": {\n              \"ephemeral_5m_input_tokens\": 3651,\n              \"ephemeral_1h_input_tokens\": 8783\n            }\n          },\n          \"estimated_cost\": {\n            \"currency\": \"USD\",\n            \"amount\": \"string\"\n          }\n        },\n        {\n          \"model\": \"string\",\n          \"tokens\": {\n            \"input\": 9457,\n            \"output\": 4191,\n            \"cache_read\": 9238,\n            \"cache_creation\": {\n              \"ephemeral_5m_input_tokens\": 9008,\n              \"ephemeral_1h_input_tokens\": 4045\n            }\n          },\n          \"estimated_cost\": {\n            \"currency\": \"USD\",\n            \"amount\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"date\": \"1963-03-12\",\n      \"actor\": {\n        \"type\": \"user_actor\",\n        \"email_address\": \"string\",\n        \"user_id\": \"string\"\n      },\n      \"organization_id\": \"string\",\n      \"terminal_type\": \"string\",\n      \"core_metrics\": {\n        \"num_sessions\": 7276,\n        \"lines_of_code\": {\n          \"added\": 3951,\n          \"removed\": 6064\n        },\n        \"commits_by_claude_code\": 2494,\n        \"pull_requests_by_claude_code\": 8886\n      },\n      \"tool_actions\": {\n        \"edit_tool\": {\n          \"accepted\": 9108,\n          \"rejected\": 6246\n        },\n        \"multi_edit_tool\": {\n          \"accepted\": 1126,\n          \"rejected\": 300\n        },\n        \"write_tool\": {\n          \"accepted\": 1524,\n          \"rejected\": 9623\n        },\n        \"notebook_edit_tool\": {\n          \"accepted\": 2148,\n          \"rejected\": 1647\n        }\n      },\n      \"model_breakdown\": [\n        {\n          \"model\": \"string\",\n          \"tokens\": {\n            \"input\": 7020,\n            \"output\": 3600,\n            \"cache_read\": 8240,\n            \"cache_creation\": {\n              \"ephemeral_5m_input_tokens\": 2672,\n              \"ephemeral_1h_input_tokens\": 5888\n            }\n          },\n          \"estimated_cost\": {\n            \"currency\": \"USD\",\n            \"amount\": \"string\"\n          }\n        },\n        {\n          \"model\": \"string\",\n          \"tokens\": {\n            \"input\": 4572,\n            \"output\": 3093,\n            \"cache_read\": 77,\n            \"cache_creation\": {\n              \"ephemeral_5m_input_tokens\": 9310,\n              \"ephemeral_1h_input_tokens\": 6046\n            }\n          },\n          \"estimated_cost\": {\n            \"currency\": \"USD\",\n            \"amount\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"has_more\": true,\n  \"next_page\": \"string\"\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"starting_at\": \"1998-04-19T00:31:11.980Z\",\n      \"ending_at\": \"1960-10-07T11:19:32.934Z\",\n      \"results\": [\n        {\n          \"workspace_id\": \"string\",\n          \"description\": \"string\",\n          \"cost_type\": \"string\",\n          \"context_window\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"token_type\": \"string\",\n          \"currency\": \"USD\",\n          \"amount\": \"string\"\n        },\n        {\n          \"workspace_id\": \"string\",\n          \"description\": \"string\",\n          \"cost_type\": \"string\",\n          \"context_window\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"token_type\": \"string\",\n          \"currency\": \"USD\",\n          \"amount\": \"string\"\n        }\n      ]\n    },\n    {\n      \"starting_at\": \"1968-06-01T21:31:43.191Z\",\n      \"ending_at\": \"2016-04-17T01:12:23.188Z\",\n      \"results\": [\n        {\n          \"workspace_id\": \"string\",\n          \"description\": \"string\",\n          \"cost_type\": \"string\",\n          \"context_window\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"token_type\": \"string\",\n          \"currency\": \"USD\",\n          \"amount\": \"string\"\n        },\n        {\n          \"workspace_id\": \"string\",\n          \"description\": \"string\",\n          \"cost_type\": \"string\",\n          \"context_window\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"token_type\": \"string\",\n          \"currency\": \"USD\",\n          \"amount\": \"string\"\n        }\n      ]\n    }\n  ],\n  \"has_more\": false,\n  \"next_page\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "b02dd298-2593-4c2e-8476-fcd2a24c1c32",
+              "id": "6aed68c1-d444-4423-9406-df48d1e3c012",
               "name": "Error response.",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
                     "organizations",
-                    "usage_report",
-                    "claude_code"
+                    "cost_report"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -160,6 +205,26 @@
                     {
                       "key": "ending_at",
                       "value": "<dateTime>"
+                    },
+                    {
+                      "key": "bucket_width",
+                      "value": "1d"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
                     },
                     {
                       "key": "limit",
@@ -243,8 +308,8 @@
     ]
   },
   "info": {
-    "_postman_id": "2df6892d-80ef-4f3e-b6a7-5967bf06fbd0",
-    "name": "Anthropic Admin Agents Claude Code Analytics API",
+    "_postman_id": "bfab3057-47b3-4e46-a668-5b9331f89d05",
+    "name": "Anthropic Admin Agents Cost API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
       "content": "Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.\n\nContact Support:\n Name: Anthropic\n Email: support@anthropic.com",

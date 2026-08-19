@@ -1,32 +1,248 @@
 {
   "item": [
     {
-      "id": "2e01af85-216b-4b91-9b1e-bd0980895a7b",
-      "name": "Skills",
+      "id": "54287272-bdbc-4ecc-953f-3ada8da50866",
+      "name": "Skill Versions",
       "description": {
-        "content": "Create, list, retrieve, update, and delete Skills",
+        "content": "Manage versions of a Skill",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "ba228912-d375-46b0-ae41-0134776cd120",
-          "name": "Anthropic Create Skill",
+          "id": "8706d14f-5e8b-414d-ab9e-476d80f10842",
+          "name": "Anthropic List Skill Versions",
           "request": {
-            "name": "Anthropic Create Skill",
+            "name": "Anthropic List Skill Versions",
             "description": {
-              "content": "Upload a new Skill as a zip archive containing SKILL.md plus any supporting files. The Skill is added to the workspace catalog and becomes available to all workspace members.\n",
+              "content": "Paginated list of versions for the given Skill.",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "v1",
-                "skills"
+                "skills",
+                ":skill_id",
+                "versions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "skill_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include skills-2025-10-02.",
+                "key": "anthropic-beta",
+                "value": "skills-2025-10-02"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ad1b9056-d51d-446d-9fe7-3bbdeacf02a5",
+              "name": "List of Skill versions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "skills",
+                    ":skill_id",
+                    "versions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "skill_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include skills-2025-10-02.",
+                    "key": "anthropic-beta",
+                    "value": "skills-2025-10-02"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"skill_id\": \"string\",\n      \"version\": \"string\",\n      \"created_at\": \"2015-12-17T01:31:09.696Z\",\n      \"size_bytes\": 7414\n    },\n    {\n      \"id\": \"string\",\n      \"skill_id\": \"string\",\n      \"version\": \"string\",\n      \"created_at\": \"1963-12-15T07:19:38.312Z\",\n      \"size_bytes\": 173\n    }\n  ],\n  \"has_more\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f8e9bc5-9634-44be-ae89-4159c33d908a",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "skills",
+                    ":skill_id",
+                    "versions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "skill_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include skills-2025-10-02.",
+                    "key": "anthropic-beta",
+                    "value": "skills-2025-10-02"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"string\",\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3f40c320-3159-4900-9b7a-7268f7d164af",
+          "name": "Anthropic Create Skill Version",
+          "request": {
+            "name": "Anthropic Create Skill Version",
+            "description": {
+              "content": "Upload a new version of an existing Skill.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "skills",
+                ":skill_id",
+                "versions"
               ],
               "host": [
                 "{{baseUrl}}"
               ],
               "query": [],
-              "variable": []
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "skill_id",
+                  "description": "(Required) "
+                }
+              ]
             },
             "header": [
               {
@@ -58,26 +274,36 @@
                 {
                   "key": "skill_archive",
                   "type": "file",
-                  "description": "(Required) Zip archive containing SKILL.md and supporting files."
+                  "description": "(Required) "
                 }
               ]
             }
           },
           "response": [
             {
-              "id": "7e9ca6fa-15e7-402c-84ec-3d175af4d9df",
-              "name": "Skill created successfully.",
+              "id": "2dbf99c4-3c83-4ac0-aa99-0336f43588bf",
+              "name": "Skill version created.",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
-                    "skills"
+                    "skills",
+                    ":skill_id",
+                    "versions"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "query": [],
-                  "variable": []
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "skill_id",
+                      "description": "(Required) "
+                    }
+                  ]
                 },
                 "header": [
                   {
@@ -111,7 +337,7 @@
                   "formdata": [
                     {
                       "description": {
-                        "content": "(Required) Zip archive containing SKILL.md and supporting files.",
+                        "content": "(Required) ",
                         "type": "text/plain"
                       },
                       "key": "skill_archive",
@@ -129,24 +355,34 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"skill_01ABC...\",\n  \"type\": \"skill\",\n  \"display_title\": \"string\",\n  \"description\": \"string\",\n  \"latest_version\": \"string\",\n  \"created_at\": \"1949-08-03T22:53:05.723Z\",\n  \"updated_at\": \"2015-04-19T12:09:42.244Z\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"skill_id\": \"string\",\n  \"version\": \"string\",\n  \"created_at\": \"1978-07-09T15:41:47.181Z\",\n  \"size_bytes\": 5861\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "43b2d6cd-f1ce-4c95-82e6-82e40f6dbc0f",
+              "id": "9506141b-a874-434c-bd20-6d64d310f65b",
               "name": "Error response.",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
-                    "skills"
+                    "skills",
+                    ":skill_id",
+                    "versions"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "query": [],
-                  "variable": []
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "skill_id",
+                      "description": "(Required) "
+                    }
+                  ]
                 },
                 "header": [
                   {
@@ -180,7 +416,7 @@
                   "formdata": [
                     {
                       "description": {
-                        "content": "(Required) Zip archive containing SKILL.md and supporting files.",
+                        "content": "(Required) ",
                         "type": "text/plain"
                       },
                       "key": "skill_archive",
@@ -209,221 +445,21 @@
           }
         },
         {
-          "id": "caeb42e2-9f56-4b46-809c-5c01f3de27cd",
-          "name": "Anthropic List Skills",
+          "id": "99eec06b-ddd0-48ec-911a-a1ebb04ecfe6",
+          "name": "Anthropic Get Skill Version",
           "request": {
-            "name": "Anthropic List Skills",
+            "name": "Anthropic Get Skill Version",
             "description": {
-              "content": "Paginated list of all Skills in the current workspace.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "v1",
-                "skills"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "disabled": false,
-                  "key": "limit",
-                  "value": "20"
-                },
-                {
-                  "disabled": false,
-                  "key": "before_id",
-                  "value": "<string>"
-                },
-                {
-                  "disabled": false,
-                  "key": "after_id",
-                  "value": "<string>"
-                }
-              ],
-              "variable": []
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ",
-                "key": "anthropic-version",
-                "value": "2023-06-01"
-              },
-              {
-                "disabled": false,
-                "description": "(Required) Must include skills-2025-10-02.",
-                "key": "anthropic-beta",
-                "value": "skills-2025-10-02"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "65c0cffb-6ff0-401d-85df-15f0be722c89",
-              "name": "List of Skills.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "v1",
-                    "skills"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [
-                    {
-                      "key": "limit",
-                      "value": "20"
-                    },
-                    {
-                      "key": "before_id",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "after_id",
-                      "value": "<string>"
-                    }
-                  ],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "x-api-key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ",
-                    "key": "anthropic-version",
-                    "value": "2023-06-01"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) Must include skills-2025-10-02.",
-                    "key": "anthropic-beta",
-                    "value": "skills-2025-10-02"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"data\": [\n    {\n      \"id\": \"skill_01ABC...\",\n      \"type\": \"skill\",\n      \"display_title\": \"string\",\n      \"description\": \"string\",\n      \"latest_version\": \"string\",\n      \"created_at\": \"2014-01-24T03:31:14.532Z\",\n      \"updated_at\": \"1965-06-24T12:30:27.956Z\"\n    },\n    {\n      \"id\": \"skill_01ABC...\",\n      \"type\": \"skill\",\n      \"display_title\": \"string\",\n      \"description\": \"string\",\n      \"latest_version\": \"string\",\n      \"created_at\": \"1966-11-12T05:17:32.163Z\",\n      \"updated_at\": \"2021-10-02T10:07:33.992Z\"\n    }\n  ],\n  \"has_more\": true,\n  \"first_id\": \"string\",\n  \"last_id\": \"string\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "202b0a7b-5e1e-49d6-8452-9aa04a003932",
-              "name": "Error response.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "v1",
-                    "skills"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [
-                    {
-                      "key": "limit",
-                      "value": "20"
-                    },
-                    {
-                      "key": "before_id",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "after_id",
-                      "value": "<string>"
-                    }
-                  ],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "x-api-key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ",
-                    "key": "anthropic-version",
-                    "value": "2023-06-01"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) Must include skills-2025-10-02.",
-                    "key": "anthropic-beta",
-                    "value": "skills-2025-10-02"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"type\": \"string\",\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "4d4f16e3-2cbe-44b2-9ac1-95a4bf2e2ed8",
-          "name": "Anthropic Get Skill",
-          "request": {
-            "name": "Anthropic Get Skill",
-            "description": {
-              "content": "Retrieve metadata for a single Skill.",
+              "content": "Retrieve metadata for a specific Skill version.",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "v1",
                 "skills",
-                ":skill_id"
+                ":skill_id",
+                "versions",
+                ":version"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -435,6 +471,13 @@
                   "type": "any",
                   "value": "<string>",
                   "key": "skill_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "version",
                   "description": "(Required) "
                 }
               ]
@@ -462,14 +505,16 @@
           },
           "response": [
             {
-              "id": "a67246bc-91db-49aa-8398-46c03ca4be13",
-              "name": "Skill metadata.",
+              "id": "62a66e34-1386-4b78-a677-db3978ee84cc",
+              "name": "Skill version metadata.",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
                     "skills",
-                    ":skill_id"
+                    ":skill_id",
+                    "versions",
+                    ":version"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -481,6 +526,13 @@
                       "type": "any",
                       "value": "<string>",
                       "key": "skill_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "version",
                       "description": "(Required) "
                     }
                   ]
@@ -522,19 +574,21 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"skill_01ABC...\",\n  \"type\": \"skill\",\n  \"display_title\": \"string\",\n  \"description\": \"string\",\n  \"latest_version\": \"string\",\n  \"created_at\": \"1949-08-03T22:53:05.723Z\",\n  \"updated_at\": \"2015-04-19T12:09:42.244Z\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"skill_id\": \"string\",\n  \"version\": \"string\",\n  \"created_at\": \"1978-07-09T15:41:47.181Z\",\n  \"size_bytes\": 5861\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "23babddd-e3e4-42bd-adef-5d5d37bbfb1f",
+              "id": "8a55d9fd-4509-4556-9409-ff2af6b555a2",
               "name": "Error response.",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
                     "skills",
-                    ":skill_id"
+                    ":skill_id",
+                    "versions",
+                    ":version"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -546,6 +600,13 @@
                       "type": "any",
                       "value": "<string>",
                       "key": "skill_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "version",
                       "description": "(Required) "
                     }
                   ]
@@ -577,193 +638,6 @@
                   }
                 ],
                 "method": "GET",
-                "body": {}
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"type\": \"string\",\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "50c24e69-4889-4463-b39b-a819df19b2f8",
-          "name": "Anthropic Delete Skill",
-          "request": {
-            "name": "Anthropic Delete Skill",
-            "description": {
-              "content": "Delete a Skill from the workspace. All versions are removed.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "v1",
-                "skills",
-                ":skill_id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "skill_id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ",
-                "key": "anthropic-version",
-                "value": "2023-06-01"
-              },
-              {
-                "disabled": false,
-                "description": "(Required) Must include skills-2025-10-02.",
-                "key": "anthropic-beta",
-                "value": "skills-2025-10-02"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "DELETE",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "b6933631-611d-473e-9084-b020d43629a8",
-              "name": "Skill deleted.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "v1",
-                    "skills",
-                    ":skill_id"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "skill_id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "x-api-key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ",
-                    "key": "anthropic-version",
-                    "value": "2023-06-01"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) Must include skills-2025-10-02.",
-                    "key": "anthropic-beta",
-                    "value": "skills-2025-10-02"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "DELETE",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": \"string\",\n  \"type\": \"skill_deleted\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "65d03327-b9a7-4708-99ca-d625e9b2f038",
-              "name": "Error response.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "v1",
-                    "skills",
-                    ":skill_id"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "skill_id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "x-api-key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ",
-                    "key": "anthropic-version",
-                    "value": "2023-06-01"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) Must include skills-2025-10-02.",
-                    "key": "anthropic-beta",
-                    "value": "skills-2025-10-02"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "DELETE",
                 "body": {}
               },
               "status": "Bad Request",
@@ -814,8 +688,8 @@
     ]
   },
   "info": {
-    "_postman_id": "5cde8a69-3a32-4367-9e3d-bded6c741ac0",
-    "name": "Anthropic Admin Agents Skills API",
+    "_postman_id": "7f01f192-9e40-4223-81ce-77074d4116db",
+    "name": "Anthropic Admin Agents Skill Versions API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
       "content": "Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.\n\nContact Support:\n Name: Anthropic\n Email: support@anthropic.com",

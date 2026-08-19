@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Anthropic Admin Agents Skills API",
+    "name": "Anthropic Admin Agents Environments API",
     "version": "1.0.0"
   },
   "request": {
@@ -15,18 +15,18 @@
   "items": [
     {
       "info": {
-        "name": "Skills",
+        "name": "Environments",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Anthropic List Skills",
+            "name": "Anthropic List Environments",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.anthropic.com/v1/v1/skills",
+            "url": "https://api.anthropic.com/v1/v1/environments",
             "headers": [
               {
                 "name": "anthropic-version",
@@ -36,35 +36,18 @@
                 "name": "anthropic-beta",
                 "value": ""
               }
-            ],
-            "params": [
-              {
-                "name": "limit",
-                "value": "",
-                "type": "query"
-              },
-              {
-                "name": "before_id",
-                "value": "",
-                "type": "query"
-              },
-              {
-                "name": "after_id",
-                "value": "",
-                "type": "query"
-              }
             ]
           },
-          "docs": "Paginated list of all Skills in the current workspace."
+          "docs": "Paginated list of environments."
         },
         {
           "info": {
-            "name": "Anthropic Create Skill",
+            "name": "Anthropic Create Environment",
             "type": "http"
           },
           "http": {
             "method": "POST",
-            "url": "https://api.anthropic.com/v1/v1/skills",
+            "url": "https://api.anthropic.com/v1/v1/environments",
             "headers": [
               {
                 "name": "anthropic-version",
@@ -76,20 +59,20 @@
               }
             ],
             "body": {
-              "type": "multipart-form",
-              "data": []
+              "type": "json",
+              "data": "{}"
             }
           },
-          "docs": "Upload a new Skill as a zip archive containing SKILL.md plus any supporting files. The Skill is added to the workspace catalog and becomes available to all workspace members.\n"
+          "docs": "Create a container configuration for sessions."
         },
         {
           "info": {
-            "name": "Anthropic Get Skill",
+            "name": "Anthropic Get Environment",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.anthropic.com/v1/v1/skills/:skill_id",
+            "url": "https://api.anthropic.com/v1/v1/environments/:environment_id",
             "headers": [
               {
                 "name": "anthropic-version",
@@ -102,22 +85,22 @@
             ],
             "params": [
               {
-                "name": "skill_id",
+                "name": "environment_id",
                 "value": "",
                 "type": "path"
               }
             ]
           },
-          "docs": "Retrieve metadata for a single Skill."
+          "docs": "Anthropic Get Environment"
         },
         {
           "info": {
-            "name": "Anthropic Delete Skill",
+            "name": "Anthropic Delete Environment",
             "type": "http"
           },
           "http": {
             "method": "DELETE",
-            "url": "https://api.anthropic.com/v1/v1/skills/:skill_id",
+            "url": "https://api.anthropic.com/v1/v1/environments/:environment_id",
             "headers": [
               {
                 "name": "anthropic-version",
@@ -130,13 +113,41 @@
             ],
             "params": [
               {
-                "name": "skill_id",
+                "name": "environment_id",
                 "value": "",
                 "type": "path"
               }
             ]
           },
-          "docs": "Delete a Skill from the workspace. All versions are removed."
+          "docs": "Anthropic Delete Environment"
+        },
+        {
+          "info": {
+            "name": "Anthropic Archive Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/v1/environments/:environment_id/archive",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "environment_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Anthropic Archive Environment"
         }
       ]
     }

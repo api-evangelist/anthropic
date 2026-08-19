@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Anthropic Admin Agents Skills API",
+    "name": "Anthropic Admin Agents Organization Invites API",
     "version": "1.0.0"
   },
   "request": {
@@ -15,25 +15,21 @@
   "items": [
     {
       "info": {
-        "name": "Skills",
+        "name": "Organization Invites",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Anthropic List Skills",
+            "name": "Anthropic List Organization Invites",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.anthropic.com/v1/v1/skills",
+            "url": "https://api.anthropic.com/v1/organizations/invites",
             "headers": [
               {
                 "name": "anthropic-version",
-                "value": ""
-              },
-              {
-                "name": "anthropic-beta",
                 "value": ""
               }
             ],
@@ -41,102 +37,95 @@
               {
                 "name": "limit",
                 "value": "",
-                "type": "query"
+                "type": "query",
+                "description": "Number of items to return per page. Defaults to 20. Ranges from 1 to 1000."
               },
               {
                 "name": "before_id",
                 "value": "",
-                "type": "query"
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object."
               },
               {
                 "name": "after_id",
                 "value": "",
-                "type": "query"
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object."
               }
             ]
           },
-          "docs": "Paginated list of all Skills in the current workspace."
+          "docs": "Retrieves a paginated list of pending invitations for the organization."
         },
         {
           "info": {
-            "name": "Anthropic Create Skill",
+            "name": "Anthropic Create Organization Invite",
             "type": "http"
           },
           "http": {
             "method": "POST",
-            "url": "https://api.anthropic.com/v1/v1/skills",
+            "url": "https://api.anthropic.com/v1/organizations/invites",
             "headers": [
               {
                 "name": "anthropic-version",
-                "value": ""
-              },
-              {
-                "name": "anthropic-beta",
                 "value": ""
               }
             ],
             "body": {
-              "type": "multipart-form",
-              "data": []
+              "type": "json",
+              "data": "{}"
             }
           },
-          "docs": "Upload a new Skill as a zip archive containing SKILL.md plus any supporting files. The Skill is added to the workspace catalog and becomes available to all workspace members.\n"
+          "docs": "Creates and sends an invitation to a new member to join the organization."
         },
         {
           "info": {
-            "name": "Anthropic Get Skill",
+            "name": "Anthropic Get Organization Invite",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.anthropic.com/v1/v1/skills/:skill_id",
+            "url": "https://api.anthropic.com/v1/organizations/invites/:invite_id",
             "headers": [
               {
                 "name": "anthropic-version",
-                "value": ""
-              },
-              {
-                "name": "anthropic-beta",
                 "value": ""
               }
             ],
             "params": [
               {
-                "name": "skill_id",
-                "value": "",
-                "type": "path"
+                "name": "invite_id",
+                "value": "invite_015gWxCN9Hfg2QhZwTK7Mdeu",
+                "type": "path",
+                "description": "Unique identifier for the invite"
               }
             ]
           },
-          "docs": "Retrieve metadata for a single Skill."
+          "docs": "Retrieves detailed information about a specific organization invite."
         },
         {
           "info": {
-            "name": "Anthropic Delete Skill",
+            "name": "Anthropic Delete Organization Invite",
             "type": "http"
           },
           "http": {
             "method": "DELETE",
-            "url": "https://api.anthropic.com/v1/v1/skills/:skill_id",
+            "url": "https://api.anthropic.com/v1/organizations/invites/:invite_id",
             "headers": [
               {
                 "name": "anthropic-version",
-                "value": ""
-              },
-              {
-                "name": "anthropic-beta",
                 "value": ""
               }
             ],
             "params": [
               {
-                "name": "skill_id",
-                "value": "",
-                "type": "path"
+                "name": "invite_id",
+                "value": "invite_015gWxCN9Hfg2QhZwTK7Mdeu",
+                "type": "path",
+                "description": "Unique identifier for the invite"
               }
             ]
           },
-          "docs": "Delete a Skill from the workspace. All versions are removed."
+          "docs": "Deletes a specific organization invite, preventing the recipient from accepting it."
         }
       ]
     }

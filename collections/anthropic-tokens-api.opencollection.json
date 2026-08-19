@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Anthropic Admin Agents Messages API",
+    "name": "Anthropic Admin Agents Tokens API",
     "version": "1.0.0"
   },
   "request": {
@@ -15,21 +15,25 @@
   "items": [
     {
       "info": {
-        "name": "Messages",
+        "name": "Tokens",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Anthropic Create A Message",
+            "name": "Anthropic Count Tokens In A Message",
             "type": "http"
           },
           "http": {
             "method": "POST",
-            "url": "https://api.anthropic.com/v1/v1/messages",
+            "url": "https://api.anthropic.com/v1/v1/messages/count_tokens",
             "headers": [
               {
                 "name": "anthropic-version",
+                "value": ""
+              },
+              {
+                "name": "anthropic-beta",
                 "value": ""
               },
               {
@@ -41,7 +45,7 @@
                 "value": ""
               },
               {
-                "name": "anthropic-beta",
+                "name": "anthropic-dangerous-direct-browser-access",
                 "value": ""
               }
             ],
@@ -50,7 +54,7 @@
               "data": "{}"
             }
           },
-          "docs": "Send a structured list of input messages with text and/or image content, and the model will generate the next message in the conversation. The Messages API can be used for both single-turn and multi-turn conversations.\n"
+          "docs": "Count the number of tokens in a message before sending it.\nThis allows you to make informed decisions about message length\nand manage your token budget effectively.\n"
         }
       ]
     }

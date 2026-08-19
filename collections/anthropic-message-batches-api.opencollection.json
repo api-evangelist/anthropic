@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Anthropic Message Batches API",
+    "name": "Anthropic Admin Agents Message Batches API",
     "version": "1.0.0"
   },
   "request": {

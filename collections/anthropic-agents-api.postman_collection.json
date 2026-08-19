@@ -1,26 +1,26 @@
 {
   "item": [
     {
-      "id": "2e01af85-216b-4b91-9b1e-bd0980895a7b",
-      "name": "Skills",
+      "id": "01115fb5-1098-4f0e-a600-3515b68620ee",
+      "name": "Agents",
       "description": {
-        "content": "Create, list, retrieve, update, and delete Skills",
+        "content": "Reusable, versioned agent configurations",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "ba228912-d375-46b0-ae41-0134776cd120",
-          "name": "Anthropic Create Skill",
+          "id": "e0cdc566-6f8f-4ae8-9b17-81da0a307c7f",
+          "name": "Anthropic Create Agent",
           "request": {
-            "name": "Anthropic Create Skill",
+            "name": "Anthropic Create Agent",
             "description": {
-              "content": "Upload a new Skill as a zip archive containing SKILL.md plus any supporting files. The Skill is added to the workspace catalog and becomes available to all workspace members.\n",
+              "content": "Define a reusable, versioned agent.",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "v1",
-                "skills"
+                "agents"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -37,13 +37,13 @@
               },
               {
                 "disabled": false,
-                "description": "(Required) Must include skills-2025-10-02.",
+                "description": "(Required) Must include managed-agents-2026-04-01.",
                 "key": "anthropic-beta",
-                "value": "skills-2025-10-02"
+                "value": "managed-agents-2026-04-01"
               },
               {
                 "key": "Content-Type",
-                "value": "multipart/form-data"
+                "value": "application/json"
               },
               {
                 "key": "Accept",
@@ -53,25 +53,24 @@
             "method": "POST",
             "auth": null,
             "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "skill_archive",
-                  "type": "file",
-                  "description": "(Required) Zip archive containing SKILL.md and supporting files."
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"model\": \"<string>\",\n  \"system\": \"<string>\",\n  \"description\": \"<string>\",\n  \"tools\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"mcp_servers\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"skills\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"multiagent\": \"<object>\",\n  \"metadata\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
                 }
-              ]
+              }
             }
           },
           "response": [
             {
-              "id": "7e9ca6fa-15e7-402c-84ec-3d175af4d9df",
-              "name": "Skill created successfully.",
+              "id": "5386f453-b78b-41e6-b94a-808c271df3cc",
+              "name": "Agent created.",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
-                    "skills"
+                    "agents"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -96,9 +95,9 @@
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) Must include skills-2025-10-02.",
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
                     "key": "anthropic-beta",
-                    "value": "skills-2025-10-02"
+                    "value": "managed-agents-2026-04-01"
                   },
                   {
                     "key": "Accept",
@@ -107,18 +106,13 @@
                 ],
                 "method": "POST",
                 "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "description": {
-                        "content": "(Required) Zip archive containing SKILL.md and supporting files.",
-                        "type": "text/plain"
-                      },
-                      "key": "skill_archive",
-                      "value": "<binary>",
-                      "type": "text"
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Coding Assistant\",\n  \"model\": \"claude-opus-4-7\",\n  \"system\": \"<string>\",\n  \"description\": \"<string>\",\n  \"tools\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"mcp_servers\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"skills\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"multiagent\": \"<object>\",\n  \"metadata\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
                     }
-                  ]
+                  }
                 }
               },
               "status": "OK",
@@ -129,18 +123,18 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"skill_01ABC...\",\n  \"type\": \"skill\",\n  \"display_title\": \"string\",\n  \"description\": \"string\",\n  \"latest_version\": \"string\",\n  \"created_at\": \"1949-08-03T22:53:05.723Z\",\n  \"updated_at\": \"2015-04-19T12:09:42.244Z\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"agent\",\n  \"name\": \"string\",\n  \"model\": {\n    \"id\": \"string\",\n    \"speed\": \"string\"\n  },\n  \"system\": \"string\",\n  \"description\": \"string\",\n  \"metadata\": {},\n  \"version\": 2380,\n  \"created_at\": \"2026-07-27T13:26:42.684Z\",\n  \"updated_at\": \"1998-03-03T19:31:30.790Z\",\n  \"archived_at\": \"1968-08-30T20:46:39.171Z\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "43b2d6cd-f1ce-4c95-82e6-82e40f6dbc0f",
+              "id": "51179d52-0dde-4464-8b57-3f0b7e725067",
               "name": "Error response.",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
-                    "skills"
+                    "agents"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -165,9 +159,9 @@
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) Must include skills-2025-10-02.",
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
                     "key": "anthropic-beta",
-                    "value": "skills-2025-10-02"
+                    "value": "managed-agents-2026-04-01"
                   },
                   {
                     "key": "Accept",
@@ -176,18 +170,13 @@
                 ],
                 "method": "POST",
                 "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "description": {
-                        "content": "(Required) Zip archive containing SKILL.md and supporting files.",
-                        "type": "text/plain"
-                      },
-                      "key": "skill_archive",
-                      "value": "<binary>",
-                      "type": "text"
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Coding Assistant\",\n  \"model\": \"claude-opus-4-7\",\n  \"system\": \"<string>\",\n  \"description\": \"<string>\",\n  \"tools\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"mcp_servers\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"skills\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"multiagent\": \"<object>\",\n  \"metadata\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
                     }
-                  ]
+                  }
                 }
               },
               "status": "Bad Request",
@@ -209,18 +198,18 @@
           }
         },
         {
-          "id": "caeb42e2-9f56-4b46-809c-5c01f3de27cd",
-          "name": "Anthropic List Skills",
+          "id": "9c368dcd-c05a-47a6-b919-d74f9c18981b",
+          "name": "Anthropic List Agents",
           "request": {
-            "name": "Anthropic List Skills",
+            "name": "Anthropic List Agents",
             "description": {
-              "content": "Paginated list of all Skills in the current workspace.",
+              "content": "Paginated list of agents in the workspace.",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "v1",
-                "skills"
+                "agents"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -230,16 +219,6 @@
                   "disabled": false,
                   "key": "limit",
                   "value": "20"
-                },
-                {
-                  "disabled": false,
-                  "key": "before_id",
-                  "value": "<string>"
-                },
-                {
-                  "disabled": false,
-                  "key": "after_id",
-                  "value": "<string>"
                 }
               ],
               "variable": []
@@ -253,9 +232,9 @@
               },
               {
                 "disabled": false,
-                "description": "(Required) Must include skills-2025-10-02.",
+                "description": "(Required) Must include managed-agents-2026-04-01.",
                 "key": "anthropic-beta",
-                "value": "skills-2025-10-02"
+                "value": "managed-agents-2026-04-01"
               },
               {
                 "key": "Accept",
@@ -267,13 +246,13 @@
           },
           "response": [
             {
-              "id": "65c0cffb-6ff0-401d-85df-15f0be722c89",
-              "name": "List of Skills.",
+              "id": "5e0c5e2d-6243-4fa8-844b-dba963fbfaa0",
+              "name": "List of agents.",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
-                    "skills"
+                    "agents"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -282,14 +261,6 @@
                     {
                       "key": "limit",
                       "value": "20"
-                    },
-                    {
-                      "key": "before_id",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "after_id",
-                      "value": "<string>"
                     }
                   ],
                   "variable": []
@@ -311,9 +282,9 @@
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) Must include skills-2025-10-02.",
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
                     "key": "anthropic-beta",
-                    "value": "skills-2025-10-02"
+                    "value": "managed-agents-2026-04-01"
                   },
                   {
                     "key": "Accept",
@@ -331,76 +302,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"id\": \"skill_01ABC...\",\n      \"type\": \"skill\",\n      \"display_title\": \"string\",\n      \"description\": \"string\",\n      \"latest_version\": \"string\",\n      \"created_at\": \"2014-01-24T03:31:14.532Z\",\n      \"updated_at\": \"1965-06-24T12:30:27.956Z\"\n    },\n    {\n      \"id\": \"skill_01ABC...\",\n      \"type\": \"skill\",\n      \"display_title\": \"string\",\n      \"description\": \"string\",\n      \"latest_version\": \"string\",\n      \"created_at\": \"1966-11-12T05:17:32.163Z\",\n      \"updated_at\": \"2021-10-02T10:07:33.992Z\"\n    }\n  ],\n  \"has_more\": true,\n  \"first_id\": \"string\",\n  \"last_id\": \"string\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "202b0a7b-5e1e-49d6-8452-9aa04a003932",
-              "name": "Error response.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "v1",
-                    "skills"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [
-                    {
-                      "key": "limit",
-                      "value": "20"
-                    },
-                    {
-                      "key": "before_id",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "after_id",
-                      "value": "<string>"
-                    }
-                  ],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "x-api-key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ",
-                    "key": "anthropic-version",
-                    "value": "2023-06-01"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) Must include skills-2025-10-02.",
-                    "key": "anthropic-beta",
-                    "value": "skills-2025-10-02"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"type\": \"string\",\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"type\": \"agent\",\n      \"name\": \"string\",\n      \"model\": {\n        \"id\": \"string\",\n        \"speed\": \"string\"\n      },\n      \"system\": \"string\",\n      \"description\": \"string\",\n      \"metadata\": {},\n      \"version\": 3688,\n      \"created_at\": \"2013-04-05T13:10:12.463Z\",\n      \"updated_at\": \"2016-07-24T23:37:45.011Z\",\n      \"archived_at\": \"1968-06-08T18:06:11.010Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"type\": \"agent\",\n      \"name\": \"string\",\n      \"model\": {\n        \"id\": \"string\",\n        \"speed\": \"string\"\n      },\n      \"system\": \"string\",\n      \"description\": \"string\",\n      \"metadata\": {},\n      \"version\": 3161,\n      \"created_at\": \"2013-07-13T16:51:13.704Z\",\n      \"updated_at\": \"1989-02-19T23:59:01.008Z\",\n      \"archived_at\": \"1957-07-23T04:54:43.427Z\"\n    }\n  ],\n  \"has_more\": true\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -411,19 +313,19 @@
           }
         },
         {
-          "id": "4d4f16e3-2cbe-44b2-9ac1-95a4bf2e2ed8",
-          "name": "Anthropic Get Skill",
+          "id": "47fb8c6e-3c8c-424a-9722-5f7d8ce72834",
+          "name": "Anthropic Get Agent",
           "request": {
-            "name": "Anthropic Get Skill",
+            "name": "Anthropic Get Agent",
             "description": {
-              "content": "Retrieve metadata for a single Skill.",
+              "content": "Retrieve an agent's latest version.",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "v1",
-                "skills",
-                ":skill_id"
+                "agents",
+                ":agent_id"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -434,7 +336,7 @@
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
-                  "key": "skill_id",
+                  "key": "agent_id",
                   "description": "(Required) "
                 }
               ]
@@ -448,9 +350,9 @@
               },
               {
                 "disabled": false,
-                "description": "(Required) Must include skills-2025-10-02.",
+                "description": "(Required) Must include managed-agents-2026-04-01.",
                 "key": "anthropic-beta",
-                "value": "skills-2025-10-02"
+                "value": "managed-agents-2026-04-01"
               },
               {
                 "key": "Accept",
@@ -462,14 +364,14 @@
           },
           "response": [
             {
-              "id": "a67246bc-91db-49aa-8398-46c03ca4be13",
-              "name": "Skill metadata.",
+              "id": "1e059600-32f2-486a-865f-c48d981aead3",
+              "name": "Agent retrieved.",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
-                    "skills",
-                    ":skill_id"
+                    "agents",
+                    ":agent_id"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -480,7 +382,7 @@
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
-                      "key": "skill_id",
+                      "key": "agent_id",
                       "description": "(Required) "
                     }
                   ]
@@ -502,9 +404,9 @@
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) Must include skills-2025-10-02.",
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
                     "key": "anthropic-beta",
-                    "value": "skills-2025-10-02"
+                    "value": "managed-agents-2026-04-01"
                   },
                   {
                     "key": "Accept",
@@ -522,72 +424,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"skill_01ABC...\",\n  \"type\": \"skill\",\n  \"display_title\": \"string\",\n  \"description\": \"string\",\n  \"latest_version\": \"string\",\n  \"created_at\": \"1949-08-03T22:53:05.723Z\",\n  \"updated_at\": \"2015-04-19T12:09:42.244Z\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "23babddd-e3e4-42bd-adef-5d5d37bbfb1f",
-              "name": "Error response.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "v1",
-                    "skills",
-                    ":skill_id"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "skill_id",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "x-api-key",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ",
-                    "key": "anthropic-version",
-                    "value": "2023-06-01"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) Must include skills-2025-10-02.",
-                    "key": "anthropic-beta",
-                    "value": "skills-2025-10-02"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"type\": \"string\",\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"agent\",\n  \"name\": \"string\",\n  \"model\": {\n    \"id\": \"string\",\n    \"speed\": \"string\"\n  },\n  \"system\": \"string\",\n  \"description\": \"string\",\n  \"metadata\": {},\n  \"version\": 2380,\n  \"created_at\": \"2026-07-27T13:26:42.684Z\",\n  \"updated_at\": \"1998-03-03T19:31:30.790Z\",\n  \"archived_at\": \"1968-08-30T20:46:39.171Z\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -598,19 +435,19 @@
           }
         },
         {
-          "id": "50c24e69-4889-4463-b39b-a819df19b2f8",
-          "name": "Anthropic Delete Skill",
+          "id": "c80e4c44-454b-4de3-95fd-623af05710b4",
+          "name": "Anthropic Update Agent",
           "request": {
-            "name": "Anthropic Delete Skill",
+            "name": "Anthropic Update Agent",
             "description": {
-              "content": "Delete a Skill from the workspace. All versions are removed.",
+              "content": "Update an agent. Pass the current version to optimistically lock the update. A new version is created when fields change.\n",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "v1",
-                "skills",
-                ":skill_id"
+                "agents",
+                ":agent_id"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -621,7 +458,7 @@
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
-                  "key": "skill_id",
+                  "key": "agent_id",
                   "description": "(Required) "
                 }
               ]
@@ -635,28 +472,41 @@
               },
               {
                 "disabled": false,
-                "description": "(Required) Must include skills-2025-10-02.",
+                "description": "(Required) Must include managed-agents-2026-04-01.",
                 "key": "anthropic-beta",
-                "value": "skills-2025-10-02"
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               },
               {
                 "key": "Accept",
                 "value": "application/json"
               }
             ],
-            "method": "DELETE",
-            "auth": null
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"version\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"model\": \"<string>\",\n  \"system\": \"<string>\",\n  \"description\": \"<string>\",\n  \"tools\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"mcp_servers\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"skills\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"metadata\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           },
           "response": [
             {
-              "id": "b6933631-611d-473e-9084-b020d43629a8",
-              "name": "Skill deleted.",
+              "id": "f7b0c574-fece-4673-9dc3-fee67370bd4e",
+              "name": "Agent updated; new version returned.",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
-                    "skills",
-                    ":skill_id"
+                    "agents",
+                    ":agent_id"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -667,7 +517,7 @@
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
-                      "key": "skill_id",
+                      "key": "agent_id",
                       "description": "(Required) "
                     }
                   ]
@@ -689,16 +539,148 @@
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) Must include skills-2025-10-02.",
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
                     "key": "anthropic-beta",
-                    "value": "skills-2025-10-02"
+                    "value": "managed-agents-2026-04-01"
                   },
                   {
                     "key": "Accept",
                     "value": "application/json"
                   }
                 ],
-                "method": "DELETE",
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"version\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"model\": \"<string>\",\n  \"system\": \"<string>\",\n  \"description\": \"<string>\",\n  \"tools\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"mcp_servers\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"skills\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"metadata\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"agent\",\n  \"name\": \"string\",\n  \"model\": {\n    \"id\": \"string\",\n    \"speed\": \"string\"\n  },\n  \"system\": \"string\",\n  \"description\": \"string\",\n  \"metadata\": {},\n  \"version\": 2380,\n  \"created_at\": \"2026-07-27T13:26:42.684Z\",\n  \"updated_at\": \"1998-03-03T19:31:30.790Z\",\n  \"archived_at\": \"1968-08-30T20:46:39.171Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a6388e01-dd5e-401e-9fe4-1f5290b28b99",
+          "name": "Anthropic Archive Agent",
+          "request": {
+            "name": "Anthropic Archive Agent",
+            "description": {
+              "content": "Archive an agent; existing sessions continue running.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                ":agent_id",
+                "archive"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8d8e7a74-e663-42e8-86f5-681c14dc2b0d",
+              "name": "Agent archived.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "anthropic-version",
+                    "value": "2023-06-01"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
+                    "key": "anthropic-beta",
+                    "value": "managed-agents-2026-04-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
                 "body": {}
               },
               "status": "OK",
@@ -709,19 +691,78 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"type\": \"skill_deleted\"\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"type\": \"agent\",\n  \"name\": \"string\",\n  \"model\": {\n    \"id\": \"string\",\n    \"speed\": \"string\"\n  },\n  \"system\": \"string\",\n  \"description\": \"string\",\n  \"metadata\": {},\n  \"version\": 2380,\n  \"created_at\": \"2026-07-27T13:26:42.684Z\",\n  \"updated_at\": \"1998-03-03T19:31:30.790Z\",\n  \"archived_at\": \"1968-08-30T20:46:39.171Z\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "485e539f-d405-46ac-ac56-466ddd3eb889",
+          "name": "Anthropic List Agent Versions",
+          "request": {
+            "name": "Anthropic List Agent Versions",
+            "description": {
+              "content": "Full version history for the agent.",
+              "type": "text/plain"
             },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                ":agent_id",
+                "versions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Must include managed-agents-2026-04-01.",
+                "key": "anthropic-beta",
+                "value": "managed-agents-2026-04-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
             {
-              "id": "65d03327-b9a7-4708-99ca-d625e9b2f038",
-              "name": "Error response.",
+              "id": "b53eee93-7777-44c8-babd-8602a22b203e",
+              "name": "Agent versions.",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
-                    "skills",
-                    ":skill_id"
+                    "agents",
+                    ":agent_id",
+                    "versions"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -732,7 +773,7 @@
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
-                      "key": "skill_id",
+                      "key": "agent_id",
                       "description": "(Required) "
                     }
                   ]
@@ -754,27 +795,27 @@
                   },
                   {
                     "disabled": false,
-                    "description": "(Required) Must include skills-2025-10-02.",
+                    "description": "(Required) Must include managed-agents-2026-04-01.",
                     "key": "anthropic-beta",
-                    "value": "skills-2025-10-02"
+                    "value": "managed-agents-2026-04-01"
                   },
                   {
                     "key": "Accept",
                     "value": "application/json"
                   }
                 ],
-                "method": "DELETE",
+                "method": "GET",
                 "body": {}
               },
-              "status": "Bad Request",
-              "code": 400,
+              "status": "OK",
+              "code": 200,
               "header": [
                 {
                   "key": "Content-Type",
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"type\": \"string\",\n  \"error\": {\n    \"type\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"type\": \"agent\",\n      \"name\": \"string\",\n      \"model\": {\n        \"id\": \"string\",\n        \"speed\": \"string\"\n      },\n      \"system\": \"string\",\n      \"description\": \"string\",\n      \"metadata\": {},\n      \"version\": 3688,\n      \"created_at\": \"2013-04-05T13:10:12.463Z\",\n      \"updated_at\": \"2016-07-24T23:37:45.011Z\",\n      \"archived_at\": \"1968-06-08T18:06:11.010Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"type\": \"agent\",\n      \"name\": \"string\",\n      \"model\": {\n        \"id\": \"string\",\n        \"speed\": \"string\"\n      },\n      \"system\": \"string\",\n      \"description\": \"string\",\n      \"metadata\": {},\n      \"version\": 3161,\n      \"created_at\": \"2013-07-13T16:51:13.704Z\",\n      \"updated_at\": \"1989-02-19T23:59:01.008Z\",\n      \"archived_at\": \"1957-07-23T04:54:43.427Z\"\n    }\n  ],\n  \"has_more\": true\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -814,8 +855,8 @@
     ]
   },
   "info": {
-    "_postman_id": "5cde8a69-3a32-4367-9e3d-bded6c741ac0",
-    "name": "Anthropic Admin Agents Skills API",
+    "_postman_id": "0d7d4789-9f13-46de-b0f1-2fff46863f30",
+    "name": "Anthropic Admin Agents API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
       "content": "Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.\n\nContact Support:\n Name: Anthropic\n Email: support@anthropic.com",

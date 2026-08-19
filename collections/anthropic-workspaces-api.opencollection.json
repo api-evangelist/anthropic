@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Anthropic Admin Agents Files API",
+    "name": "Anthropic Admin Agents Workspaces API",
     "version": "1.0.0"
   },
   "request": {
@@ -15,26 +15,22 @@
   "items": [
     {
       "info": {
-        "name": "Files",
+        "name": "Workspaces",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Anthropic List Files",
+            "name": "Anthropic List Workspaces",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.anthropic.com/v1/files",
+            "url": "https://api.anthropic.com/v1/organizations/workspaces",
             "headers": [
               {
                 "name": "anthropic-version",
                 "value": ""
-              },
-              {
-                "name": "anthropic-beta",
-                "value": "files-api-2025-04-14"
               }
             ],
             "params": [
@@ -48,129 +44,123 @@
                 "name": "before_id",
                 "value": "",
                 "type": "query",
-                "description": "ID of the object to use as a cursor for pagination. Returns results immediately before this object."
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object."
               },
               {
                 "name": "after_id",
                 "value": "",
                 "type": "query",
-                "description": "ID of the object to use as a cursor for pagination. Returns results immediately after this object."
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object."
+              },
+              {
+                "name": "include_archived",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include archived workspaces in the response"
               }
             ]
           },
-          "docs": "Retrieves a paginated list of all files that have been uploaded to your organization."
+          "docs": "Retrieves a paginated list of workspaces associated with the organization."
         },
         {
           "info": {
-            "name": "Anthropic Create File",
+            "name": "Anthropic Create Workspace",
             "type": "http"
           },
           "http": {
             "method": "POST",
-            "url": "https://api.anthropic.com/v1/files",
+            "url": "https://api.anthropic.com/v1/organizations/workspaces",
             "headers": [
               {
                 "name": "anthropic-version",
                 "value": ""
-              },
-              {
-                "name": "anthropic-beta",
-                "value": "files-api-2025-04-14"
               }
             ],
             "body": {
-              "type": "multipart-form",
-              "data": []
+              "type": "json",
+              "data": "{}"
             }
           },
-          "docs": "Uploads a file to Anthropic's servers for use in subsequent API calls."
+          "docs": "Creates a new workspace within the organization."
         },
         {
           "info": {
-            "name": "Anthropic Get File Metadata",
+            "name": "Anthropic Get Workspace",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.anthropic.com/v1/files/:file_id",
+            "url": "https://api.anthropic.com/v1/organizations/workspaces/:workspace_id",
             "headers": [
               {
                 "name": "anthropic-version",
                 "value": ""
-              },
-              {
-                "name": "anthropic-beta",
-                "value": "files-api-2025-04-14"
               }
             ],
             "params": [
               {
-                "name": "file_id",
-                "value": "file_011CNha8iCJcU1wXNR6q4V8w",
+                "name": "workspace_id",
+                "value": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
                 "type": "path",
-                "description": "Unique identifier for the file"
+                "description": "Unique identifier for the workspace"
               }
             ]
           },
-          "docs": "Retrieves metadata information for a previously uploaded file."
+          "docs": "Retrieves detailed information about a specific workspace."
         },
         {
           "info": {
-            "name": "Anthropic Delete File",
+            "name": "Anthropic Update Workspace",
             "type": "http"
           },
           "http": {
-            "method": "DELETE",
-            "url": "https://api.anthropic.com/v1/files/:file_id",
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/organizations/workspaces/:workspace_id",
             "headers": [
               {
                 "name": "anthropic-version",
                 "value": ""
-              },
-              {
-                "name": "anthropic-beta",
-                "value": "files-api-2025-04-14"
               }
             ],
             "params": [
               {
-                "name": "file_id",
-                "value": "file_011CNha8iCJcU1wXNR6q4V8w",
+                "name": "workspace_id",
+                "value": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
                 "type": "path",
-                "description": "Unique identifier for the file"
+                "description": "Unique identifier for the workspace"
               }
-            ]
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
           },
-          "docs": "Permanently deletes a file from Anthropic's storage system."
+          "docs": "Updates configuration for a specific workspace."
         },
         {
           "info": {
-            "name": "Anthropic Download File Content",
+            "name": "Anthropic Archive Workspace",
             "type": "http"
           },
           "http": {
-            "method": "GET",
-            "url": "https://api.anthropic.com/v1/files/:file_id/content",
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/organizations/workspaces/:workspace_id/archive",
             "headers": [
               {
                 "name": "anthropic-version",
                 "value": ""
-              },
-              {
-                "name": "anthropic-beta",
-                "value": "files-api-2025-04-14"
               }
             ],
             "params": [
               {
-                "name": "file_id",
-                "value": "file_011CNha8iCJcU1wXNR6q4V8w",
+                "name": "workspace_id",
+                "value": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
                 "type": "path",
-                "description": "Unique identifier for the file"
+                "description": "Unique identifier for the workspace"
               }
             ]
           },
-          "docs": "Downloads the actual content of a previously uploaded file."
+          "docs": "Archives a specific workspace, making it read-only."
         }
       ]
     }

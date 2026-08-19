@@ -1,20 +1,20 @@
 {
   "item": [
     {
-      "id": "67da3cb5-cfc8-4f2d-abd9-699c69616acf",
-      "name": "Claude Code Analytics",
+      "id": "7bc82506-9591-4a8e-afed-0497a8b75c5c",
+      "name": "Usage",
       "description": {
-        "content": "Daily aggregated Claude Code usage and productivity metrics",
+        "content": "Token usage and consumption reporting",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "531e4cf6-7f37-4556-9112-163f074a3200",
-          "name": "Anthropic Get Claude Code Usage Report",
+          "id": "52511284-09a0-42e1-82cb-dec638fec6a3",
+          "name": "Anthropic Get Messages Usage Report",
           "request": {
-            "name": "Anthropic Get Claude Code Usage Report",
+            "name": "Anthropic Get Messages Usage Report",
             "description": {
-              "content": "Daily aggregated user-level Claude Code usage including session counts, lines of code added/removed, commits, pull requests created, tool actions, and estimated costs by model.\n",
+              "content": "Aggregated token usage for Messages API requests, broken down by day, model, workspace, and service tier.\n",
               "type": "text/plain"
             },
             "url": {
@@ -22,7 +22,7 @@
                 "v1",
                 "organizations",
                 "usage_report",
-                "claude_code"
+                "messages"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -32,13 +32,51 @@
                   "disabled": false,
                   "key": "starting_at",
                   "value": "<dateTime>",
-                  "description": "(Required) RFC3339 inclusive lower bound (UTC date) for the report window."
+                  "description": "(Required) RFC3339 inclusive lower bound for the report window."
                 },
                 {
                   "disabled": false,
                   "key": "ending_at",
                   "value": "<dateTime>",
-                  "description": "RFC3339 exclusive upper bound (UTC date) for the report window."
+                  "description": "RFC3339 exclusive upper bound for the report window."
+                },
+                {
+                  "disabled": false,
+                  "key": "bucket_width",
+                  "value": "1d",
+                  "description": "Aggregation bucket size."
+                },
+                {
+                  "disabled": false,
+                  "key": "group_by",
+                  "value": "<string>",
+                  "description": "Dimensions to group the report by."
+                },
+                {
+                  "disabled": false,
+                  "key": "group_by",
+                  "value": "<string>",
+                  "description": "Dimensions to group the report by."
+                },
+                {
+                  "disabled": false,
+                  "key": "models",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "models",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "workspace_ids",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "workspace_ids",
+                  "value": "<string>"
                 },
                 {
                   "disabled": false,
@@ -70,15 +108,15 @@
           },
           "response": [
             {
-              "id": "02e47df1-a736-4984-ab52-1f2fa8e778cb",
-              "name": "Claude Code analytics report.",
+              "id": "f36718dd-0552-48f2-8bfc-6817c6a47364",
+              "name": "Usage report.",
               "originalRequest": {
                 "url": {
                   "path": [
                     "v1",
                     "organizations",
                     "usage_report",
-                    "claude_code"
+                    "messages"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -91,6 +129,34 @@
                     {
                       "key": "ending_at",
                       "value": "<dateTime>"
+                    },
+                    {
+                      "key": "bucket_width",
+                      "value": "1d"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "models",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "models",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
                     },
                     {
                       "key": "limit",
@@ -134,12 +200,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"date\": \"2022-10-02\",\n      \"actor\": {\n        \"type\": \"user_actor\",\n        \"email_address\": \"string\",\n        \"user_id\": \"string\"\n      },\n      \"organization_id\": \"string\",\n      \"terminal_type\": \"string\",\n      \"core_metrics\": {\n        \"num_sessions\": 2953,\n        \"lines_of_code\": {\n          \"added\": 9230,\n          \"removed\": 2068\n        },\n        \"commits_by_claude_code\": 5022,\n        \"pull_requests_by_claude_code\": 3619\n      },\n      \"tool_actions\": {\n        \"edit_tool\": {\n          \"accepted\": 4517,\n          \"rejected\": 5202\n        },\n        \"multi_edit_tool\": {\n          \"accepted\": 1966,\n          \"rejected\": 2957\n        },\n        \"write_tool\": {\n          \"accepted\": 7937,\n          \"rejected\": 4867\n        },\n        \"notebook_edit_tool\": {\n          \"accepted\": 7183,\n          \"rejected\": 7986\n        }\n      },\n      \"model_breakdown\": [\n        {\n          \"model\": \"string\",\n          \"tokens\": {\n            \"input\": 5483,\n            \"output\": 7976,\n            \"cache_read\": 5024,\n            \"cache_creation\": {\n              \"ephemeral_5m_input_tokens\": 3651,\n              \"ephemeral_1h_input_tokens\": 8783\n            }\n          },\n          \"estimated_cost\": {\n            \"currency\": \"USD\",\n            \"amount\": \"string\"\n          }\n        },\n        {\n          \"model\": \"string\",\n          \"tokens\": {\n            \"input\": 9457,\n            \"output\": 4191,\n            \"cache_read\": 9238,\n            \"cache_creation\": {\n              \"ephemeral_5m_input_tokens\": 9008,\n              \"ephemeral_1h_input_tokens\": 4045\n            }\n          },\n          \"estimated_cost\": {\n            \"currency\": \"USD\",\n            \"amount\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"date\": \"1963-03-12\",\n      \"actor\": {\n        \"type\": \"user_actor\",\n        \"email_address\": \"string\",\n        \"user_id\": \"string\"\n      },\n      \"organization_id\": \"string\",\n      \"terminal_type\": \"string\",\n      \"core_metrics\": {\n        \"num_sessions\": 7276,\n        \"lines_of_code\": {\n          \"added\": 3951,\n          \"removed\": 6064\n        },\n        \"commits_by_claude_code\": 2494,\n        \"pull_requests_by_claude_code\": 8886\n      },\n      \"tool_actions\": {\n        \"edit_tool\": {\n          \"accepted\": 9108,\n          \"rejected\": 6246\n        },\n        \"multi_edit_tool\": {\n          \"accepted\": 1126,\n          \"rejected\": 300\n        },\n        \"write_tool\": {\n          \"accepted\": 1524,\n          \"rejected\": 9623\n        },\n        \"notebook_edit_tool\": {\n          \"accepted\": 2148,\n          \"rejected\": 1647\n        }\n      },\n      \"model_breakdown\": [\n        {\n          \"model\": \"string\",\n          \"tokens\": {\n            \"input\": 7020,\n            \"output\": 3600,\n            \"cache_read\": 8240,\n            \"cache_creation\": {\n              \"ephemeral_5m_input_tokens\": 2672,\n              \"ephemeral_1h_input_tokens\": 5888\n            }\n          },\n          \"estimated_cost\": {\n            \"currency\": \"USD\",\n            \"amount\": \"string\"\n          }\n        },\n        {\n          \"model\": \"string\",\n          \"tokens\": {\n            \"input\": 4572,\n            \"output\": 3093,\n            \"cache_read\": 77,\n            \"cache_creation\": {\n              \"ephemeral_5m_input_tokens\": 9310,\n              \"ephemeral_1h_input_tokens\": 6046\n            }\n          },\n          \"estimated_cost\": {\n            \"currency\": \"USD\",\n            \"amount\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"has_more\": true,\n  \"next_page\": \"string\"\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"starting_at\": \"1981-11-02T01:59:39.496Z\",\n      \"ending_at\": \"1968-10-26T00:44:34.380Z\",\n      \"results\": [\n        {\n          \"workspace_id\": \"string\",\n          \"api_key_id\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"context_window\": \"string\",\n          \"uncached_input_tokens\": 2104,\n          \"cache_read_input_tokens\": 6831,\n          \"cache_creation_5m_input_tokens\": 8891,\n          \"cache_creation_1h_input_tokens\": 8053,\n          \"output_tokens\": 469,\n          \"server_tool_use\": {}\n        },\n        {\n          \"workspace_id\": \"string\",\n          \"api_key_id\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"context_window\": \"string\",\n          \"uncached_input_tokens\": 1601,\n          \"cache_read_input_tokens\": 2154,\n          \"cache_creation_5m_input_tokens\": 3936,\n          \"cache_creation_1h_input_tokens\": 7011,\n          \"output_tokens\": 759,\n          \"server_tool_use\": {}\n        }\n      ]\n    },\n    {\n      \"starting_at\": \"2015-02-12T10:02:53.841Z\",\n      \"ending_at\": \"2018-05-09T05:43:01.680Z\",\n      \"results\": [\n        {\n          \"workspace_id\": \"string\",\n          \"api_key_id\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"context_window\": \"string\",\n          \"uncached_input_tokens\": 1943,\n          \"cache_read_input_tokens\": 4918,\n          \"cache_creation_5m_input_tokens\": 8979,\n          \"cache_creation_1h_input_tokens\": 6951,\n          \"output_tokens\": 5277,\n          \"server_tool_use\": {}\n        },\n        {\n          \"workspace_id\": \"string\",\n          \"api_key_id\": \"string\",\n          \"model\": \"string\",\n          \"service_tier\": \"string\",\n          \"context_window\": \"string\",\n          \"uncached_input_tokens\": 2723,\n          \"cache_read_input_tokens\": 2970,\n          \"cache_creation_5m_input_tokens\": 3831,\n          \"cache_creation_1h_input_tokens\": 6749,\n          \"output_tokens\": 5130,\n          \"server_tool_use\": {}\n        }\n      ]\n    }\n  ],\n  \"has_more\": false,\n  \"next_page\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "b02dd298-2593-4c2e-8476-fcd2a24c1c32",
+              "id": "e662e711-7543-4724-9ce7-94d8ee13006a",
               "name": "Error response.",
               "originalRequest": {
                 "url": {
@@ -147,7 +213,7 @@
                     "v1",
                     "organizations",
                     "usage_report",
-                    "claude_code"
+                    "messages"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -160,6 +226,34 @@
                     {
                       "key": "ending_at",
                       "value": "<dateTime>"
+                    },
+                    {
+                      "key": "bucket_width",
+                      "value": "1d"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "group_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "models",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "models",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "workspace_ids",
+                      "value": "<string>"
                     },
                     {
                       "key": "limit",
@@ -243,8 +337,8 @@
     ]
   },
   "info": {
-    "_postman_id": "2df6892d-80ef-4f3e-b6a7-5967bf06fbd0",
-    "name": "Anthropic Admin Agents Claude Code Analytics API",
+    "_postman_id": "1801a299-dd16-4d99-a2aa-5dd2646c8228",
+    "name": "Anthropic Admin Agents Usage API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
       "content": "Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.\n\nContact Support:\n Name: Anthropic\n Email: support@anthropic.com",

@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Anthropic Admin Agents Claude Code Analytics API",
+    "name": "Anthropic Admin Agents Usage API",
     "version": "1.0.0"
   },
   "request": {
@@ -15,18 +15,18 @@
   "items": [
     {
       "info": {
-        "name": "Claude Code Analytics",
+        "name": "Usage",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Anthropic Get Claude Code Usage Report",
+            "name": "Anthropic Get Messages Usage Report",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.anthropic.com/v1/v1/organizations/usage_report/claude_code",
+            "url": "https://api.anthropic.com/v1/v1/organizations/usage_report/messages",
             "headers": [
               {
                 "name": "anthropic-version",
@@ -38,13 +38,35 @@
                 "name": "starting_at",
                 "value": "",
                 "type": "query",
-                "description": "RFC3339 inclusive lower bound (UTC date) for the report window."
+                "description": "RFC3339 inclusive lower bound for the report window."
               },
               {
                 "name": "ending_at",
                 "value": "",
                 "type": "query",
-                "description": "RFC3339 exclusive upper bound (UTC date) for the report window."
+                "description": "RFC3339 exclusive upper bound for the report window."
+              },
+              {
+                "name": "bucket_width",
+                "value": "",
+                "type": "query",
+                "description": "Aggregation bucket size."
+              },
+              {
+                "name": "group_by",
+                "value": "",
+                "type": "query",
+                "description": "Dimensions to group the report by."
+              },
+              {
+                "name": "models",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "workspace_ids",
+                "value": "",
+                "type": "query"
               },
               {
                 "name": "limit",
@@ -58,7 +80,7 @@
               }
             ]
           },
-          "docs": "Daily aggregated user-level Claude Code usage including session counts, lines of code added/removed, commits, pull requests created, tool actions, and estimated costs by model.\n"
+          "docs": "Aggregated token usage for Messages API requests, broken down by day, model, workspace, and service tier.\n"
         }
       ]
     }

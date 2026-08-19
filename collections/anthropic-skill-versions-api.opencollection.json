@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Anthropic Admin Agents Skills API",
+    "name": "Anthropic Admin Agents Skill Versions API",
     "version": "1.0.0"
   },
   "request": {
@@ -15,18 +15,18 @@
   "items": [
     {
       "info": {
-        "name": "Skills",
+        "name": "Skill Versions",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Anthropic List Skills",
+            "name": "Anthropic List Skill Versions",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.anthropic.com/v1/v1/skills",
+            "url": "https://api.anthropic.com/v1/v1/skills/:skill_id/versions",
             "headers": [
               {
                 "name": "anthropic-version",
@@ -39,32 +39,27 @@
             ],
             "params": [
               {
+                "name": "skill_id",
+                "value": "",
+                "type": "path"
+              },
+              {
                 "name": "limit",
-                "value": "",
-                "type": "query"
-              },
-              {
-                "name": "before_id",
-                "value": "",
-                "type": "query"
-              },
-              {
-                "name": "after_id",
                 "value": "",
                 "type": "query"
               }
             ]
           },
-          "docs": "Paginated list of all Skills in the current workspace."
+          "docs": "Paginated list of versions for the given Skill."
         },
         {
           "info": {
-            "name": "Anthropic Create Skill",
+            "name": "Anthropic Create Skill Version",
             "type": "http"
           },
           "http": {
             "method": "POST",
-            "url": "https://api.anthropic.com/v1/v1/skills",
+            "url": "https://api.anthropic.com/v1/v1/skills/:skill_id/versions",
             "headers": [
               {
                 "name": "anthropic-version",
@@ -73,6 +68,13 @@
               {
                 "name": "anthropic-beta",
                 "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "skill_id",
+                "value": "",
+                "type": "path"
               }
             ],
             "body": {
@@ -80,16 +82,16 @@
               "data": []
             }
           },
-          "docs": "Upload a new Skill as a zip archive containing SKILL.md plus any supporting files. The Skill is added to the workspace catalog and becomes available to all workspace members.\n"
+          "docs": "Upload a new version of an existing Skill."
         },
         {
           "info": {
-            "name": "Anthropic Get Skill",
+            "name": "Anthropic Get Skill Version",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://api.anthropic.com/v1/v1/skills/:skill_id",
+            "url": "https://api.anthropic.com/v1/v1/skills/:skill_id/versions/:version",
             "headers": [
               {
                 "name": "anthropic-version",
@@ -105,38 +107,15 @@
                 "name": "skill_id",
                 "value": "",
                 "type": "path"
-              }
-            ]
-          },
-          "docs": "Retrieve metadata for a single Skill."
-        },
-        {
-          "info": {
-            "name": "Anthropic Delete Skill",
-            "type": "http"
-          },
-          "http": {
-            "method": "DELETE",
-            "url": "https://api.anthropic.com/v1/v1/skills/:skill_id",
-            "headers": [
-              {
-                "name": "anthropic-version",
-                "value": ""
               },
               {
-                "name": "anthropic-beta",
-                "value": ""
-              }
-            ],
-            "params": [
-              {
-                "name": "skill_id",
+                "name": "version",
                 "value": "",
                 "type": "path"
               }
             ]
           },
-          "docs": "Delete a Skill from the workspace. All versions are removed."
+          "docs": "Retrieve metadata for a specific Skill version."
         }
       ]
     }

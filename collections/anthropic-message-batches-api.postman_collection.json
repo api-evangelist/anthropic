@@ -1,7 +1,7 @@
 {
   "item": [
     {
-      "id": "780ac464-7da2-468a-90e2-9a4c4b0b2792",
+      "id": "959ee5b4-4ebb-42e0-b528-bec7ff12d764",
       "name": "Message Batches",
       "description": {
         "content": "Create, manage, and retrieve batch message processing jobs",
@@ -9,7 +9,7 @@
       },
       "item": [
         {
-          "id": "331d8604-c563-4a47-997a-79d422639ca5",
+          "id": "d2238da9-f44e-4f0e-a38d-248e5fbd0a0f",
           "name": "Anthropic List Message Batches",
           "request": {
             "name": "Anthropic List Message Batches",
@@ -70,7 +70,7 @@
           },
           "response": [
             {
-              "id": "3b0015c8-4533-4408-879c-a4427e870bff",
+              "id": "d859bf96-927d-40eb-98b4-d8c14078948e",
               "name": "Successful Response",
               "originalRequest": {
                 "url": {
@@ -139,7 +139,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "fc4d36a4-aa3d-4e9a-8e79-44e5b4a43635",
+              "id": "d40f2305-d138-4ea2-892b-6d6f9ab05c2a",
               "name": "Error Response",
               "originalRequest": {
                 "url": {
@@ -214,7 +214,7 @@
           }
         },
         {
-          "id": "44cebe82-ca2c-4d73-bdc4-2f037e08da82",
+          "id": "263ead64-6f37-477d-ad96-c85dcbcfda2e",
           "name": "Anthropic Create Message Batch",
           "request": {
             "name": "Anthropic Create Message Batch",
@@ -269,7 +269,7 @@
           },
           "response": [
             {
-              "id": "f76e3fc5-43cd-4a00-bdcc-3092a67b986b",
+              "id": "2dad5a97-7526-449f-8dcc-b1e0a96cb861",
               "name": "Successful Response",
               "originalRequest": {
                 "url": {
@@ -333,7 +333,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "b3aed107-705f-4060-91b2-1eb1c695fde8",
+              "id": "3772c3ce-f222-4d10-98ed-9aeed17c38fe",
               "name": "Error Response",
               "originalRequest": {
                 "url": {
@@ -403,7 +403,7 @@
           }
         },
         {
-          "id": "1994467c-2ab6-4c71-a43d-ae37e68405b4",
+          "id": "3b7850b3-87b8-4b9a-bfb5-a1c7da303869",
           "name": "Anthropic Retrieve Message Batch",
           "request": {
             "name": "Anthropic Retrieve Message Batch",
@@ -454,7 +454,7 @@
           },
           "response": [
             {
-              "id": "9ee4e9ef-3d1b-43c4-87e7-546e30517101",
+              "id": "793b6d92-595a-4332-8db8-6aa4600bdbfe",
               "name": "Successful Response",
               "originalRequest": {
                 "url": {
@@ -519,7 +519,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "2f639d5d-8820-4f93-a376-99aeaf05c845",
+              "id": "272aa2a2-dea6-45b5-b08c-d52b0d389a97",
               "name": "Error Response",
               "originalRequest": {
                 "url": {
@@ -590,7 +590,7 @@
           }
         },
         {
-          "id": "a224b00b-cfae-4e28-9f7b-59407b6c3340",
+          "id": "5caf3895-8b66-4338-892c-4cd2f4c80572",
           "name": "Anthropic Delete Message Batch",
           "request": {
             "name": "Anthropic Delete Message Batch",
@@ -641,7 +641,7 @@
           },
           "response": [
             {
-              "id": "d953eb50-56b1-42c5-8a8f-5b9c39b9cb17",
+              "id": "d8339820-2d6b-46d0-9845-89295316dbcf",
               "name": "Successful Response",
               "originalRequest": {
                 "url": {
@@ -706,7 +706,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "7a0f0180-e3dd-4aa9-ab11-179aa5ab45e8",
+              "id": "f62d633c-8b23-4a9c-a3d5-63a6c8c17958",
               "name": "Error Response",
               "originalRequest": {
                 "url": {
@@ -777,7 +777,7 @@
           }
         },
         {
-          "id": "8de101d5-b7b9-43c7-943a-28325f8e771b",
+          "id": "de3ac7d0-2c0f-46c1-b7d4-d022ef52a1a2",
           "name": "Anthropic Retrieve Message Batch Results",
           "request": {
             "name": "Anthropic Retrieve Message Batch Results",
@@ -829,7 +829,7 @@
           },
           "response": [
             {
-              "id": "63cdf76a-2eb6-4cb8-a84d-507c732eb10a",
+              "id": "0ce88afb-5876-43ca-aa6b-e684d017e746",
               "name": "Successful Response - Returns a .jsonl file where each line is a JSON object",
               "originalRequest": {
                 "url": {
@@ -895,7 +895,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "abc5988c-039c-4275-9d7f-78a3d038af35",
+              "id": "e30e5ed0-e2f0-470f-93ed-b0c2a41b46da",
               "name": "Error Response",
               "originalRequest": {
                 "url": {
@@ -967,7 +967,7 @@
           }
         },
         {
-          "id": "d5578ed3-f6a6-4c07-b72d-9bad96350de4",
+          "id": "83e23521-30e5-433e-a611-96602a4b76a6",
           "name": "Anthropic Cancel Message Batch",
           "request": {
             "name": "Anthropic Cancel Message Batch",
@@ -1019,7 +1019,7 @@
           },
           "response": [
             {
-              "id": "9ff429fd-bc21-44fd-af3a-28edbf8d57af",
+              "id": "b1b5d854-8069-4c7d-8014-117a76775bf6",
               "name": "Successful Response",
               "originalRequest": {
                 "url": {
@@ -1085,7 +1085,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "e3c050aa-1662-462f-b70a-bdbbf737c57d",
+              "id": "2d477e5d-ca46-475b-9d98-6e5998c366cd",
               "name": "Error Response",
               "originalRequest": {
                 "url": {
@@ -1186,11 +1186,11 @@
     ]
   },
   "info": {
-    "_postman_id": "7563e6fb-530d-4f9a-b733-270f05954942",
-    "name": "Anthropic Message Batches API",
+    "_postman_id": "b30927f1-32ac-433e-8cc9-4c2b48199e30",
+    "name": "Anthropic Admin Agents Message Batches API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "Send a batch of Message creation requests. The Message Batches API can be used \nto process multiple Messages API requests at once. Once a Message Batch is created, \nit begins processing immediately. Batches can take up to 24 hours to complete.\n\n\nContact Support:\n Name: Anthropic\n Email: support@anthropic.com",
+      "content": "Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.\n\nContact Support:\n Name: Anthropic\n Email: support@anthropic.com",
       "type": "text/plain"
     }
   }
