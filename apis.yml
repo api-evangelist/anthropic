@@ -4,6 +4,9 @@ apis:
 - aid: anthropic:anthropic-messages-api
   name: Anthropic Messages API
   tags:
+  - Artificial Intelligence
+  - Message
+  tags_raw:
   - AI
   - Artificial Intelligence
   - Messages
@@ -33,6 +36,9 @@ apis:
 - aid: anthropic:anthropic-models-api
   name: Anthropic Models API
   tags:
+  - Artificial Intelligence
+  - Models
+  tags_raw:
   - AI
   - Artificial Intelligence
   - Models
@@ -49,6 +55,10 @@ apis:
 - aid: anthropic:anthropic-message-batches-api
   name: Anthropic Message Batches API
   tags:
+  - Artificial Intelligence
+  - Batches
+  - Message
+  tags_raw:
   - AI
   - Artificial Intelligence
   - Batches
@@ -66,6 +76,9 @@ apis:
 - aid: anthropic:anthropic-files-api
   name: Anthropic Files API
   tags:
+  - Artificial Intelligence
+  - File
+  tags_raw:
   - AI
   - Artificial Intelligence
   - Files
@@ -82,6 +95,10 @@ apis:
 - aid: anthropic:anthropic-token-counting-api
   name: Anthropic Token Counting API
   tags:
+  - Artificial Intelligence
+  - Counting
+  - Tokens
+  tags_raw:
   - AI
   - Artificial Intelligence
   - Counting
@@ -100,6 +117,10 @@ apis:
   name: Anthropic Skills API
   tags:
   - Agents
+  - Artificial Intelligence
+  - Skills
+  tags_raw:
+  - Agents
   - AI
   - Artificial Intelligence
   - Skills
@@ -116,6 +137,12 @@ apis:
 - aid: anthropic:anthropic-claude-code-analytics-api
   name: Anthropic Claude Code Analytics API
   tags:
+  - Administration
+  - Artificial Intelligence
+  - Analytics
+  - Claude Code
+  - Productivity
+  tags_raw:
   - Administration
   - AI
   - Analytics
@@ -160,6 +187,8 @@ apis:
   description: Monitor and manage API keys
   humanURL: https://docs.anthropic.com/en/api/messages
   tags:
+  - APIKeys
+  tags_raw:
   - Api Keys
   properties:
   - type: OpenAPI
@@ -229,6 +258,8 @@ apis:
   description: User messages and tool results sent to a session
   humanURL: https://docs.anthropic.com/en/api/messages
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
@@ -525,6 +556,14 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/environments
 name: Anthropic
 tags:
+- Artificial Intelligence
+- Claude
+- Foundation Models
+- Large Language Models
+- Machine-Learning
+- MCP
+- Agents
+tags_raw:
 - AI
 - Artificial Intelligence
 - Claude
