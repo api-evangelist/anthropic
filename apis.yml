@@ -28,11 +28,11 @@ apis:
     type: JSONLD
   - url: graphql/anthropic-graphql.md
     type: GraphQL
-  description: >-
-    Send a structured list of input messages with text and/or image content, and the model will generate
-    the next message in the conversation. The Messages API supports text, images, tool use, extended thinking,
-    streaming, structured outputs, prompt caching, compaction, and the new advisor tool for pairing executor
-    and higher-intelligence advisor models.
+  description: Send a structured list of input messages with text and/or image content, and the model
+    will generate the next message in the conversation. The Messages API supports text, images, tool use,
+    extended thinking, streaming, structured outputs, prompt caching, compaction, and the new advisor
+    tool for pairing executor and higher-intelligence advisor models.
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-models-api
   name: Anthropic Models API
   tags:
@@ -48,10 +48,10 @@ apis:
     type: Documentation
   - url: openapi/anthropic-models-api-openapi.yml
     type: OpenAPI
-  description: >-
-    List and inspect Claude models including Opus 4.7, Sonnet 4.6, and Haiku 4.5. The response includes
-    max_input_tokens, max_tokens, and a capabilities object for every model so clients can discover model
-    properties programmatically.
+  description: List and inspect Claude models including Opus 4.7, Sonnet 4.6, and Haiku 4.5. The response
+    includes max_input_tokens, max_tokens, and a capabilities object for every model so clients can discover
+    model properties programmatically.
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-message-batches-api
   name: Anthropic Message Batches API
   tags:
@@ -69,10 +69,10 @@ apis:
     type: Documentation
   - url: openapi/anthropic-message-batches-api-openapi.yml
     type: OpenAPI
-  description: >-
-    Send a batch of Message creation requests at 50% off both input and output tokens. Batches can take
-    up to 24 hours to complete. Supports up to 300k output tokens per request on Opus 4.6/4.7 and Sonnet
-    4.6 with the output-300k-2026-03-24 beta header.
+  description: Send a batch of Message creation requests at 50% off both input and output tokens. Batches
+    can take up to 24 hours to complete. Supports up to 300k output tokens per request on Opus 4.6/4.7
+    and Sonnet 4.6 with the output-300k-2026-03-24 beta header.
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-files-api
   name: Anthropic Files API
   tags:
@@ -88,10 +88,10 @@ apis:
     type: Documentation
   - url: openapi/anthropic-files-api-openapi.yml
     type: OpenAPI
-  description: >-
-    The Files API lets you upload and manage files for reuse across Messages, Batches, code execution,
-    and Managed Agents without re-uploading content. 500 MB request limit; supports PDFs, images, Office
-    documents, and plain text.
+  description: The Files API lets you upload and manage files for reuse across Messages, Batches, code
+    execution, and Managed Agents without re-uploading content. 500 MB request limit; supports PDFs, images,
+    Office documents, and plain text.
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-token-counting-api
   name: Anthropic Token Counting API
   tags:
@@ -109,10 +109,10 @@ apis:
     type: Documentation
   - url: openapi/anthropic-token-counting-api-openapi.yml
     type: OpenAPI
-  description: >-
-    Count the number of tokens in a Message, including tools, images, and documents, without creating
-    it. The Token Count API accepts the same structured list of inputs as Messages including system prompts,
-    tools, images, and PDFs. Free to use but subject to requests-per-minute rate limits.
+  description: Count the number of tokens in a Message, including tools, images, and documents, without
+    creating it. The Token Count API accepts the same structured list of inputs as Messages including
+    system prompts, tools, images, and PDFs. Free to use but subject to requests-per-minute rate limits.
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-skills-api
   name: Anthropic Skills API
   tags:
@@ -130,10 +130,10 @@ apis:
     type: Documentation
   - url: openapi/anthropic-skills-api-openapi.yml
     type: OpenAPI
-  description: >-
-    Create and manage custom Agent Skills. Skills are filesystem-based directories of instructions, scripts,
-    and resources that Claude loads on demand via progressive disclosure. Workspace-wide sharing. The
-    Skills API is currently in beta and requires the skills-2025-10-02 beta header.
+  description: Create and manage custom Agent Skills. Skills are filesystem-based directories of instructions,
+    scripts, and resources that Claude loads on demand via progressive disclosure. Workspace-wide sharing.
+    The Skills API is currently in beta and requires the skills-2025-10-02 beta header.
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-claude-code-analytics-api
   name: Anthropic Claude Code Analytics API
   tags:
@@ -155,10 +155,10 @@ apis:
     type: Documentation
   - url: openapi/anthropic-claude-code-analytics-api-openapi.yml
     type: OpenAPI
-  description: >-
-    Daily aggregated user-level Claude Code productivity metrics — sessions, lines of code, commits, pull
-    requests, tool actions, and estimated costs by model — via /v1/organizations/usage_report/claude_code.
+  description: Daily aggregated user-level Claude Code productivity metrics — sessions, lines of code,
+    commits, pull requests, tool actions, and estimated costs by model — via /v1/organizations/usage_report/claude_code.
     Requires an Admin API key.
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-agents-api
   name: Anthropic Agents API
   description: Reusable, versioned agent configurations
@@ -182,6 +182,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-api-keys-api
   name: Anthropic Api Keys API
   description: Monitor and manage API keys
@@ -207,6 +208,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-cost-api
   name: Anthropic Cost API
   description: Service-level cost reporting
@@ -230,6 +232,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-environments-api
   name: Anthropic Environments API
   description: Container configuration for agent sessions
@@ -253,6 +256,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-events-api
   name: Anthropic Events API
   description: User messages and tool results sent to a session
@@ -278,6 +282,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-organization-api
   name: Anthropic Organization API
   description: Retrieve organization information and settings
@@ -301,6 +306,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-organization-invites-api
   name: Anthropic Organization Invites API
   description: Create and manage organization invitations
@@ -324,6 +330,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-organization-members-api
   name: Anthropic Organization Members API
   description: Manage organization members and their roles
@@ -347,6 +354,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-prompt-generation-api
   name: Anthropic Prompt Generation API
   description: APIs for generating well-written prompts for specified tasks
@@ -370,6 +378,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-prompt-improvement-api
   name: Anthropic Prompt Improvement API
   description: APIs for enhancing existing prompts with feedback
@@ -393,6 +402,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-prompt-templatization-api
   name: Anthropic Prompt Templatization API
   description: APIs for converting prompts into reusable templates with variables
@@ -416,6 +426,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-sessions-api
   name: Anthropic Sessions API
   description: Stateful agent execution instances
@@ -439,6 +450,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-skill-versions-api
   name: Anthropic Skill Versions API
   description: Manage versions of a Skill
@@ -462,6 +474,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-tokens-api
   name: Anthropic Tokens API
   description: APIs for counting tokens in messages
@@ -485,6 +498,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-usage-api
   name: Anthropic Usage API
   description: Token usage and consumption reporting
@@ -508,6 +522,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-workspace-members-api
   name: Anthropic Workspace Members API
   description: Manage workspace membership and roles
@@ -531,6 +546,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-workspaces-api
   name: Anthropic Workspaces API
   description: Create and manage workspaces within an organization
@@ -554,6 +570,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/sessions
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
+  baseURL: https://api.anthropic.com/v1
 name: Anthropic
 tags:
 - Artificial Intelligence
@@ -563,6 +580,11 @@ tags:
 - Machine-Learning
 - MCP
 - Agents
+- Agent Skills
+- Generative AI
+- Model Context Protocol
+- LLM APIs
+- AI Safety
 tags_raw:
 - AI
 - Artificial Intelligence
@@ -694,7 +716,7 @@ common:
 - url: https://status.anthropic.com/
   name: Anthropic Status
   type: StatusPage
-- url: https://platform.claude.com/docs/en/release-notes/api
+- url: https://platform.claude.com/docs/en/release-notes/overview
   name: Claude Platform Release Notes
   type: ChangeLog
 - url: https://platform.claude.com/login
@@ -718,7 +740,7 @@ common:
 - url: https://docs.anthropic.com/en/api/supported-regions
   name: Supported regions - Anthropic
   type: Regions
-- url: https://docs.anthropic.com/en/api/getting-help
+- url: https://support.claude.com/en/collections/4078531-api
   name: Getting help - Anthropic
   type: Support
 - url: https://www.anthropic.com/pricing
@@ -861,8 +883,8 @@ common:
       metric: token
       timeFrame: usage
       description: Write prompt caching 1-hour TTL for model.
-    description: Most capable generally available model for complex reasoning and
-      agentic coding. 1M context window, 128k max output, new tokenizer.
+    description: Most capable generally available model for complex reasoning and agentic coding. 1M context
+      window, 128k max output, new tokenizer.
   - id: claude-opus-4-6
     name: Claude Opus 4.6
     type: Legacy
@@ -879,8 +901,8 @@ common:
       price: 25
       metric: token
       timeFrame: usage
-    description: Most capable Claude model from the previous generation with fast
-      mode support and 1M context.
+    description: Most capable Claude model from the previous generation with fast mode support and 1M
+      context.
   - id: claude-sonnet-4-6
     name: Claude Sonnet 4.6
     type: Latest
@@ -990,9 +1012,8 @@ common:
       price: 0.05
       metric: container
       timeFrame: hour
-    description: Run Python/Bash in a sandboxed environment. Free when used with web
-      search or web fetch; 1,550 free container-hours/month per organization for standalone
-      use.
+    description: Run Python/Bash in a sandboxed environment. Free when used with web search or web fetch;
+      1,550 free container-hours/month per organization for standalone use.
   - id: fast-mode
     name: Fast Mode
     type: Features
@@ -1011,8 +1032,8 @@ common:
       metric: token
       timeFrame: usage
       description: Fast mode output token pricing for Opus 4.6/4.7.
-    description: Significantly faster output for Claude Opus 4.6 and 4.7 at premium
-      pricing (6x standard rates). Research preview.
+    description: Significantly faster output for Claude Opus 4.6 and 4.7 at premium pricing (6x standard
+      rates). Research preview.
   - id: web-fetch
     name: Web Fetch
     type: Tools
@@ -1052,7 +1073,7 @@ common:
 - url: https://platform.claude.com/
   name: Claude Console
   type: Signup
-- url: https://platform.claude.com/workbench
+- url: https://platform.claude.com/playground
   type: Sandbox
 - url: https://docs.anthropic.com/en/api/beta-headers
   type: Documentation
@@ -1177,7 +1198,7 @@ common:
 - url: https://github.com/modelcontextprotocol
   name: Model Context Protocol GitHub
   type: GitHubOrganization
-- url: https://docs.anthropic.com/en/docs/build-with-claude/structured-output
+- url: https://platform.claude.com/docs/en/build-with-claude/structured-outputs
   type: Documentation
 - url: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview
   type: Documentation
@@ -1189,46 +1210,39 @@ common:
   url: https://platform.claude.com/docs/
 - type: GettingStarted
   url: https://docs.anthropic.com/en/api/getting-started
-- url: https://plans/anthropic-plans-pricing.yml
+- url: plans/anthropic-plans-pricing.yml
   type: Plans
-- url: https://rate-limits/anthropic-rate-limits.yml
+- url: rate-limits/anthropic-rate-limits.yml
   type: RateLimits
-- url: https://finops/anthropic-finops.yml
+- url: finops/anthropic-finops.yml
   type: FinOps
 - type: Features
   data:
-  - Claude Opus 4.7 — most capable generally available model for complex reasoning
-    and agentic coding
-  - Claude Sonnet 4.6 — balanced model combining speed and intelligence with 1M context
-    window
+  - Claude Opus 4.7 — most capable generally available model for complex reasoning and agentic coding
+  - Claude Sonnet 4.6 — balanced model combining speed and intelligence with 1M context window
   - Claude Haiku 4.5 — fastest model with near-frontier intelligence
-  - Messages API with text, vision, tool use, extended thinking, streaming, structured
-    outputs
-  - Prompt caching with automatic and manual breakpoints, 5-minute and 1-hour TTLs,
-    cache reads at 10% of input price
-  - Server-side compaction API for effectively infinite conversations on Opus 4.6/4.7
-    and Sonnet 4.6
+  - Messages API with text, vision, tool use, extended thinking, streaming, structured outputs
+  - Prompt caching with automatic and manual breakpoints, 5-minute and 1-hour TTLs, cache reads at 10%
+    of input price
+  - Server-side compaction API for effectively infinite conversations on Opus 4.6/4.7 and Sonnet 4.6
   - Memory tool (client-side) for cross-conversation persistence with ZDR support
   - Message Batches API with 50% discount on both input and output tokens
   - Files API for upload-once / reuse-many content across Messages and Managed Agents
   - Agent Skills API (beta) — packaged domain expertise with progressive disclosure
-  - Claude Managed Agents (beta) — Agents, Sessions, Environments with SSE streaming
-    and managed sandboxes
+  - Claude Managed Agents (beta) — Agents, Sessions, Environments with SSE streaming and managed sandboxes
   - Web Search tool ($10/1,000 searches) and Web Fetch tool (free)
   - Code Execution tool — Python + Bash + filesystem in sandbox; 1,550 free container-hours/month
   - Computer Use tool for browser and desktop automation (beta)
   - Advisor tool (beta) for pairing executor and high-intelligence advisor models
   - Tool Search tool and Programmatic Tool Calling
-  - Token-bucket rate limiting with cache-aware ITPM (cache reads excluded on most
-    models)
+  - Token-bucket rate limiting with cache-aware ITPM (cache reads excluded on most models)
   - Five usage tiers (Tier 1-4 plus Monthly Invoicing) with automatic advancement
   - Usage & Cost Admin API and Claude Code Analytics Admin API for FinOps reporting
   - Rate Limits API for programmatic limit inspection
   - Workload Identity Federation for short-lived bearer tokens
-  - Data residency controls (US-only inference at 1.1x pricing for models after Feb
-    2026)
-  - Available via Claude API, Claude Platform on AWS, Microsoft Foundry, AWS Bedrock,
-    and Google Vertex AI
+  - Data residency controls (US-only inference at 1.1x pricing for models after Feb 2026)
+  - Available via Claude API, Claude Platform on AWS, Microsoft Foundry, AWS Bedrock, and Google Vertex
+    AI
   - Official SDKs: Python, TypeScript, Java, Go, Ruby, C#, PHP plus the `ant` CLI
   - Claude Code (terminal agent) and Claude Code GitHub Action
   - Open MCP specification stewardship via modelcontextprotocol.io
@@ -1240,19 +1254,47 @@ common:
   - https://platform.claude.com/docs/en/release-notes/api
   - https://platform.claude.com/docs/en/managed-agents/overview
   updated: '2026-05-22'
+- type: AgentSkill
+  url: skills/_index.yml
+- type: ToolCrosswalk
+  url: mcp/anthropic-tool-crosswalk.yml
+- type: Sandbox
+  url: sandbox/anthropic-sandbox.yml
+- type: Webhooks
+  url: asyncapi/anthropic-webhooks.yml
+- type: LLMsTxt
+  url: https://docs.anthropic.com/llms.txt
+- type: Security
+  url: security/anthropic-vulnerability-disclosure.yml
+- type: Compliance
+  url: security/anthropic-trust-center.yml
+- type: Deprecation
+  url: lifecycle/anthropic-lifecycle.yml
+- type: APIReference
+  url: https://platform.claude.com/docs/en/api/overview
+- type: DeveloperPortal
+  url: https://platform.claude.com/docs/en/home
 created: '2025-08-14T00:00:00.000Z'
-modified: '2026-06-20'
+modified: '2026-08-27'
 position: Consuming
-description: Anthropic is an AI safety company and creator of the Claude family of
-  large language models (Opus, Sonnet, Haiku). The Claude API provides access to Claude
-  models for text generation, vision, tool use, extended thinking, batch processing,
-  and agentic workflows including managed agents, skills, memory, compaction, and
-  computer use. Anthropic also publishes the open Model Context Protocol (MCP) for
-  standardized AI tool integration and ships Claude Code, the terminal-based agentic
-  coding tool.
+description: 'Anthropic is an AI safety company and the creator of the Claude family of large language
+  models (Opus, Sonnet, Haiku, and the Fable/Mythos frontier line). The Claude Developer Platform exposes
+  them through a single REST API at api.anthropic.com: the Messages API for text, vision, tool use, thinking,
+  streaming and structured outputs; Message Batches for asynchronous work at half price; Files, Token
+  Counting, Models, and experimental Prompt Tools; Managed Agents with sessions, environments, memory
+  stores, vaults and scheduled deployments; a Skills API; and an Admin API for organizations, workspaces,
+  members, invites and API keys. Authentication is x-api-key with a required anthropic-version date header
+  and dated anthropic-beta opt-ins. Anthropic also authors two of the open standards the agent ecosystem
+  runs on — the Model Context Protocol and the Agent Skills specification — and ships Claude Code, the
+  terminal agentic coding tool, which doubles as a first-party stdio MCP server.'
 maintainers:
 - FN: Kin Lane
   email: info@apievangelist.com
   X: apievangelist
   url: https://apievangelist.com
 specificationVersion: '0.23'
+x-enrichment:
+  date: '2026-08-27'
+  status: enriched
+  artifacts_added: 12
+  pass: local-v1
