@@ -11,8 +11,14 @@ info:
     executed without opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: adminApi
-  url: ../openapi/anthropic-admin-api-openapi.yml
+- name: organizationMembersApi
+  url: ../openapi/anthropic-organization-members-api-openapi.yml
+  type: openapi
+- name: workspaceMembersApi
+  url: ../openapi/anthropic-workspace-members-api-openapi.yml
+  type: openapi
+- name: workspacesApi
+  url: ../openapi/anthropic-workspaces-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: onboard-member-to-workspace

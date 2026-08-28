@@ -12,8 +12,8 @@ info:
     underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: adminApi
-  url: ../openapi/anthropic-admin-api-openapi.yml
+- name: organizationInvitesApi
+  url: ../openapi/anthropic-organization-invites-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: invite-org-member-confirm
