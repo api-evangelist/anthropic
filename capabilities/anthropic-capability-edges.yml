@@ -1,0 +1,34 @@
+slug: anthropic
+provider: Anthropic
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Banking & Capital Markets
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Workspace Members
+  spec_file: anthropic-workspace-members-api-openapi.yml
+  capability_id: BC-4230.50
+  capability_id_l1: BC-4230
+  capability_name: Tenant Identity Federation
+  confidence: 0.7
+  evidence: POST /organizations/workspaces/{workspace_id}/members  addWorkspaceMember; schema WorkspaceRole
+  reason: Administers user accounts and roles within a customer's workspace on the multi-tenant platform
+    — tenant user lifecycle/access administration. Could also be read as generic Identity & Access Management.
+- tag: Workspaces
+  spec_file: anthropic-workspaces-api-openapi.yml
+  capability_id: BC-4230.10
+  capability_id_l1: BC-4230
+  capability_name: Tenant Provisioning & Lifecycle
+  confidence: 0.7
+  evidence: POST /organizations/workspaces  createWorkspace; POST /organizations/workspaces/{workspace_id}/archive  archiveWorkspace
+  reason: Create/update/archive of workspaces within an organization on the SaaS platform maps to tenant
+    provisioning and lifecycle.

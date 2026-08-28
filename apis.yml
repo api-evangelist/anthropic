@@ -595,6 +595,18 @@ tags_raw:
 - MCP
 - Agents
 kind: contract
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
@@ -611,6 +623,9 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/anthropic.png
 access: 3rd-Party
 common:
+- type: CapabilityMap
+  url: capabilities/anthropic-capability-edges.yml
+  name: Anthropic Business Capability Map
 - type: AgenticAccess
   url: agentic-access/anthropic-agentic-access.yml
 - type: DomainSecurity
