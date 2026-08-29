@@ -10,6 +10,22 @@ info:
     anthropic-version headers the spec defines — so the flow can be read and
     executed without opening the underlying OpenAPI description.
   version: 1.0.0
+  x-realizes-capability-ids:
+  - BC-4230.10
+  - BC-4230.50
+  x-capability-derivation:
+    method: 'deterministic join: sourceDescriptions -> per-tag OpenAPI -> tag/capability edge. No classification at this step.'
+    min_confidence: 0.7
+    sources:
+    - capability_id: BC-4230.10
+      capability_name: Tenant Provisioning & Lifecycle
+      spec: anthropic-workspaces-api-openapi.yml
+      confidence: 0.7
+    - capability_id: BC-4230.50
+      capability_name: Tenant Identity Federation
+      spec: anthropic-workspace-members-api-openapi.yml
+      confidence: 0.7
+    model: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities, CC BY 4.0
 sourceDescriptions:
 - name: organizationMembersApi
   url: ../openapi/anthropic-organization-members-api-openapi.yml
