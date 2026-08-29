@@ -1,0 +1,553 @@
+openapi: 3.2.0
+info:
+  title: Anthropic Files?beta=true API
+servers:
+- url: https://api.anthropic.com
+tags:
+- name: Files?beta=true
+paths:
+  /v1/files?beta=true:
+    post:
+      summary: Upload File
+      operationId: beta_upload_file_v1_files_post
+      parameters:
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaFileMetadataSchema'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The file to upload
+              required:
+              - file
+        required: true
+      tags:
+      - Files?beta=true
+    get:
+      summary: List Files
+      operationId: beta_list_files_v1_files_get
+      parameters:
+      - name: before_id
+        in: query
+        required: false
+        schema:
+          type: string
+          description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+          title: Before Id
+        description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+      - name: after_id
+        in: query
+        required: false
+        schema:
+          type: string
+          description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+          title: After Id
+        description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          description: 'Number of items to return per page.
+
+
+            Defaults to `20`. Ranges from `1` to `1000`.'
+          default: 20
+          title: Limit
+        description: 'Number of items to return per page.
+
+
+          Defaults to `20`. Ranges from `1` to `1000`.'
+      - name: scope_id
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Filter by scope ID. Only returns files associated with the specified scope (e.g., a session ID).
+          title: Scope Id
+        description: Filter by scope ID. Only returns files associated with the specified scope (e.g., a session ID).
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      - name: x-api-key
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'Your unique API key for authentication.
+
+
+            This key is required in the header of all API requests, to authenticate your account and access Anthropic''s services. Get your API key through the [Console](https://console.anthropic.com/settings/keys). Each key is scoped to a Workspace.'
+          title: X-Api-Key
+        description: 'Your unique API key for authentication.
+
+
+          This key is required in the header of all API requests, to authenticate your account and access Anthropic''s services. Get your API key through the [Console](https://console.anthropic.com/settings/keys). Each key is scoped to a Workspace.'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaFileListResponse'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Files?beta=true
+components:
+  schemas:
+    BetaFileMetadataSchema:
+      properties:
+        created_at:
+          description: RFC 3339 datetime string representing when the file was created.
+          examples:
+          - '2025-04-15T18:37:24.100435Z'
+          format: date-time
+          title: Created At
+          type: string
+        downloadable:
+          default: false
+          description: Whether the file can be downloaded.
+          examples:
+          - false
+          title: Downloadable
+          type: boolean
+        filename:
+          description: Original filename of the uploaded file.
+          examples:
+          - document.pdf
+          maxLength: 500
+          minLength: 1
+          title: Filename
+          type: string
+        id:
+          description: 'Unique object identifier.
+
+
+            The format and length of IDs may change over time.'
+          examples:
+          - file_011CNha8iCJcU1wXNR6q4V8w
+          title: Id
+          type: string
+        mime_type:
+          description: MIME type of the file.
+          examples:
+          - application/pdf
+          maxLength: 255
+          minLength: 1
+          title: Mime Type
+          type: string
+        scope:
+          anyOf:
+          - $ref: '#/components/schemas/BetaFileScope'
+          - type: 'null'
+          default: null
+          description: The scope of this file, indicating the context in which it was created (e.g., a session).
+        size_bytes:
+          description: Size of the file in bytes.
+          examples:
+          - 102400
+          minimum: 0
+          title: Size Bytes
+          type: integer
+        type:
+          const: file
+          description: 'Object type.
+
+
+            For files, this is always `"file"`.'
+          title: Type
+          type: string
+      required:
+      - created_at
+      - filename
+      - id
+      - mime_type
+      - size_bytes
+      - type
+      title: FileMetadataSchema
+      type: object
+    BetaGatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
+      type: object
+    BetaAPIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
+          type: string
+        type:
+          const: api_error
+          default: api_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
+    BetaErrorResponse:
+      properties:
+        error:
+          discriminator:
+            mapping:
+              api_error: '#/components/schemas/BetaAPIError'
+              authentication_error: '#/components/schemas/BetaAuthenticationError'
+              billing_error: '#/components/schemas/BetaBillingError'
+              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
+              not_found_error: '#/components/schemas/BetaNotFoundError'
+              overloaded_error: '#/components/schemas/BetaOverloadedError'
+              permission_error: '#/components/schemas/BetaPermissionError'
+              rate_limit_error: '#/components/schemas/BetaRateLimitError'
+              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/BetaInvalidRequestError'
+          - $ref: '#/components/schemas/BetaAuthenticationError'
+          - $ref: '#/components/schemas/BetaBillingError'
+          - $ref: '#/components/schemas/BetaPermissionError'
+          - $ref: '#/components/schemas/BetaNotFoundError'
+          - $ref: '#/components/schemas/BetaRateLimitError'
+          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
+          - $ref: '#/components/schemas/BetaAPIError'
+          - $ref: '#/components/schemas/BetaOverloadedError'
+          title: Error
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Request Id
+        type:
+          const: error
+          default: error
+          title: Type
+          type: string
+      required:
+      - error
+      - request_id
+      - type
+      title: ErrorResponse
+      type: object
+    BetaOverloadedError:
+      properties:
+        message:
+          default: Overloaded
+          title: Message
+          type: string
+        type:
+          const: overloaded_error
+          default: overloaded_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: OverloadedError
+      type: object
+    BetaAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    BetaBillingError:
+      properties:
+        message:
+          default: Billing error
+          title: Message
+          type: string
+        type:
+          const: billing_error
+          default: billing_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: BillingError
+      type: object
+    BetaNotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    BetaFileListResponse:
+      properties:
+        data:
+          description: List of file metadata objects.
+          items:
+            $ref: '#/components/schemas/BetaFileMetadataSchema'
+          title: Data
+          type: array
+        first_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: ID of the first file in this page of results.
+          examples:
+          - file_011CNha8iCJcU1wXNR6q4V8w
+          title: First Id
+        has_more:
+          default: false
+          description: Whether there are more results available.
+          title: Has More
+          type: boolean
+        last_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: ID of the last file in this page of results.
+          examples:
+          - file_013Zva2CMHLNnXjNJJKqJ2EF
+          title: Last Id
+      required:
+      - data
+      title: FileListResponse
+      type: object
+    AnthropicBeta:
+      anyOf:
+      - type: string
+      - type: string
+        enum:
+        - message-batches-2024-09-24
+        - prompt-caching-2024-07-31
+        - computer-use-2024-10-22
+        - computer-use-2025-01-24
+        - pdfs-2024-09-25
+        - token-counting-2024-11-01
+        - token-efficient-tools-2025-02-19
+        - output-128k-2025-02-19
+        - files-api-2025-04-14
+        - mcp-client-2025-04-04
+        - mcp-client-2025-11-20
+        - dev-full-thinking-2025-05-14
+        - interleaved-thinking-2025-05-14
+        - code-execution-2025-05-22
+        - extended-cache-ttl-2025-04-11
+        - context-1m-2025-08-07
+        - context-management-2025-06-27
+        - model-context-window-exceeded-2025-08-26
+        - skills-2025-10-02
+        - fast-mode-2026-02-01
+        - output-300k-2026-03-24
+        - user-profiles-2026-03-24
+        - user-profiles-2026-08-18
+        - advisor-tool-2026-03-01
+        - managed-agents-2026-04-01
+        - cache-diagnosis-2026-04-07
+        - dreaming-2026-04-21
+        - thinking-token-count-2026-05-13
+        - server-side-fallback-2026-06-01
+        - server-side-fallback-2026-07-01
+        - fallback-credit-2026-06-01
+        - fallback-credit-2026-07-01
+        - agent-memory-2026-07-22
+        - mid-conversation-tool-changes-2026-07-01
+        - compact-2026-01-12
+        - computer-use-2025-11-24
+        - mcp-tunnels-2026-06-22
+        - structured-outputs-2025-11-13
+        - task-budgets-2026-03-13
+        - thinking-display-updates-2026-08-18
+        - ce-user-management-2026-07-13
+        x-stainless-nominal: false
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    BetaInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    BetaPermissionError:
+      properties:
+        message:
+          default: Permission denied
+          title: Message
+          type: string
+        type:
+          const: permission_error
+          default: permission_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: PermissionError
+      type: object
+    BetaFileScope:
+      properties:
+        id:
+          description: The ID of the scoping resource (e.g., the session ID).
+          title: Id
+          type: string
+        type:
+          const: session
+          description: The type of scope (e.g., `"session"`).
+          title: Type
+          type: string
+      required:
+      - id
+      - type
+      title: FileScope
+      type: object

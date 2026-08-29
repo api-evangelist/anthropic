@@ -1,0 +1,40 @@
+generated: '2026-08-27'
+method: searched
+file: anthropic-api-openapi.json
+source: https://storage.googleapis.com/stainless-sdk-openapi-specs/anthropic/anthropic-446ddab751d9f0172400b17fc72736e9353d3b49780317f90c24aa98357fd39e.yml
+discovered_via: https://raw.githubusercontent.com/anthropics/anthropic-sdk-python/main/.stats.yml
+http_status: 200
+bytes: 2448030
+format: JSON (served with a .yml extension by the origin; saved with the .json extension it actually is)
+spec:
+  openapi: 3.1.0
+  info_title: Anthropic API
+  servers:
+  - https://api.anthropic.com
+  paths: 139
+  operations: 212
+  component_schemas: 1219
+  security_schemes: []
+ownership_check: >-
+  PASSES. The spec is served from Stainless's CDN (storage.googleapis.com/stainless-sdk-openapi-specs),
+  not from an Anthropic domain — Stainless is the SDK code-generation vendor Anthropic uses, and this is
+  a legitimate different-host case confirmable from Anthropic's own repositories. The spec URL and its
+  hash are declared in .stats.yml in Anthropic's OWN first-party SDK repos
+  (github.com/anthropics/anthropic-sdk-python and anthropic-sdk-typescript), the path segment is
+  /anthropic/, and the document says it is Anthropic's: info.title "Anthropic API" and the single
+  servers[] entry https://api.anthropic.com. Judged by what it says about itself, not by where it was
+  fetched from.
+registration: >-
+  Deliberately NOT wired as an apis.yml OpenAPI pointer. This repo already registers 25 refined
+  per-tag specs derived from the same source, and adding the 212-operation master alongside them would
+  double-count operations in scoring. It is archived here as the pristine upstream source of record and
+  as the provenance for openapi/ as a whole.
+coverage_gap: >-
+  The master carries beta surfaces the refined set does not yet cover — Dreams, Memory Stores, Vaults
+  and credentials, Deployments and deployment runs, MCP Tunnels and tunnel certificates, Compliance
+  (session transcripts), Service Accounts, Federation issuers and rules, External Keys, and Session
+  Threads. A future refine-openapis pass over this file would add them.
+note: >-
+  configured_endpoints in .stats.yml reads 199 (Python) / 200 (TypeScript); the document itself carries
+  212 operations across 139 paths. The difference is Stainless's own configuration scope, not a defect
+  in the spec.

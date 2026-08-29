@@ -1,0 +1,1697 @@
+openapi: 3.2.0
+info:
+  title: Anthropic API
+servers:
+- url: https://api.anthropic.com
+tags:
+- name: Anthropic API
+paths: {}
+webhooks:
+  session.created:
+    post:
+      operationId: BetaSessionCreatedWebhook
+      summary: session.created webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.pending:
+    post:
+      operationId: BetaSessionPendingWebhook
+      summary: session.pending webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.running:
+    post:
+      operationId: BetaSessionRunningWebhook
+      summary: session.running webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.idled:
+    post:
+      operationId: BetaSessionIdledWebhook
+      summary: session.idled webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.requires_action:
+    post:
+      operationId: BetaSessionRequiresActionWebhook
+      summary: session.requires_action webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.archived:
+    post:
+      operationId: BetaSessionArchivedWebhook
+      summary: session.archived webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.deleted:
+    post:
+      operationId: BetaSessionDeletedWebhook
+      summary: session.deleted webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.status_rescheduled:
+    post:
+      operationId: BetaSessionStatusRescheduledWebhook
+      summary: session.status_rescheduled webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.status_run_started:
+    post:
+      operationId: BetaSessionStatusRunStartedWebhook
+      summary: session.status_run_started webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.status_idled:
+    post:
+      operationId: BetaSessionStatusIdledWebhook
+      summary: session.status_idled webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.status_terminated:
+    post:
+      operationId: BetaSessionStatusTerminatedWebhook
+      summary: session.status_terminated webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.thread_created:
+    post:
+      operationId: BetaSessionThreadCreatedWebhook
+      summary: session.thread_created webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.thread_idled:
+    post:
+      operationId: BetaSessionThreadIdledWebhook
+      summary: session.thread_idled webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.thread_terminated:
+    post:
+      operationId: BetaSessionThreadTerminatedWebhook
+      summary: session.thread_terminated webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.outcome_evaluation_ended:
+    post:
+      operationId: BetaSessionOutcomeEvaluationEndedWebhook
+      summary: session.outcome_evaluation_ended webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  vault.created:
+    post:
+      operationId: BetaVaultCreatedWebhook
+      summary: vault.created webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  vault.archived:
+    post:
+      operationId: BetaVaultArchivedWebhook
+      summary: vault.archived webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  vault.deleted:
+    post:
+      operationId: BetaVaultDeletedWebhook
+      summary: vault.deleted webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  vault_credential.created:
+    post:
+      operationId: BetaVaultCredentialCreatedWebhook
+      summary: vault_credential.created webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  vault_credential.archived:
+    post:
+      operationId: BetaVaultCredentialArchivedWebhook
+      summary: vault_credential.archived webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  vault_credential.deleted:
+    post:
+      operationId: BetaVaultCredentialDeletedWebhook
+      summary: vault_credential.deleted webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  vault_credential.refresh_failed:
+    post:
+      operationId: BetaVaultCredentialRefreshFailedWebhook
+      summary: vault_credential.refresh_failed webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.updated:
+    post:
+      operationId: BetaSessionUpdatedWebhook
+      summary: session.updated webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  agent.created:
+    post:
+      operationId: BetaAgentCreatedWebhook
+      summary: agent.created webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  agent.archived:
+    post:
+      operationId: BetaAgentArchivedWebhook
+      summary: agent.archived webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  agent.deleted:
+    post:
+      operationId: BetaAgentDeletedWebhook
+      summary: agent.deleted webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  deployment.paused:
+    post:
+      operationId: BetaDeploymentPausedWebhook
+      summary: deployment.paused webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  deployment_run.failed:
+    post:
+      operationId: BetaDeploymentRunFailedWebhook
+      summary: deployment_run.failed webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  deployment.created:
+    post:
+      operationId: BetaDeploymentCreatedWebhook
+      summary: deployment.created webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  deployment.updated:
+    post:
+      operationId: BetaDeploymentUpdatedWebhook
+      summary: deployment.updated webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  deployment.unpaused:
+    post:
+      operationId: BetaDeploymentUnpausedWebhook
+      summary: deployment.unpaused webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  agent.updated:
+    post:
+      operationId: BetaAgentUpdatedWebhook
+      summary: agent.updated webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  deployment.archived:
+    post:
+      operationId: BetaDeploymentArchivedWebhook
+      summary: deployment.archived webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  deployment_run.started:
+    post:
+      operationId: BetaDeploymentRunStartedWebhook
+      summary: deployment_run.started webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  deployment.deleted:
+    post:
+      operationId: BetaDeploymentDeletedWebhook
+      summary: deployment.deleted webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  deployment_run.succeeded:
+    post:
+      operationId: BetaDeploymentRunSucceededWebhook
+      summary: deployment_run.succeeded webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  environment.created:
+    post:
+      operationId: BetaEnvironmentCreatedWebhook
+      summary: environment.created webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  environment.updated:
+    post:
+      operationId: BetaEnvironmentUpdatedWebhook
+      summary: environment.updated webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  environment.archived:
+    post:
+      operationId: BetaEnvironmentArchivedWebhook
+      summary: environment.archived webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  environment.deleted:
+    post:
+      operationId: BetaEnvironmentDeletedWebhook
+      summary: environment.deleted webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  memory_store.created:
+    post:
+      operationId: BetaMemoryStoreCreatedWebhook
+      summary: memory_store.created webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  memory_store.archived:
+    post:
+      operationId: BetaMemoryStoreArchivedWebhook
+      summary: memory_store.archived webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  memory_store.deleted:
+    post:
+      operationId: BetaMemoryStoreDeletedWebhook
+      summary: memory_store.deleted webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+  session.budget_reached:
+    post:
+      operationId: BetaSessionBudgetReachedWebhook
+      summary: session.budget_reached webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaWebhookEvent'
+      responses:
+        '200':
+          description: Return any 2xx status to acknowledge receipt.
+      tags:
+      - Anthropic API
+components:
+  schemas:
+    BetaWebhookVaultCredentialDeletedEventData:
+      type: object
+      title: BetaWebhookVaultCredentialDeletedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      - vault_id
+      properties:
+        type:
+          type: string
+          const: vault_credential.deleted
+        id:
+          type: string
+          description: ID of the vault credential that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+        vault_id:
+          type: string
+          description: ID of the vault that owns this credential.
+    BetaWebhookMemoryStoreDeletedEventData:
+      type: object
+      title: BetaWebhookMemoryStoreDeletedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: memory_store.deleted
+        id:
+          type: string
+          description: ID of the memory store that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookMemoryStoreArchivedEventData:
+      type: object
+      title: BetaWebhookMemoryStoreArchivedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: memory_store.archived
+        id:
+          type: string
+          description: ID of the memory store that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookAgentUpdatedEventData:
+      type: object
+      title: BetaWebhookAgentUpdatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: agent.updated
+        id:
+          type: string
+          description: ID of the agent that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionRunningEventData:
+      type: object
+      title: BetaWebhookSessionRunningEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.running
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookEventData:
+      title: BetaWebhookEventData
+      oneOf:
+      - $ref: '#/components/schemas/BetaWebhookSessionCreatedEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionPendingEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionRunningEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionIdledEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionRequiresActionEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionArchivedEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionDeletedEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionStatusRescheduledEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionStatusRunStartedEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionStatusIdledEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionStatusTerminatedEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionThreadCreatedEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionThreadIdledEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionThreadTerminatedEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionOutcomeEvaluationEndedEventData'
+      - $ref: '#/components/schemas/BetaWebhookVaultCreatedEventData'
+      - $ref: '#/components/schemas/BetaWebhookVaultArchivedEventData'
+      - $ref: '#/components/schemas/BetaWebhookVaultDeletedEventData'
+      - $ref: '#/components/schemas/BetaWebhookVaultCredentialCreatedEventData'
+      - $ref: '#/components/schemas/BetaWebhookVaultCredentialArchivedEventData'
+      - $ref: '#/components/schemas/BetaWebhookVaultCredentialDeletedEventData'
+      - $ref: '#/components/schemas/BetaWebhookVaultCredentialRefreshFailedEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionUpdatedEventData'
+      - $ref: '#/components/schemas/BetaWebhookAgentCreatedEventData'
+      - $ref: '#/components/schemas/BetaWebhookAgentArchivedEventData'
+      - $ref: '#/components/schemas/BetaWebhookAgentDeletedEventData'
+      - $ref: '#/components/schemas/BetaWebhookDeploymentPausedEventData'
+      - $ref: '#/components/schemas/BetaWebhookDeploymentRunFailedEventData'
+      - $ref: '#/components/schemas/BetaWebhookDeploymentCreatedEventData'
+      - $ref: '#/components/schemas/BetaWebhookDeploymentUpdatedEventData'
+      - $ref: '#/components/schemas/BetaWebhookDeploymentUnpausedEventData'
+      - $ref: '#/components/schemas/BetaWebhookAgentUpdatedEventData'
+      - $ref: '#/components/schemas/BetaWebhookDeploymentArchivedEventData'
+      - $ref: '#/components/schemas/BetaWebhookDeploymentRunStartedEventData'
+      - $ref: '#/components/schemas/BetaWebhookDeploymentDeletedEventData'
+      - $ref: '#/components/schemas/BetaWebhookDeploymentRunSucceededEventData'
+      - $ref: '#/components/schemas/BetaWebhookEnvironmentCreatedEventData'
+      - $ref: '#/components/schemas/BetaWebhookEnvironmentUpdatedEventData'
+      - $ref: '#/components/schemas/BetaWebhookEnvironmentArchivedEventData'
+      - $ref: '#/components/schemas/BetaWebhookEnvironmentDeletedEventData'
+      - $ref: '#/components/schemas/BetaWebhookMemoryStoreCreatedEventData'
+      - $ref: '#/components/schemas/BetaWebhookMemoryStoreArchivedEventData'
+      - $ref: '#/components/schemas/BetaWebhookMemoryStoreDeletedEventData'
+      - $ref: '#/components/schemas/BetaWebhookSessionBudgetReachedEventData'
+      discriminator:
+        propertyName: type
+        mapping:
+          session.created: '#/components/schemas/BetaWebhookSessionCreatedEventData'
+          session.pending: '#/components/schemas/BetaWebhookSessionPendingEventData'
+          session.running: '#/components/schemas/BetaWebhookSessionRunningEventData'
+          session.idled: '#/components/schemas/BetaWebhookSessionIdledEventData'
+          session.requires_action: '#/components/schemas/BetaWebhookSessionRequiresActionEventData'
+          session.archived: '#/components/schemas/BetaWebhookSessionArchivedEventData'
+          session.deleted: '#/components/schemas/BetaWebhookSessionDeletedEventData'
+          session.status_rescheduled: '#/components/schemas/BetaWebhookSessionStatusRescheduledEventData'
+          session.status_run_started: '#/components/schemas/BetaWebhookSessionStatusRunStartedEventData'
+          session.status_idled: '#/components/schemas/BetaWebhookSessionStatusIdledEventData'
+          session.status_terminated: '#/components/schemas/BetaWebhookSessionStatusTerminatedEventData'
+          session.thread_created: '#/components/schemas/BetaWebhookSessionThreadCreatedEventData'
+          session.thread_idled: '#/components/schemas/BetaWebhookSessionThreadIdledEventData'
+          session.thread_terminated: '#/components/schemas/BetaWebhookSessionThreadTerminatedEventData'
+          session.outcome_evaluation_ended: '#/components/schemas/BetaWebhookSessionOutcomeEvaluationEndedEventData'
+          vault.created: '#/components/schemas/BetaWebhookVaultCreatedEventData'
+          vault.archived: '#/components/schemas/BetaWebhookVaultArchivedEventData'
+          vault.deleted: '#/components/schemas/BetaWebhookVaultDeletedEventData'
+          vault_credential.created: '#/components/schemas/BetaWebhookVaultCredentialCreatedEventData'
+          vault_credential.archived: '#/components/schemas/BetaWebhookVaultCredentialArchivedEventData'
+          vault_credential.deleted: '#/components/schemas/BetaWebhookVaultCredentialDeletedEventData'
+          vault_credential.refresh_failed: '#/components/schemas/BetaWebhookVaultCredentialRefreshFailedEventData'
+          session.updated: '#/components/schemas/BetaWebhookSessionUpdatedEventData'
+          agent.created: '#/components/schemas/BetaWebhookAgentCreatedEventData'
+          agent.archived: '#/components/schemas/BetaWebhookAgentArchivedEventData'
+          agent.deleted: '#/components/schemas/BetaWebhookAgentDeletedEventData'
+          deployment.paused: '#/components/schemas/BetaWebhookDeploymentPausedEventData'
+          deployment_run.failed: '#/components/schemas/BetaWebhookDeploymentRunFailedEventData'
+          deployment.created: '#/components/schemas/BetaWebhookDeploymentCreatedEventData'
+          deployment.updated: '#/components/schemas/BetaWebhookDeploymentUpdatedEventData'
+          deployment.unpaused: '#/components/schemas/BetaWebhookDeploymentUnpausedEventData'
+          agent.updated: '#/components/schemas/BetaWebhookAgentUpdatedEventData'
+          deployment.archived: '#/components/schemas/BetaWebhookDeploymentArchivedEventData'
+          deployment_run.started: '#/components/schemas/BetaWebhookDeploymentRunStartedEventData'
+          deployment.deleted: '#/components/schemas/BetaWebhookDeploymentDeletedEventData'
+          deployment_run.succeeded: '#/components/schemas/BetaWebhookDeploymentRunSucceededEventData'
+          environment.created: '#/components/schemas/BetaWebhookEnvironmentCreatedEventData'
+          environment.updated: '#/components/schemas/BetaWebhookEnvironmentUpdatedEventData'
+          environment.archived: '#/components/schemas/BetaWebhookEnvironmentArchivedEventData'
+          environment.deleted: '#/components/schemas/BetaWebhookEnvironmentDeletedEventData'
+          memory_store.created: '#/components/schemas/BetaWebhookMemoryStoreCreatedEventData'
+          memory_store.archived: '#/components/schemas/BetaWebhookMemoryStoreArchivedEventData'
+          memory_store.deleted: '#/components/schemas/BetaWebhookMemoryStoreDeletedEventData'
+          session.budget_reached: '#/components/schemas/BetaWebhookSessionBudgetReachedEventData'
+    BetaWebhookSessionPendingEventData:
+      type: object
+      title: BetaWebhookSessionPendingEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.pending
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionThreadTerminatedEventData:
+      type: object
+      title: BetaWebhookSessionThreadTerminatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      - session_thread_id
+      properties:
+        type:
+          type: string
+          const: session.thread_terminated
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+        session_thread_id:
+          type: string
+          description: ID of the session thread this event refers to.
+    BetaWebhookSessionThreadIdledEventData:
+      type: object
+      title: BetaWebhookSessionThreadIdledEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      - session_thread_id
+      properties:
+        type:
+          type: string
+          const: session.thread_idled
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+        session_thread_id:
+          type: string
+          description: ID of the session thread this event refers to.
+    BetaWebhookDeploymentRunStartedEventData:
+      type: object
+      title: BetaWebhookDeploymentRunStartedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: deployment_run.started
+        id:
+          type: string
+          description: ID of the deployment run that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookVaultArchivedEventData:
+      type: object
+      title: BetaWebhookVaultArchivedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: vault.archived
+        id:
+          type: string
+          description: ID of the vault that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookDeploymentPausedEventData:
+      type: object
+      title: BetaWebhookDeploymentPausedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: deployment.paused
+        id:
+          type: string
+          description: ID of the deployment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookDeploymentRunFailedEventData:
+      type: object
+      title: BetaWebhookDeploymentRunFailedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: deployment_run.failed
+        id:
+          type: string
+          description: ID of the deployment run that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookEvent:
+      type: object
+      title: BetaWebhookEvent
+      required:
+      - type
+      - id
+      - created_at
+      - data
+      properties:
+        type:
+          type: string
+          const: event
+          description: Object type. Always `event` for webhook payloads.
+          examples:
+          - event
+        id:
+          type: string
+          description: Unique event identifier for idempotency.
+          examples:
+          - whe_0f1e2d3c4b5a69788796a5b4c3d2e1f0
+        created_at:
+          type: string
+          format: date-time
+          description: RFC 3339 timestamp when the event occurred.
+          examples:
+          - '2026-03-15T10:00:00Z'
+        data:
+          $ref: '#/components/schemas/BetaWebhookEventData'
+          examples:
+          - type: session.status_idled
+            id: sesn_011CZkZAtmR3yMPDzynEDxu7
+            organization_id: org_011CZkZZAe0sMna4vkBdtrfx
+            workspace_id: wrkspc_011CZkZaBF1tNoB5wlCeusgy
+      example:
+        type: event
+        id: whe_0f1e2d3c4b5a69788796a5b4c3d2e1f0
+        created_at: '2026-03-15T10:00:00Z'
+        data:
+          type: session.status_idled
+          id: sesn_011CZkZAtmR3yMPDzynEDxu7
+          organization_id: org_011CZkZZAe0sMna4vkBdtrfx
+          workspace_id: wrkspc_011CZkZaBF1tNoB5wlCeusgy
+    BetaWebhookEnvironmentCreatedEventData:
+      type: object
+      title: BetaWebhookEnvironmentCreatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: environment.created
+        id:
+          type: string
+          description: ID of the environment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookDeploymentArchivedEventData:
+      type: object
+      title: BetaWebhookDeploymentArchivedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: deployment.archived
+        id:
+          type: string
+          description: ID of the deployment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookDeploymentCreatedEventData:
+      type: object
+      title: BetaWebhookDeploymentCreatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: deployment.created
+        id:
+          type: string
+          description: ID of the deployment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookVaultDeletedEventData:
+      type: object
+      title: BetaWebhookVaultDeletedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: vault.deleted
+        id:
+          type: string
+          description: ID of the vault that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionCreatedEventData:
+      type: object
+      title: BetaWebhookSessionCreatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.created
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionBudgetReachedEventData:
+      type: object
+      title: BetaWebhookSessionBudgetReachedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.budget_reached
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookVaultCredentialRefreshFailedEventData:
+      type: object
+      title: BetaWebhookVaultCredentialRefreshFailedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      - vault_id
+      properties:
+        type:
+          type: string
+          const: vault_credential.refresh_failed
+        id:
+          type: string
+          description: ID of the vault credential that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+        vault_id:
+          type: string
+          description: ID of the vault that owns this credential.
+    BetaWebhookVaultCredentialArchivedEventData:
+      type: object
+      title: BetaWebhookVaultCredentialArchivedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      - vault_id
+      properties:
+        type:
+          type: string
+          const: vault_credential.archived
+        id:
+          type: string
+          description: ID of the vault credential that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+        vault_id:
+          type: string
+          description: ID of the vault that owns this credential.
+    BetaWebhookSessionDeletedEventData:
+      type: object
+      title: BetaWebhookSessionDeletedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.deleted
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionIdledEventData:
+      type: object
+      title: BetaWebhookSessionIdledEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.idled
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookAgentDeletedEventData:
+      type: object
+      title: BetaWebhookAgentDeletedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: agent.deleted
+        id:
+          type: string
+          description: ID of the agent that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookEnvironmentUpdatedEventData:
+      type: object
+      title: BetaWebhookEnvironmentUpdatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: environment.updated
+        id:
+          type: string
+          description: ID of the environment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookDeploymentUpdatedEventData:
+      type: object
+      title: BetaWebhookDeploymentUpdatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: deployment.updated
+        id:
+          type: string
+          description: ID of the deployment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionArchivedEventData:
+      type: object
+      title: BetaWebhookSessionArchivedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.archived
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionThreadCreatedEventData:
+      type: object
+      title: BetaWebhookSessionThreadCreatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      - session_thread_id
+      properties:
+        type:
+          type: string
+          const: session.thread_created
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+        session_thread_id:
+          type: string
+          description: ID of the session thread this event refers to.
+    BetaWebhookMemoryStoreCreatedEventData:
+      type: object
+      title: BetaWebhookMemoryStoreCreatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: memory_store.created
+        id:
+          type: string
+          description: ID of the memory store that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookAgentArchivedEventData:
+      type: object
+      title: BetaWebhookAgentArchivedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: agent.archived
+        id:
+          type: string
+          description: ID of the agent that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookEnvironmentDeletedEventData:
+      type: object
+      title: BetaWebhookEnvironmentDeletedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: environment.deleted
+        id:
+          type: string
+          description: ID of the environment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookDeploymentRunSucceededEventData:
+      type: object
+      title: BetaWebhookDeploymentRunSucceededEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: deployment_run.succeeded
+        id:
+          type: string
+          description: ID of the deployment run that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookVaultCredentialCreatedEventData:
+      type: object
+      title: BetaWebhookVaultCredentialCreatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      - vault_id
+      properties:
+        type:
+          type: string
+          const: vault_credential.created
+        id:
+          type: string
+          description: ID of the vault credential that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+        vault_id:
+          type: string
+          description: ID of the vault that owns this credential.
+    BetaWebhookSessionStatusRescheduledEventData:
+      type: object
+      title: BetaWebhookSessionStatusRescheduledEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.status_rescheduled
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionUpdatedEventData:
+      type: object
+      title: BetaWebhookSessionUpdatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.updated
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionOutcomeEvaluationEndedEventData:
+      type: object
+      title: BetaWebhookSessionOutcomeEvaluationEndedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.outcome_evaluation_ended
+          examples:
+          - session.outcome_evaluation_ended
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+          examples:
+          - sesn_011CZkZAtmR3yMPDzynEDxu7
+        organization_id:
+          type: string
+          examples:
+          - org_011CZkZZAe0sMna4vkBdtrfx
+        workspace_id:
+          type: string
+          examples:
+          - wrkspc_011CZkZaBF1tNoB5wlCeusgy
+      example:
+        type: session.outcome_evaluation_ended
+        id: sesn_011CZkZAtmR3yMPDzynEDxu7
+        organization_id: org_011CZkZZAe0sMna4vkBdtrfx
+        workspace_id: wrkspc_011CZkZaBF1tNoB5wlCeusgy
+    BetaWebhookSessionStatusRunStartedEventData:
+      type: object
+      title: BetaWebhookSessionStatusRunStartedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.status_run_started
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookVaultCreatedEventData:
+      type: object
+      title: BetaWebhookVaultCreatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: vault.created
+        id:
+          type: string
+          description: ID of the vault that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookEnvironmentArchivedEventData:
+      type: object
+      title: BetaWebhookEnvironmentArchivedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: environment.archived
+        id:
+          type: string
+          description: ID of the environment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionStatusTerminatedEventData:
+      type: object
+      title: BetaWebhookSessionStatusTerminatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.status_terminated
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookAgentCreatedEventData:
+      type: object
+      title: BetaWebhookAgentCreatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: agent.created
+        id:
+          type: string
+          description: ID of the agent that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionStatusIdledEventData:
+      type: object
+      title: BetaWebhookSessionStatusIdledEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.status_idled
+          examples:
+          - session.status_idled
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+          examples:
+          - sesn_011CZkZAtmR3yMPDzynEDxu7
+        organization_id:
+          type: string
+          examples:
+          - org_011CZkZZAe0sMna4vkBdtrfx
+        workspace_id:
+          type: string
+          examples:
+          - wrkspc_011CZkZaBF1tNoB5wlCeusgy
+      example:
+        type: session.status_idled
+        id: sesn_011CZkZAtmR3yMPDzynEDxu7
+        organization_id: org_011CZkZZAe0sMna4vkBdtrfx
+        workspace_id: wrkspc_011CZkZaBF1tNoB5wlCeusgy
+    BetaWebhookDeploymentDeletedEventData:
+      type: object
+      title: BetaWebhookDeploymentDeletedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: deployment.deleted
+        id:
+          type: string
+          description: ID of the deployment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionRequiresActionEventData:
+      type: object
+      title: BetaWebhookSessionRequiresActionEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.requires_action
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookDeploymentUnpausedEventData:
+      type: object
+      title: BetaWebhookDeploymentUnpausedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: deployment.unpaused
+        id:
+          type: string
+          description: ID of the deployment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string

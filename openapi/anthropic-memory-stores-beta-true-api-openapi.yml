@@ -1,0 +1,628 @@
+openapi: 3.2.0
+info:
+  title: Anthropic Memory Stores?beta=true API
+servers:
+- url: https://api.anthropic.com
+tags:
+- name: Memory Stores?beta=true
+paths:
+  /v1/memory_stores?beta=true:
+    post:
+      operationId: BetaCreateMemoryStore
+      summary: Create a memory store
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaManagedAgentsCreateMemoryStoreRequest'
+      responses:
+        '200':
+          description: Successful response (OK)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaManagedAgentsCreateMemoryStoreResponse'
+        '400':
+          description: Invalid argument - The client specified an invalid argument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '401':
+          description: Unauthenticated - The request does not have valid authentication credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '403':
+          description: Permission denied - The caller does not have permission to execute the specified operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '404':
+          description: Not found - Some requested entity was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '408':
+          description: Deadline exceeded - The deadline expired before the operation could complete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '409':
+          description: Aborted - The operation was aborted due to concurrency issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '412':
+          description: Failed precondition - Operation was rejected because the system is not in required state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '413':
+          description: Out of range - Operation was attempted past the valid range
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '429':
+          description: Resource exhausted - Some resource has been exhausted (rate limiting)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '431':
+          description: Request header fields too large - Request metadata was too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '499':
+          description: Cancelled - The operation was cancelled by the client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '500':
+          description: Internal - Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '501':
+          description: Unimplemented - The operation is not implemented or supported
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '503':
+          description: Unavailable - The service is currently unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '504':
+          description: Deadline exceeded - Upstream service did not respond in time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      x-anthropic-beta-required:
+      - agent-memory-2026-07-22
+      - managed-agents-2026-04-01
+      parameters:
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+      tags:
+      - Memory Stores?beta=true
+    get:
+      operationId: BetaListMemoryStores
+      summary: List memory stores
+      parameters:
+      - name: x-api-key
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: Maximum number of stores to return per page. Must be between 1 and 100. Defaults to 20 when omitted.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Opaque pagination cursor (a `page_...` value). Pass the `next_page` value from a previous response to fetch the next page; omit for the first page.
+      - name: include_archived
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: When `true`, archived stores are included in the results. Defaults to `false` (archived stores are excluded).
+      - name: created_at[gte]
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/BetaTimestamp'
+        description: Return only stores whose `created_at` is at or after this time (inclusive). Sent on the wire as `created_at[gte]`.
+      - name: created_at[lte]
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/BetaTimestamp'
+        description: Return only stores whose `created_at` is at or before this time (inclusive). Sent on the wire as `created_at[lte]`.
+      responses:
+        '200':
+          description: Successful response (OK)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaManagedAgentsListMemoryStoresResponse'
+        '400':
+          description: Invalid argument - The client specified an invalid argument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '401':
+          description: Unauthenticated - The request does not have valid authentication credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '403':
+          description: Permission denied - The caller does not have permission to execute the specified operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '404':
+          description: Not found - Some requested entity was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '408':
+          description: Deadline exceeded - The deadline expired before the operation could complete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '409':
+          description: Aborted - The operation was aborted due to concurrency issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '412':
+          description: Failed precondition - Operation was rejected because the system is not in required state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '413':
+          description: Out of range - Operation was attempted past the valid range
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '429':
+          description: Resource exhausted - Some resource has been exhausted (rate limiting)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '431':
+          description: Request header fields too large - Request metadata was too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '499':
+          description: Cancelled - The operation was cancelled by the client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '500':
+          description: Internal - Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '501':
+          description: Unimplemented - The operation is not implemented or supported
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '503':
+          description: Unavailable - The service is currently unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '504':
+          description: Deadline exceeded - Upstream service did not respond in time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      x-anthropic-beta-required:
+      - agent-memory-2026-07-22
+      - managed-agents-2026-04-01
+      tags:
+      - Memory Stores?beta=true
+components:
+  schemas:
+    BetaManagedAgentsCreateMemoryStoreResponse:
+      description: Response from creating a `memory_store`. Returns the created store.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          memory_store: '#/components/schemas/BetaManagedAgentsMemoryStore'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsMemoryStore'
+    BetaGatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
+      type: object
+    BetaAPIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
+          type: string
+        type:
+          const: api_error
+          default: api_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
+    BetaErrorResponse:
+      properties:
+        error:
+          discriminator:
+            mapping:
+              api_error: '#/components/schemas/BetaAPIError'
+              authentication_error: '#/components/schemas/BetaAuthenticationError'
+              billing_error: '#/components/schemas/BetaBillingError'
+              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
+              not_found_error: '#/components/schemas/BetaNotFoundError'
+              overloaded_error: '#/components/schemas/BetaOverloadedError'
+              permission_error: '#/components/schemas/BetaPermissionError'
+              rate_limit_error: '#/components/schemas/BetaRateLimitError'
+              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/BetaInvalidRequestError'
+          - $ref: '#/components/schemas/BetaAuthenticationError'
+          - $ref: '#/components/schemas/BetaBillingError'
+          - $ref: '#/components/schemas/BetaPermissionError'
+          - $ref: '#/components/schemas/BetaNotFoundError'
+          - $ref: '#/components/schemas/BetaRateLimitError'
+          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
+          - $ref: '#/components/schemas/BetaAPIError'
+          - $ref: '#/components/schemas/BetaOverloadedError'
+          title: Error
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Request Id
+        type:
+          const: error
+          default: error
+          title: Type
+          type: string
+      required:
+      - error
+      - request_id
+      - type
+      title: ErrorResponse
+      type: object
+    BetaTimestamp:
+      description: A timestamp in RFC 3339 format
+      type: string
+      format: date-time
+    BetaOverloadedError:
+      properties:
+        message:
+          default: Overloaded
+          title: Message
+          type: string
+        type:
+          const: overloaded_error
+          default: overloaded_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: OverloadedError
+      type: object
+    BetaAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    BetaBillingError:
+      properties:
+        message:
+          default: Billing error
+          title: Message
+          type: string
+        type:
+          const: billing_error
+          default: billing_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: BillingError
+      type: object
+    BetaNotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    BetaManagedAgentsCreateMemoryStoreRequest:
+      description: Request parameters for creating a `memory_store`.
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      properties:
+        name:
+          description: Human-readable name for the store. Required; 1–255 characters; no control characters. The mount-path slug under `/mnt/memory/` is derived from this name (lowercased, non-alphanumeric runs collapsed to a hyphen). Names need not be unique within a workspace.
+          type: string
+          minLength: 1
+          maxLength: 255
+        description:
+          description: Free-text description of what the store contains, up to 1024 characters. Included in the agent's system prompt when the store is attached, so word it to be useful to the agent.
+          type: string
+          maxLength: 1024
+        metadata:
+          description: Arbitrary key-value tags for your own bookkeeping (such as the end user a store belongs to). Up to 16 pairs; keys 1–64 characters; values up to 512 characters. Not visible to the agent.
+          type: object
+          additionalProperties:
+            type: string
+    AnthropicBeta:
+      anyOf:
+      - type: string
+      - type: string
+        enum:
+        - message-batches-2024-09-24
+        - prompt-caching-2024-07-31
+        - computer-use-2024-10-22
+        - computer-use-2025-01-24
+        - pdfs-2024-09-25
+        - token-counting-2024-11-01
+        - token-efficient-tools-2025-02-19
+        - output-128k-2025-02-19
+        - files-api-2025-04-14
+        - mcp-client-2025-04-04
+        - mcp-client-2025-11-20
+        - dev-full-thinking-2025-05-14
+        - interleaved-thinking-2025-05-14
+        - code-execution-2025-05-22
+        - extended-cache-ttl-2025-04-11
+        - context-1m-2025-08-07
+        - context-management-2025-06-27
+        - model-context-window-exceeded-2025-08-26
+        - skills-2025-10-02
+        - fast-mode-2026-02-01
+        - output-300k-2026-03-24
+        - user-profiles-2026-03-24
+        - user-profiles-2026-08-18
+        - advisor-tool-2026-03-01
+        - managed-agents-2026-04-01
+        - cache-diagnosis-2026-04-07
+        - dreaming-2026-04-21
+        - thinking-token-count-2026-05-13
+        - server-side-fallback-2026-06-01
+        - server-side-fallback-2026-07-01
+        - fallback-credit-2026-06-01
+        - fallback-credit-2026-07-01
+        - agent-memory-2026-07-22
+        - mid-conversation-tool-changes-2026-07-01
+        - compact-2026-01-12
+        - computer-use-2025-11-24
+        - mcp-tunnels-2026-06-22
+        - structured-outputs-2025-11-13
+        - task-budgets-2026-03-13
+        - thinking-display-updates-2026-08-18
+        - ce-user-management-2026-07-13
+        x-stainless-nominal: false
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    BetaManagedAgentsMemoryStore:
+      description: 'A `memory_store`: a named container for agent memories, scoped to a workspace. Attach a store to a session via `resources[]` to mount it as a directory the agent can read and write.'
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - id
+      - name
+      - created_at
+      - updated_at
+      properties:
+        type:
+          type: string
+          enum:
+          - memory_store
+        id:
+          description: Unique identifier for the memory store (a `memstore_...` tagged ID). Use this when attaching the store to a session, or in the `{memory_store_id}` path parameter of subsequent calls.
+          type: string
+        name:
+          description: Human-readable name for the store. 1–255 characters. The store's mount-path slug under `/mnt/memory/` is derived from this name.
+          type: string
+        description:
+          description: Free-text description of what the store contains, up to 1024 characters. Included in the agent's system prompt when the store is attached, so word it to be useful to the agent. Empty string when unset.
+          type: string
+        created_at:
+          description: Timestamp when the store was created.
+          allOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+        updated_at:
+          description: Timestamp when the store's `name`, `description`, or `metadata` was last modified. Memory writes inside the store do not advance this.
+          allOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+        metadata:
+          description: Arbitrary key-value tags for your own bookkeeping (such as the end user a store belongs to). Up to 16 pairs; keys 1–64 characters; values up to 512 characters. Returned on retrieve/list but not filterable.
+          type: object
+          additionalProperties:
+            type: string
+        archived_at:
+          description: Timestamp when the store was archived, or `null` if active. Set once and never cleared; archiving is one-way. Archived stores are read-only and cannot be attached to new sessions.
+          anyOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+          - type: 'null'
+    BetaInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    BetaManagedAgentsListMemoryStoresResponse:
+      description: A page of `memory_store` results, ordered by `created_at` descending (newest first).
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          description: Memory stores on this page, newest first. Empty when there are no stores matching the filters.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsMemoryStore'
+        next_page:
+          description: Opaque cursor for the next page (a `page_...` value). Pass as `page` on the next request. `null` when there are no more results.
+          anyOf:
+          - type: string
+          - type: 'null'
+    BetaPermissionError:
+      properties:
+        message:
+          default: Permission denied
+          title: Message
+          type: string
+        type:
+          const: permission_error
+          default: permission_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: PermissionError
+      type: object

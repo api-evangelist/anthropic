@@ -1,44 +1,21 @@
 openapi: 3.2.0
 info:
-  title: Anthropic Agents API
-  version: '1.0'
-  description: 'Operations tagged Agents across 2 of this provider''s published API definitions: anthropic-api-openapi.json, anthropic-managed-agents-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+  title: Anthropic Agents?beta=true API
 servers:
 - url: https://api.anthropic.com
 tags:
-- name: Agents
+- name: Agents?beta=true
 paths:
-  /v1/agents/{agent_id}/archive?beta=true:
+  /v1/agents?beta=true:
     post:
-      operationId: BetaArchiveAgent
-      summary: Archive Agent
-      parameters:
-      - name: anthropic-version
-        in: header
-        required: false
-        schema:
-          type: string
-      - name: anthropic-beta
-        in: header
-        required: false
-        schema:
-          type: string
-          items:
-            type: string
-          x-stainless-override-schema:
-            x-stainless-param: betas
-            x-stainless-extend-default: true
-            type: array
-            description: Optional header to specify the beta version(s) you want to use.
-            items:
-              $ref: '#/components/schemas/AnthropicBeta'
-      - name: agent_id
-        in: path
+      operationId: BetaCreateAgent
+      summary: Create Agent
+      requestBody:
         required: true
-        schema:
-          type: string
-        description: Path parameter agent_id
-        example: agent_011CZkYpogX7uDKUyvBTophP
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaManagedAgentsCreateAgentParams'
       responses:
         '200':
           description: Successful response (OK)
@@ -138,14 +115,31 @@ paths:
                 $ref: '#/components/schemas/BetaErrorResponse'
       x-anthropic-beta-required:
       - managed-agents-2026-04-01
+      parameters:
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
       tags:
-      - Agents
-    servers:
-    - url: https://api.anthropic.com
-  /v1/agents/{agent_id}/versions?beta=true:
+      - Agents?beta=true
     get:
-      operationId: BetaListAgentVersions
-      summary: List Agent Versions
+      operationId: BetaListAgents
+      summary: List Agents
       parameters:
       - name: x-api-key
         in: header
@@ -171,13 +165,6 @@ paths:
             description: Optional header to specify the beta version(s) you want to use.
             items:
               $ref: '#/components/schemas/AnthropicBeta'
-      - name: agent_id
-        in: path
-        required: true
-        schema:
-          type: string
-        description: Path parameter agent_id
-        example: agent_011CZkYpogX7uDKUyvBTophP
       - name: limit
         in: query
         required: false
@@ -192,160 +179,32 @@ paths:
           type: string
           x-stainless-pagination-property:
             purpose: next_cursor_param
-        description: Opaque pagination cursor.
-      responses:
-        '200':
-          description: Successful response (OK)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaManagedAgentsListAgentVersions'
-        '400':
-          description: Invalid argument - The client specified an invalid argument
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '401':
-          description: Unauthenticated - The request does not have valid authentication credentials
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '403':
-          description: Permission denied - The caller does not have permission to execute the specified operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '404':
-          description: Not found - Some requested entity was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '408':
-          description: Deadline exceeded - The deadline expired before the operation could complete
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '409':
-          description: Aborted - The operation was aborted due to concurrency issue
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '412':
-          description: Failed precondition - Operation was rejected because the system is not in required state
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '413':
-          description: Out of range - Operation was attempted past the valid range
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '429':
-          description: Resource exhausted - Some resource has been exhausted (rate limiting)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '431':
-          description: Request header fields too large - Request metadata was too large
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '499':
-          description: Cancelled - The operation was cancelled by the client
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '500':
-          description: Internal - Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '501':
-          description: Unimplemented - The operation is not implemented or supported
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '503':
-          description: Unavailable - The service is currently unavailable
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '504':
-          description: Deadline exceeded - Upstream service did not respond in time
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-      x-anthropic-beta-required:
-      - managed-agents-2026-04-01
-      tags:
-      - Agents
-    servers:
-    - url: https://api.anthropic.com
-  /v1/agents/{agent_id}?beta=true:
-    get:
-      operationId: BetaGetAgent
-      summary: Get Agent
-      parameters:
-      - name: x-api-key
-        in: header
-        required: false
-        schema:
-          type: string
-      - name: anthropic-version
-        in: header
-        required: false
-        schema:
-          type: string
-      - name: anthropic-beta
-        in: header
-        required: false
-        schema:
-          type: string
-          items:
-            type: string
-          x-stainless-override-schema:
-            x-stainless-param: betas
-            x-stainless-extend-default: true
-            type: array
-            description: Optional header to specify the beta version(s) you want to use.
-            items:
-              $ref: '#/components/schemas/AnthropicBeta'
-      - name: agent_id
-        in: path
-        required: true
-        schema:
-          type: string
-        description: Path parameter agent_id
-        example: agent_011CZkYpogX7uDKUyvBTophP
-      - name: version
+        description: Opaque pagination cursor from a previous response.
+      - name: created_at[gte]
         in: query
         required: false
         schema:
-          type: integer
-          format: int32
-        description: Agent version. Omit for the most recent version. Must be at least 1 if specified.
+          $ref: '#/components/schemas/BetaTimestamp'
+        description: Return agents created at or after this time (inclusive).
+      - name: created_at[lte]
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/BetaTimestamp'
+        description: Return agents created at or before this time (inclusive).
+      - name: include_archived
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: Include archived agents in results. Defaults to false.
       responses:
         '200':
           description: Successful response (OK)
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BetaManagedAgentsAgent'
+                $ref: '#/components/schemas/BetaManagedAgentsListAgents'
         '400':
           description: Invalid argument - The client specified an invalid argument
           content:
@@ -439,294 +298,7 @@ paths:
       x-anthropic-beta-required:
       - managed-agents-2026-04-01
       tags:
-      - Agents
-    post:
-      operationId: BetaUpdateAgent
-      summary: Update Agent
-      parameters:
-      - name: anthropic-version
-        in: header
-        required: false
-        schema:
-          type: string
-      - name: anthropic-beta
-        in: header
-        required: false
-        schema:
-          type: string
-          items:
-            type: string
-          x-stainless-override-schema:
-            x-stainless-param: betas
-            x-stainless-extend-default: true
-            type: array
-            description: Optional header to specify the beta version(s) you want to use.
-            items:
-              $ref: '#/components/schemas/AnthropicBeta'
-      - name: agent_id
-        in: path
-        required: true
-        schema:
-          type: string
-          x-stainless-cli-data-alias: id
-        description: Path parameter agent_id
-        example: agent_011CZkYpogX7uDKUyvBTophP
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BetaManagedAgentsUpdateAgentParams'
-            example:
-              description: updated
-      responses:
-        '200':
-          description: Successful response (OK)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaManagedAgentsAgent'
-        '400':
-          description: Invalid argument - The client specified an invalid argument
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '401':
-          description: Unauthenticated - The request does not have valid authentication credentials
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '403':
-          description: Permission denied - The caller does not have permission to execute the specified operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '404':
-          description: Not found - Some requested entity was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '408':
-          description: Deadline exceeded - The deadline expired before the operation could complete
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '409':
-          description: Aborted - The operation was aborted due to concurrency issue
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '412':
-          description: Failed precondition - Operation was rejected because the system is not in required state
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '413':
-          description: Out of range - Operation was attempted past the valid range
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '429':
-          description: Resource exhausted - Some resource has been exhausted (rate limiting)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '431':
-          description: Request header fields too large - Request metadata was too large
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '499':
-          description: Cancelled - The operation was cancelled by the client
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '500':
-          description: Internal - Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '501':
-          description: Unimplemented - The operation is not implemented or supported
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '503':
-          description: Unavailable - The service is currently unavailable
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-        '504':
-          description: Deadline exceeded - Upstream service did not respond in time
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BetaErrorResponse'
-      x-anthropic-beta-required:
-      - managed-agents-2026-04-01
-      tags:
-      - Agents
-    servers:
-    - url: https://api.anthropic.com
-  /v1/agents:
-    post:
-      summary: Anthropic Create Agent
-      description: Define a reusable, versioned agent.
-      operationId: createAgent
-      tags:
-      - Agents
-      parameters:
-      - $ref: '#/components/parameters/AnthropicVersion'
-      - $ref: '#/components/parameters/AnthropicBeta'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateAgentRequest'
-      responses:
-        '200':
-          description: Agent created.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Agent'
-        4XX:
-          $ref: '#/components/responses/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-    get:
-      summary: Anthropic List Agents
-      description: Paginated list of agents in the workspace.
-      operationId: listAgents
-      tags:
-      - Agents
-      parameters:
-      - $ref: '#/components/parameters/AnthropicVersion'
-      - $ref: '#/components/parameters/AnthropicBeta'
-      - $ref: '#/components/parameters/Limit'
-      responses:
-        '200':
-          description: List of agents.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AgentList'
-      security:
-      - ApiKeyAuth: []
-    servers:
-    - url: https://api.anthropic.com
-      description: Production Server
-  /v1/agents/{agent_id}:
-    get:
-      summary: Anthropic Get Agent
-      description: Retrieve an agent's latest version.
-      operationId: getAgent
-      tags:
-      - Agents
-      parameters:
-      - $ref: '#/components/parameters/AnthropicVersion'
-      - $ref: '#/components/parameters/AnthropicBeta'
-      - $ref: '#/components/parameters/AgentIdPath'
-      responses:
-        '200':
-          description: Agent retrieved.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Agent'
-      security:
-      - ApiKeyAuth: []
-    post:
-      summary: Anthropic Update Agent
-      description: 'Update an agent. Pass the current version to optimistically lock the update. A new version is created when fields change.
-
-        '
-      operationId: updateAgent
-      tags:
-      - Agents
-      parameters:
-      - $ref: '#/components/parameters/AnthropicVersion'
-      - $ref: '#/components/parameters/AnthropicBeta'
-      - $ref: '#/components/parameters/AgentIdPath'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateAgentRequest'
-      responses:
-        '200':
-          description: Agent updated; new version returned.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Agent'
-      security:
-      - ApiKeyAuth: []
-    servers:
-    - url: https://api.anthropic.com
-      description: Production Server
-  /v1/agents/{agent_id}/archive:
-    post:
-      summary: Anthropic Archive Agent
-      description: Archive an agent; existing sessions continue running.
-      operationId: archiveAgent
-      tags:
-      - Agents
-      parameters:
-      - $ref: '#/components/parameters/AnthropicVersion'
-      - $ref: '#/components/parameters/AnthropicBeta'
-      - $ref: '#/components/parameters/AgentIdPath'
-      responses:
-        '200':
-          description: Agent archived.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Agent'
-      security:
-      - ApiKeyAuth: []
-    servers:
-    - url: https://api.anthropic.com
-      description: Production Server
-  /v1/agents/{agent_id}/versions:
-    get:
-      summary: Anthropic List Agent Versions
-      description: Full version history for the agent.
-      operationId: listAgentVersions
-      tags:
-      - Agents
-      parameters:
-      - $ref: '#/components/parameters/AnthropicVersion'
-      - $ref: '#/components/parameters/AnthropicBeta'
-      - $ref: '#/components/parameters/AgentIdPath'
-      responses:
-        '200':
-          description: Agent versions.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AgentList'
-      security:
-      - ApiKeyAuth: []
-    servers:
-    - url: https://api.anthropic.com
-      description: Production Server
+      - Agents?beta=true
 components:
   schemas:
     BetaManagedAgentsMCPToolsetParams:
@@ -1437,6 +1009,83 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BetaManagedAgentsAgentToolConfigUnion'
+    BetaManagedAgentsCreateAgentParams:
+      description: Request parameters for creating an `agent`.
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      - model
+      properties:
+        name:
+          description: Human-readable name for the agent.
+          type: string
+          minLength: 1
+          maxLength: 256
+          examples:
+          - My First Agent
+        model:
+          description: Model identifier. Accepts the [model string](https://platform.claude.com/docs/en/about-claude/models/overview#latest-models-comparison), e.g. `claude-opus-5`, or a `model_config` object for additional configuration control
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsModelParams'
+          examples:
+          - claude-opus-5
+        description:
+          description: Description of what the agent does.
+          anyOf:
+          - type: string
+            maxLength: 2048
+          - type: 'null'
+          examples:
+          - A general-purpose starter agent.
+        system:
+          description: System prompt for the agent.
+          anyOf:
+          - type: string
+            maxLength: 100000
+          - type: 'null'
+          examples:
+          - You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.
+        tools:
+          description: Tool configurations available to the agent. Maximum of 128 tools across all toolsets allowed.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsAgentToolParams'
+          examples:
+          - - type: agent_toolset_20260401
+        mcp_servers:
+          description: MCP servers this agent connects to. Maximum 20. Names must be unique within the array. Every server must be referenced by an `mcp_toolset` in `tools`; unreferenced servers are rejected. See the [MCP connector guide](https://platform.claude.com/docs/en/managed-agents/mcp-connector).
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsMCPServerParams'
+        skills:
+          description: Skills available to the agent.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsSkillParams'
+        metadata:
+          description: Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 chars, values up to 512 chars.
+          type: object
+          additionalProperties:
+            type: string
+          examples:
+          - foo: bar
+        multiagent:
+          description: Multiagent orchestration configuration. Currently supports the `coordinator` topology with a roster of 1-20 agents.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsMultiagentParams'
+          - type: 'null'
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+      example:
+        name: My First Agent
+        model: claude-opus-5
+        description: A general-purpose starter agent.
+        system: You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.
+        tools:
+        - type: agent_toolset_20260401
+        metadata:
+          foo: bar
     BetaManagedAgentsAnthropicSkillParams:
       description: An Anthropic-managed skill.
       type: object
@@ -1505,27 +1154,6 @@ components:
           description: Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.
           anyOf:
           - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-          - type: 'null'
-    BetaManagedAgentsListAgentVersions:
-      description: Paginated list of agent versions.
-      type: object
-      additionalProperties: false
-      required:
-      - data
-      properties:
-        data:
-          description: Agent versions.
-          x-stainless-pagination-property:
-            purpose: items
-          type: array
-          items:
-            $ref: '#/components/schemas/BetaManagedAgentsAgent'
-        next_page:
-          description: Opaque cursor for the next page. Null when no more results.
-          x-stainless-pagination-property:
-            purpose: next_cursor_field
-          anyOf:
-          - type: string
           - type: 'null'
     BetaManagedAgentsAgentToolParams:
       description: Union type for tool configurations in the tools array.
@@ -1993,6 +1621,27 @@ components:
         type: url
         name: example-mcp
         url: https://example-server.modelcontextprotocol.io/sse
+    BetaManagedAgentsListAgents:
+      description: Paginated list of agents.
+      type: object
+      additionalProperties: false
+      required:
+      - data
+      properties:
+        data:
+          description: List of agents.
+          x-stainless-pagination-property:
+            purpose: items
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsAgent'
+        next_page:
+          description: Opaque cursor for the next page. Null when no more results.
+          x-stainless-pagination-property:
+            purpose: next_cursor_field
+          anyOf:
+          - type: string
+          - type: 'null'
     BetaManagedAgentsAgent:
       description: A Managed Agents `agent`.
       type: object
@@ -2556,265 +2205,3 @@ components:
         - thinking-display-updates-2026-08-18
         - ce-user-management-2026-07-13
         x-stainless-nominal: false
-    BetaManagedAgentsUpdateAgentParams:
-      description: Request parameters for updating an `agent`. Omit a field to preserve its current value.
-      type: object
-      additionalProperties: false
-      properties:
-        version:
-          description: The agent's current version, used to prevent concurrent overwrites. Obtain this value from a create or retrieve response. Must be at least 1 if specified. When supplied, the request fails if it does not match the server's current version; omit to apply the update unconditionally.
-          type: integer
-          format: int32
-          examples:
-          - 1
-        name:
-          description: Human-readable name. Must be non-empty. Omit to preserve. Cannot be cleared.
-          type: string
-          maxLength: 256
-        description:
-          description: Description. Omit to preserve; send empty string or null to clear.
-          anyOf:
-          - type: string
-            maxLength: 2048
-          - type: 'null'
-        model:
-          description: Model identifier. Accepts the [model string](https://platform.claude.com/docs/en/about-claude/models/overview#latest-models-comparison), e.g. `claude-opus-5`, or a `model_config` object for additional configuration control. Omit to preserve. Cannot be cleared.
-          allOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsModelParams'
-        system:
-          description: System prompt. Omit to preserve; send empty string or null to clear.
-          anyOf:
-          - type: string
-            maxLength: 100000
-          - type: 'null'
-          examples:
-          - You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.
-        tools:
-          description: Tool configurations available to the agent. Full replacement. Omit to preserve; send empty array or null to clear. Maximum of 128 tools across all toolsets allowed.
-          anyOf:
-          - type: array
-            items:
-              $ref: '#/components/schemas/BetaManagedAgentsAgentToolParams'
-          - type: 'null'
-        mcp_servers:
-          description: MCP servers. Full replacement. Omit to preserve; send empty array or `null` to clear. Names must be unique. Maximum 20. Every server must be referenced by an `mcp_toolset` in the agent's resulting `tools`; unreferenced servers are rejected. See the [MCP connector guide](https://platform.claude.com/docs/en/managed-agents/mcp-connector).
-          anyOf:
-          - type: array
-            items:
-              $ref: '#/components/schemas/BetaManagedAgentsMCPServerParams'
-          - type: 'null'
-        skills:
-          description: Skills. Full replacement. Omit to preserve; send empty array or null to clear.
-          anyOf:
-          - type: array
-            items:
-              $ref: '#/components/schemas/BetaManagedAgentsSkillParams'
-          - type: 'null'
-        metadata:
-          description: Metadata patch. Set a key to a string to upsert it, or to null to delete it. Omit the field to preserve. The stored bag is limited to 16 keys (up to 64 chars each) with values up to 512 chars.
-          anyOf:
-          - type: object
-            additionalProperties:
-              anyOf:
-              - type: string
-              - type: 'null'
-          - type: 'null'
-        multiagent:
-          description: Multiagent orchestration configuration. Full replacement. Omit to preserve; send null to clear.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsMultiagentParams'
-          - type: 'null'
-          x-anthropic-beta-required:
-          - managed-agents-2026-04-01
-      example:
-        version: 1
-        system: You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.
-    AgentList:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Agent'
-        has_more:
-          type: boolean
-    UpdateAgentRequest:
-      type: object
-      required:
-      - version
-      properties:
-        version:
-          type: integer
-        name:
-          type: string
-        model:
-          oneOf:
-          - type: string
-          - type: object
-        system:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        tools:
-          type: array
-          items:
-            type: object
-        mcp_servers:
-          type: array
-          items:
-            type: object
-        skills:
-          type: array
-          items:
-            type: object
-        metadata:
-          type: object
-    Agent:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-          example: agent
-        name:
-          type: string
-        model:
-          type: object
-          properties:
-            id:
-              type: string
-            speed:
-              type: string
-        system:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        tools:
-          type: array
-          items:
-            type: object
-        skills:
-          type: array
-          items:
-            type: object
-        mcp_servers:
-          type: array
-          items:
-            type: object
-        metadata:
-          type: object
-        version:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        archived_at:
-          type: string
-          format: date-time
-          nullable: true
-    CreateAgentRequest:
-      type: object
-      required:
-      - name
-      - model
-      properties:
-        name:
-          type: string
-          example: Coding Assistant
-        model:
-          oneOf:
-          - type: string
-            example: claude-opus-4-7
-          - type: object
-            properties:
-              id:
-                type: string
-              speed:
-                type: string
-                enum:
-                - standard
-                - fast
-        system:
-          type: string
-        description:
-          type: string
-        tools:
-          type: array
-          items:
-            type: object
-        mcp_servers:
-          type: array
-          items:
-            type: object
-        skills:
-          type: array
-          items:
-            type: object
-        multiagent:
-          type: object
-        metadata:
-          type: object
-    Error:
-      type: object
-      properties:
-        type:
-          type: string
-        error:
-          type: object
-          properties:
-            type:
-              type: string
-            message:
-              type: string
-  parameters:
-    AgentIdPath:
-      name: agent_id
-      in: path
-      required: true
-      schema:
-        type: string
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
-      required: true
-      schema:
-        type: string
-        default: '2023-06-01'
-    Limit:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 20
-    AnthropicBeta:
-      name: anthropic-beta
-      in: header
-      required: true
-      description: Must include managed-agents-2026-04-01.
-      schema:
-        type: string
-        default: managed-agents-2026-04-01
-  responses:
-    ErrorResponse:
-      description: Error response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: x-api-key
-x-refined-from:
-- anthropic-api-openapi.json
-- anthropic-managed-agents-api-openapi.yml

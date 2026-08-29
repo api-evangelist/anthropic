@@ -1,20 +1,30 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Anthropic Admin Agents Prompt Generation API
-  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
+  title: Anthropic Prompt Tools Prompt Generation API
+  description: 'Manage prompts with generation, improvement, and templatization capabilities.
+
+
+    The prompt tools APIs are in a closed research preview. These APIs are a set
+
+    of tools to generate and improve prompts, similar to what''s available in the
+
+    Anthropic Workbench, and are intended for use by other prompt engineering
+
+    platforms and playgrounds.
+
+    '
   version: 1.0.0
   contact:
-    name: Anthropic
-    url: https://www.anthropic.com
-    email: support@anthropic.com
+    name: Anthropic Support
+    url: https://support.anthropic.com
   license:
-    name: Anthropic API License
+    name: Anthropic Terms of Service
     url: https://www.anthropic.com/terms
 servers:
-- url: https://api.anthropic.com/v1
+- url: https://api.anthropic.com
   description: Production Server
 security:
-- AdminApiKeyAuth: []
+- ApiKeyAuth: []
 tags:
 - name: Prompt Generation
   description: APIs for generating well-written prompts for specified tasks
@@ -116,133 +126,36 @@ paths:
                 ServerErrorExample:
                   $ref: '#/components/examples/ErrorServerExample'
 components:
-  schemas:
-    TextContentBlock:
-      type: object
-      required:
-      - type
-      - text
-      properties:
-        type:
-          type: string
-          enum:
-          - text
-          description: The type of content block
-        text:
-          type: string
-          description: The text content
-    GeneratePromptRequest:
-      type: object
-      required:
-      - task
-      properties:
-        task:
-          type: string
-          description: 'Description of the prompt''s purpose.
-
-            The `task` parameter tells Claude what the prompt should do
-
-            or what kind of role or functionality you want to create.
-
-            This helps guide the prompt generation process toward your
-
-            intended use case.
-
-            '
-        target_model:
-          type: string
-          nullable: true
-          default: null
-          description: 'The model this prompt will be used for. This optional
-
-            parameter helps us understand which models our prompt tools
-
-            are being used with, but it doesn''t currently affect
-
-            functionality.
-
-            '
-          minLength: 1
-          maxLength: 256
-    UsageInfo:
-      type: object
-      description: Usage information
-      required:
-      - input_tokens
-      - output_tokens
-      properties:
-        input_tokens:
-          type: integer
-          description: Number of input tokens used
-          minimum: 0
-        output_tokens:
-          type: integer
-          description: Number of output tokens generated
-          minimum: 0
-    ErrorResponse:
-      type: object
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          description: The type of error
-        message:
-          type: string
-          description: A human-readable error message
-    PromptMessage:
-      type: object
-      required:
-      - role
-      - content
-      properties:
-        role:
-          type: string
-          enum:
-          - user
-          - assistant
-          description: The role of the message sender
-        content:
-          type: array
-          description: The content of the message
-          items:
-            $ref: '#/components/schemas/TextContentBlock'
-    GeneratePromptResponse:
-      type: object
-      required:
-      - messages
-      - system
-      - usage
-      properties:
-        messages:
-          type: array
-          description: 'The response contains a list of message objects in the
-
-            same format used by the Messages API. Typically includes a
-
-            user message with the complete generated prompt text, and
-
-            may include an assistant message with a prefill to guide
-
-            the model''s initial response.
-
-            '
-          items:
-            $ref: '#/components/schemas/PromptMessage'
-        system:
-          type: string
-          default: ''
-          description: 'Currently, the `system` field is always returned as an
-
-            empty string (""). In future iterations, this field may
-
-            contain generated system prompts.
-
-            '
-        usage:
-          $ref: '#/components/schemas/UsageInfo'
   examples:
+    ErrorBadRequestExample:
+      summary: Bad request error
+      value:
+        type: invalid_request_error
+        message: Invalid request format
+    ErrorRateLimitExample:
+      summary: Rate limit error
+      value:
+        type: rate_limit_error
+        message: Rate limit exceeded. Please retry after some time.
+    GeneratePromptRequestDefaultExample:
+      summary: Basic task only
+      value:
+        task: a helpful writing assistant for creative fiction
+    ErrorUnauthorizedExample:
+      summary: Unauthorized error
+      value:
+        type: authentication_error
+        message: Invalid or missing API key
+    ErrorForbiddenExample:
+      summary: Forbidden error
+      value:
+        type: permission_error
+        message: Access denied or not in closed research preview
+    GeneratePromptRequestChefExample:
+      summary: Chef for meal prep service
+      value:
+        task: a chef for a meal prep planning service
+        target_model: claude-3-7-sonnet-20250219
     GeneratePromptResponseChefExample:
       summary: Chef prompt response
       value:
@@ -264,36 +177,14 @@ components:
       value:
         type: api_error
         message: An internal server error occurred
-    GeneratePromptRequestChefExample:
-      summary: Chef for meal prep service
-      value:
-        task: a chef for a meal prep planning service
-        target_model: claude-3-7-sonnet-20250219
-    ErrorRateLimitExample:
-      summary: Rate limit error
-      value:
-        type: rate_limit_error
-        message: Rate limit exceeded. Please retry after some time.
-    GeneratePromptRequestDefaultExample:
-      summary: Basic task only
-      value:
-        task: a helpful writing assistant for creative fiction
-    ErrorBadRequestExample:
-      summary: Bad request error
-      value:
-        type: invalid_request_error
-        message: Invalid request format
-    ErrorUnauthorizedExample:
-      summary: Unauthorized error
-      value:
-        type: authentication_error
-        message: Invalid or missing API key
-    ErrorForbiddenExample:
-      summary: Forbidden error
-      value:
-        type: permission_error
-        message: Access denied or not in closed research preview
   parameters:
+    ApiKeyHeader:
+      name: x-api-key
+      in: header
+      required: true
+      description: A valid API token.
+      schema:
+        type: string
     BrowserAccessHeader:
       name: anthropic-dangerous-direct-browser-access
       in: header
@@ -337,16 +228,135 @@ components:
         - prompt-tools-2025-04-02
       style: simple
       explode: false
-    ApiKeyHeader:
-      name: x-api-key
-      in: header
-      required: true
-      description: A valid API token.
-      schema:
-        type: string
+  schemas:
+    TextContentBlock:
+      type: object
+      required:
+      - type
+      - text
+      properties:
+        type:
+          type: string
+          enum:
+          - text
+          description: The type of content block
+        text:
+          type: string
+          description: The text content
+    GeneratePromptResponse:
+      type: object
+      required:
+      - messages
+      - system
+      - usage
+      properties:
+        messages:
+          type: array
+          description: 'The response contains a list of message objects in the
+
+            same format used by the Messages API. Typically includes a
+
+            user message with the complete generated prompt text, and
+
+            may include an assistant message with a prefill to guide
+
+            the model''s initial response.
+
+            '
+          items:
+            $ref: '#/components/schemas/PromptMessage'
+        system:
+          type: string
+          default: ''
+          description: 'Currently, the `system` field is always returned as an
+
+            empty string (""). In future iterations, this field may
+
+            contain generated system prompts.
+
+            '
+        usage:
+          $ref: '#/components/schemas/UsageInfo'
+    UsageInfo:
+      type: object
+      description: Usage information
+      required:
+      - input_tokens
+      - output_tokens
+      properties:
+        input_tokens:
+          type: integer
+          description: Number of input tokens used
+          minimum: 0
+        output_tokens:
+          type: integer
+          description: Number of output tokens generated
+          minimum: 0
+    GeneratePromptRequest:
+      type: object
+      required:
+      - task
+      properties:
+        task:
+          type: string
+          description: 'Description of the prompt''s purpose.
+
+            The `task` parameter tells Claude what the prompt should do
+
+            or what kind of role or functionality you want to create.
+
+            This helps guide the prompt generation process toward your
+
+            intended use case.
+
+            '
+        target_model:
+          type: string
+          nullable: true
+          default: null
+          description: 'The model this prompt will be used for. This optional
+
+            parameter helps us understand which models our prompt tools
+
+            are being used with, but it doesn''t currently affect
+
+            functionality.
+
+            '
+          minLength: 1
+          maxLength: 256
+    ErrorResponse:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: The type of error
+        message:
+          type: string
+          description: A human-readable error message
+    PromptMessage:
+      type: object
+      required:
+      - role
+      - content
+      properties:
+        role:
+          type: string
+          enum:
+          - user
+          - assistant
+          description: The role of the message sender
+        content:
+          type: array
+          description: The content of the message
+          items:
+            $ref: '#/components/schemas/TextContentBlock'
   securitySchemes:
-    AdminApiKeyAuth:
+    ApiKeyAuth:
       type: apiKey
       in: header
       name: x-api-key
-      description: Your Admin API key for authentication (starts with sk-ant-admin...).
+      description: API key for authentication

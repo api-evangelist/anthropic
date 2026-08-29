@@ -1,0 +1,2109 @@
+openapi: 3.2.0
+info:
+  title: Anthropic Deployments?beta=true API
+servers:
+- url: https://api.anthropic.com
+tags:
+- name: Deployments?beta=true
+paths:
+  /v1/deployments?beta=true:
+    post:
+      operationId: BetaCreateDeployment
+      summary: Create Deployment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaManagedAgentsCreateDeploymentParams'
+      responses:
+        '200':
+          description: Successful response (OK)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaManagedAgentsDeployment'
+        '400':
+          description: Invalid argument - The client specified an invalid argument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '401':
+          description: Unauthenticated - The request does not have valid authentication credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '403':
+          description: Permission denied - The caller does not have permission to execute the specified operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '404':
+          description: Not found - Some requested entity was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '408':
+          description: Deadline exceeded - The deadline expired before the operation could complete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '409':
+          description: Aborted - The operation was aborted due to concurrency issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '412':
+          description: Failed precondition - Operation was rejected because the system is not in required state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '413':
+          description: Out of range - Operation was attempted past the valid range
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '429':
+          description: Resource exhausted - Some resource has been exhausted (rate limiting)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '431':
+          description: Request header fields too large - Request metadata was too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '499':
+          description: Cancelled - The operation was cancelled by the client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '500':
+          description: Internal - Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '501':
+          description: Unimplemented - The operation is not implemented or supported
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '503':
+          description: Unavailable - The service is currently unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '504':
+          description: Deadline exceeded - Upstream service did not respond in time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      x-anthropic-beta-required:
+      - managed-agents-2026-04-01
+      parameters:
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+      tags:
+      - Deployments?beta=true
+    get:
+      operationId: BetaListDeployments
+      summary: List Deployments
+      parameters:
+      - name: x-api-key
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: Maximum results per page. Default 20, maximum 100.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: string
+          x-stainless-pagination-property:
+            purpose: next_cursor_param
+        description: Opaque pagination cursor.
+      - name: agent_id
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter by agent ID.
+      - name: status
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/BetaManagedAgentsDeploymentStatus'
+        description: 'Filter by status: active or paused. Omit for both. To include archived deployments, use include_archived instead; the two cannot be combined.'
+      - name: created_at[gte]
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/BetaTimestamp'
+        description: Return deployments created at or after this time (inclusive).
+      - name: created_at[lte]
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/BetaTimestamp'
+        description: Return deployments created at or before this time (inclusive).
+      - name: include_archived
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: 'When true, includes archived deployments. Default: false (exclude archived).'
+      responses:
+        '200':
+          description: Successful response (OK)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaManagedAgentsListDeploymentsData'
+        '400':
+          description: Invalid argument - The client specified an invalid argument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '401':
+          description: Unauthenticated - The request does not have valid authentication credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '403':
+          description: Permission denied - The caller does not have permission to execute the specified operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '404':
+          description: Not found - Some requested entity was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '408':
+          description: Deadline exceeded - The deadline expired before the operation could complete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '409':
+          description: Aborted - The operation was aborted due to concurrency issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '412':
+          description: Failed precondition - Operation was rejected because the system is not in required state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '413':
+          description: Out of range - Operation was attempted past the valid range
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '429':
+          description: Resource exhausted - Some resource has been exhausted (rate limiting)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '431':
+          description: Request header fields too large - Request metadata was too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '499':
+          description: Cancelled - The operation was cancelled by the client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '500':
+          description: Internal - Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '501':
+          description: Unimplemented - The operation is not implemented or supported
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '503':
+          description: Unavailable - The service is currently unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '504':
+          description: Deadline exceeded - Upstream service did not respond in time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      x-anthropic-beta-required:
+      - managed-agents-2026-04-01
+      tags:
+      - Deployments?beta=true
+components:
+  schemas:
+    BetaManagedAgentsScheduleParams:
+      description: A recurring schedule. Discriminated union — only cron is supported currently.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          cron: '#/components/schemas/BetaManagedAgentsCronScheduleParams'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsCronScheduleParams'
+    BetaManagedAgentsDeploymentPausedReason:
+      description: Why a deployment is paused. Non-null exactly when `status` is `paused`.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          manual: '#/components/schemas/BetaManagedAgentsManualDeploymentPausedReason'
+          error: '#/components/schemas/BetaManagedAgentsErrorDeploymentPausedReason'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsManualDeploymentPausedReason'
+      - $ref: '#/components/schemas/BetaManagedAgentsErrorDeploymentPausedReason'
+    BetaManagedAgentsSessionResourceConfig:
+      description: A configured session resource. Echoes the input minus write-only credentials.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          github_repository: '#/components/schemas/BetaManagedAgentsGitHubRepositoryResourceConfig'
+          file: '#/components/schemas/BetaManagedAgentsFileResourceConfig'
+          memory_store: '#/components/schemas/BetaManagedAgentsMemoryStoreResourceConfig'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsGitHubRepositoryResourceConfig'
+      - $ref: '#/components/schemas/BetaManagedAgentsFileResourceConfig'
+      - $ref: '#/components/schemas/BetaManagedAgentsMemoryStoreResourceConfig'
+    BetaManagedAgentsErrorDeploymentPausedReason:
+      description: A scheduled fire recorded a failed run whose error auto-pauses the deployment.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - error
+      properties:
+        type:
+          type: string
+          enum:
+          - error
+        error:
+          description: The failed run's error.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsDeploymentPausedReasonError'
+    BetaManagedAgentsDeploymentPausedReasonError:
+      description: The error that triggered an auto-pause. Matches the failed run's `error.type`.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          environment_archived_error: '#/components/schemas/BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonError'
+          agent_archived_error: '#/components/schemas/BetaManagedAgentsAgentArchivedDeploymentPausedReasonError'
+          environment_not_found_error: '#/components/schemas/BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError'
+          vault_not_found_error: '#/components/schemas/BetaManagedAgentsVaultNotFoundDeploymentPausedReasonError'
+          file_not_found_error: '#/components/schemas/BetaManagedAgentsFileNotFoundDeploymentPausedReasonError'
+          session_resource_not_found_error: '#/components/schemas/BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError'
+          workspace_archived_error: '#/components/schemas/BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError'
+          organization_disabled_error: '#/components/schemas/BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError'
+          memory_store_archived_error: '#/components/schemas/BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError'
+          skill_not_found_error: '#/components/schemas/BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError'
+          vault_archived_error: '#/components/schemas/BetaManagedAgentsVaultArchivedDeploymentPausedReasonError'
+          unknown_error: '#/components/schemas/BetaManagedAgentsUnknownDeploymentPausedReasonError'
+          self_hosted_resources_unsupported_error: '#/components/schemas/BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError'
+          mcp_egress_blocked_error: '#/components/schemas/BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonError'
+      - $ref: '#/components/schemas/BetaManagedAgentsAgentArchivedDeploymentPausedReasonError'
+      - $ref: '#/components/schemas/BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError'
+      - $ref: '#/components/schemas/BetaManagedAgentsVaultNotFoundDeploymentPausedReasonError'
+      - $ref: '#/components/schemas/BetaManagedAgentsFileNotFoundDeploymentPausedReasonError'
+      - $ref: '#/components/schemas/BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError'
+      - $ref: '#/components/schemas/BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError'
+      - $ref: '#/components/schemas/BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError'
+      - $ref: '#/components/schemas/BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError'
+      - $ref: '#/components/schemas/BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError'
+      - $ref: '#/components/schemas/BetaManagedAgentsVaultArchivedDeploymentPausedReasonError'
+      - $ref: '#/components/schemas/BetaManagedAgentsUnknownDeploymentPausedReasonError'
+      - $ref: '#/components/schemas/BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError'
+      - $ref: '#/components/schemas/BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError'
+    BetaManagedAgentsAgentReference:
+      description: A resolved agent reference with a concrete version.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - id
+      - version
+      properties:
+        type:
+          type: string
+          enum:
+          - agent
+          examples:
+          - agent
+        id:
+          type: string
+          examples:
+          - agent_011CZkYqphY8vELVzwCUpqiQ
+        version:
+          type: integer
+          format: int32
+          examples:
+          - 1
+      example:
+        type: agent
+        id: agent_011CZkYqphY8vELVzwCUpqiQ
+        version: 1
+    BetaManagedAgentsRubric:
+      description: Rubric for grading the quality of an outcome.
+      discriminator:
+        propertyName: type
+        mapping:
+          file: '#/components/schemas/BetaManagedAgentsFileRubric'
+          text: '#/components/schemas/BetaManagedAgentsTextRubric'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsFileRubric'
+      - $ref: '#/components/schemas/BetaManagedAgentsTextRubric'
+    BetaManagedAgentsUserMessageEventParams:
+      description: Parameters for sending a user message to the session.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - content
+      properties:
+        type:
+          type: string
+          enum:
+          - user.message
+          examples:
+          - user.message
+        content:
+          description: Array of content blocks for the user message.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsUserContentBlock'
+          examples:
+          - - type: text
+              text: 'Where is my order #1234?'
+      example:
+        type: user.message
+        content:
+        - type: text
+          text: 'Where is my order #1234?'
+    BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonError:
+      description: The deployment's environment was archived.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - environment_archived_error
+    BetaManagedAgentsDocumentBlock:
+      description: Document content, either specified directly as base64 data, as text, or as a reference via a URL.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - source
+      properties:
+        type:
+          type: string
+          enum:
+          - document
+        source:
+          description: The source of the document data.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsDocumentSource'
+        title:
+          description: The title of the document.
+          anyOf:
+          - type: string
+          - type: 'null'
+        context:
+          description: Additional context about the document for the model.
+          anyOf:
+          - type: string
+          - type: 'null'
+    BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError:
+      description: The deployment configures resources, but its environment is self-hosted and cannot mount them.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - self_hosted_resources_unsupported_error
+    BetaManagedAgentsURLImageSource:
+      description: Image referenced by URL.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - url
+      properties:
+        type:
+          type: string
+          enum:
+          - url
+        url:
+          description: URL of the image to fetch.
+          type: string
+          minLength: 1
+    BetaManagedAgentsBudget:
+      description: An enforced spend ceiling on a session. Discriminated on `type`; `limit` is the only kind currently supported.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          limit: '#/components/schemas/BetaManagedAgentsBudgetLimit'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsBudgetLimit'
+    BetaManagedAgentsManualDeploymentPausedReason:
+      description: The caller invoked the pause endpoint on the deployment.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - manual
+    BetaManagedAgentsVaultNotFoundDeploymentPausedReasonError:
+      description: A vault referenced by the deployment no longer exists.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - vault_not_found_error
+    BetaManagedAgentsAgentArchivedDeploymentPausedReasonError:
+      description: The deployment's agent was archived.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - agent_archived_error
+    BetaManagedAgentsCronSchedule:
+      description: 5-field POSIX cron schedule with computed runtime timestamps.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - expression
+      - timezone
+      properties:
+        type:
+          type: string
+          enum:
+          - cron
+          examples:
+          - cron
+        expression:
+          description: '5-field POSIX cron expression: minute hour day-of-month month day-of-week (e.g., "0 9 * * 1-5" for weekdays at 9am). Day-of-week is 0-7 where 0 and 7 both mean Sunday. Extended cron syntax - seconds or year fields, and the special characters L, W, #, and ? - is not supported, nor are predefined shortcuts (@daily).'
+          type: string
+          minLength: 1
+          maxLength: 256
+          examples:
+          - 0 9 * * 1-5
+        timezone:
+          description: IANA timezone identifier (e.g., "America/Los_Angeles", "UTC").
+          type: string
+          minLength: 1
+          examples:
+          - America/Los_Angeles
+        last_run_at:
+          description: Time the most recent scheduled run actually started. Null until one completes; preserved after the deployment is archived. Manual runs do not update this.
+          anyOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+          - type: 'null'
+          examples:
+          - '2026-03-16T16:00:09Z'
+        upcoming_runs_at:
+          description: Up to 5 timestamps of upcoming cron occurrences. Non-empty for active and paused deployments (reflects what the schedule would do if unpaused); empty once the deployment is archived (`archived_at` set). Each fire is offset by a small per-schedule jitter, so a run will actually start at or shortly after its listed time.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaTimestamp'
+          examples:
+          - - '2026-03-17T16:00:00Z'
+            - '2026-03-18T16:00:00Z'
+      example:
+        type: cron
+        expression: 0 9 * * 1-5
+        timezone: America/Los_Angeles
+        last_run_at: '2026-03-16T16:00:09Z'
+        upcoming_runs_at:
+        - '2026-03-17T16:00:00Z'
+        - '2026-03-18T16:00:00Z'
+    BetaManagedAgentsDeploymentInitialEvent:
+      description: An event sent to a session immediately after it is created. Supports `user.message`, `user.define_outcome`, and `system.message`.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          user.message: '#/components/schemas/BetaManagedAgentsDeploymentUserMessageEvent'
+          user.define_outcome: '#/components/schemas/BetaManagedAgentsDeploymentUserDefineOutcomeEvent'
+          system.message: '#/components/schemas/BetaManagedAgentsDeploymentSystemMessageEvent'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsDeploymentUserMessageEvent'
+      - $ref: '#/components/schemas/BetaManagedAgentsDeploymentUserDefineOutcomeEvent'
+      - $ref: '#/components/schemas/BetaManagedAgentsDeploymentSystemMessageEvent'
+    BetaManagedAgentsFileNotFoundDeploymentPausedReasonError:
+      description: A file resource referenced by the deployment no longer exists.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - file_not_found_error
+    BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError:
+      description: The deployment's organization is disabled.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - organization_disabled_error
+    BetaManagedAgentsFileDocumentSource:
+      description: Document referenced by file ID.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - file_id
+      properties:
+        type:
+          type: string
+          enum:
+          - file
+        file_id:
+          description: ID of a previously uploaded file.
+          type: string
+          minLength: 1
+    BetaManagedAgentsFileRubricParams:
+      description: Rubric referenced by a file uploaded via the Files API.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - file_id
+      properties:
+        type:
+          type: string
+          enum:
+          - file
+          examples:
+          - file
+        file_id:
+          description: ID of the rubric file.
+          type: string
+          examples:
+          - file_011CNha8iCJcU1wXNR6q4V8w
+      example:
+        type: file
+        file_id: file_011CNha8iCJcU1wXNR6q4V8w
+    BetaManagedAgentsCronScheduleParams:
+      description: 5-field POSIX cron schedule. Literal wall-clock matching in the configured timezone.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - expression
+      - timezone
+      properties:
+        type:
+          type: string
+          enum:
+          - cron
+          examples:
+          - cron
+        expression:
+          description: '5-field POSIX cron expression: minute hour day-of-month month day-of-week (e.g., "0 9 * * 1-5" for weekdays at 9am). Day-of-week is 0-7 where 0 and 7 both mean Sunday. Extended cron syntax - seconds or year fields, and the special characters L, W, #, and ? - is not supported, nor are predefined shortcuts (@daily).'
+          type: string
+          minLength: 1
+          maxLength: 256
+          examples:
+          - 0 9 * * 1-5
+        timezone:
+          description: Required. IANA timezone identifier (e.g., "America/Los_Angeles", "UTC"). Validated against the IANA timezone database.
+          type: string
+          minLength: 1
+          examples:
+          - America/Los_Angeles
+      example:
+        type: cron
+        expression: 0 9 * * 1-5
+        timezone: America/Los_Angeles
+    BetaManagedAgentsUserContentBlock:
+      description: Content block in a user message. Can be `text`, `image`, or `document`.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          text: '#/components/schemas/BetaManagedAgentsTextBlock'
+          image: '#/components/schemas/BetaManagedAgentsImageBlock'
+          document: '#/components/schemas/BetaManagedAgentsDocumentBlock'
+          redacted: '#/components/schemas/BetaManagedAgentsRedactedBlock'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsTextBlock'
+      - $ref: '#/components/schemas/BetaManagedAgentsImageBlock'
+      - $ref: '#/components/schemas/BetaManagedAgentsDocumentBlock'
+      - $ref: '#/components/schemas/BetaManagedAgentsRedactedBlock'
+    BetaGatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
+      type: object
+    BetaManagedAgentsFileResourceConfig:
+      description: A file mounted into each session's container.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - file_id
+      properties:
+        type:
+          type: string
+          enum:
+          - file
+        file_id:
+          description: ID of a previously uploaded file.
+          type: string
+        mount_path:
+          description: Mount path in the container. Defaults to `/mnt/session/uploads/<file_id>`.
+          anyOf:
+          - type: string
+          - type: 'null'
+    BetaManagedAgentsVaultArchivedDeploymentPausedReasonError:
+      description: A vault referenced by the deployment is archived.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - vault_archived_error
+    BetaManagedAgentsDeploymentUserMessageEvent:
+      description: A user message sent to the session.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - content
+      properties:
+        type:
+          type: string
+          enum:
+          - user.message
+        content:
+          description: Array of content blocks for the user message.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsUserContentBlock'
+    BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError:
+      description: A memory store referenced by the deployment is archived.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - memory_store_archived_error
+    BetaManagedAgentsCreateDeploymentParams:
+      description: Request parameters for creating a `deployment`.
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      - agent
+      - environment_id
+      - initial_events
+      properties:
+        name:
+          description: Human-readable name for the deployment.
+          type: string
+          minLength: 1
+          maxLength: 256
+        description:
+          description: Description of what the deployment does.
+          anyOf:
+          - type: string
+            maxLength: 2048
+          - type: 'null'
+        agent:
+          description: Agent to deploy. Accepts the `agent` ID string, which pins the latest version, or an `agent` object with both id and version specified. The agent must exist and not be archived.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsAgentUnionParams'
+        environment_id:
+          description: ID of the `environment` defining the container configuration for sessions created from this deployment.
+          type: string
+          minLength: 1
+          maxLength: 128
+        vault_ids:
+          description: Vault IDs for stored credentials the agent can use during sessions created from this deployment. Maximum 50.
+          type: array
+          items:
+            type: string
+        initial_events:
+          description: Events to send to each session immediately after creation. At least 1, maximum 50.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsDeploymentInitialEventParams'
+        resources:
+          description: Resources (e.g. repositories, files) to mount into each session's container. Maximum 500.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsSessionResourceParams'
+        metadata:
+          description: Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 chars, values up to 512 chars.
+          type: object
+          additionalProperties:
+            type: string
+        schedule:
+          description: Optional recurring cron schedule. When present, the deployment fires automatically. Both expression and timezone are required when schedule is set.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsScheduleParams'
+          - type: 'null'
+        budget:
+          description: Enforced spend ceiling stamped onto each session created from this deployment, copied at session-creation time. Omit to leave sessions uncapped. The deployment agent's model must have a public list price, or the request is rejected; a multiagent roster is re-validated in full when each fire copies the cap, which fails closed the same way.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsBudget'
+          - type: 'null'
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+    BetaManagedAgentsBranchCheckout:
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - name
+      properties:
+        type:
+          type: string
+          enum:
+          - branch
+          examples:
+          - branch
+        name:
+          description: Branch name to check out.
+          type: string
+          minLength: 1
+          maxLength: 255
+          examples:
+          - main
+      example:
+        type: branch
+        name: main
+    BetaManagedAgentsBase64DocumentSource:
+      description: Base64-encoded document data.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - media_type
+      - data
+      properties:
+        type:
+          type: string
+          enum:
+          - base64
+        media_type:
+          description: MIME type of the document (e.g., "application/pdf").
+          type: string
+          minLength: 1
+        data:
+          description: Base64-encoded document data.
+          type: string
+          minLength: 1
+    BetaManagedAgentsGitHubRepositoryResourceParams:
+      description: Mount a GitHub repository into the session's container.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - url
+      - authorization_token
+      properties:
+        type:
+          type: string
+          enum:
+          - github_repository
+          examples:
+          - github_repository
+        url:
+          description: Github URL of the repository
+          type: string
+          minLength: 1
+          maxLength: 2048
+          examples:
+          - https://github.com/example-org/example-repo
+        authorization_token:
+          description: GitHub authorization token used to clone the repository.
+          type: string
+          minLength: 1
+          maxLength: 4096
+          examples:
+          - ghp_exampletoken
+        mount_path:
+          description: Mount path in the container. Defaults to `/workspace/<repo-name>`.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 4096
+          - type: 'null'
+        checkout:
+          description: Branch or commit to check out. Defaults to the repository's default branch.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsRepositoryCheckout'
+          - type: 'null'
+      example:
+        type: github_repository
+        url: https://github.com/example-org/example-repo
+        authorization_token: ghp_exampletoken
+    BetaManagedAgentsDeploymentUserDefineOutcomeEvent:
+      description: An outcome the agent should work toward. The agent begins work on receipt.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - description
+      - rubric
+      properties:
+        type:
+          type: string
+          enum:
+          - user.define_outcome
+        description:
+          description: What the agent should produce. This is the task specification.
+          type: string
+        rubric:
+          description: How to grade the outcome. Text or file reference.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsRubric'
+        max_iterations:
+          description: Eval→revision cycles before giving up. Default 3, max 20.
+          anyOf:
+          - type: integer
+            format: int32
+          - type: 'null'
+    BetaManagedAgentsAgentParams:
+      description: Specification for an Agent. Provide a specific `version` or use the short-form `agent="agent_id"` for the most recent version
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - id
+      properties:
+        type:
+          type: string
+          enum:
+          - agent
+        id:
+          description: The `agent` ID.
+          type: string
+          minLength: 1
+          maxLength: 128
+        version:
+          description: The specific `agent` version to use. Omit to use the latest version. Must be at least 1 if specified.
+          type: integer
+          format: int32
+    BetaManagedAgentsMemoryStoreResourceConfig:
+      description: A memory store attached to each session created from this deployment.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - memory_store_id
+      properties:
+        type:
+          type: string
+          enum:
+          - memory_store
+        memory_store_id:
+          description: The memory store ID (memstore_...). Must belong to the caller's organization and workspace.
+          type: string
+        access:
+          description: Access mode for the mounted store. Defaults to read_write. read_only mounts the store as a read-only filesystem.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsMountMode'
+          - type: 'null'
+        instructions:
+          description: Per-attachment guidance for the agent on how to use this store. Rendered into the memory section of the system prompt. Max 4096 chars.
+          anyOf:
+          - type: string
+          - type: 'null'
+          x-anthropic-beta-required:
+          - agent-memory-2026-07-22
+          - managed-agents-2026-04-01
+    BetaManagedAgentsFileResourceParams:
+      description: Mount a file uploaded via the Files API into the session.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - file_id
+      properties:
+        type:
+          type: string
+          enum:
+          - file
+          examples:
+          - file
+        file_id:
+          description: ID of a previously uploaded file.
+          type: string
+          minLength: 1
+          maxLength: 128
+          examples:
+          - file_011CNha8iCJcU1wXNR6q4V8w
+        mount_path:
+          description: Mount path in the container. Defaults to `/mnt/session/uploads/<file_id>`.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 4096
+          - type: 'null'
+          examples:
+          - /uploads/receipt.pdf
+      example:
+        type: file
+        file_id: file_011CNha8iCJcU1wXNR6q4V8w
+        mount_path: /uploads/receipt.pdf
+    BetaAPIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
+          type: string
+        type:
+          const: api_error
+          default: api_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
+    BetaManagedAgentsDeployment:
+      description: 'A deployment is a configured instance of an agent — it binds the agent to everything needed to run it autonomously: an environment, credentials, initial events, and an optional schedule.'
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - id
+      - name
+      - description
+      - agent
+      - environment_id
+      - vault_ids
+      - initial_events
+      - resources
+      - metadata
+      - schedule
+      - status
+      - paused_reason
+      - created_at
+      - updated_at
+      - archived_at
+      properties:
+        type:
+          type: string
+          enum:
+          - deployment
+          examples:
+          - deployment
+        id:
+          description: Unique identifier for this deployment.
+          type: string
+          examples:
+          - depl_011CZkZcDH3vPqd7xnEfwTai
+        name:
+          description: Human-readable name.
+          type: string
+          examples:
+          - Daily order report
+        description:
+          description: Description of what the deployment does.
+          anyOf:
+          - type: string
+          - type: 'null'
+          examples:
+          - Compiles yesterday's orders into a report every weekday morning.
+        agent:
+          description: Reference to the agent this deployment runs, resolved to a concrete version.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsAgentReference'
+          examples:
+          - type: agent
+            id: agent_011CZkYpogX7uDKUyvBTophP
+            version: 1
+        environment_id:
+          description: ID of the `environment` where sessions run.
+          type: string
+          examples:
+          - env_011CZkZ9X2dpNyB7HsEFoRfW
+        vault_ids:
+          description: Vault IDs supplying stored credentials for sessions created from this deployment.
+          type: array
+          items:
+            type: string
+          examples:
+          - - vlt_011CZkZDLs7fYzm1hXNPeRjv
+        initial_events:
+          description: Events sent to each session immediately after creation.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsDeploymentInitialEvent'
+          examples:
+          - - type: user.message
+              content:
+              - type: text
+                text: Compile yesterday's orders into report.md.
+        resources:
+          description: Resources attached to sessions created from this deployment. Echoes the input minus write-only credentials.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsSessionResourceConfig'
+          examples:
+          - []
+        metadata:
+          description: Arbitrary key-value metadata. Maximum 16 pairs.
+          type: object
+          additionalProperties:
+            type: string
+          examples:
+          - {}
+        schedule:
+          description: Recurring cron schedule. Presence enables scheduled execution; null means manual-only. Includes computed timestamps (next fire times, last run) on the cron variant.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsSchedule'
+          - type: 'null'
+          examples:
+          - type: cron
+            expression: 0 9 * * 1-5
+            timezone: America/Los_Angeles
+            last_run_at: '2026-03-16T16:00:09Z'
+            upcoming_runs_at:
+            - '2026-03-17T16:00:00Z'
+            - '2026-03-18T16:00:00Z'
+        status:
+          description: 'Computed status of the deployment: `active` or `paused`. Archived deployments report `active` with `archived_at` set.'
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsDeploymentStatus'
+          examples:
+          - active
+        paused_reason:
+          description: Why the deployment is paused. Non-null exactly when status is paused; null otherwise.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsDeploymentPausedReason'
+          - type: 'null'
+          examples:
+          - null
+        budget:
+          description: Spend ceiling stamped onto each session created from this deployment. Absent when no budget is set.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsBudget'
+          - type: 'null'
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+        created_at:
+          description: Time the deployment was created.
+          allOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+          examples:
+          - '2026-03-15T10:00:00Z'
+        updated_at:
+          description: Time the deployment was last updated.
+          allOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+          examples:
+          - '2026-03-15T10:00:00Z'
+        archived_at:
+          description: Time the deployment was archived. Null if not archived.
+          anyOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+          - type: 'null'
+          examples:
+          - null
+      example:
+        type: deployment
+        id: depl_011CZkZcDH3vPqd7xnEfwTai
+        name: Daily order report
+        description: Compiles yesterday's orders into a report every weekday morning.
+        agent:
+          type: agent
+          id: agent_011CZkYpogX7uDKUyvBTophP
+          version: 1
+        environment_id: env_011CZkZ9X2dpNyB7HsEFoRfW
+        vault_ids:
+        - vlt_011CZkZDLs7fYzm1hXNPeRjv
+        initial_events:
+        - type: user.message
+          content:
+          - type: text
+            text: Compile yesterday's orders into report.md.
+        resources: []
+        metadata: {}
+        schedule:
+          type: cron
+          expression: 0 9 * * 1-5
+          timezone: America/Los_Angeles
+          last_run_at: '2026-03-16T16:00:09Z'
+          upcoming_runs_at:
+          - '2026-03-17T16:00:00Z'
+          - '2026-03-18T16:00:00Z'
+        status: active
+        paused_reason: null
+        created_at: '2026-03-15T10:00:00Z'
+        updated_at: '2026-03-15T10:00:00Z'
+        archived_at: null
+    BetaManagedAgentsSessionResourceParams:
+      description: Union of resources that can be mounted into a session.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          github_repository: '#/components/schemas/BetaManagedAgentsGitHubRepositoryResourceParams'
+          file: '#/components/schemas/BetaManagedAgentsFileResourceParams'
+          memory_store: '#/components/schemas/BetaManagedAgentsMemoryStoreResourceParam'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsGitHubRepositoryResourceParams'
+      - $ref: '#/components/schemas/BetaManagedAgentsFileResourceParams'
+      - $ref: '#/components/schemas/BetaManagedAgentsMemoryStoreResourceParam'
+      example:
+        type: file
+        file_id: file_011CNha8iCJcU1wXNR6q4V8w
+        mount_path: /uploads/receipt.pdf
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    BetaManagedAgentsURLDocumentSource:
+      description: Document referenced by URL.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - url
+      properties:
+        type:
+          type: string
+          enum:
+          - url
+        url:
+          description: URL of the document to fetch.
+          type: string
+          minLength: 1
+    BetaManagedAgentsSystemMessageEventParams:
+      description: 'Privileged context for the accompanying turn and all subsequent turns, appended to the session''s system context as a `role: "system"` turn rather than replacing the top-level system prompt. At most one per request: it must be the final event and immediately follow the `user.message`, `user.tool_result`, or `user.custom_tool_result` it accompanies. Only supported on models that accept mid-conversation system messages.'
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - content
+      properties:
+        type:
+          type: string
+          enum:
+          - system.message
+        content:
+          description: System content blocks to append. Text-only.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsSystemContentBlock'
+    BetaManagedAgentsCommitCheckout:
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - sha
+      properties:
+        type:
+          type: string
+          enum:
+          - commit
+        sha:
+          description: Full commit SHA to check out.
+          type: string
+          minLength: 7
+          maxLength: 64
+    BetaManagedAgentsPlainTextDocumentSource:
+      description: Plain text document content.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - media_type
+      - data
+      properties:
+        type:
+          type: string
+          enum:
+          - text
+        media_type:
+          description: MIME type of the text content. Must be "text/plain".
+          type: string
+          enum:
+          - text/plain
+        data:
+          description: The plain text content.
+          type: string
+          minLength: 1
+    BetaInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    BetaManagedAgentsRubricParams:
+      description: Rubric for grading the quality of an outcome.
+      discriminator:
+        propertyName: type
+        mapping:
+          file: '#/components/schemas/BetaManagedAgentsFileRubricParams'
+          text: '#/components/schemas/BetaManagedAgentsTextRubricParams'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsFileRubricParams'
+      - $ref: '#/components/schemas/BetaManagedAgentsTextRubricParams'
+    BetaManagedAgentsGitHubRepositoryResourceConfig:
+      description: A GitHub repository mounted into each session's container. The authorization token is write-only and never returned.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - url
+      properties:
+        type:
+          type: string
+          enum:
+          - github_repository
+        url:
+          description: Github URL of the repository
+          type: string
+        mount_path:
+          description: Mount path in the container. Defaults to `/workspace/<repo-name>`.
+          anyOf:
+          - type: string
+          - type: 'null'
+        checkout:
+          description: Branch or commit to check out. Defaults to the repository's default branch.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsRepositoryCheckout'
+          - type: 'null'
+    BetaManagedAgentsSchedule:
+      description: A recurring schedule with computed runtime timestamps. Discriminated union — only cron is supported currently.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          cron: '#/components/schemas/BetaManagedAgentsCronSchedule'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsCronSchedule'
+    BetaManagedAgentsTextRubricParams:
+      description: Rubric content provided inline as text.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - content
+      properties:
+        type:
+          type: string
+          enum:
+          - text
+          examples:
+          - text
+        content:
+          description: Rubric content. Plain text or markdown — the grader treats it as freeform text. Maximum 262144 characters.
+          type: string
+          maxLength: 262144
+          examples:
+          - Must cover all five sections; cite sources inline.
+      example:
+        type: text
+        content: Must cover all five sections; cite sources inline.
+    BetaManagedAgentsRedactedBlock:
+      description: Placeholder for content withheld by Anthropic model policy.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - redacted
+    BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError:
+      description: A skill referenced by the deployment's agent no longer exists.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - skill_not_found_error
+    BetaManagedAgentsUserDefineOutcomeEventParams:
+      description: Parameters for defining an outcome the agent should work toward. The agent begins work on receipt.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - description
+      - rubric
+      properties:
+        type:
+          type: string
+          enum:
+          - user.define_outcome
+          examples:
+          - user.define_outcome
+        description:
+          description: What the agent should produce. This is the task specification.
+          type: string
+          examples:
+          - Produce a 2-page summary as summary.md
+        rubric:
+          description: How to grade the outcome. Text or file reference.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsRubricParams'
+          examples:
+          - type: text
+            content: Must cover all five sections; cite sources inline.
+        max_iterations:
+          description: Eval→revision cycles before giving up. Default 3, max 20.
+          anyOf:
+          - type: integer
+            format: int32
+          - type: 'null'
+          examples:
+          - 3
+      example:
+        type: user.define_outcome
+        description: Produce a 2-page summary as summary.md
+        rubric:
+          type: text
+          content: Must cover all five sections; cite sources inline.
+        max_iterations: 3
+    BetaCurrency:
+      type: string
+      enum:
+      - USD
+    BetaManagedAgentsBudgetLimit:
+      description: A hard spend ceiling. The session stops issuing new model requests once the tracked list cost reaches `max_list_cost`.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - max_list_cost
+      properties:
+        type:
+          type: string
+          enum:
+          - limit
+        max_list_cost:
+          description: Maximum list cost the session may accrue. List price is used regardless of any negotiated discount, so the cap fires at or before the actual charge.
+          allOf:
+          - $ref: '#/components/schemas/BetaMonetaryAmount'
+    BetaManagedAgentsImageBlock:
+      description: Image content specified directly as base64 data or as a reference via a URL.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - source
+      properties:
+        type:
+          type: string
+          enum:
+          - image
+        source:
+          description: The source of the image data.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsImageSource'
+    BetaTimestamp:
+      description: A timestamp in RFC 3339 format
+      type: string
+      format: date-time
+    BetaOverloadedError:
+      properties:
+        message:
+          default: Overloaded
+          title: Message
+          type: string
+        type:
+          const: overloaded_error
+          default: overloaded_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: OverloadedError
+      type: object
+    BetaBillingError:
+      properties:
+        message:
+          default: Billing error
+          title: Message
+          type: string
+        type:
+          const: billing_error
+          default: billing_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: BillingError
+      type: object
+    BetaManagedAgentsUnknownDeploymentPausedReasonError:
+      description: An unrecognized error auto-paused the deployment. A fallback variant; matches a run whose `error.type` is `unknown_error`.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - unknown_error
+    BetaManagedAgentsListDeploymentsData:
+      description: Paginated list of deployments.
+      type: object
+      additionalProperties: false
+      required:
+      - data
+      properties:
+        data:
+          description: List of deployments.
+          x-stainless-pagination-property:
+            purpose: items
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsDeployment'
+          examples:
+          - - type: deployment
+              id: depl_011CZkZcDH3vPqd7xnEfwTai
+              name: Daily order report
+              description: Compiles yesterday's orders into a report every weekday morning.
+              agent:
+                type: agent
+                id: agent_011CZkYpogX7uDKUyvBTophP
+                version: 1
+              environment_id: env_011CZkZ9X2dpNyB7HsEFoRfW
+              vault_ids:
+              - vlt_011CZkZDLs7fYzm1hXNPeRjv
+              initial_events:
+              - type: user.message
+                content:
+                - type: text
+                  text: Compile yesterday's orders into report.md.
+              resources: []
+              metadata: {}
+              schedule:
+                type: cron
+                expression: 0 9 * * 1-5
+                timezone: America/Los_Angeles
+                last_run_at: '2026-03-16T16:00:09Z'
+                upcoming_runs_at:
+                - '2026-03-17T16:00:00Z'
+                - '2026-03-18T16:00:00Z'
+              status: active
+              paused_reason: null
+              created_at: '2026-03-15T10:00:00Z'
+              updated_at: '2026-03-15T10:00:00Z'
+              archived_at: null
+        next_page:
+          description: Opaque cursor for the next page. Null when no more results.
+          x-stainless-pagination-property:
+            purpose: next_cursor_field
+          anyOf:
+          - type: string
+          - type: 'null'
+          examples:
+          - page_MjAyNS0wNS0xNFQwMDowMDowMFo=
+      example:
+        data:
+        - type: deployment
+          id: depl_011CZkZcDH3vPqd7xnEfwTai
+          name: Daily order report
+          description: Compiles yesterday's orders into a report every weekday morning.
+          agent:
+            type: agent
+            id: agent_011CZkYpogX7uDKUyvBTophP
+            version: 1
+          environment_id: env_011CZkZ9X2dpNyB7HsEFoRfW
+          vault_ids:
+          - vlt_011CZkZDLs7fYzm1hXNPeRjv
+          initial_events:
+          - type: user.message
+            content:
+            - type: text
+              text: Compile yesterday's orders into report.md.
+          resources: []
+          metadata: {}
+          schedule:
+            type: cron
+            expression: 0 9 * * 1-5
+            timezone: America/Los_Angeles
+            last_run_at: '2026-03-16T16:00:09Z'
+            upcoming_runs_at:
+            - '2026-03-17T16:00:00Z'
+            - '2026-03-18T16:00:00Z'
+          status: active
+          paused_reason: null
+          created_at: '2026-03-15T10:00:00Z'
+          updated_at: '2026-03-15T10:00:00Z'
+          archived_at: null
+        next_page: page_MjAyNS0wNS0xNFQwMDowMDowMFo=
+    BetaManagedAgentsSystemContentBlock:
+      description: Content block in a mid-conversation system message. Text-only.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          text: '#/components/schemas/BetaManagedAgentsTextBlock'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsTextBlock'
+    BetaManagedAgentsMemoryStoreResourceParam:
+      description: Parameters for attaching a memory store to an agent session.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - memory_store_id
+      properties:
+        type:
+          type: string
+          enum:
+          - memory_store
+        memory_store_id:
+          description: The memory store ID (memstore_...). Must belong to the caller's organization and workspace.
+          type: string
+        access:
+          description: Access mode for the mounted store. Defaults to read_write. read_only mounts the store as a read-only filesystem.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsMountMode'
+          - type: 'null'
+        instructions:
+          description: Per-attachment guidance for the agent on how to use this store. Rendered into the memory section of the system prompt. Max 4096 chars.
+          anyOf:
+          - type: string
+            maxLength: 4096
+          - type: 'null'
+          x-anthropic-beta-required:
+          - agent-memory-2026-07-22
+          - managed-agents-2026-04-01
+    BetaManagedAgentsRepositoryCheckout:
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          branch: '#/components/schemas/BetaManagedAgentsBranchCheckout'
+          commit: '#/components/schemas/BetaManagedAgentsCommitCheckout'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsBranchCheckout'
+      - $ref: '#/components/schemas/BetaManagedAgentsCommitCheckout'
+    BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError:
+      description: The deployment's workspace was archived.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - workspace_archived_error
+    BetaManagedAgentsFileRubric:
+      description: Rubric referenced by a file uploaded via the Files API.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - file_id
+      properties:
+        type:
+          type: string
+          enum:
+          - file
+        file_id:
+          description: ID of the rubric file.
+          type: string
+    BetaAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    BetaManagedAgentsTextBlock:
+      description: Regular text content.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - text
+      properties:
+        type:
+          type: string
+          enum:
+          - text
+          examples:
+          - text
+        text:
+          description: The text content.
+          type: string
+          minLength: 1
+          examples:
+          - 'Where is my order #1234?'
+      example:
+        type: text
+        text: 'Where is my order #1234?'
+    BetaNotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    BetaManagedAgentsDeploymentStatus:
+      type: string
+      description: Lifecycle status of a deployment.
+      enum:
+      - active
+      - paused
+    BetaManagedAgentsDeploymentInitialEventParams:
+      description: An event sent to a session immediately after it is created. Supports `user.message`, `user.define_outcome`, and `system.message`.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          user.message: '#/components/schemas/BetaManagedAgentsUserMessageEventParams'
+          user.define_outcome: '#/components/schemas/BetaManagedAgentsUserDefineOutcomeEventParams'
+          system.message: '#/components/schemas/BetaManagedAgentsSystemMessageEventParams'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsUserMessageEventParams'
+      - $ref: '#/components/schemas/BetaManagedAgentsUserDefineOutcomeEventParams'
+      - $ref: '#/components/schemas/BetaManagedAgentsSystemMessageEventParams'
+    BetaPermissionError:
+      properties:
+        message:
+          default: Permission denied
+          title: Message
+          type: string
+        type:
+          const: permission_error
+          default: permission_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: PermissionError
+      type: object
+    BetaManagedAgentsTextRubric:
+      description: Rubric content provided inline as text.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - content
+      properties:
+        type:
+          type: string
+          enum:
+          - text
+        content:
+          description: Rubric content. Plain text or markdown — the grader treats it as freeform text.
+          type: string
+    BetaMonetaryAmount:
+      description: A monetary amount in a specific currency.
+      type: object
+      additionalProperties: false
+      required:
+      - currency
+      - amount
+      properties:
+        currency:
+          description: Uppercase ISO-4217 currency code. `USD` is the only currency currently supported; the accepted set is closed and grows only when a new currency is priced.
+          allOf:
+          - $ref: '#/components/schemas/BetaCurrency'
+          examples:
+          - USD
+        amount:
+          description: 'Amount in minor units of the currency, as an integer decimal string with no leading zeros: "2500" is $25.00 and "50" is fifty cents. A string rather than a number so no float rounding is ever applied.'
+          type: string
+          examples:
+          - '2500'
+      example:
+        currency: USD
+        amount: '2500'
+    BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError:
+      description: The deployment's environment no longer exists.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - environment_not_found_error
+    BetaManagedAgentsAgentUnionParams:
+      oneOf:
+      - type: string
+      - oneOf:
+        - $ref: '#/components/schemas/BetaManagedAgentsAgentParams'
+        discriminator:
+          propertyName: type
+          mapping:
+            agent: '#/components/schemas/BetaManagedAgentsAgentParams'
+    BetaManagedAgentsFileImageSource:
+      description: Image referenced by file ID.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - file_id
+      properties:
+        type:
+          type: string
+          enum:
+          - file
+        file_id:
+          description: ID of a previously uploaded file.
+          type: string
+          minLength: 1
+    BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError:
+      description: A referenced resource no longer exists and its kind was not reported.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - session_resource_not_found_error
+    BetaManagedAgentsMountMode:
+      type: string
+      description: Access mode for an attached memory store.
+      enum:
+      - read_write
+      - read_only
+    BetaManagedAgentsImageSource:
+      description: Union type for image source variants.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          base64: '#/components/schemas/BetaManagedAgentsBase64ImageSource'
+          url: '#/components/schemas/BetaManagedAgentsURLImageSource'
+          file: '#/components/schemas/BetaManagedAgentsFileImageSource'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsBase64ImageSource'
+      - $ref: '#/components/schemas/BetaManagedAgentsURLImageSource'
+      - $ref: '#/components/schemas/BetaManagedAgentsFileImageSource'
+    BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError:
+      description: An MCP server host used by the deployment's agent is blocked by the environment's network policy.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - mcp_egress_blocked_error
+    BetaManagedAgentsDocumentSource:
+      description: Union type for document source variants.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          base64: '#/components/schemas/BetaManagedAgentsBase64DocumentSource'
+          text: '#/components/schemas/BetaManagedAgentsPlainTextDocumentSource'
+          url: '#/components/schemas/BetaManagedAgentsURLDocumentSource'
+          file: '#/components/schemas/BetaManagedAgentsFileDocumentSource'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsBase64DocumentSource'
+      - $ref: '#/components/schemas/BetaManagedAgentsPlainTextDocumentSource'
+      - $ref: '#/components/schemas/BetaManagedAgentsURLDocumentSource'
+      - $ref: '#/components/schemas/BetaManagedAgentsFileDocumentSource'
+    BetaErrorResponse:
+      properties:
+        error:
+          discriminator:
+            mapping:
+              api_error: '#/components/schemas/BetaAPIError'
+              authentication_error: '#/components/schemas/BetaAuthenticationError'
+              billing_error: '#/components/schemas/BetaBillingError'
+              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
+              not_found_error: '#/components/schemas/BetaNotFoundError'
+              overloaded_error: '#/components/schemas/BetaOverloadedError'
+              permission_error: '#/components/schemas/BetaPermissionError'
+              rate_limit_error: '#/components/schemas/BetaRateLimitError'
+              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/BetaInvalidRequestError'
+          - $ref: '#/components/schemas/BetaAuthenticationError'
+          - $ref: '#/components/schemas/BetaBillingError'
+          - $ref: '#/components/schemas/BetaPermissionError'
+          - $ref: '#/components/schemas/BetaNotFoundError'
+          - $ref: '#/components/schemas/BetaRateLimitError'
+          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
+          - $ref: '#/components/schemas/BetaAPIError'
+          - $ref: '#/components/schemas/BetaOverloadedError'
+          title: Error
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Request Id
+        type:
+          const: error
+          default: error
+          title: Type
+          type: string
+      required:
+      - error
+      - request_id
+      - type
+      title: ErrorResponse
+      type: object
+    BetaManagedAgentsBase64ImageSource:
+      description: Base64-encoded image data.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - media_type
+      - data
+      properties:
+        type:
+          type: string
+          enum:
+          - base64
+        media_type:
+          description: MIME type of the image (e.g., "image/png", "image/jpeg", "image/gif", "image/webp").
+          type: string
+          minLength: 1
+        data:
+          description: Base64-encoded image data.
+          type: string
+          minLength: 1
+    AnthropicBeta:
+      anyOf:
+      - type: string
+      - type: string
+        enum:
+        - message-batches-2024-09-24
+        - prompt-caching-2024-07-31
+        - computer-use-2024-10-22
+        - computer-use-2025-01-24
+        - pdfs-2024-09-25
+        - token-counting-2024-11-01
+        - token-efficient-tools-2025-02-19
+        - output-128k-2025-02-19
+        - files-api-2025-04-14
+        - mcp-client-2025-04-04
+        - mcp-client-2025-11-20
+        - dev-full-thinking-2025-05-14
+        - interleaved-thinking-2025-05-14
+        - code-execution-2025-05-22
+        - extended-cache-ttl-2025-04-11
+        - context-1m-2025-08-07
+        - context-management-2025-06-27
+        - model-context-window-exceeded-2025-08-26
+        - skills-2025-10-02
+        - fast-mode-2026-02-01
+        - output-300k-2026-03-24
+        - user-profiles-2026-03-24
+        - user-profiles-2026-08-18
+        - advisor-tool-2026-03-01
+        - managed-agents-2026-04-01
+        - cache-diagnosis-2026-04-07
+        - dreaming-2026-04-21
+        - thinking-token-count-2026-05-13
+        - server-side-fallback-2026-06-01
+        - server-side-fallback-2026-07-01
+        - fallback-credit-2026-06-01
+        - fallback-credit-2026-07-01
+        - agent-memory-2026-07-22
+        - mid-conversation-tool-changes-2026-07-01
+        - compact-2026-01-12
+        - computer-use-2025-11-24
+        - mcp-tunnels-2026-06-22
+        - structured-outputs-2025-11-13
+        - task-budgets-2026-03-13
+        - thinking-display-updates-2026-08-18
+        - ce-user-management-2026-07-13
+        x-stainless-nominal: false
+    BetaManagedAgentsDeploymentSystemMessageEvent:
+      description: 'Privileged context for the accompanying turn and all subsequent turns, appended to the session''s system context as a `role: "system"` turn rather than replacing the top-level system prompt.'
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - content
+      properties:
+        type:
+          type: string
+          enum:
+          - system.message
+        content:
+          description: System content blocks to append. Text-only.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsSystemContentBlock'

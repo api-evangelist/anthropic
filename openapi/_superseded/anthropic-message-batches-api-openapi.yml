@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Anthropic Admin Agents Message Batches API
   description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
@@ -184,7 +184,211 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"CanceledMessageBatchExample\"\n}\n"
 components:
+  examples:
+    MessageBatchResultsExample:
+      summary: Message Batch Results
+      value: '{"custom_id":"request-001","result":{"type":"succeeded","message":{"id":"msg_01FqfsLoHwgeFbguDgpz48m7","type":"message","role":"assistant","model":"claude-sonnet-4-20250514","content":[{"type":"text","text":"The capital of France is Paris."}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":15,"output_tokens":8}}}}
+
+        {"custom_id":"request-002","result":{"type":"succeeded","message":{"id":"msg_02GrsrtMhxghGfchvEhq59n8","type":"message","role":"assistant","model":"claude-sonnet-4-20250514","content":[{"type":"text","text":"Quantum computing uses quantum bits or qubits that can exist in multiple states simultaneously, unlike classical bits which are either 0 or 1."}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":12,"output_tokens":35}}}}
+
+        '
+    MessageBatchExample:
+      summary: Message Batch Response
+      value:
+        id: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
+        type: message_batch
+        processing_status: in_progress
+        request_counts:
+          processing: 100
+          succeeded: 50
+          errored: 0
+          canceled: 0
+          expired: 0
+        created_at: '2024-08-20T18:37:24.100435Z'
+        expires_at: '2024-08-21T18:37:24.100435Z'
+        archived_at: null
+        cancel_initiated_at: null
+        ended_at: null
+        results_url: null
+    MessageBatchListExample:
+      summary: Message Batch List Response
+      value:
+        data:
+        - id: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
+          type: message_batch
+          processing_status: ended
+          request_counts:
+            processing: 0
+            succeeded: 150
+            errored: 0
+            canceled: 0
+            expired: 0
+          created_at: '2024-08-20T18:37:24.100435Z'
+          expires_at: '2024-08-21T18:37:24.100435Z'
+          archived_at: null
+          cancel_initiated_at: null
+          ended_at: '2024-08-20T19:45:00.000000Z'
+          results_url: https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results
+        - id: msgbatch_024Abw3DNIMOoYkKKLRrK3FG
+          type: message_batch
+          processing_status: in_progress
+          request_counts:
+            processing: 75
+            succeeded: 25
+            errored: 0
+            canceled: 0
+            expired: 0
+          created_at: '2024-08-21T10:15:00.000000Z'
+          expires_at: '2024-08-22T10:15:00.000000Z'
+          archived_at: null
+          cancel_initiated_at: null
+          ended_at: null
+          results_url: null
+        first_id: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
+        has_more: true
+        last_id: msgbatch_024Abw3DNIMOoYkKKLRrK3FG
+    CanceledMessageBatchExample:
+      summary: Canceled Message Batch Response
+      value:
+        id: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
+        type: message_batch
+        processing_status: canceling
+        request_counts:
+          processing: 50
+          succeeded: 40
+          errored: 5
+          canceled: 5
+          expired: 0
+        created_at: '2024-08-20T18:37:24.100435Z'
+        expires_at: '2024-08-21T18:37:24.100435Z'
+        archived_at: null
+        cancel_initiated_at: '2024-08-20T19:00:00.000000Z'
+        ended_at: null
+        results_url: null
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The message_batch_id provided is invalid or does not exist.
+    CreateMessageBatchRequestExample:
+      summary: Create Message Batch Request
+      value:
+        requests:
+        - custom_id: request-001
+          params:
+            model: claude-sonnet-4-20250514
+            max_tokens: 1024
+            messages:
+            - role: user
+              content: Hello, what is the capital of France?
+        - custom_id: request-002
+          params:
+            model: claude-sonnet-4-20250514
+            max_tokens: 1024
+            messages:
+            - role: user
+              content: Explain quantum computing in simple terms.
+        - custom_id: request-003
+          params:
+            model: claude-sonnet-4-20250514
+            max_tokens: 2048
+            messages:
+            - role: user
+              content: Write a haiku about programming.
+    MessageBatchDeletedResponseExample:
+      summary: Message Batch Deleted Response
+      value:
+        id: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
+        type: message_batch_deleted
   schemas:
+    ProcessingStatus:
+      type: string
+      enum:
+      - in_progress
+      - canceling
+      - ended
+      description: Current processing status of the Message Batch
+    MessageBatchIndividualRequest:
+      type: object
+      required:
+      - custom_id
+      - params
+      properties:
+        custom_id:
+          type: string
+          description: Developer-provided ID for matching results to requests. Must be unique within the batch.
+        params:
+          $ref: '#/components/schemas/MessageParams'
+    MessageBatchResultsStream:
+      type: string
+      description: JSONL formatted stream with one result object per line
+    Error:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: The type of error
+        message:
+          type: string
+          description: A human-readable error message
+    MessageBatchList:
+      type: object
+      required:
+      - data
+      - first_id
+      - has_more
+      - last_id
+      properties:
+        data:
+          type: array
+          description: List of Message Batch objects
+          items:
+            $ref: '#/components/schemas/MessageBatch'
+        first_id:
+          type: string
+          nullable: true
+          description: First ID in the data list for pagination
+        has_more:
+          type: boolean
+          description: Indicates if there are more results available
+        last_id:
+          type: string
+          nullable: true
+          description: Last ID in the data list for pagination
+    RequestCounts:
+      type: object
+      description: Tallies of requests categorized by their status
+      required:
+      - processing
+      - succeeded
+      - errored
+      - canceled
+      - expired
+      properties:
+        processing:
+          type: integer
+          description: Number of requests currently being processed
+        succeeded:
+          type: integer
+          description: Number of requests that completed successfully
+        errored:
+          type: integer
+          description: Number of requests that encountered an error
+        canceled:
+          type: integer
+          description: Number of requests that were canceled
+        expired:
+          type: integer
+          description: Number of requests that expired before processing
+    Role:
+      type: string
+      enum:
+      - user
+      - assistant
+      description: The role of the message sender
     Message:
       type: object
       required:
@@ -211,97 +415,6 @@ components:
           - message_batch_deleted
           default: message_batch_deleted
           description: Deletion confirmation type
-    MessageParams:
-      type: object
-      description: Parameters for the individual Message creation request
-      required:
-      - model
-      - max_tokens
-      - messages
-      properties:
-        model:
-          type: string
-          description: The model that will complete your prompt
-        max_tokens:
-          type: integer
-          description: Maximum number of tokens to generate before stopping
-          minimum: 1
-        messages:
-          type: array
-          description: Input messages for the conversation
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/Message'
-    Role:
-      type: string
-      enum:
-      - user
-      - assistant
-      description: The role of the message sender
-    RequestCounts:
-      type: object
-      description: Tallies of requests categorized by their status
-      required:
-      - processing
-      - succeeded
-      - errored
-      - canceled
-      - expired
-      properties:
-        processing:
-          type: integer
-          description: Number of requests currently being processed
-        succeeded:
-          type: integer
-          description: Number of requests that completed successfully
-        errored:
-          type: integer
-          description: Number of requests that encountered an error
-        canceled:
-          type: integer
-          description: Number of requests that were canceled
-        expired:
-          type: integer
-          description: Number of requests that expired before processing
-    MessageBatchList:
-      type: object
-      required:
-      - data
-      - first_id
-      - has_more
-      - last_id
-      properties:
-        data:
-          type: array
-          description: List of Message Batch objects
-          items:
-            $ref: '#/components/schemas/MessageBatch'
-        first_id:
-          type: string
-          nullable: true
-          description: First ID in the data list for pagination
-        has_more:
-          type: boolean
-          description: Indicates if there are more results available
-        last_id:
-          type: string
-          nullable: true
-          description: Last ID in the data list for pagination
-    CreateMessageBatchRequest:
-      type: object
-      required:
-      - requests
-      properties:
-        requests:
-          type: array
-          description: List of requests for message completion. Each is an individual Message request.
-          minItems: 1
-          maxItems: 10000
-          items:
-            $ref: '#/components/schemas/MessageBatchIndividualRequest'
-    MessageBatchResultsStream:
-      type: string
-      description: JSONL formatted stream with one result object per line
     MessageBatch:
       type: object
       required:
@@ -357,163 +470,56 @@ components:
           format: uri
           nullable: true
           description: URL to the .jsonl file containing batch results. Available only once processing ends.
-    ProcessingStatus:
-      type: string
-      enum:
-      - in_progress
-      - canceling
-      - ended
-      description: Current processing status of the Message Batch
-    MessageBatchIndividualRequest:
+    CreateMessageBatchRequest:
       type: object
       required:
-      - custom_id
-      - params
+      - requests
       properties:
-        custom_id:
-          type: string
-          description: Developer-provided ID for matching results to requests. Must be unique within the batch.
-        params:
-          $ref: '#/components/schemas/MessageParams'
-    Error:
-      type: object
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          description: The type of error
-        message:
-          type: string
-          description: A human-readable error message
-  examples:
-    MessageBatchDeletedResponseExample:
-      summary: Message Batch Deleted Response
-      value:
-        id: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
-        type: message_batch_deleted
-    MessageBatchListExample:
-      summary: Message Batch List Response
-      value:
-        data:
-        - id: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
-          type: message_batch
-          processing_status: ended
-          request_counts:
-            processing: 0
-            succeeded: 150
-            errored: 0
-            canceled: 0
-            expired: 0
-          created_at: '2024-08-20T18:37:24.100435Z'
-          expires_at: '2024-08-21T18:37:24.100435Z'
-          archived_at: null
-          cancel_initiated_at: null
-          ended_at: '2024-08-20T19:45:00.000000Z'
-          results_url: https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results
-        - id: msgbatch_024Abw3DNIMOoYkKKLRrK3FG
-          type: message_batch
-          processing_status: in_progress
-          request_counts:
-            processing: 75
-            succeeded: 25
-            errored: 0
-            canceled: 0
-            expired: 0
-          created_at: '2024-08-21T10:15:00.000000Z'
-          expires_at: '2024-08-22T10:15:00.000000Z'
-          archived_at: null
-          cancel_initiated_at: null
-          ended_at: null
-          results_url: null
-        first_id: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
-        has_more: true
-        last_id: msgbatch_024Abw3DNIMOoYkKKLRrK3FG
-    ErrorExample:
-      summary: Error Response
-      value:
-        type: invalid_request_error
-        message: The message_batch_id provided is invalid or does not exist.
-    CreateMessageBatchRequestExample:
-      summary: Create Message Batch Request
-      value:
         requests:
-        - custom_id: request-001
-          params:
-            model: claude-sonnet-4-20250514
-            max_tokens: 1024
-            messages:
-            - role: user
-              content: Hello, what is the capital of France?
-        - custom_id: request-002
-          params:
-            model: claude-sonnet-4-20250514
-            max_tokens: 1024
-            messages:
-            - role: user
-              content: Explain quantum computing in simple terms.
-        - custom_id: request-003
-          params:
-            model: claude-sonnet-4-20250514
-            max_tokens: 2048
-            messages:
-            - role: user
-              content: Write a haiku about programming.
-    MessageBatchExample:
-      summary: Message Batch Response
-      value:
-        id: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
-        type: message_batch
-        processing_status: in_progress
-        request_counts:
-          processing: 100
-          succeeded: 50
-          errored: 0
-          canceled: 0
-          expired: 0
-        created_at: '2024-08-20T18:37:24.100435Z'
-        expires_at: '2024-08-21T18:37:24.100435Z'
-        archived_at: null
-        cancel_initiated_at: null
-        ended_at: null
-        results_url: null
-    MessageBatchResultsExample:
-      summary: Message Batch Results
-      value: '{"custom_id":"request-001","result":{"type":"succeeded","message":{"id":"msg_01FqfsLoHwgeFbguDgpz48m7","type":"message","role":"assistant","model":"claude-sonnet-4-20250514","content":[{"type":"text","text":"The capital of France is Paris."}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":15,"output_tokens":8}}}}
-
-        {"custom_id":"request-002","result":{"type":"succeeded","message":{"id":"msg_02GrsrtMhxghGfchvEhq59n8","type":"message","role":"assistant","model":"claude-sonnet-4-20250514","content":[{"type":"text","text":"Quantum computing uses quantum bits or qubits that can exist in multiple states simultaneously, unlike classical bits which are either 0 or 1."}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":12,"output_tokens":35}}}}
-
-        '
-    CanceledMessageBatchExample:
-      summary: Canceled Message Batch Response
-      value:
-        id: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
-        type: message_batch
-        processing_status: canceling
-        request_counts:
-          processing: 50
-          succeeded: 40
-          errored: 5
-          canceled: 5
-          expired: 0
-        created_at: '2024-08-20T18:37:24.100435Z'
-        expires_at: '2024-08-21T18:37:24.100435Z'
-        archived_at: null
-        cancel_initiated_at: '2024-08-20T19:00:00.000000Z'
-        ended_at: null
-        results_url: null
-  responses:
-    ErrorResponse:
-      description: Error Response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            ErrorExample:
-              $ref: '#/components/examples/ErrorExample'
+          type: array
+          description: List of requests for message completion. Each is an individual Message request.
+          minItems: 1
+          maxItems: 10000
+          items:
+            $ref: '#/components/schemas/MessageBatchIndividualRequest'
+    MessageParams:
+      type: object
+      description: Parameters for the individual Message creation request
+      required:
+      - model
+      - max_tokens
+      - messages
+      properties:
+        model:
+          type: string
+          description: The model that will complete your prompt
+        max_tokens:
+          type: integer
+          description: Maximum number of tokens to generate before stopping
+          minimum: 1
+        messages:
+          type: array
+          description: Input messages for the conversation
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Message'
   parameters:
+    MessageBatchId:
+      name: message_batch_id
+      in: path
+      required: true
+      description: Unique identifier for the message batch
+      schema:
+        type: string
+      example: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
+      schema:
+        type: string
+        example: '2023-06-01'
     BeforeId:
       name: before_id
       in: query
@@ -531,14 +537,13 @@ components:
         default: 20
         minimum: 1
         maximum: 1000
-    MessageBatchId:
-      name: message_batch_id
-      in: path
-      required: true
-      description: Unique identifier for the message batch
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns results immediately after this object.
       schema:
         type: string
-      example: msgbatch_013Zva2CMHLNnXjNJJKqJ2EF
     AnthropicBeta:
       name: anthropic-beta
       in: header
@@ -554,21 +559,16 @@ components:
           type: string
       style: form
       explode: false
-    AfterId:
-      name: after_id
-      in: query
-      required: false
-      description: ID of the object to use as a cursor for pagination. Returns results immediately after this object.
-      schema:
-        type: string
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
-      required: true
-      description: The version of the Anthropic API to use
-      schema:
-        type: string
-        example: '2023-06-01'
+  responses:
+    ErrorResponse:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
   securitySchemes:
     AdminApiKeyAuth:
       type: apiKey

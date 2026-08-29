@@ -1,24 +1,1079 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Anthropic Admin Agents Environments API
-  description: Manage administrative functions for Anthropic organizations, workspaces, users, invites, and API keys.
-  version: 1.0.0
-  contact:
-    name: Anthropic
-    url: https://www.anthropic.com
-    email: support@anthropic.com
-  license:
-    name: Anthropic API License
-    url: https://www.anthropic.com/terms
+  title: Anthropic Environments API
+  version: '1.0'
+  description: 'Operations tagged Environments across 2 of this provider''s published API definitions: anthropic-api-openapi.json, anthropic-managed-agents-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://api.anthropic.com/v1
-  description: Production Server
-security:
-- AdminApiKeyAuth: []
+- url: https://api.anthropic.com
 tags:
 - name: Environments
-  description: Container configuration for agent sessions
 paths:
+  /v1/environments/{environment_id}/archive?beta=true:
+    post:
+      summary: Archive Environment
+      description: Archive an environment by ID. Archived environments cannot be used to create new sessions.
+      operationId: beta_archive_environment_v1_environments__environment_id__archive_post
+      parameters:
+      - name: environment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Environment Id
+        example: env_011CZkZ9X2dpNyB7HsEFoRfW
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaEnvironment'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Environments
+    servers:
+    - url: https://api.anthropic.com
+  /v1/environments/{environment_id}/work/poll?beta=true:
+    get:
+      summary: Poll for Work
+      description: 'Note: these endpoints are called automatically by the pre-built environment worker provided in the SDKs and CLI, for orchestrating sessions with self-hosted sandbox environments. They are included here as a reference; you do not need to invoke them directly.
+
+
+        Long poll for work items in the queue.'
+      operationId: beta_poll_work_v1_environments__environment_id__work_poll_get
+      parameters:
+      - name: environment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Environment Id
+        example: env_011CZkZ9X2dpNyB7HsEFoRfW
+      - name: block_ms
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+            minimum: 1
+          - type: 'null'
+          description: How long to wait for work to arrive before returning. Must be 1-999 in milliseconds. Defaults to non-blocking (returns immediately if no work is available).
+          title: Block Ms
+        description: How long to wait for work to arrive before returning. Must be 1-999 in milliseconds. Defaults to non-blocking (returns immediately if no work is available).
+      - name: reclaim_older_than_ms
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+            minimum: 1
+          - type: 'null'
+          description: Reclaim unacknowledged work items older than this many milliseconds. If omitted, uses the default (5000ms).
+          title: Reclaim Older Than Ms
+        description: Reclaim unacknowledged work items older than this many milliseconds. If omitted, uses the default (5000ms).
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      - name: Anthropic-Worker-ID
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Unique identifier for the specific worker polling, used to track aggregated environment-level work metrics in Console
+          title: Anthropic-Worker-Id
+        description: Unique identifier for the specific worker polling, used to track aggregated environment-level work metrics in Console
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/BetaSelfHostedWork'
+                - type: 'null'
+                title: Response Poll Work V1 Environments  Environment Id  Work Poll Get
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Environments
+    servers:
+    - url: https://api.anthropic.com
+  /v1/environments/{environment_id}/work/stats?beta=true:
+    get:
+      summary: Get Queue Statistics
+      description: Get statistics about the work queue for an environment.
+      operationId: beta_get_environment_stats_v1_environments__environment_id__work_stats_get
+      parameters:
+      - name: environment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Environment Id
+        example: env_011CZkZ9X2dpNyB7HsEFoRfW
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      - name: x-api-key
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Api-Key
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaSelfHostedWorkQueueStats'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Environments
+    servers:
+    - url: https://api.anthropic.com
+  /v1/environments/{environment_id}/work/{work_id}/ack?beta=true:
+    post:
+      summary: Acknowledge Work
+      description: 'Note: these endpoints are called automatically by the pre-built environment worker provided in the SDKs and CLI, for orchestrating sessions with self-hosted sandbox environments. They are included here as a reference; you do not need to invoke them directly.
+
+
+        Acknowledge receipt of a work item, transitioning it from ''queued'' to ''starting'' and removing it from the queue.'
+      operationId: beta_acknowledge_work_v1_environments__environment_id__work__work_id__ack_post
+      parameters:
+      - name: environment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Environment Id
+        example: env_011CZkZ9X2dpNyB7HsEFoRfW
+      - name: work_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Work Id
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaSelfHostedWork'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Environments
+    servers:
+    - url: https://api.anthropic.com
+  /v1/environments/{environment_id}/work/{work_id}/heartbeat?beta=true:
+    post:
+      summary: Record Heartbeat
+      description: 'Note: these endpoints are called automatically by the pre-built environment worker provided in the SDKs and CLI, for orchestrating sessions with self-hosted sandbox environments. They are included here as a reference; you do not need to invoke them directly.
+
+
+        Record a heartbeat for a work item to maintain the lease.'
+      operationId: beta_record_heartbeat_v1_environments__environment_id__work__work_id__heartbeat_post
+      parameters:
+      - name: environment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Environment Id
+        example: env_011CZkZ9X2dpNyB7HsEFoRfW
+      - name: work_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Work Id
+      - name: desired_ttl_seconds
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Desired TTL in seconds
+          title: Desired Ttl Seconds
+        description: Desired TTL in seconds
+      - name: expected_last_heartbeat
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Expected last_heartbeat for conditional update (optimistic concurrency). Use literal 'NO_HEARTBEAT' to claim an unclaimed lease (first heartbeat). For subsequent heartbeats, echo the server's previous last_heartbeat value exactly. Returns 412 Precondition Failed if the actual value doesn't match.
+          title: Expected Last Heartbeat
+        description: Expected last_heartbeat for conditional update (optimistic concurrency). Use literal 'NO_HEARTBEAT' to claim an unclaimed lease (first heartbeat). For subsequent heartbeats, echo the server's previous last_heartbeat value exactly. Returns 412 Precondition Failed if the actual value doesn't match.
+        examples:
+          first_claim:
+            summary: First heartbeat (claim unclaimed lease)
+            value: NO_HEARTBEAT
+          subsequent:
+            summary: Subsequent heartbeat (echo server's value)
+            value: '2026-05-14T10:30:45.123456Z'
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaSelfHostedWorkHeartbeatResponse'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Environments
+    servers:
+    - url: https://api.anthropic.com
+  /v1/environments/{environment_id}/work/{work_id}/stop?beta=true:
+    post:
+      summary: Stop Work
+      description: 'Note: these endpoints are called automatically by the pre-built environment worker provided in the SDKs and CLI, for orchestrating sessions with self-hosted sandbox environments. They are included here as a reference; you do not need to invoke them directly.
+
+
+        Stop a work item, initiating graceful or forced shutdown.'
+      operationId: beta_stop_work_v1_environments__environment_id__work__work_id__stop_post
+      parameters:
+      - name: environment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Environment Id
+        example: env_011CZkZ9X2dpNyB7HsEFoRfW
+      - name: work_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Work Id
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaSelfHostedWorkStopRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaSelfHostedWork'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Environments
+    servers:
+    - url: https://api.anthropic.com
+  /v1/environments/{environment_id}/work/{work_id}?beta=true:
+    get:
+      summary: Get Work Item
+      description: 'Note: these endpoints are called automatically by the pre-built environment worker provided in the SDKs and CLI, for orchestrating sessions with self-hosted sandbox environments. They are included here as a reference; you do not need to invoke them directly.
+
+
+        Retrieve detailed information about a specific work item.'
+      operationId: beta_get_work_v1_environments__environment_id__work__work_id__get
+      parameters:
+      - name: environment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Environment Id
+        example: env_011CZkZ9X2dpNyB7HsEFoRfW
+      - name: work_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Work Id
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      - name: x-api-key
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Api-Key
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaSelfHostedWork'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Environments
+    post:
+      summary: Update Work Item
+      description: 'Note: these endpoints are called automatically by the pre-built environment worker provided in the SDKs and CLI, for orchestrating sessions with self-hosted sandbox environments. They are included here as a reference; you do not need to invoke them directly.
+
+
+        Update work item metadata with merge semantics.'
+      operationId: beta_update_work_v1_environments__environment_id__work__work_id__post
+      parameters:
+      - name: environment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Environment Id
+        example: env_011CZkZ9X2dpNyB7HsEFoRfW
+      - name: work_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Work Id
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaSelfHostedWorkUpdateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaSelfHostedWork'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Environments
+    servers:
+    - url: https://api.anthropic.com
+  /v1/environments/{environment_id}/work?beta=true:
+    get:
+      summary: List Work Items
+      description: 'Note: these endpoints are called automatically by the pre-built environment worker provided in the SDKs and CLI, for orchestrating sessions with self-hosted sandbox environments. They are included here as a reference; you do not need to invoke them directly.
+
+
+        List work items in an environment.'
+      operationId: beta_list_work_v1_environments__environment_id__work_get
+      parameters:
+      - name: environment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Environment Id
+        example: env_011CZkZ9X2dpNyB7HsEFoRfW
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          description: Maximum number of work items to return
+          default: 20
+          title: Limit
+        description: Maximum number of work items to return
+      - name: page
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Opaque cursor from previous response for pagination
+          x-stainless-pagination-property:
+            purpose: next_cursor_param
+          title: Page
+        description: Opaque cursor from previous response for pagination
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaSelfHostedWorkListResponse'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Environments
+    servers:
+    - url: https://api.anthropic.com
+  /v1/environments/{environment_id}?beta=true:
+    get:
+      summary: Get Environment
+      description: Retrieve a specific environment by ID.
+      operationId: beta_get_environment_v1_environments__environment_id__get
+      parameters:
+      - name: environment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Environment Id
+        example: env_011CZkZ9X2dpNyB7HsEFoRfW
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      - name: x-api-key
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Api-Key
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaEnvironment'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Environments
+    post:
+      summary: Update Environment
+      description: Update an existing environment's configuration.
+      operationId: beta_update_environment_v1_environments__environment_id__post
+      parameters:
+      - name: environment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          x-stainless-cli-data-alias: id
+          title: Environment Id
+        example: env_011CZkZ9X2dpNyB7HsEFoRfW
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaPublicEnvironmentUpdateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaEnvironment'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Environments
+    delete:
+      summary: Delete Environment
+      description: Delete an environment by ID. Returns a confirmation of the deletion.
+      operationId: beta_delete_environment_v1_environments__environment_id__delete
+      parameters:
+      - name: environment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Environment Id
+        example: env_011CZkZ9X2dpNyB7HsEFoRfW
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      - name: x-api-key
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Api-Key
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaEnvironmentDeleteResponse'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Environments
+    servers:
+    - url: https://api.anthropic.com
   /v1/environments:
     post:
       summary: Anthropic Create Environment
@@ -42,6 +1097,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Environment'
+      security:
+      - ApiKeyAuth: []
     get:
       summary: Anthropic List Environments
       description: Paginated list of environments.
@@ -58,6 +1115,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EnvironmentList'
+      security:
+      - ApiKeyAuth: []
+    servers:
+    - url: https://api.anthropic.com
+      description: Production Server
   /v1/environments/{environment_id}:
     get:
       summary: Anthropic Get Environment
@@ -75,6 +1137,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Environment'
+      security:
+      - ApiKeyAuth: []
     delete:
       summary: Anthropic Delete Environment
       operationId: deleteEnvironment
@@ -87,6 +1151,11 @@ paths:
       responses:
         '200':
           description: Environment deleted.
+      security:
+      - ApiKeyAuth: []
+    servers:
+    - url: https://api.anthropic.com
+      description: Production Server
   /v1/environments/{environment_id}/archive:
     post:
       summary: Anthropic Archive Environment
@@ -100,27 +1169,1076 @@ paths:
       responses:
         '200':
           description: Environment archived.
+      security:
+      - ApiKeyAuth: []
+    servers:
+    - url: https://api.anthropic.com
+      description: Production Server
 components:
   schemas:
-    Environment:
+    BetaGatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
       type: object
+    BetaUnrestrictedNetwork:
+      properties:
+        type:
+          type: string
+          const: unrestricted
+          title: Type
+          description: Network policy type
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      title: UnrestrictedNetwork
+      description: Unrestricted network access.
+    BetaOverloadedError:
+      properties:
+        message:
+          default: Overloaded
+          title: Message
+          type: string
+        type:
+          const: overloaded_error
+          default: overloaded_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: OverloadedError
+      type: object
+    BetaBillingError:
+      properties:
+        message:
+          default: Billing error
+          title: Message
+          type: string
+        type:
+          const: billing_error
+          default: billing_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: BillingError
+      type: object
+    BetaSelfHostedWorkStopRequest:
+      properties:
+        force:
+          type: boolean
+          title: Force
+          description: If true, immediately stop work without graceful shutdown
+          default: false
+      type: object
+      title: SelfHostedWorkStopRequest
+      description: Request to stop a work item.
+    BetaSelfHostedWork:
+      properties:
+        acknowledged_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Acknowledged At
+          description: RFC 3339 timestamp when the work item was acknowledged and assigned to a self-hosted sandbox
+        created_at:
+          type: string
+          title: Created At
+          description: RFC 3339 timestamp when work was created
+        data:
+          $ref: '#/components/schemas/BetaSessionWorkData'
+          description: The actual work to be performed
+        environment_id:
+          type: string
+          title: Environment Id
+          description: Environment identifier this work belongs to (e.g., `env_...`)
+        id:
+          type: string
+          title: Id
+          description: Work identifier (e.g., 'work_...')
+        latest_heartbeat_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Latest Heartbeat At
+          description: RFC 3339 timestamp of the most recent heartbeat
+        metadata:
+          additionalProperties:
+            type: string
+          type: object
+          title: Metadata
+          description: User-provided metadata key-value pairs associated with this work item
+        secret:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Secret
+          description: Credential payload used by the environment worker to execute this work item. May be populated when polling for work; null on all other retrieval paths.
+        started_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Started At
+          description: RFC 3339 timestamp when work execution started
+        state:
+          type: string
+          enum:
+          - queued
+          - starting
+          - active
+          - stopping
+          - stopped
+          title: State
+          description: Current state of the work item
+        stop_requested_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stop Requested At
+          description: RFC 3339 timestamp when stop was requested
+        stopped_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stopped At
+          description: RFC 3339 timestamp when work execution stopped
+        type:
+          type: string
+          const: work
+          title: Type
+          description: The type of object (always 'work')
+          default: work
+      type: object
+      required:
+      - acknowledged_at
+      - created_at
+      - data
+      - environment_id
+      - id
+      - latest_heartbeat_at
+      - metadata
+      - secret
+      - started_at
+      - state
+      - stop_requested_at
+      - stopped_at
+      - type
+      title: SelfHostedWork
+      description: 'Work resource representing a unit of work in a self-hosted environment.
+
+
+        Work items are queued when sessions are created or when long-dormant sessions
+
+        receive new messages. The environment worker polls for work to execute in a
+
+        self-hosted sandbox.'
+    BetaSelfHostedWorkHeartbeatResponse:
+      properties:
+        last_heartbeat:
+          type: string
+          title: Last Heartbeat
+          description: RFC 3339 timestamp of the actual heartbeat from DB
+        lease_extended:
+          type: boolean
+          title: Lease Extended
+          description: Whether the heartbeat succeeded in extending the lease
+        state:
+          type: string
+          enum:
+          - queued
+          - starting
+          - active
+          - stopping
+          - stopped
+          title: State
+          description: Current state of the work item (active/stopping/stopped)
+        ttl_seconds:
+          type: integer
+          title: Ttl Seconds
+          description: Effective TTL applied to the lease
+        type:
+          type: string
+          const: work_heartbeat
+          title: Type
+          description: The type of response
+          default: work_heartbeat
+      type: object
+      required:
+      - last_heartbeat
+      - lease_extended
+      - state
+      - ttl_seconds
+      - type
+      title: SelfHostedWorkHeartbeatResponse
+      description: Response after recording a heartbeat for a work item.
+    BetaAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    BetaNotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    BetaCloudConfigParams:
+      properties:
+        networking:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/BetaUnrestrictedNetwork'
+            - $ref: '#/components/schemas/BetaLimitedNetworkParams'
+              x-anthropic-beta-required:
+              - managed-agents-2026-04-01
+            discriminator:
+              propertyName: type
+              mapping:
+                limited: '#/components/schemas/BetaLimitedNetworkParams'
+                unrestricted: '#/components/schemas/BetaUnrestrictedNetwork'
+          - type: 'null'
+          title: Networking
+          description: Network configuration policy. Omit on update to preserve the existing value.
+          examples:
+          - type: limited
+            allowed_hosts:
+            - api.example.com
+            allow_package_managers: true
+        packages:
+          anyOf:
+          - $ref: '#/components/schemas/BetaPackagesParams'
+          - type: 'null'
+          description: Package manager configuration. Under `limited` networking, requires `networking.allow_package_managers` to be `true`. Omit on update to preserve the existing value.
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+          examples:
+          - pip:
+            - pandas
+            - numpy
+        type:
+          type: string
+          const: cloud
+          title: Type
+          description: Environment type
+          examples:
+          - cloud
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      title: CloudConfigParams
+      description: 'Request params for `cloud` environment configuration.
+
+
+        Fields default to null; on update, omitted fields preserve the
+
+        existing value.'
+      example:
+        type: cloud
+        networking:
+          type: limited
+          allowed_hosts:
+          - api.example.com
+          allow_package_managers: true
+        packages:
+          pip:
+          - pandas
+          - numpy
+    BetaPublicEnvironmentUpdateRequest:
+      properties:
+        config:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/BetaCloudConfigParams'
+            - $ref: '#/components/schemas/BetaSelfHostedConfigParams'
+              x-anthropic-beta-required:
+              - managed-agents-2026-04-01
+            discriminator:
+              propertyName: type
+              mapping:
+                cloud: '#/components/schemas/BetaCloudConfigParams'
+                self_hosted: '#/components/schemas/BetaSelfHostedConfigParams'
+          - type: 'null'
+          title: Config
+          description: Updated environment configuration
+        description:
+          anyOf:
+          - type: string
+            maxLength: 1024
+          - type: 'null'
+          title: Description
+          description: Updated description of the environment. Omit to preserve; null clears to null; an empty string is stored as an empty string.
+          examples:
+          - Python environment with data-analysis packages.
+        metadata:
+          additionalProperties:
+            anyOf:
+            - type: string
+            - type: 'null'
+          type: object
+          title: Metadata
+          description: User-provided metadata key-value pairs. Set a value to null or empty string to delete the key.
+        name:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Name
+          description: Updated name for the environment
+        scope:
+          anyOf:
+          - type: string
+            enum:
+            - organization
+            - account
+          - type: 'null'
+          title: Scope
+          description: The visibility scope for this environment. 'organization' makes the environment visible to all accounts. 'account' restricts visibility to the owning account only.
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+      additionalProperties: false
+      type: object
+      title: PublicEnvironmentUpdateRequest
+      description: Public API request to update an environment (without org/account fields).
+      example:
+        description: Python environment with data-analysis packages.
+    BetaCloudConfig:
+      properties:
+        networking:
+          oneOf:
+          - $ref: '#/components/schemas/BetaUnrestrictedNetwork'
+          - $ref: '#/components/schemas/BetaLimitedNetwork'
+            x-anthropic-beta-required:
+            - managed-agents-2026-04-01
+          title: Networking
+          description: Network configuration policy.
+          discriminator:
+            propertyName: type
+            mapping:
+              limited: '#/components/schemas/BetaLimitedNetwork'
+              unrestricted: '#/components/schemas/BetaUnrestrictedNetwork'
+          examples:
+          - type: limited
+            allowed_hosts:
+            - api.example.com
+            allow_package_managers: true
+            allow_mcp_servers: false
+        packages:
+          $ref: '#/components/schemas/BetaPackages'
+          description: Package manager configuration.
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+          examples:
+          - type: packages
+            pip:
+            - pandas
+            - numpy
+            npm: []
+            apt: []
+            cargo: []
+            gem: []
+            go: []
+        type:
+          type: string
+          const: cloud
+          title: Type
+          description: Environment type
+          examples:
+          - cloud
+      type: object
+      required:
+      - networking
+      - packages
+      - type
+      title: CloudConfig
+      description: '`cloud` environment configuration.'
+      example:
+        type: cloud
+        networking:
+          type: limited
+          allowed_hosts:
+          - api.example.com
+          allow_package_managers: true
+          allow_mcp_servers: false
+        packages:
+          type: packages
+          pip:
+          - pandas
+          - numpy
+          npm: []
+          apt: []
+          cargo: []
+          gem: []
+          go: []
+    BetaEnvironment:
+      properties:
+        archived_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Archived At
+          description: RFC 3339 timestamp when environment was archived, or null if not archived
+          examples:
+          - null
+        config:
+          oneOf:
+          - $ref: '#/components/schemas/BetaCloudConfig'
+          - $ref: '#/components/schemas/BetaSelfHostedConfig'
+            x-anthropic-beta-required:
+            - managed-agents-2026-04-01
+          title: Config
+          description: Environment configuration (either Anthropic Cloud or self-hosted)
+          discriminator:
+            propertyName: type
+            mapping:
+              cloud: '#/components/schemas/BetaCloudConfig'
+              self_hosted: '#/components/schemas/BetaSelfHostedConfig'
+          examples:
+          - type: cloud
+            networking:
+              type: limited
+              allowed_hosts:
+              - api.example.com
+              allow_package_managers: true
+              allow_mcp_servers: false
+            packages:
+              type: packages
+              pip:
+              - pandas
+              - numpy
+              npm: []
+              apt: []
+              cargo: []
+              gem: []
+              go: []
+        created_at:
+          type: string
+          title: Created At
+          description: RFC 3339 timestamp when environment was created
+          examples:
+          - '2026-03-15T10:00:00Z'
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: User-provided description for the environment; null when unset
+          examples:
+          - Python environment with data-analysis packages.
+        id:
+          type: string
+          title: Id
+          description: Environment identifier (e.g., 'env_...')
+          examples:
+          - env_011CZkZ9X2dpNyB7HsEFoRfW
+        metadata:
+          additionalProperties:
+            type: string
+          type: object
+          title: Metadata
+          description: User-provided metadata key-value pairs
+          examples:
+          - key: value
+        name:
+          type: string
+          title: Name
+          description: Human-readable name for the environment
+          examples:
+          - python-data-analysis
+        scope:
+          type: string
+          enum:
+          - organization
+          - account
+          title: Scope
+          description: The visibility scope for this environment. 'organization' means visible to all accounts. 'account' means visible only to the owning account.
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+        type:
+          type: string
+          const: environment
+          title: Type
+          description: The type of object (always 'environment')
+          default: environment
+          examples:
+          - environment
+        updated_at:
+          type: string
+          title: Updated At
+          description: RFC 3339 timestamp when environment was last updated
+          examples:
+          - '2026-03-15T10:00:00Z'
+      type: object
+      required:
+      - archived_at
+      - config
+      - created_at
+      - description
+      - id
+      - metadata
+      - name
+      - type
+      - updated_at
+      title: Environment
+      description: Unified Environment resource for both cloud and self-hosted environments.
+      example:
+        type: environment
+        id: env_011CZkZ9X2dpNyB7HsEFoRfW
+        name: python-data-analysis
+        description: Python environment with data-analysis packages.
+        config:
+          type: cloud
+          networking:
+            type: limited
+            allowed_hosts:
+            - api.example.com
+            allow_package_managers: true
+            allow_mcp_servers: false
+          packages:
+            type: packages
+            pip:
+            - pandas
+            - numpy
+            npm: []
+            apt: []
+            cargo: []
+            gem: []
+            go: []
+        metadata: {}
+        archived_at: null
+        created_at: '2026-03-15T10:00:00Z'
+        updated_at: '2026-03-15T10:00:00Z'
+    BetaInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    BetaPackagesParams:
+      properties:
+        apt:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Apt
+          description: Ubuntu/Debian packages to install
+        cargo:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Cargo
+          description: Rust packages to install
+        gem:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Gem
+          description: Ruby packages to install
+        go:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Go
+          description: Go packages to install
+        npm:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Npm
+          description: Node.js packages to install
+        pip:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Pip
+          description: Python packages to install
+        type:
+          type: string
+          const: packages
+          title: Type
+          description: Package configuration type
+          default: packages
+      additionalProperties: false
+      type: object
+      title: PackagesParams
+      description: 'Specify packages (and optionally their versions) available in this environment.
+
+
+        When versioning, use the version semantics relevant for the package manager, e.g. for `pip` use `package==1.0.0`. You are responsible for validating the package and version exist. Unversioned installs the latest.
+
+
+        Under `limited` networking, requires `networking.allow_package_managers` to be `true`.'
+    BetaPermissionError:
+      properties:
+        message:
+          default: Permission denied
+          title: Message
+          type: string
+        type:
+          const: permission_error
+          default: permission_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: PermissionError
+      type: object
+    BetaEnvironmentDeleteResponse:
       properties:
         id:
           type: string
+          title: Id
+          description: Environment identifier
+          examples:
+          - env_011CZkZ9X2dpNyB7HsEFoRfW
         type:
           type: string
-          example: environment
-        name:
+          title: Type
+          description: The type of response
+          default: environment_deleted
+          examples:
+          - environment_deleted
+          enum:
+          - environment_deleted
+      type: object
+      required:
+      - id
+      - type
+      title: EnvironmentDeleteResponse
+      description: Response after deleting an environment.
+      example:
+        type: environment_deleted
+        id: env_011CZkZ9X2dpNyB7HsEFoRfW
+    BetaSessionWorkData:
+      properties:
+        id:
           type: string
-        config:
+          title: Id
+          description: Session identifier (e.g., 'session_...')
+        type:
+          type: string
+          const: session
+          title: Type
+          description: Type of work data
+      type: object
+      required:
+      - id
+      - type
+      title: SessionWorkData
+      description: 'Work data for session work items.
+
+
+        This resource type is used when work represents a session that needs to be executed
+
+        in a self-hosted environment.'
+    BetaSelfHostedConfig:
+      properties:
+        type:
+          type: string
+          const: self_hosted
+          title: Type
+          description: Environment type
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      title: SelfHostedConfig
+      description: Configuration for self-hosted environments.
+    BetaSelfHostedWorkListResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/BetaSelfHostedWork'
+          type: array
+          title: Data
+          description: List of work items
+          x-stainless-pagination-property:
+            purpose: items
+        next_page:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Next Page
+          description: Opaque cursor for fetching the next page of results
+          x-stainless-pagination-property:
+            purpose: next_cursor_field
+      type: object
+      required:
+      - data
+      - next_page
+      title: SelfHostedWorkListResponse
+      description: Response when listing work items with cursor-based pagination.
+    BetaLimitedNetwork:
+      properties:
+        allow_mcp_servers:
+          type: boolean
+          title: Allow Mcp Servers
+          description: Permits outbound access to MCP server endpoints configured on the agent, beyond those listed in the `allowed_hosts` array.
+        allow_package_managers:
+          type: boolean
+          title: Allow Package Managers
+          description: Permits outbound access to public package registries (PyPI, npm, etc.) beyond those listed in the `allowed_hosts` array.
+        allowed_hosts:
+          items:
+            type: string
+          type: array
+          title: Allowed Hosts
+          description: Specifies domains the container can reach.
+        type:
+          type: string
+          const: limited
+          title: Type
+          description: Network policy type
+      type: object
+      required:
+      - allow_mcp_servers
+      - allow_package_managers
+      - allowed_hosts
+      - type
+      title: LimitedNetwork
+      description: Limited network access.
+    BetaSelfHostedWorkUpdateRequest:
+      properties:
+        metadata:
+          additionalProperties:
+            anyOf:
+            - type: string
+            - type: 'null'
           type: object
-        created_at:
+          title: Metadata
+          description: Metadata patch. Set a key to a string to upsert it, or to null to delete it. Omit the field to preserve existing metadata.
+      type: object
+      required:
+      - metadata
+      title: SelfHostedWorkUpdateRequest
+      description: Request to update work item metadata.
+    BetaAPIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
           type: string
-          format: date-time
-        archived_at:
+        type:
+          const: api_error
+          default: api_error
+          title: Type
           type: string
-          format: date-time
-          nullable: true
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
+    BetaErrorResponse:
+      properties:
+        error:
+          discriminator:
+            mapping:
+              api_error: '#/components/schemas/BetaAPIError'
+              authentication_error: '#/components/schemas/BetaAuthenticationError'
+              billing_error: '#/components/schemas/BetaBillingError'
+              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
+              not_found_error: '#/components/schemas/BetaNotFoundError'
+              overloaded_error: '#/components/schemas/BetaOverloadedError'
+              permission_error: '#/components/schemas/BetaPermissionError'
+              rate_limit_error: '#/components/schemas/BetaRateLimitError'
+              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/BetaInvalidRequestError'
+          - $ref: '#/components/schemas/BetaAuthenticationError'
+          - $ref: '#/components/schemas/BetaBillingError'
+          - $ref: '#/components/schemas/BetaPermissionError'
+          - $ref: '#/components/schemas/BetaNotFoundError'
+          - $ref: '#/components/schemas/BetaRateLimitError'
+          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
+          - $ref: '#/components/schemas/BetaAPIError'
+          - $ref: '#/components/schemas/BetaOverloadedError'
+          title: Error
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Request Id
+        type:
+          const: error
+          default: error
+          title: Type
+          type: string
+      required:
+      - error
+      - request_id
+      - type
+      title: ErrorResponse
+      type: object
+    BetaLimitedNetworkParams:
+      properties:
+        allow_mcp_servers:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Allow Mcp Servers
+          description: Permits outbound access to MCP server endpoints configured on the agent, beyond those listed in the `allowed_hosts` array. Defaults to `false`.
+        allow_package_managers:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Allow Package Managers
+          description: Permits outbound access to public package registries (PyPI, npm, etc.) beyond those listed in the `allowed_hosts` array. Defaults to `false` on creation. Must be `true` when `packages` are specified.
+        allowed_hosts:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Allowed Hosts
+          description: Specifies domains the container can reach.
+        type:
+          type: string
+          const: limited
+          title: Type
+          description: Network policy type
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      title: LimitedNetworkParams
+      description: 'Limited network request params.
+
+
+        Fields default to null; on update, omitted fields preserve the
+
+        existing value.'
+    AnthropicBeta:
+      anyOf:
+      - type: string
+      - type: string
+        enum:
+        - message-batches-2024-09-24
+        - prompt-caching-2024-07-31
+        - computer-use-2024-10-22
+        - computer-use-2025-01-24
+        - pdfs-2024-09-25
+        - token-counting-2024-11-01
+        - token-efficient-tools-2025-02-19
+        - output-128k-2025-02-19
+        - files-api-2025-04-14
+        - mcp-client-2025-04-04
+        - mcp-client-2025-11-20
+        - dev-full-thinking-2025-05-14
+        - interleaved-thinking-2025-05-14
+        - code-execution-2025-05-22
+        - extended-cache-ttl-2025-04-11
+        - context-1m-2025-08-07
+        - context-management-2025-06-27
+        - model-context-window-exceeded-2025-08-26
+        - skills-2025-10-02
+        - fast-mode-2026-02-01
+        - output-300k-2026-03-24
+        - user-profiles-2026-03-24
+        - user-profiles-2026-08-18
+        - advisor-tool-2026-03-01
+        - managed-agents-2026-04-01
+        - cache-diagnosis-2026-04-07
+        - dreaming-2026-04-21
+        - thinking-token-count-2026-05-13
+        - server-side-fallback-2026-06-01
+        - server-side-fallback-2026-07-01
+        - fallback-credit-2026-06-01
+        - fallback-credit-2026-07-01
+        - agent-memory-2026-07-22
+        - mid-conversation-tool-changes-2026-07-01
+        - compact-2026-01-12
+        - computer-use-2025-11-24
+        - mcp-tunnels-2026-06-22
+        - structured-outputs-2025-11-13
+        - task-budgets-2026-03-13
+        - thinking-display-updates-2026-08-18
+        - ce-user-management-2026-07-13
+        x-stainless-nominal: false
+    BetaSelfHostedWorkQueueStats:
+      properties:
+        depth:
+          type: integer
+          title: Depth
+          description: Number of work items waiting to be picked up (lag from consumer group)
+        oldest_queued_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Oldest Queued At
+          description: RFC 3339 timestamp of oldest item in the work stream (includes both queued and pending items), null if stream empty
+        pending:
+          type: integer
+          title: Pending
+          description: Number of work items being processed (polled but not acknowledged)
+          default: 0
+        type:
+          type: string
+          const: work_queue_stats
+          title: Type
+          description: The type of object
+          default: work_queue_stats
+        workers_polling:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Workers Polling
+          description: Number of workers that have polled for work in the last 30 seconds. Requires worker_id to be sent with poll requests.
+      type: object
+      required:
+      - depth
+      - oldest_queued_at
+      - pending
+      - type
+      - workers_polling
+      title: SelfHostedWorkQueueStats
+      description: 'Statistics about the work queue for an environment.
+
+
+        Uses Redis Stream consumer group metrics for O(1) queries.'
+    BetaSelfHostedConfigParams:
+      properties:
+        type:
+          type: string
+          const: self_hosted
+          title: Type
+          description: Environment type
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      title: SelfHostedConfigParams
+      description: Request params for `self_hosted` environment configuration.
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    BetaPackages:
+      properties:
+        apt:
+          items:
+            type: string
+          type: array
+          title: Apt
+          description: Ubuntu/Debian packages to install
+        cargo:
+          items:
+            type: string
+          type: array
+          title: Cargo
+          description: Rust packages to install
+        gem:
+          items:
+            type: string
+          type: array
+          title: Gem
+          description: Ruby packages to install
+        go:
+          items:
+            type: string
+          type: array
+          title: Go
+          description: Go packages to install
+        npm:
+          items:
+            type: string
+          type: array
+          title: Npm
+          description: Node.js packages to install
+        pip:
+          items:
+            type: string
+          type: array
+          title: Pip
+          description: Python packages to install
+        type:
+          type: string
+          const: packages
+          title: Type
+          description: Package configuration type
+          default: packages
+      type: object
+      required:
+      - apt
+      - cargo
+      - gem
+      - go
+      - npm
+      - pip
+      title: Packages
+      description: Packages (and their versions) available in this environment.
     EnvironmentList:
       type: object
       properties:
@@ -170,6 +2288,25 @@ components:
                   type: boolean
                 allow_package_managers:
                   type: boolean
+    Environment:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          example: environment
+        name:
+          type: string
+        config:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        archived_at:
+          type: string
+          format: date-time
+          nullable: true
   parameters:
     AnthropicVersion:
       name: anthropic-version
@@ -178,12 +2315,6 @@ components:
       schema:
         type: string
         default: '2023-06-01'
-    EnvironmentIdPath:
-      name: environment_id
-      in: path
-      required: true
-      schema:
-        type: string
     AnthropicBeta:
       name: anthropic-beta
       in: header
@@ -192,9 +2323,17 @@ components:
       schema:
         type: string
         default: managed-agents-2026-04-01
+    EnvironmentIdPath:
+      name: environment_id
+      in: path
+      required: true
+      schema:
+        type: string
   securitySchemes:
-    AdminApiKeyAuth:
+    ApiKeyAuth:
       type: apiKey
       in: header
       name: x-api-key
-      description: Your Admin API key for authentication (starts with sk-ant-admin...).
+x-refined-from:
+- anthropic-api-openapi.json
+- anthropic-managed-agents-api-openapi.yml

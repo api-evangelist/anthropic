@@ -1,0 +1,655 @@
+openapi: 3.2.0
+info:
+  title: Anthropic Skills?beta=true API
+servers:
+- url: https://api.anthropic.com
+tags:
+- name: Skills?beta=true
+paths:
+  /v1/skills?beta=true:
+    post:
+      summary: Create Skill
+      operationId: beta_create_skill_v1_skills_post
+      parameters:
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BetaBody_create_skill_v1_skills_post'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaCreateSkillResponse'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Skills?beta=true
+    get:
+      summary: List Skills
+      operationId: beta_list_skills_v1_skills_get
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 'Pagination token for fetching a specific page of results.
+
+
+            Pass the value from a previous response''s `next_page` field to get the next page of results.'
+          x-stainless-pagination-property:
+            purpose: next_cursor_param
+          title: Page
+        description: 'Pagination token for fetching a specific page of results.
+
+
+          Pass the value from a previous response''s `next_page` field to get the next page of results.'
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          description: 'Number of results to return per page.
+
+
+            Maximum value is 100. Defaults to 20.'
+          default: 20
+          title: Limit
+        description: 'Number of results to return per page.
+
+
+          Maximum value is 100. Defaults to 20.'
+      - name: source
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 'Filter skills by source.
+
+
+            If provided, only skills from the specified source will be returned:
+
+            * `"custom"`: only return user-created skills
+
+            * `"anthropic"`: only return Anthropic-created skills'
+          title: Source
+        description: 'Filter skills by source.
+
+
+          If provided, only skills from the specified source will be returned:
+
+          * `"custom"`: only return user-created skills
+
+          * `"anthropic"`: only return Anthropic-created skills'
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      - name: x-api-key
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'Your unique API key for authentication.
+
+
+            This key is required in the header of all API requests, to authenticate your account and access Anthropic''s services. Get your API key through the [Console](https://console.anthropic.com/settings/keys). Each key is scoped to a Workspace.'
+          title: X-Api-Key
+        description: 'Your unique API key for authentication.
+
+
+          This key is required in the header of all API requests, to authenticate your account and access Anthropic''s services. Get your API key through the [Console](https://console.anthropic.com/settings/keys). Each key is scoped to a Workspace.'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaListSkillsResponse'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Skills?beta=true
+components:
+  schemas:
+    BetaListSkillsResponse:
+      properties:
+        data:
+          description: List of skills.
+          items:
+            $ref: '#/components/schemas/BetaGetSkillResponse'
+          title: Data
+          type: array
+          x-stainless-pagination-property:
+            purpose: items
+        has_more:
+          description: 'Whether there are more results available.
+
+
+            If `true`, there are additional results that can be fetched using the `next_page` token.'
+          title: Has More
+          type: boolean
+        next_page:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: 'Token for fetching the next page of results.
+
+
+            If `null`, there are no more results available. Pass this value to the `page` parameter in the next request to get the next page.'
+          examples:
+          - page_MjAyNS0wNS0xNFQwMDowMDowMFo=
+          - null
+          title: Next Page
+          x-stainless-pagination-property:
+            purpose: next_cursor_field
+      required:
+      - data
+      - has_more
+      - next_page
+      title: ListSkillsResponse
+      type: object
+    BetaGetSkillResponse:
+      properties:
+        created_at:
+          description: ISO 8601 timestamp of when the skill was created.
+          examples:
+          - '2024-10-30T23:58:27.427722Z'
+          title: Created At
+          type: string
+        display_title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 'Display title for the skill.
+
+
+            This is a human-readable label that is not included in the prompt sent to the model.'
+          examples:
+          - My Custom Skill
+          title: Display Title
+        id:
+          description: 'Unique identifier for the skill.
+
+
+            The format and length of IDs may change over time.'
+          examples:
+          - skill_01JAbcdefghijklmnopqrstuvw
+          title: Id
+          type: string
+        latest_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 'The latest version identifier for the skill.
+
+
+            This represents the most recent version of the skill that has been created.'
+          examples:
+          - '1759178010641129'
+          title: Latest Version
+        source:
+          description: 'Source of the skill.
+
+
+            This may be one of the following values:
+
+            * `"custom"`: the skill was created by a user
+
+            * `"anthropic"`: the skill was created by Anthropic'
+          examples:
+          - custom
+          title: Source
+          type: string
+        type:
+          default: skill
+          description: 'Object type.
+
+
+            For Skills, this is always `"skill"`.'
+          title: Type
+          type: string
+        updated_at:
+          description: ISO 8601 timestamp of when the skill was last updated.
+          examples:
+          - '2024-10-30T23:58:27.427722Z'
+          title: Updated At
+          type: string
+      required:
+      - created_at
+      - display_title
+      - id
+      - latest_version
+      - source
+      - type
+      - updated_at
+      title: GetSkillResponse
+      type: object
+    BetaGatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
+      type: object
+    BetaAPIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
+          type: string
+        type:
+          const: api_error
+          default: api_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
+    BetaErrorResponse:
+      properties:
+        error:
+          discriminator:
+            mapping:
+              api_error: '#/components/schemas/BetaAPIError'
+              authentication_error: '#/components/schemas/BetaAuthenticationError'
+              billing_error: '#/components/schemas/BetaBillingError'
+              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
+              not_found_error: '#/components/schemas/BetaNotFoundError'
+              overloaded_error: '#/components/schemas/BetaOverloadedError'
+              permission_error: '#/components/schemas/BetaPermissionError'
+              rate_limit_error: '#/components/schemas/BetaRateLimitError'
+              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/BetaInvalidRequestError'
+          - $ref: '#/components/schemas/BetaAuthenticationError'
+          - $ref: '#/components/schemas/BetaBillingError'
+          - $ref: '#/components/schemas/BetaPermissionError'
+          - $ref: '#/components/schemas/BetaNotFoundError'
+          - $ref: '#/components/schemas/BetaRateLimitError'
+          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
+          - $ref: '#/components/schemas/BetaAPIError'
+          - $ref: '#/components/schemas/BetaOverloadedError'
+          title: Error
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Request Id
+        type:
+          const: error
+          default: error
+          title: Type
+          type: string
+      required:
+      - error
+      - request_id
+      - type
+      title: ErrorResponse
+      type: object
+    BetaOverloadedError:
+      properties:
+        message:
+          default: Overloaded
+          title: Message
+          type: string
+        type:
+          const: overloaded_error
+          default: overloaded_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: OverloadedError
+      type: object
+    BetaAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    BetaBillingError:
+      properties:
+        message:
+          default: Billing error
+          title: Message
+          type: string
+        type:
+          const: billing_error
+          default: billing_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: BillingError
+      type: object
+    BetaNotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    BetaCreateSkillResponse:
+      properties:
+        created_at:
+          description: ISO 8601 timestamp of when the skill was created.
+          examples:
+          - '2024-10-30T23:58:27.427722Z'
+          title: Created At
+          type: string
+        display_title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 'Display title for the skill.
+
+
+            This is a human-readable label that is not included in the prompt sent to the model.'
+          examples:
+          - My Custom Skill
+          title: Display Title
+        id:
+          description: 'Unique identifier for the skill.
+
+
+            The format and length of IDs may change over time.'
+          examples:
+          - skill_01JAbcdefghijklmnopqrstuvw
+          title: Id
+          type: string
+        latest_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 'The latest version identifier for the skill.
+
+
+            This represents the most recent version of the skill that has been created.'
+          examples:
+          - '1759178010641129'
+          title: Latest Version
+        source:
+          description: 'Source of the skill.
+
+
+            This may be one of the following values:
+
+            * `"custom"`: the skill was created by a user
+
+            * `"anthropic"`: the skill was created by Anthropic'
+          examples:
+          - custom
+          title: Source
+          type: string
+        type:
+          default: skill
+          description: 'Object type.
+
+
+            For Skills, this is always `"skill"`.'
+          title: Type
+          type: string
+        updated_at:
+          description: ISO 8601 timestamp of when the skill was last updated.
+          examples:
+          - '2024-10-30T23:58:27.427722Z'
+          title: Updated At
+          type: string
+      required:
+      - created_at
+      - display_title
+      - id
+      - latest_version
+      - source
+      - type
+      - updated_at
+      title: CreateSkillResponse
+      type: object
+    AnthropicBeta:
+      anyOf:
+      - type: string
+      - type: string
+        enum:
+        - message-batches-2024-09-24
+        - prompt-caching-2024-07-31
+        - computer-use-2024-10-22
+        - computer-use-2025-01-24
+        - pdfs-2024-09-25
+        - token-counting-2024-11-01
+        - token-efficient-tools-2025-02-19
+        - output-128k-2025-02-19
+        - files-api-2025-04-14
+        - mcp-client-2025-04-04
+        - mcp-client-2025-11-20
+        - dev-full-thinking-2025-05-14
+        - interleaved-thinking-2025-05-14
+        - code-execution-2025-05-22
+        - extended-cache-ttl-2025-04-11
+        - context-1m-2025-08-07
+        - context-management-2025-06-27
+        - model-context-window-exceeded-2025-08-26
+        - skills-2025-10-02
+        - fast-mode-2026-02-01
+        - output-300k-2026-03-24
+        - user-profiles-2026-03-24
+        - user-profiles-2026-08-18
+        - advisor-tool-2026-03-01
+        - managed-agents-2026-04-01
+        - cache-diagnosis-2026-04-07
+        - dreaming-2026-04-21
+        - thinking-token-count-2026-05-13
+        - server-side-fallback-2026-06-01
+        - server-side-fallback-2026-07-01
+        - fallback-credit-2026-06-01
+        - fallback-credit-2026-07-01
+        - agent-memory-2026-07-22
+        - mid-conversation-tool-changes-2026-07-01
+        - compact-2026-01-12
+        - computer-use-2025-11-24
+        - mcp-tunnels-2026-06-22
+        - structured-outputs-2025-11-13
+        - task-budgets-2026-03-13
+        - thinking-display-updates-2026-08-18
+        - ce-user-management-2026-07-13
+        x-stainless-nominal: false
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    BetaBody_create_skill_v1_skills_post:
+      properties:
+        files:
+          items:
+            type: string
+            format: binary
+          type: array
+          title: Files
+          description: 'Files to upload for the skill.
+
+
+            All files must be in the same top-level directory and must include a SKILL.md file at the root of that directory.'
+        display_title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Title
+          description: 'Display title for the skill.
+
+
+            This is a human-readable label that is not included in the prompt sent to the model.'
+      type: object
+      required:
+      - files
+      title: Body_create_skill_v1_skills_post
+    BetaInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    BetaPermissionError:
+      properties:
+        message:
+          default: Permission denied
+          title: Message
+          type: string
+        type:
+          const: permission_error
+          default: permission_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: PermissionError
+      type: object

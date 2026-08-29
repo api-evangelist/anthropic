@@ -1,0 +1,597 @@
+openapi: 3.2.0
+info:
+  title: Anthropic Models?beta=true API
+servers:
+- url: https://api.anthropic.com
+tags:
+- name: Models?beta=true
+paths:
+  /v1/models?beta=true:
+    get:
+      summary: List Models
+      description: 'List available models.
+
+
+        The Models API response can be used to determine which models are available for use in the API. More recently released models are listed first.'
+      operationId: beta_models_list
+      parameters:
+      - name: before_id
+        in: query
+        required: false
+        schema:
+          type: string
+          description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+          title: Before Id
+        description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately before this object.
+      - name: after_id
+        in: query
+        required: false
+        schema:
+          type: string
+          description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+          title: After Id
+        description: ID of the object to use as a cursor for pagination. When provided, returns the page of results immediately after this object.
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          description: 'Number of items to return per page.
+
+
+            Defaults to `20`. Ranges from `1` to `1000`.'
+          default: 20
+          title: Limit
+        description: 'Number of items to return per page.
+
+
+          Defaults to `20`. Ranges from `1` to `1000`.'
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'The version of the Claude API you want to use.
+
+
+            Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+          title: Anthropic-Version
+        description: 'The version of the Claude API you want to use.
+
+
+          Read more about versioning and our version history [here](https://platform.claude.com/docs/en/api/versioning).'
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          description: 'Optional header to specify the beta version(s) you want to use.
+
+
+            To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+          title: Anthropic-Beta
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+        description: 'Optional header to specify the beta version(s) you want to use.
+
+
+          To use multiple betas, use a comma separated list like `beta1,beta2` or specify the header multiple times for each beta.'
+      - name: x-api-key
+        in: header
+        required: false
+        schema:
+          type: string
+          description: 'Your unique API key for authentication.
+
+
+            This key is required in the header of all API requests, to authenticate your account and access Anthropic''s services. Get your API key through the [Console](https://console.anthropic.com/settings/keys). Each key is scoped to a Workspace.'
+          title: X-Api-Key
+        description: 'Your unique API key for authentication.
+
+
+          This key is required in the header of all API requests, to authenticate your account and access Anthropic''s services. Get your API key through the [Console](https://console.anthropic.com/settings/keys). Each key is scoped to a Workspace.'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaListResponse_ModelInfo_'
+        4XX:
+          description: 'Error response.
+
+
+            See our [errors documentation](https://platform.claude.com/docs/en/api/errors) for more details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      tags:
+      - Models?beta=true
+components:
+  schemas:
+    BetaListResponse_ModelInfo_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/BetaModelInfo'
+          type: array
+          title: Data
+        first_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Id
+          description: First ID in the `data` list. Can be used as the `before_id` for the previous page.
+        has_more:
+          type: boolean
+          title: Has More
+          description: Indicates if there are more results in the requested page direction.
+        last_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Id
+          description: Last ID in the `data` list. Can be used as the `after_id` for the next page.
+      type: object
+      required:
+      - data
+      - first_id
+      - has_more
+      - last_id
+      title: ListResponse[ModelInfo]
+    BetaGatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
+      type: object
+    BetaOverloadedError:
+      properties:
+        message:
+          default: Overloaded
+          title: Message
+          type: string
+        type:
+          const: overloaded_error
+          default: overloaded_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: OverloadedError
+      type: object
+    BetaBillingError:
+      properties:
+        message:
+          default: Billing error
+          title: Message
+          type: string
+        type:
+          const: billing_error
+          default: billing_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: BillingError
+      type: object
+    BetaCapabilitySupport:
+      properties:
+        supported:
+          type: boolean
+          title: Supported
+          description: Whether this capability is supported by the model.
+      type: object
+      required:
+      - supported
+      title: CapabilitySupport
+      description: Indicates whether a capability is supported.
+    BetaAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    BetaNotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    BetaEffortCapability:
+      properties:
+        high:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports high effort level.
+        low:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports low effort level.
+        max:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports max effort level.
+        medium:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports medium effort level.
+        supported:
+          type: boolean
+          title: Supported
+          description: Whether this capability is supported by the model.
+        xhigh:
+          anyOf:
+          - $ref: '#/components/schemas/BetaCapabilitySupport'
+          - type: 'null'
+          description: Whether the model supports xhigh effort level.
+      type: object
+      required:
+      - high
+      - low
+      - max
+      - medium
+      - supported
+      - xhigh
+      title: EffortCapability
+      description: Effort (reasoning_effort) capability details.
+    BetaInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    BetaPermissionError:
+      properties:
+        message:
+          default: Permission denied
+          title: Message
+          type: string
+        type:
+          const: permission_error
+          default: permission_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: PermissionError
+      type: object
+    BetaModelInfo:
+      properties:
+        allowed_fallback_models:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Allowed Fallback Models
+          description: Model IDs this model accepts as `fallbacks[i].model` on the Messages API. An empty list means the `fallbacks` parameter is not supported for this model as primary.
+          x-anthropic-beta-required:
+          - server-side-fallback-2026-06-01
+          - server-side-fallback-2026-07-01
+        capabilities:
+          anyOf:
+          - $ref: '#/components/schemas/BetaModelCapabilities'
+          - type: 'null'
+          description: Object mapping capability names to their support details. Keys are always present for all known capabilities.
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: RFC 3339 datetime string representing the time at which the model was released. May be set to an epoch value if the release date is unknown.
+          examples:
+          - '2026-07-24T00:00:00Z'
+        display_name:
+          type: string
+          title: Display Name
+          description: A human-readable name for the model.
+          examples:
+          - Claude Opus 5
+        id:
+          type: string
+          title: Id
+          description: Unique model identifier.
+          examples:
+          - claude-opus-5
+        max_input_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Input Tokens
+          description: Maximum input context window size in tokens for this model.
+        max_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Tokens
+          description: Maximum value for the `max_tokens` parameter when using this model.
+        type:
+          type: string
+          const: model
+          title: Type
+          description: 'Object type.
+
+
+            For Models, this is always `"model"`.'
+          default: model
+      type: object
+      required:
+      - allowed_fallback_models
+      - capabilities
+      - created_at
+      - display_name
+      - id
+      - max_input_tokens
+      - max_tokens
+      - type
+      title: ModelInfo
+    BetaContextManagementCapability:
+      properties:
+        clear_thinking_20251015:
+          anyOf:
+          - $ref: '#/components/schemas/BetaCapabilitySupport'
+          - type: 'null'
+          description: Whether the clear_thinking_20251015 strategy is supported.
+        clear_tool_uses_20250919:
+          anyOf:
+          - $ref: '#/components/schemas/BetaCapabilitySupport'
+          - type: 'null'
+          description: Whether the clear_tool_uses_20250919 strategy is supported.
+        compact_20260112:
+          anyOf:
+          - $ref: '#/components/schemas/BetaCapabilitySupport'
+          - type: 'null'
+          description: Whether the compact_20260112 strategy is supported.
+        supported:
+          type: boolean
+          title: Supported
+          description: Whether this capability is supported by the model.
+      type: object
+      required:
+      - clear_thinking_20251015
+      - clear_tool_uses_20250919
+      - compact_20260112
+      - supported
+      title: ContextManagementCapability
+      description: Context management capability details.
+    BetaAPIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
+          type: string
+        type:
+          const: api_error
+          default: api_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
+    BetaErrorResponse:
+      properties:
+        error:
+          discriminator:
+            mapping:
+              api_error: '#/components/schemas/BetaAPIError'
+              authentication_error: '#/components/schemas/BetaAuthenticationError'
+              billing_error: '#/components/schemas/BetaBillingError'
+              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
+              not_found_error: '#/components/schemas/BetaNotFoundError'
+              overloaded_error: '#/components/schemas/BetaOverloadedError'
+              permission_error: '#/components/schemas/BetaPermissionError'
+              rate_limit_error: '#/components/schemas/BetaRateLimitError'
+              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/BetaInvalidRequestError'
+          - $ref: '#/components/schemas/BetaAuthenticationError'
+          - $ref: '#/components/schemas/BetaBillingError'
+          - $ref: '#/components/schemas/BetaPermissionError'
+          - $ref: '#/components/schemas/BetaNotFoundError'
+          - $ref: '#/components/schemas/BetaRateLimitError'
+          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
+          - $ref: '#/components/schemas/BetaAPIError'
+          - $ref: '#/components/schemas/BetaOverloadedError'
+          title: Error
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Request Id
+        type:
+          const: error
+          default: error
+          title: Type
+          type: string
+      required:
+      - error
+      - request_id
+      - type
+      title: ErrorResponse
+      type: object
+    BetaThinkingTypes:
+      properties:
+        adaptive:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports thinking with type 'adaptive' (auto).
+        enabled:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports thinking with type 'enabled'.
+      type: object
+      required:
+      - adaptive
+      - enabled
+      title: ThinkingTypes
+      description: Supported thinking type configurations.
+    AnthropicBeta:
+      anyOf:
+      - type: string
+      - type: string
+        enum:
+        - message-batches-2024-09-24
+        - prompt-caching-2024-07-31
+        - computer-use-2024-10-22
+        - computer-use-2025-01-24
+        - pdfs-2024-09-25
+        - token-counting-2024-11-01
+        - token-efficient-tools-2025-02-19
+        - output-128k-2025-02-19
+        - files-api-2025-04-14
+        - mcp-client-2025-04-04
+        - mcp-client-2025-11-20
+        - dev-full-thinking-2025-05-14
+        - interleaved-thinking-2025-05-14
+        - code-execution-2025-05-22
+        - extended-cache-ttl-2025-04-11
+        - context-1m-2025-08-07
+        - context-management-2025-06-27
+        - model-context-window-exceeded-2025-08-26
+        - skills-2025-10-02
+        - fast-mode-2026-02-01
+        - output-300k-2026-03-24
+        - user-profiles-2026-03-24
+        - user-profiles-2026-08-18
+        - advisor-tool-2026-03-01
+        - managed-agents-2026-04-01
+        - cache-diagnosis-2026-04-07
+        - dreaming-2026-04-21
+        - thinking-token-count-2026-05-13
+        - server-side-fallback-2026-06-01
+        - server-side-fallback-2026-07-01
+        - fallback-credit-2026-06-01
+        - fallback-credit-2026-07-01
+        - agent-memory-2026-07-22
+        - mid-conversation-tool-changes-2026-07-01
+        - compact-2026-01-12
+        - computer-use-2025-11-24
+        - mcp-tunnels-2026-06-22
+        - structured-outputs-2025-11-13
+        - task-budgets-2026-03-13
+        - thinking-display-updates-2026-08-18
+        - ce-user-management-2026-07-13
+        x-stainless-nominal: false
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    BetaThinkingCapability:
+      properties:
+        supported:
+          type: boolean
+          title: Supported
+          description: Whether this capability is supported by the model.
+        types:
+          $ref: '#/components/schemas/BetaThinkingTypes'
+      type: object
+      required:
+      - supported
+      - types
+      title: ThinkingCapability
+      description: Thinking capability details.
+    BetaModelCapabilities:
+      properties:
+        batch:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports the Batch API.
+        citations:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports citation generation.
+        code_execution:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports code execution tools.
+        context_management:
+          $ref: '#/components/schemas/BetaContextManagementCapability'
+          description: Context management support and available strategies.
+        effort:
+          $ref: '#/components/schemas/BetaEffortCapability'
+          description: Effort (reasoning_effort) support and available levels.
+        image_input:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model accepts image content blocks.
+        pdf_input:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model accepts PDF content blocks.
+        structured_outputs:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports structured output / JSON mode / strict tool schemas.
+        thinking:
+          $ref: '#/components/schemas/BetaThinkingCapability'
+          description: Thinking capability and supported type configurations.
+      type: object
+      required:
+      - batch
+      - citations
+      - code_execution
+      - context_management
+      - effort
+      - image_input
+      - pdf_input
+      - structured_outputs
+      - thinking
+      title: ModelCapabilities
+      description: Model capability information.
