@@ -1,0 +1,104 @@
+generated: '2026-08-27'
+method: searched
+source: https://platform.claude.com/docs/en/managed-agents/webhooks
+docs: https://platform.claude.com/docs/en/managed-agents/webhooks
+api_reference: https://platform.claude.com/docs/en/api/beta/webhooks
+notes: >-
+  Anthropic ships two distinct event surfaces and they are not interchangeable.
+  Server-Sent Events on the Messages API and on Managed Agents session streams
+  carry the real-time token/turn traffic and are modelled in
+  asyncapi/anthropic-asyncapi.yml. Webhooks carry MAJOR STATE CHANGES only, for
+  when you are not holding a connection open. Anthropic publishes no AsyncAPI
+  document for either surface; this is the harvested webhook catalog, not a
+  generated spec.
+delivery:
+  style: http-post
+  registration: Console only — Manage > Webhooks (https://platform.claude.com/settings/workspaces/default/webhooks).
+    There is no public API to register an endpoint.
+  endpoint_requirements: HTTPS on port 443 with a publicly resolvable hostname.
+  payload_shape: >-
+    Events carry the event `type` and `id`, NOT the full object. The consumer must
+    fetch the object with a GET after receiving the event. Anthropic states this is
+    deliberate — it avoids delivering stale data on retries and keeps each delivery
+    small.
+  signature:
+    headers: [webhook-id, webhook-timestamp, webhook-signature]
+    secret_prefix: whsec_
+    secret_bytes: 32
+    secret_shown_once: true
+    env_var: ANTHROPIC_WEBHOOK_SIGNING_KEY
+    sdk_helper: client.beta.webhooks.unwrap() — verifies the signature and parses the
+      event in one step; throws on an invalid signature or a payload older than 5 minutes.
+    max_payload_age_minutes: 5
+  terminal_events: >-
+    *.deleted events have no object left to fetch; the docs say to treat the event
+    itself as final rather than issuing a GET.
+event_groups:
+- group: session
+  scope: Managed Agents sessions
+  events:
+  - {type: session.status_run_started, trigger: Agent execution started; fires at every session status transition to running.}
+  - {type: session.status_idled, trigger: Agent awaiting input — a tool permission approval or a new user message.}
+  - {type: session.budget_reached, trigger: The session reached its budget and paused. Fires at most once per budget value; changing the budget arms it again.}
+  - {type: session.status_rescheduled, trigger: A transient error occurred and the session is retrying automatically.}
+  - {type: session.status_terminated, trigger: The session terminated — unrecoverable error, or it was archived.}
+  - {type: session.thread_created, trigger: New multiagent thread opened, or the session advisor is being consulted.}
+  - {type: session.thread_idled, trigger: An agent in a multiagent interaction is waiting for input.}
+  - {type: session.thread_terminated, trigger: A multiagent thread terminated. Child threads only; the primary thread surfaces only as session.status_terminated.}
+  - {type: session.outcome_evaluation_ended, trigger: Outcome evaluation for a single iteration completed.}
+  - {type: session.updated, trigger: Session properties changed.}
+  - {type: session.deleted, trigger: Session permanently deleted. Terminal — no object to fetch.}
+- group: vault
+  scope: Credential vaults
+  events:
+  - {type: vault.created, trigger: Vault created.}
+  - {type: vault.archived, trigger: Vault archived; a vault_credential.archived is also emitted per credential.}
+  - {type: vault.deleted, trigger: Vault deleted; a vault_credential.deleted is also emitted per credential. Terminal.}
+  - {type: vault_credential.created, trigger: Credential created.}
+  - {type: vault_credential.archived, trigger: Credential archived, directly or via vault archival.}
+  - {type: vault_credential.deleted, trigger: Credential deleted, directly or via vault deletion. Terminal.}
+  - {type: vault_credential.refresh_failed, trigger: An mcp_oauth credential cannot be refreshed (invalid refresh token, or irrecoverable OAuth server error).}
+- group: agent
+  scope: Managed Agents agent resources
+  events:
+  - {type: agent.created, trigger: Agent created.}
+  - {type: agent.updated, trigger: A new version of the agent was published. Updates that do not create a version do not fire.}
+  - {type: agent.archived, trigger: Agent archived.}
+  - {type: agent.deleted, trigger: Agent permanently deleted. Terminal.}
+- group: deployment
+  scope: Scheduled deployments
+  events:
+  - {type: deployment.created, trigger: Scheduled deployment created.}
+  - {type: deployment.updated, trigger: Deployment properties changed.}
+  - {type: deployment.paused, trigger: Paused by request, or automatically when a scheduled run fails unrecoverably. Rate limits do not pause it.}
+  - {type: deployment.unpaused, trigger: Deployment unpaused, resuming its schedule.}
+  - {type: deployment.archived, trigger: Deployment archived, directly or because its agent was archived.}
+  - {type: deployment.deleted, trigger: Deployment permanently deleted. Terminal.}
+- group: deployment_run
+  scope: Scheduled deployment runs
+  events:
+  - {type: deployment_run.started, trigger: A scheduled run started. Manual runs do not emit deployment_run events.}
+  - {type: deployment_run.succeeded, trigger: A scheduled run created its session. Carries the same data.id as the run's started event.}
+  - {type: deployment_run.failed, trigger: A scheduled run did not create a session. Fetch the deployment run for error details.}
+- group: environment
+  scope: Managed Agents environments
+  events:
+  - {type: environment.created, trigger: Environment created.}
+  - {type: environment.updated, trigger: Environment updated with at least one changed field. A no-op update emits nothing.}
+  - {type: environment.archived, trigger: Environment archived. Re-archiving emits nothing.}
+  - {type: environment.deleted, trigger: Environment deleted, including delete of an already-archived environment. Terminal.}
+- group: memory_store
+  scope: Agent memory stores
+  events:
+  - {type: memory_store.created, trigger: Memory store created, by you or by an Anthropic-operated process cloning an existing store.}
+  - {type: memory_store.archived, trigger: Memory store archived. Re-archiving emits nothing.}
+  - {type: memory_store.deleted, trigger: Memory store deleted; cascades to memories and versions without per-memory events. Terminal.}
+event_count: 38
+no_event_emitters:
+- Environment work items (self-hosted sandboxes)
+- Individual memories and memory versions
+asyncapi_published: false
+asyncapi_note: >-
+  Anthropic publishes no AsyncAPI document for the webhook surface. The AsyncAPI
+  in this repo (asyncapi/anthropic-asyncapi.yml) models the Messages SSE stream and
+  was authored by API Evangelist, not by Anthropic.
