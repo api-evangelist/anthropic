@@ -617,6 +617,8 @@ apis:
   humanURL: https://docs.anthropic.com/en/api/messages
   baseURL: https://api.anthropic.com/v1
   tags:
+  - Deployment
+  tags_raw:
   - Deployments
   properties:
   - type: OpenAPI
@@ -919,6 +921,8 @@ apis:
   humanURL: https://docs.anthropic.com/en/api/messages
   baseURL: https://api.anthropic.com/v1
   tags:
+  - Organization
+  tags_raw:
   - Organizations
   properties:
   - type: OpenAPI
@@ -1130,6 +1134,8 @@ apis:
   humanURL: https://docs.anthropic.com/en/api/messages
   baseURL: https://api.anthropic.com/v1
   tags:
+  - Vault
+  tags_raw:
   - Vaults
   properties:
   - type: OpenAPI
@@ -1193,11 +1199,6 @@ tags:
 - Machine-Learning
 - MCP
 - Agents
-- Agent Skills
-- Generative AI
-- Model Context Protocol
-- LLM APIs
-- AI Safety
 tags_raw:
 - AI
 - Artificial Intelligence
