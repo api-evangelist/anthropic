@@ -1239,6 +1239,8 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/anthropic.png
 access: 3rd-Party
 common:
+- type: Website
+  url: https://www.anthropic.com/
 - type: CapabilityMap
   url: capabilities/anthropic-capability-edges.yml
   name: Anthropic Business Capability Map
