@@ -28,11 +28,10 @@ apis:
     type: JSONLD
   - url: graphql/anthropic-graphql.md
     type: GraphQL
-  description: >-
-    Send a structured list of input messages with text and/or image content, and the model will generate
-    the next message in the conversation. The Messages API supports text, images, tool use, extended thinking,
-    streaming, structured outputs, prompt caching, compaction, and the new advisor tool for pairing executor
-    and higher-intelligence advisor models.
+  description: Send a structured list of input messages with text and/or image content, and the model
+    will generate the next message in the conversation. The Messages API supports text, images, tool use,
+    extended thinking, streaming, structured outputs, prompt caching, compaction, and the new advisor
+    tool for pairing executor and higher-intelligence advisor models.
   baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-models-api
   name: Anthropic Models API
@@ -49,10 +48,9 @@ apis:
     type: Documentation
   - url: openapi/anthropic-models-api-openapi.yml
     type: OpenAPI
-  description: >-
-    List and inspect Claude models including Opus 4.7, Sonnet 4.6, and Haiku 4.5. The response includes
-    max_input_tokens, max_tokens, and a capabilities object for every model so clients can discover model
-    properties programmatically.
+  description: List and inspect Claude models including Opus 4.7, Sonnet 4.6, and Haiku 4.5. The response
+    includes max_input_tokens, max_tokens, and a capabilities object for every model so clients can discover
+    model properties programmatically.
   baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-files-api
   name: Anthropic Files API
@@ -69,10 +67,9 @@ apis:
     type: Documentation
   - url: openapi/anthropic-files-api-openapi.yml
     type: OpenAPI
-  description: >-
-    The Files API lets you upload and manage files for reuse across Messages, Batches, code execution,
-    and Managed Agents without re-uploading content. 500 MB request limit; supports PDFs, images, Office
-    documents, and plain text.
+  description: The Files API lets you upload and manage files for reuse across Messages, Batches, code
+    execution, and Managed Agents without re-uploading content. 500 MB request limit; supports PDFs, images,
+    Office documents, and plain text.
   baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-skills-api
   name: Anthropic Skills API
@@ -91,10 +88,9 @@ apis:
     type: Documentation
   - url: openapi/anthropic-skills-api-openapi.yml
     type: OpenAPI
-  description: >-
-    Create and manage custom Agent Skills. Skills are filesystem-based directories of instructions, scripts,
-    and resources that Claude loads on demand via progressive disclosure. Workspace-wide sharing. The
-    Skills API is currently in beta and requires the skills-2025-10-02 beta header.
+  description: Create and manage custom Agent Skills. Skills are filesystem-based directories of instructions,
+    scripts, and resources that Claude loads on demand via progressive disclosure. Workspace-wide sharing.
+    The Skills API is currently in beta and requires the skills-2025-10-02 beta header.
   baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-agents-api
   name: Anthropic Agents API
@@ -582,8 +578,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/environments
 - aid: anthropic:anthropic-deployment-runs-beta-true-api
   name: Anthropic Deployment Runs?beta=true API
-  description: >-
-    The Deployment Runs?beta=true API from Anthropic — 1 operation(s) for deployment runs?beta=true.
+  description: The Deployment Runs?beta=true API from Anthropic — 1 operation(s) for deployment runs?beta=true.
   humanURL: https://docs.anthropic.com/en/api/messages
   baseURL: https://api.anthropic.com/v1
   tags:
@@ -735,8 +730,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/environments
 - aid: anthropic:anthropic-environments-beta-true-api
   name: Anthropic Environments?beta=true API
-  description: >-
-    The Environments?beta=true API from Anthropic — 1 operation(s) for environments?beta=true.
+  description: The Environments?beta=true API from Anthropic — 1 operation(s) for environments?beta=true.
   humanURL: https://docs.anthropic.com/en/api/messages
   baseURL: https://api.anthropic.com/v1
   tags:
@@ -826,8 +820,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/environments
 - aid: anthropic:anthropic-memory-stores-beta-true-api
   name: Anthropic Memory Stores?beta=true API
-  description: >-
-    The Memory Stores?beta=true API from Anthropic — 1 operation(s) for memory stores?beta=true.
+  description: The Memory Stores?beta=true API from Anthropic — 1 operation(s) for memory stores?beta=true.
   humanURL: https://docs.anthropic.com/en/api/messages
   baseURL: https://api.anthropic.com/v1
   tags:
@@ -1099,8 +1092,7 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/environments
 - aid: anthropic:anthropic-user-profiles-beta-true-api
   name: Anthropic User Profiles?beta=true API
-  description: >-
-    The User Profiles?beta=true API from Anthropic — 1 operation(s) for user profiles?beta=true.
+  description: The User Profiles?beta=true API from Anthropic — 1 operation(s) for user profiles?beta=true.
   humanURL: https://docs.anthropic.com/en/api/messages
   baseURL: https://api.anthropic.com/v1
   tags:
@@ -1199,6 +1191,7 @@ tags:
 - Machine-Learning
 - MCP
 - Agents
+- LLM
 tags_raw:
 - AI
 - Artificial Intelligence
@@ -1258,7 +1251,10 @@ common:
   url: well-known/anthropic-security.txt
 - type: X-MCPServerCandidate
   url: mcp/anthropic-mcp.yml
-  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate
+    — a tool list derived from the published API contracts, not an existing server. The scorer already
+    read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type
+    surfaces with a server that does not exist.'
 - type: LLMsTxt
   url: llms/anthropic-llms.txt
 - type: Conformance
@@ -1909,7 +1905,7 @@ common:
 - type: DeveloperPortal
   url: https://platform.claude.com/docs/en/home
 created: '2025-08-14T00:00:00.000Z'
-modified: '2026-08-27'
+modified: '2026-09-16'
 position: Consuming
 description: 'Anthropic is an AI safety company and the creator of the Claude family of large language
   models (Opus, Sonnet, Haiku, and the Fable/Mythos frontier line). The Claude Developer Platform exposes
