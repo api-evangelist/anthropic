@@ -487,7 +487,7 @@ apis:
   - type: Documentation
     url: https://platform.claude.com/docs/en/managed-agents/environments
 - aid: anthropic:anthropic-anthropic-api-api
-  name: Anthropic Anthropic API
+  name: Anthropic API
   description: The Anthropic API API from Anthropic — 0 operation(s) for anthropic api.
   humanURL: https://docs.anthropic.com/en/api/messages
   baseURL: https://api.anthropic.com/v1
