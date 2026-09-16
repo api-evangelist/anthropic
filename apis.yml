@@ -1201,6 +1201,7 @@ tags_raw:
 - Machine Learning
 - MCP
 - Agents
+- LLM
 kind: contract
 deliveryModel:
   model: saas
