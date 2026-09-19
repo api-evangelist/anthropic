@@ -1188,10 +1188,11 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/environments
 name: Anthropic
 tags:
+- LLM
+- Anthropic
 - Artificial Intelligence
 - Claude
 - Foundation Models
-- LLM
 - Machine-Learning
 - MCP
 - Agents
