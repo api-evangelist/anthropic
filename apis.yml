@@ -171,6 +171,8 @@ apis:
   description: Container configuration for agent sessions
   humanURL: https://docs.anthropic.com/en/api/messages
   tags:
+  - Environment
+  tags_raw:
   - Environments
   properties:
   - type: OpenAPI
@@ -437,6 +439,8 @@ apis:
   description: Create and manage workspaces within an organization
   humanURL: https://docs.anthropic.com/en/api/messages
   tags:
+  - Workspace
+  tags_raw:
   - Workspaces
   properties:
   - type: OpenAPI
@@ -1187,13 +1191,13 @@ tags:
 - Artificial Intelligence
 - Claude
 - Foundation Models
-- Large Language Models
+- LLM
 - Machine-Learning
 - MCP
 - Agents
-- LLM
-- Anthropic
 tags_raw:
+- Large Language Models
+- Anthropic
 - AI
 - Artificial Intelligence
 - Claude
