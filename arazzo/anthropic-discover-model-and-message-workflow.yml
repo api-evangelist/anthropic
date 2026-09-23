@@ -50,7 +50,7 @@ workflows:
     description: >-
       List the models available to this account so a caller can confirm the
       desired model is present before using it.
-    operationId: listModels
+    operationId: models_list
     parameters:
     - name: x-api-key
       in: header
@@ -70,7 +70,7 @@ workflows:
     description: >-
       Resolve the requested model id to confirm it exists and is available
       before attempting to generate a message with it.
-    operationId: getModel
+    operationId: models_get
     parameters:
     - name: model_id
       in: path
@@ -90,7 +90,7 @@ workflows:
     description: >-
       Send a single user message to the validated model and capture the
       generated content and token usage.
-    operationId: createMessage
+    operationId: messages_post
     parameters:
     - name: x-api-key
       in: header

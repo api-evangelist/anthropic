@@ -653,9 +653,7 @@ paths:
       - ApiKeyAuth: []
     post:
       summary: Anthropic Update Agent
-      description: 'Update an agent. Pass the current version to optimistically lock the update. A new version is created when fields change.
-
-        '
+      description: Update an agent. Pass the current version to optimistically lock the update. A new version is created when fields change.
       operationId: updateAgent
       tags:
       - Agents
@@ -729,538 +727,192 @@ paths:
       description: Production Server
 components:
   schemas:
-    BetaManagedAgentsMCPToolsetParams:
-      description: Configuration for tools from an MCP server defined in `mcp_servers`.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - mcp_server_name
-      properties:
-        type:
-          type: string
-          enum:
-          - mcp_toolset
-        mcp_server_name:
-          description: Name of the MCP server. Must match a server name from the mcp_servers array. 1-255 characters.
-          type: string
-          minLength: 1
-          maxLength: 255
-        default_config:
-          description: Default configuration for all tools from this server.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsMCPToolsetDefaultConfigParams'
-          - type: 'null'
-        configs:
-          description: Per-tool configuration overrides.
-          type: array
-          items:
-            $ref: '#/components/schemas/BetaManagedAgentsMCPToolConfigParams'
-    BetaManagedAgentsMultiagentRosterEntryParams:
-      description: 'An entry in a multiagent roster: an agent ID string, a versioned agent reference, or `self`.'
-      oneOf:
+    AnthropicBeta:
+      anyOf:
       - type: string
-      - oneOf:
-        - $ref: '#/components/schemas/BetaManagedAgentsAgentParams'
-        - $ref: '#/components/schemas/BetaManagedAgentsMultiagentSelfParams'
-        - $ref: '#/components/schemas/BetaManagedAgentsAdvisorParams'
-        discriminator:
-          propertyName: type
-          mapping:
-            agent: '#/components/schemas/BetaManagedAgentsAgentParams'
-            self: '#/components/schemas/BetaManagedAgentsMultiagentSelfParams'
-            advisor: '#/components/schemas/BetaManagedAgentsAdvisorParams'
-    BetaManagedAgentsAdvisorParams:
-      description: 'Platform advisor roster entry: a model the session''s primary thread may consult mid-turn. At most one per roster; the entry occupies the roster name `anthropic.advisor`.'
+      - type: string
+        enum:
+        - message-batches-2024-09-24
+        - prompt-caching-2024-07-31
+        - computer-use-2024-10-22
+        - computer-use-2025-01-24
+        - pdfs-2024-09-25
+        - token-counting-2024-11-01
+        - token-efficient-tools-2025-02-19
+        - output-128k-2025-02-19
+        - files-api-2025-04-14
+        - mcp-client-2025-04-04
+        - mcp-client-2025-11-20
+        - dev-full-thinking-2025-05-14
+        - interleaved-thinking-2025-05-14
+        - code-execution-2025-05-22
+        - extended-cache-ttl-2025-04-11
+        - context-1m-2025-08-07
+        - context-management-2025-06-27
+        - model-context-window-exceeded-2025-08-26
+        - skills-2025-10-02
+        - fast-mode-2026-02-01
+        - output-300k-2026-03-24
+        - user-profiles-2026-03-24
+        - user-profiles-2026-08-18
+        - advisor-tool-2026-03-01
+        - managed-agents-2026-04-01
+        - cache-diagnosis-2026-04-07
+        - dreaming-2026-04-21
+        - thinking-token-count-2026-05-13
+        - server-side-fallback-2026-06-01
+        - server-side-fallback-2026-07-01
+        - fallback-credit-2026-06-01
+        - fallback-credit-2026-07-01
+        - agent-memory-2026-07-22
+        - mid-conversation-tool-changes-2026-07-01
+        - compact-2026-01-12
+        - computer-use-2025-11-24
+        - mcp-tunnels-2026-06-22
+        - structured-outputs-2025-11-13
+        - task-budgets-2026-03-13
+        - thinking-display-updates-2026-08-18
+        - ce-user-management-2026-07-13
+        x-stainless-nominal: false
+    BetaManagedAgentsAnthropicSkill:
+      description: A resolved Anthropic-managed skill.
       type: object
       additionalProperties: false
       required:
       - type
-      - model
-      properties:
-        type:
-          type: string
-          enum:
-          - advisor
-          examples:
-          - advisor
-        model:
-          description: A Claude model id. The model must be permitted as an advisor for this agent's model — see the sessions/threads/advisor spec.
-          type: string
-          minLength: 1
-          maxLength: 256
-          examples:
-          - claude-fable-5
-      example:
-        type: advisor
-        model: claude-fable-5
-    BetaManagedAgentsMCPToolConfig:
-      description: Resolved configuration for a specific MCP tool.
-      type: object
-      additionalProperties: false
-      required:
-      - name
-      - enabled
-      - permission_policy
-      properties:
-        name:
-          type: string
-        enabled:
-          type: boolean
-        permission_policy:
-          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-    BetaManagedAgentsAgentReference:
-      description: A resolved agent reference with a concrete version.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - id
+      - skill_id
       - version
       properties:
         type:
           type: string
           enum:
-          - agent
+          - anthropic
           examples:
-          - agent
-        id:
+          - anthropic
+        skill_id:
           type: string
           examples:
-          - agent_011CZkYqphY8vELVzwCUpqiQ
+          - xlsx
         version:
+          type: string
+          examples:
+          - '1'
+      example:
+        type: anthropic
+        skill_id: xlsx
+        version: '1'
+    BetaManagedAgentsEffortLow:
+      description: Low effort. Favors latency over reasoning depth.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - low
+    BetaManagedAgentsEffort:
+      description: How hard Claude works on each turn. Sets `output_config.effort` on every Messages call the session makes.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          low: '#/components/schemas/BetaManagedAgentsEffortLow'
+          medium: '#/components/schemas/BetaManagedAgentsEffortMedium'
+          high: '#/components/schemas/BetaManagedAgentsEffortHigh'
+          xhigh: '#/components/schemas/BetaManagedAgentsEffortXhigh'
+          max: '#/components/schemas/BetaManagedAgentsEffortMax'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsEffortLow'
+      - $ref: '#/components/schemas/BetaManagedAgentsEffortMedium'
+      - $ref: '#/components/schemas/BetaManagedAgentsEffortHigh'
+      - $ref: '#/components/schemas/BetaManagedAgentsEffortXhigh'
+      - $ref: '#/components/schemas/BetaManagedAgentsEffortMax'
+    BetaManagedAgentsAgentParams:
+      description: Specification for an Agent. Provide a specific `version` or use the short-form `agent="agent_id"` for the most recent version
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - id
+      properties:
+        type:
+          type: string
+          enum:
+          - agent
+        id:
+          description: The `agent` ID.
+          type: string
+          minLength: 1
+          maxLength: 128
+        version:
+          description: The specific `agent` version to use. Omit to use the latest version. Must be at least 1 if specified.
           type: integer
           format: int32
-          examples:
-          - 1
-      example:
-        type: agent
-        id: agent_011CZkYqphY8vELVzwCUpqiQ
-        version: 1
-    BetaManagedAgentsMCPToolsetDefaultConfig:
-      description: Resolved default configuration for all tools from an MCP server.
-      type: object
-      additionalProperties: false
-      required:
-      - enabled
-      - permission_policy
-      properties:
-        enabled:
-          type: boolean
-        permission_policy:
-          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-    BetaManagedAgentsEffortHigh:
-      description: High effort. Favors reasoning depth.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - high
-    BetaManagedAgentsCustomToolParams:
-      description: A custom tool that is executed by the API client rather than the agent. When the agent calls this tool, an `agent.custom_tool_use` event is emitted and the session goes idle, waiting for the client to provide the result via a `user.custom_tool_result` event.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - name
-      - description
-      - input_schema
-      properties:
-        type:
-          type: string
-          enum:
-          - custom
-        name:
-          description: Unique name for the tool. 1-128 characters; letters, digits, underscores, and hyphens.
-          type: string
-          minLength: 1
-          maxLength: 128
-        description:
-          description: Description of what the tool does, shown to the agent to help it decide when to use the tool.
-          type: string
-          minLength: 1
-        input_schema:
-          description: JSON Schema defining the expected input parameters for the tool.
-          allOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsCustomToolInputSchema'
-    BetaManagedAgentsMultiagentCoordinatorParams:
-      description: 'A coordinator topology: the session''s primary thread orchestrates work by spawning session threads, each running an agent drawn from the `agents` roster.'
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - agents
-      properties:
-        type:
-          type: string
-          enum:
-          - coordinator
-          examples:
-          - coordinator
-        agents:
-          description: Agents the coordinator may spawn as session threads. 1–20 entries. Each entry is an agent ID string, a versioned `{"type":"agent","id","version"}` reference, or `{"type":"self"}` to allow recursive self-invocation. Entries must reference distinct agents (after resolving `self` and string forms); at most one `self`. Referenced agents must exist, must not be archived, and must not themselves have `multiagent` set (depth limit 1).
-          type: array
-          items:
-            $ref: '#/components/schemas/BetaManagedAgentsMultiagentRosterEntryParams'
-          examples:
-          - - agent_011CZkYqphY8vELVzwCUpqiQ
-            - type: self
-      example:
-        type: coordinator
-        agents:
-        - agent_011CZkYqphY8vELVzwCUpqiQ
-        - type: self
-    BetaManagedAgentsAgentToolset20260401Params:
-      description: Configuration for built-in agent tools. Use this to enable or disable groups of tools available to the agent.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - agent_toolset_20260401
-        default_config:
-          description: Default configuration applied to all tools in this set.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsAgentToolsetDefaultConfigParams'
-          - type: 'null'
-        configs:
-          description: Per-tool configuration overrides.
-          type: array
-          items:
-            $ref: '#/components/schemas/BetaManagedAgentsAgentToolConfigUnionParams'
-    BetaManagedAgentsWriteToolConfig:
-      description: Configuration for the write tool.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - name
-      - enabled
-      - permission_policy
-      properties:
-        type:
-          type: string
-          const: write
-        name:
-          type: string
-          const: write
-        enabled:
-          type: boolean
-        permission_policy:
-          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-    BetaManagedAgentsModelConfig:
-      description: Model identifier and configuration.
-      type: object
-      additionalProperties: false
-      required:
-      - id
-      properties:
-        id:
-          $ref: '#/components/schemas/BetaManagedAgentsModel'
-        speed:
-          description: Inference speed mode. `fast` provides significantly faster output token generation at premium pricing. Defaults to `standard`. Not all models support `fast`; invalid combinations are rejected at create time.
-          allOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsSpeed'
-          x-anthropic-beta-required:
-          - managed-agents-2026-04-01
-          - fast-mode-2026-02-01
-          examples:
-          - standard
-        effort:
-          description: How hard Claude works on each inference call. One of `low`, `medium`, `high`, `xhigh`, `max`. Always present; resolved to the per-model default at save time when not supplied.
-          allOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsEffort'
-          x-anthropic-beta-required:
-          - managed-agents-2026-04-01
-        inference_geo:
-          description: Geographic region for model inference. When unset, requests fall through to the workspace's default_inference_geo.
-          type: string
-          x-anthropic-beta-required:
-          - managed-agents-2026-04-01
-      example:
-        id: claude-opus-5
-        speed: standard
-    BetaManagedAgentsMultiagentSelfParams:
-      description: Sentinel roster entry meaning "the agent that owns this configuration". Resolved server-side to a concrete agent reference.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - self
-          examples:
-          - self
-      example:
-        type: self
-    BetaManagedAgentsMultiagentCoordinator:
-      description: Resolved coordinator topology with a concrete agent roster.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - agents
-      properties:
-        type:
-          type: string
-          enum:
-          - coordinator
-        agents:
-          description: Agents the coordinator may spawn as session threads, each resolved to a specific version.
-          type: array
-          items:
-            $ref: '#/components/schemas/BetaManagedAgentsMultiagentRosterEntry'
-    BetaManagedAgentsPermissionPolicy:
-      description: Permission policy for tool execution.
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          always_allow: '#/components/schemas/BetaManagedAgentsAlwaysAllowPolicy'
-          always_ask: '#/components/schemas/BetaManagedAgentsAlwaysAskPolicy'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsAlwaysAllowPolicy'
-      - $ref: '#/components/schemas/BetaManagedAgentsAlwaysAskPolicy'
-    BetaManagedAgentsCustomSkillParams:
-      description: A user-created custom skill.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - skill_id
-      properties:
-        type:
-          type: string
-          enum:
-          - custom
-          examples:
-          - custom
-        skill_id:
-          description: Tagged ID of the custom skill (e.g., "skill_01XJ5...").
-          type: string
-          minLength: 1
-          maxLength: 64
-          examples:
-          - skill_011CZkZFNu9hAbo3jZPRgTlx
-        version:
-          description: Version to pin. Defaults to latest if omitted.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 64
-          - type: 'null'
-          examples:
-          - '2'
-      example:
-        type: custom
-        skill_id: skill_011CZkZFNu9hAbo3jZPRgTlx
-        version: '2'
-    BetaManagedAgentsModelConfigParams:
-      description: An object that defines additional configuration control over model use
-      type: object
-      additionalProperties: false
-      required:
-      - id
-      properties:
-        id:
-          $ref: '#/components/schemas/BetaManagedAgentsModel'
-        speed:
-          description: Inference speed mode. Defaults to `standard`.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsSpeed'
-          - type: 'null'
-        effort:
-          description: 'How hard Claude works on each inference call. Accepts a bare level string (`"high"`) or `{"type": "high"}`. On create, omitting it resolves the per-model default; on update, omitting it leaves the stored value unchanged.'
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsEffortParams'
-          - type: 'null'
-          x-anthropic-beta-required:
-          - managed-agents-2026-04-01
-        inference_geo:
-          description: Geographic region for model inference. When unset, requests fall through to the workspace's default_inference_geo. On update, `model` is whole-object replacement — omitting inference_geo clears it.
-          anyOf:
-          - type: string
-          - type: 'null'
-          x-anthropic-beta-required:
-          - managed-agents-2026-04-01
-      example:
-        id: claude-opus-5
-    BetaManagedAgentsAgentToolConfigUnion:
-      description: Configuration for a specific agent tool.
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          bash: '#/components/schemas/BetaManagedAgentsBashToolConfig'
-          edit: '#/components/schemas/BetaManagedAgentsEditToolConfig'
-          read: '#/components/schemas/BetaManagedAgentsReadToolConfig'
-          write: '#/components/schemas/BetaManagedAgentsWriteToolConfig'
-          glob: '#/components/schemas/BetaManagedAgentsGlobToolConfig'
-          grep: '#/components/schemas/BetaManagedAgentsGrepToolConfig'
-          web_fetch: '#/components/schemas/BetaManagedAgentsWebFetchToolConfig'
-          web_search: '#/components/schemas/BetaManagedAgentsWebSearchToolConfig'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsBashToolConfig'
-      - $ref: '#/components/schemas/BetaManagedAgentsEditToolConfig'
-      - $ref: '#/components/schemas/BetaManagedAgentsReadToolConfig'
-      - $ref: '#/components/schemas/BetaManagedAgentsWriteToolConfig'
-      - $ref: '#/components/schemas/BetaManagedAgentsGlobToolConfig'
-      - $ref: '#/components/schemas/BetaManagedAgentsGrepToolConfig'
-      - $ref: '#/components/schemas/BetaManagedAgentsWebFetchToolConfig'
-      - $ref: '#/components/schemas/BetaManagedAgentsWebSearchToolConfig'
-    BetaManagedAgentsCustomSkill:
-      description: A resolved user-created custom skill.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - skill_id
-      - version
-      properties:
-        type:
-          type: string
-          enum:
-          - custom
-          examples:
-          - custom
-        skill_id:
-          type: string
-          examples:
-          - skill_011CZkZFNu9hAbo3jZPRgTlx
-        version:
-          type: string
-          examples:
-          - '2'
-      example:
-        type: custom
-        skill_id: skill_011CZkZFNu9hAbo3jZPRgTlx
-        version: '2'
-    BetaManagedAgentsMultiagentParams:
-      description: Multiagent orchestration configuration. Currently supports the `coordinator` topology.
-      discriminator:
-        propertyName: type
-        mapping:
-          coordinator: '#/components/schemas/BetaManagedAgentsMultiagentCoordinatorParams'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsMultiagentCoordinatorParams'
-    BetaManagedAgentsMCPToolConfigParams:
-      description: Configuration override for a specific MCP tool.
-      type: object
-      additionalProperties: false
-      required:
-      - name
-      properties:
-        name:
-          description: Name of the MCP tool to configure. 1-128 characters.
-          type: string
-          minLength: 1
-          maxLength: 128
-        enabled:
-          description: Whether this tool is enabled. Overrides the `default_config` setting.
-          anyOf:
-          - type: boolean
-          - type: 'null'
-        permission_policy:
-          description: Permission policy for this tool. Overrides the `default_config` setting.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-          - type: 'null'
-    BetaManagedAgentsGlobToolConfig:
-      description: Configuration for the glob tool.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - name
-      - enabled
-      - permission_policy
-      properties:
-        type:
-          type: string
-          const: glob
-        name:
-          type: string
-          const: glob
-        enabled:
-          type: boolean
-        permission_policy:
-          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-    BetaManagedAgentsReadToolConfigParams:
-      description: Configuration override for the read tool.
-      type: object
-      additionalProperties: false
-      required:
-      - name
-      properties:
-        type:
-          type: string
-          const: read
-        name:
-          description: Must be "read".
-          type: string
-          const: read
-        enabled:
-          description: Whether this tool is enabled and available to Claude. Overrides the default_config setting.
-          anyOf:
-          - type: boolean
-          - type: 'null'
-        permission_policy:
-          description: Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-          - type: 'null'
-    BetaGatewayTimeoutError:
+    BetaPermissionError:
       properties:
         message:
-          default: Request timeout
+          default: Permission denied
           title: Message
           type: string
         type:
-          const: timeout_error
-          default: timeout_error
+          const: permission_error
+          default: permission_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: GatewayTimeoutError
+      title: PermissionError
       type: object
-    BetaManagedAgentsMultiagentRosterEntry:
-      description: A resolved multiagent roster entry.
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    BetaManagedAgentsAgentToolParams:
+      description: Union type for tool configurations in the tools array.
+      type: object
       discriminator:
         propertyName: type
         mapping:
-          agent: '#/components/schemas/BetaManagedAgentsAgentReference'
-          advisor: '#/components/schemas/BetaManagedAgentsAdvisor'
+          agent_toolset_20260401: '#/components/schemas/BetaManagedAgentsAgentToolset20260401Params'
+          mcp_toolset: '#/components/schemas/BetaManagedAgentsMCPToolsetParams'
+          custom: '#/components/schemas/BetaManagedAgentsCustomToolParams'
       oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsAgentReference'
-      - $ref: '#/components/schemas/BetaManagedAgentsAdvisor'
-    BetaManagedAgentsAgentToolsetDefaultConfigParams:
-      description: Default configuration for all tools in a toolset.
-      type: object
-      additionalProperties: false
+      - $ref: '#/components/schemas/BetaManagedAgentsAgentToolset20260401Params'
+      - $ref: '#/components/schemas/BetaManagedAgentsMCPToolsetParams'
+      - $ref: '#/components/schemas/BetaManagedAgentsCustomToolParams'
+    BetaNotFoundError:
       properties:
-        enabled:
-          description: Whether tools are enabled and available to Claude by default. Defaults to true if not specified.
-          anyOf:
-          - type: boolean
-          - type: 'null'
-        permission_policy:
-          description: Default permission policy for tools. Controls whether tool calls are auto-approved or require confirmation.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-          - type: 'null'
-    BetaManagedAgentsGrepToolConfig:
-      description: Configuration for the grep tool.
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    BetaManagedAgentsBashToolConfig:
+      description: Configuration for the bash tool.
       type: object
       additionalProperties: false
       required:
@@ -1271,61 +923,47 @@ components:
       properties:
         type:
           type: string
-          const: grep
+          const: bash
         name:
           type: string
-          const: grep
+          const: bash
         enabled:
           type: boolean
         permission_policy:
           $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-    BetaManagedAgentsModel:
-      title: BetaManagedAgentsModel
-      description: 'The model that will power your agent.
-
-
-        See [models](https://docs.anthropic.com/en/docs/models-overview) for additional details and options.'
-      anyOf:
-      - type: string
-      - const: claude-sonnet-5
-        description: High-performance model for coding and agents
-        x-stainless-nominal: false
-      - const: claude-fable-5
-        description: Next generation of intelligence for the hardest knowledge work and coding problems
-        x-stainless-nominal: false
-      - const: claude-opus-5
-        description: Powerful intelligence for long-running agents and coding
-        x-stainless-nominal: false
-      - const: claude-opus-4-8
-        description: Powerful intelligence for long-running agents and coding
-        x-stainless-nominal: false
-      - const: claude-opus-4-7
-        description: Powerful intelligence for long-running agents and coding
-        x-stainless-nominal: false
-      - const: claude-opus-4-6
-        description: Powerful intelligence for long-running agents and coding
-        x-stainless-nominal: false
-      - const: claude-sonnet-4-6
-        description: Best combination of speed and intelligence
-        x-stainless-nominal: false
-      - const: claude-haiku-4-5
-        description: Fastest model with near-frontier intelligence
-        x-stainless-nominal: false
-      - const: claude-haiku-4-5-20251001
-        description: Fastest model with near-frontier intelligence
-        x-stainless-nominal: false
-      - const: claude-opus-4-5
-        description: Powerful intelligence for long-running agents and coding
-        x-stainless-nominal: false
-      - const: claude-opus-4-5-20251101
-        description: Powerful intelligence for long-running agents and coding
-        x-stainless-nominal: false
-      - const: claude-sonnet-4-5
-        description: High-performance model for agents and coding
-        x-stainless-nominal: false
-      - const: claude-sonnet-4-5-20250929
-        description: High-performance model for agents and coding
-        x-stainless-nominal: false
+    BetaManagedAgentsWebFetchToolConfig:
+      description: Configuration for the web_fetch tool.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - name
+      - enabled
+      - permission_policy
+      properties:
+        type:
+          type: string
+          const: web_fetch
+        name:
+          type: string
+          const: web_fetch
+        enabled:
+          type: boolean
+        permission_policy:
+          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+        allowed_domains:
+          type: array
+          items:
+            type: string
+        blocked_domains:
+          type: array
+          items:
+            type: string
+        max_content_tokens:
+          anyOf:
+          - type: integer
+            format: int32
+          - type: 'null'
     BetaManagedAgentsWebFetchToolConfigParams:
       description: Configuration override for the web_fetch tool.
       type: object
@@ -1366,189 +1004,242 @@ components:
           - type: integer
             format: int32
           - type: 'null'
-    BetaManagedAgentsAnthropicSkill:
-      description: A resolved Anthropic-managed skill.
+    BetaManagedAgentsWriteToolConfig:
+      description: Configuration for the write tool.
       type: object
       additionalProperties: false
       required:
       - type
-      - skill_id
-      - version
+      - name
+      - enabled
+      - permission_policy
       properties:
         type:
           type: string
-          enum:
-          - anthropic
-          examples:
-          - anthropic
-        skill_id:
+          const: write
+        name:
           type: string
-          examples:
-          - xlsx
+          const: write
+        enabled:
+          type: boolean
+        permission_policy:
+          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+    BetaManagedAgentsModelParams:
+      oneOf:
+      - title: BetaManagedAgentsModel
+        allOf:
+        - $ref: '#/components/schemas/BetaManagedAgentsModel'
+        x-stainless-skip:
+        - go
+        - cli
+      - $ref: '#/components/schemas/BetaManagedAgentsModelConfigParams'
+    BetaManagedAgentsUpdateAgentParams:
+      description: Request parameters for updating an `agent`. Omit a field to preserve its current value.
+      type: object
+      additionalProperties: false
+      properties:
         version:
-          type: string
+          description: The agent's current version, used to prevent concurrent overwrites. Obtain this value from a create or retrieve response. Must be at least 1 if specified. When supplied, the request fails if it does not match the server's current version; omit to apply the update unconditionally.
+          type: integer
+          format: int32
           examples:
-          - '1'
-      example:
-        type: anthropic
-        skill_id: xlsx
-        version: '1'
-    BetaManagedAgentsCustomToolInputSchema:
-      additionalProperties: true
-      description: JSON Schema for custom tool input parameters.
-      properties:
-        properties:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Properties
-          x-stainless-skip:
-          - terraform
-        required:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Required
-        type:
-          const: object
-          title: Type
+          - 1
+        name:
+          description: Human-readable name. Must be non-empty. Omit to preserve. Cannot be cleared.
           type: string
-      required:
-      - type
-      type: object
-    BetaManagedAgentsAgentToolset20260401:
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - default_config
-      - configs
-      properties:
-        type:
-          type: string
-          enum:
-          - agent_toolset_20260401
-        default_config:
-          $ref: '#/components/schemas/BetaManagedAgentsAgentToolsetDefaultConfig'
-        configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/BetaManagedAgentsAgentToolConfigUnion'
-    BetaManagedAgentsAnthropicSkillParams:
-      description: An Anthropic-managed skill.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - skill_id
-      properties:
-        type:
-          type: string
-          enum:
-          - anthropic
-          examples:
-          - anthropic
-        skill_id:
-          description: Identifier of the Anthropic skill (e.g., "xlsx").
-          type: string
-          minLength: 1
-          maxLength: 64
-          examples:
-          - xlsx
-        version:
-          description: Version to pin. Defaults to latest if omitted.
+          maxLength: 256
+        description:
+          description: Description. Omit to preserve; send empty string or null to clear.
           anyOf:
           - type: string
-            minLength: 1
-            maxLength: 64
+            maxLength: 2048
+          - type: 'null'
+        model:
+          description: Model identifier. Accepts the [model string](https://platform.claude.com/docs/en/about-claude/models/overview#latest-models-comparison), e.g. `claude-opus-5`, or a `model_config` object for additional configuration control. Omit to preserve. Cannot be cleared.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsModelParams'
+        system:
+          description: System prompt. Omit to preserve; send empty string or null to clear.
+          anyOf:
+          - type: string
+            maxLength: 100000
           - type: 'null'
           examples:
-          - '1'
+          - You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.
+        tools:
+          description: Tool configurations available to the agent. Full replacement. Omit to preserve; send empty array or null to clear. Maximum of 128 tools across all toolsets allowed.
+          anyOf:
+          - type: array
+            items:
+              $ref: '#/components/schemas/BetaManagedAgentsAgentToolParams'
+          - type: 'null'
+        mcp_servers:
+          description: MCP servers. Full replacement. Omit to preserve; send empty array or `null` to clear. Names must be unique. Maximum 20. Every server must be referenced by an `mcp_toolset` in the agent's resulting `tools`; unreferenced servers are rejected. See the [MCP connector guide](https://platform.claude.com/docs/en/managed-agents/mcp-connector).
+          anyOf:
+          - type: array
+            items:
+              $ref: '#/components/schemas/BetaManagedAgentsMCPServerParams'
+          - type: 'null'
+        skills:
+          description: Skills. Full replacement. Omit to preserve; send empty array or null to clear.
+          anyOf:
+          - type: array
+            items:
+              $ref: '#/components/schemas/BetaManagedAgentsSkillParams'
+          - type: 'null'
+        metadata:
+          description: Metadata patch. Set a key to a string to upsert it, or to null to delete it. Omit the field to preserve. The stored bag is limited to 16 keys (up to 64 chars each) with values up to 512 chars.
+          anyOf:
+          - type: object
+            additionalProperties:
+              anyOf:
+              - type: string
+              - type: 'null'
+          - type: 'null'
+        multiagent:
+          description: Multiagent orchestration configuration. Full replacement. Omit to preserve; send null to clear.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsMultiagentParams'
+          - type: 'null'
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
       example:
-        type: anthropic
-        skill_id: xlsx
-        version: '1'
-    BetaManagedAgentsEffortXhigh:
-      description: Extra-high effort. Not all models accept this level.
+        version: 1
+        system: You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.
+    BetaManagedAgentsSkill:
+      description: Resolved skill as returned in API responses.
+      discriminator:
+        propertyName: type
+        mapping:
+          anthropic: '#/components/schemas/BetaManagedAgentsAnthropicSkill'
+          custom: '#/components/schemas/BetaManagedAgentsCustomSkill'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsAnthropicSkill'
+      - $ref: '#/components/schemas/BetaManagedAgentsCustomSkill'
+    BetaManagedAgentsMultiagent:
+      description: Resolved multiagent orchestration configuration as returned in API responses.
+      discriminator:
+        propertyName: type
+        mapping:
+          coordinator: '#/components/schemas/BetaManagedAgentsMultiagentCoordinator'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsMultiagentCoordinator'
+    BetaManagedAgentsMCPServerParams:
+      description: Union type for MCP server connection definitions.
       type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - xhigh
-    BetaManagedAgentsGrepToolConfigParams:
-      description: Configuration override for the grep tool.
+      discriminator:
+        propertyName: type
+        mapping:
+          url: '#/components/schemas/BetaManagedAgentsURLMCPServerParams'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsURLMCPServerParams'
+    BetaManagedAgentsMCPToolConfigParams:
+      description: Configuration override for a specific MCP tool.
       type: object
       additionalProperties: false
       required:
       - name
       properties:
-        type:
-          type: string
-          const: grep
         name:
-          description: Must be "grep".
+          description: Name of the MCP tool to configure. 1-128 characters.
           type: string
-          const: grep
+          minLength: 1
+          maxLength: 128
         enabled:
-          description: Whether this tool is enabled and available to Claude. Overrides the default_config setting.
+          description: Whether this tool is enabled. Overrides the `default_config` setting.
           anyOf:
           - type: boolean
           - type: 'null'
         permission_policy:
-          description: Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.
+          description: Permission policy for this tool. Overrides the `default_config` setting.
           anyOf:
           - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
           - type: 'null'
-    BetaManagedAgentsListAgentVersions:
-      description: Paginated list of agent versions.
+    BetaManagedAgentsAgentToolsetDefaultConfig:
+      description: Resolved default configuration for agent tools.
       type: object
       additionalProperties: false
       required:
-      - data
+      - enabled
+      - permission_policy
       properties:
-        data:
-          description: Agent versions.
-          x-stainless-pagination-property:
-            purpose: items
-          type: array
-          items:
-            $ref: '#/components/schemas/BetaManagedAgentsAgent'
-        next_page:
-          description: Opaque cursor for the next page. Null when no more results.
-          x-stainless-pagination-property:
-            purpose: next_cursor_field
-          anyOf:
-          - type: string
-          - type: 'null'
-    BetaManagedAgentsAgentToolParams:
-      description: Union type for tool configurations in the tools array.
+        enabled:
+          type: boolean
+        permission_policy:
+          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+    BetaManagedAgentsMCPToolsetDefaultConfig:
+      description: Resolved default configuration for all tools from an MCP server.
       type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          agent_toolset_20260401: '#/components/schemas/BetaManagedAgentsAgentToolset20260401Params'
-          mcp_toolset: '#/components/schemas/BetaManagedAgentsMCPToolsetParams'
-          custom: '#/components/schemas/BetaManagedAgentsCustomToolParams'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsAgentToolset20260401Params'
-      - $ref: '#/components/schemas/BetaManagedAgentsMCPToolsetParams'
-      - $ref: '#/components/schemas/BetaManagedAgentsCustomToolParams'
-    BetaManagedAgentsMCPServer:
-      description: Union type for MCP server connection definitions returned in API responses.
+      additionalProperties: false
+      required:
+      - enabled
+      - permission_policy
+      properties:
+        enabled:
+          type: boolean
+        permission_policy:
+          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+    BetaManagedAgentsGrepToolConfig:
+      description: Configuration for the grep tool.
       type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          url: '#/components/schemas/BetaManagedAgentsMCPServerURLDefinition'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsMCPServerURLDefinition'
+      additionalProperties: false
+      required:
+      - type
+      - name
+      - enabled
+      - permission_policy
+      properties:
+        type:
+          type: string
+          const: grep
+        name:
+          type: string
+          const: grep
+        enabled:
+          type: boolean
+        permission_policy:
+          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+    BetaManagedAgentsAlwaysAskPolicy:
+      description: Tool calls require user confirmation before execution.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - always_ask
+    BetaManagedAgentsAdvisorParams:
+      description: 'Platform advisor roster entry: a model the session''s primary thread may consult mid-turn. At most one per roster; the entry occupies the roster name `anthropic.advisor`.'
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - model
+      properties:
+        type:
+          type: string
+          enum:
+          - advisor
+          examples:
+          - advisor
+        model:
+          description: A Claude model id. The model must be permitted as an advisor for this agent's model — see the sessions/threads/advisor spec.
+          type: string
+          minLength: 1
+          maxLength: 256
+          examples:
+          - claude-fable-5
+      example:
+        type: advisor
+        model: claude-fable-5
+    BetaManagedAgentsSpeed:
+      type: string
+      description: Inference speed mode. `fast` provides significantly faster output token generation at premium pricing. Not all models support `fast`; invalid combinations are rejected at create time.
+      enum:
+      - standard
+      - fast
     BetaManagedAgentsAgentToolConfigUnionParams:
       description: Configuration override for a specific tool within a toolset.
       type: object
@@ -1572,300 +1263,49 @@ components:
       - $ref: '#/components/schemas/BetaManagedAgentsGrepToolConfigParams'
       - $ref: '#/components/schemas/BetaManagedAgentsWebFetchToolConfigParams'
       - $ref: '#/components/schemas/BetaManagedAgentsWebSearchToolConfigParams'
-    BetaManagedAgentsAgentParams:
-      description: Specification for an Agent. Provide a specific `version` or use the short-form `agent="agent_id"` for the most recent version
+    BetaManagedAgentsEffortMedium:
+      description: Medium effort. Balances latency and reasoning depth.
       type: object
       additionalProperties: false
       required:
       - type
-      - id
       properties:
         type:
           type: string
           enum:
-          - agent
-        id:
-          description: The `agent` ID.
-          type: string
-          minLength: 1
-          maxLength: 128
-        version:
-          description: The specific `agent` version to use. Omit to use the latest version. Must be at least 1 if specified.
-          type: integer
-          format: int32
-    BetaManagedAgentsBashToolConfigParams:
-      description: Configuration override for the bash tool.
+          - medium
+    BetaManagedAgentsAgentToolset20260401Params:
+      description: Configuration for built-in agent tools. Use this to enable or disable groups of tools available to the agent.
       type: object
       additionalProperties: false
       required:
-      - name
+      - type
       properties:
         type:
           type: string
-          const: bash
-        name:
-          description: Must be "bash".
-          type: string
-          const: bash
-        enabled:
-          description: Whether this tool is enabled and available to Claude. Overrides the default_config setting.
+          enum:
+          - agent_toolset_20260401
+        default_config:
+          description: Default configuration applied to all tools in this set.
           anyOf:
-          - type: boolean
+          - $ref: '#/components/schemas/BetaManagedAgentsAgentToolsetDefaultConfigParams'
           - type: 'null'
-        permission_policy:
-          description: Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-          - type: 'null'
-    BetaManagedAgentsMCPServerParams:
-      description: Union type for MCP server connection definitions.
+        configs:
+          description: Per-tool configuration overrides.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsAgentToolConfigUnionParams'
+    BetaManagedAgentsPermissionPolicy:
+      description: Permission policy for tool execution.
       type: object
       discriminator:
         propertyName: type
         mapping:
-          url: '#/components/schemas/BetaManagedAgentsURLMCPServerParams'
+          always_allow: '#/components/schemas/BetaManagedAgentsAlwaysAllowPolicy'
+          always_ask: '#/components/schemas/BetaManagedAgentsAlwaysAskPolicy'
       oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsURLMCPServerParams'
-    BetaAPIError:
-      properties:
-        message:
-          default: Internal server error
-          title: Message
-          type: string
-        type:
-          const: api_error
-          default: api_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: APIError
-      type: object
-    BetaManagedAgentsWebSearchToolConfigParams:
-      description: Configuration override for the web_search tool.
-      type: object
-      additionalProperties: false
-      required:
-      - name
-      properties:
-        type:
-          type: string
-          const: web_search
-        name:
-          description: Must be "web_search".
-          type: string
-          const: web_search
-        enabled:
-          description: Whether this tool is enabled and available to Claude. Overrides the default_config setting.
-          anyOf:
-          - type: boolean
-          - type: 'null'
-        permission_policy:
-          description: Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-          - type: 'null'
-        allowed_domains:
-          description: Only return search results whose host is one of these domains or a subdomain of one. Each entry is a plain hostname like "docs.example.com" (no scheme or port; an optional path suffix is accepted). At most 64 entries; an empty list is rejected (omit the field instead). Cannot be combined with blocked_domains.
-          type: array
-          items:
-            type: string
-        blocked_domains:
-          description: Never return search results whose host is one of these domains or a subdomain of one. Each entry is a plain hostname like "ads.example.com" (no scheme or port; an optional path suffix is accepted). At most 64 entries; an empty list is rejected (omit the field instead). Cannot be combined with allowed_domains.
-          type: array
-          items:
-            type: string
-        user_location:
-          description: Approximate user location for search result localization.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsUserLocation'
-          - type: 'null'
-    BetaManagedAgentsEffortLevel:
-      type: string
-      description: How hard Claude works on each turn. Higher levels favor reasoning depth over latency. Not all models accept every level; invalid combinations are rejected at create time.
-      enum:
-      - low
-      - medium
-      - high
-      - xhigh
-      - max
-    BetaManagedAgentsWriteToolConfigParams:
-      description: Configuration override for the write tool.
-      type: object
-      additionalProperties: false
-      required:
-      - name
-      properties:
-        type:
-          type: string
-          const: write
-        name:
-          description: Must be "write".
-          type: string
-          const: write
-        enabled:
-          description: Whether this tool is enabled and available to Claude. Overrides the default_config setting.
-          anyOf:
-          - type: boolean
-          - type: 'null'
-        permission_policy:
-          description: Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-          - type: 'null'
-    BetaRateLimitError:
-      properties:
-        message:
-          default: Rate limited
-          title: Message
-          type: string
-        type:
-          const: rate_limit_error
-          default: rate_limit_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: RateLimitError
-      type: object
-    BetaManagedAgentsMCPServerURLDefinition:
-      description: URL-based MCP server connection as returned in API responses.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - name
-      - url
-      properties:
-        type:
-          type: string
-          enum:
-          - url
-          examples:
-          - url
-        name:
-          type: string
-          examples:
-          - example-mcp
-        url:
-          type: string
-          examples:
-          - https://example-server.modelcontextprotocol.io/sse
-      example:
-        type: url
-        name: example-mcp
-        url: https://example-server.modelcontextprotocol.io/sse
-    BetaManagedAgentsUserLocation:
-      description: Approximate user location for search result localization.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          description: Location precision. Only "approximate" is supported.
-          type: string
-          const: approximate
-        city:
-          description: City name.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 255
-          - type: 'null'
-        region:
-          description: Region or state name.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 255
-          - type: 'null'
-        country:
-          description: Two-letter ISO 3166-1 country code, uppercase.
-          anyOf:
-          - type: string
-          - type: 'null'
-        timezone:
-          description: IANA timezone identifier, e.g. "America/Los_Angeles".
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 255
-          - type: 'null'
-    BetaManagedAgentsModelParams:
-      oneOf:
-      - title: BetaManagedAgentsModel
-        allOf:
-        - $ref: '#/components/schemas/BetaManagedAgentsModel'
-        x-stainless-skip:
-        - go
-        - cli
-      - $ref: '#/components/schemas/BetaManagedAgentsModelConfigParams'
-    BetaManagedAgentsReadToolConfig:
-      description: Configuration for the read tool.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - name
-      - enabled
-      - permission_policy
-      properties:
-        type:
-          type: string
-          const: read
-        name:
-          type: string
-          const: read
-        enabled:
-          type: boolean
-        permission_policy:
-          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-    BetaManagedAgentsSpeed:
-      type: string
-      description: Inference speed mode. `fast` provides significantly faster output token generation at premium pricing. Not all models support `fast`; invalid combinations are rejected at create time.
-      enum:
-      - standard
-      - fast
-    BetaManagedAgentsMCPToolset:
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - mcp_server_name
-      - default_config
-      - configs
-      properties:
-        type:
-          type: string
-          enum:
-          - mcp_toolset
-        mcp_server_name:
-          type: string
-        default_config:
-          $ref: '#/components/schemas/BetaManagedAgentsMCPToolsetDefaultConfig'
-        configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/BetaManagedAgentsMCPToolConfig'
-    BetaInvalidRequestError:
-      properties:
-        message:
-          default: Invalid request
-          title: Message
-          type: string
-        type:
-          const: invalid_request_error
-          default: invalid_request_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: InvalidRequestError
-      type: object
+      - $ref: '#/components/schemas/BetaManagedAgentsAlwaysAllowPolicy'
+      - $ref: '#/components/schemas/BetaManagedAgentsAlwaysAskPolicy'
     BetaManagedAgentsWebSearchToolConfig:
       description: Configuration for the web_search tool.
       type: object
@@ -1898,69 +1338,6 @@ components:
           anyOf:
           - $ref: '#/components/schemas/BetaManagedAgentsUserLocation'
           - type: 'null'
-    BetaManagedAgentsAgentTool:
-      description: Union type for tool configurations returned in API responses.
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          agent_toolset_20260401: '#/components/schemas/BetaManagedAgentsAgentToolset20260401'
-          mcp_toolset: '#/components/schemas/BetaManagedAgentsMCPToolset'
-          custom: '#/components/schemas/BetaManagedAgentsCustomTool'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsAgentToolset20260401'
-      - $ref: '#/components/schemas/BetaManagedAgentsMCPToolset'
-      - $ref: '#/components/schemas/BetaManagedAgentsCustomTool'
-    BetaManagedAgentsEffortMedium:
-      description: Medium effort. Balances latency and reasoning depth.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - medium
-    BetaManagedAgentsEffortLow:
-      description: Low effort. Favors latency over reasoning depth.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - low
-    BetaManagedAgentsGlobToolConfigParams:
-      description: Configuration override for the glob tool.
-      type: object
-      additionalProperties: false
-      required:
-      - name
-      properties:
-        type:
-          type: string
-          const: glob
-        name:
-          description: Must be "glob".
-          type: string
-          const: glob
-        enabled:
-          description: Whether this tool is enabled and available to Claude. Overrides the default_config setting.
-          anyOf:
-          - type: boolean
-          - type: 'null'
-        permission_policy:
-          description: Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-          - type: 'null'
-    BetaManagedAgentsEffortParams:
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsEffortLevel'
-      - $ref: '#/components/schemas/BetaManagedAgentsEffort'
     BetaManagedAgentsURLMCPServerParams:
       description: URL-based MCP server connection.
       type: object
@@ -1993,6 +1370,383 @@ components:
         type: url
         name: example-mcp
         url: https://example-server.modelcontextprotocol.io/sse
+    BetaManagedAgentsAlwaysAllowPolicy:
+      description: Tool calls are automatically approved without user confirmation.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - always_allow
+    BetaManagedAgentsReadToolConfig:
+      description: Configuration for the read tool.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - name
+      - enabled
+      - permission_policy
+      properties:
+        type:
+          type: string
+          const: read
+        name:
+          type: string
+          const: read
+        enabled:
+          type: boolean
+        permission_policy:
+          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+    BetaManagedAgentsMultiagentCoordinatorParams:
+      description: 'A coordinator topology: the session''s primary thread orchestrates work by spawning session threads, each running an agent drawn from the `agents` roster.'
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - agents
+      properties:
+        type:
+          type: string
+          enum:
+          - coordinator
+          examples:
+          - coordinator
+        agents:
+          description: Agents the coordinator may spawn as session threads. 1–20 entries. Each entry is an agent ID string, a versioned `{"type":"agent","id","version"}` reference, or `{"type":"self"}` to allow recursive self-invocation. Entries must reference distinct agents (after resolving `self` and string forms); at most one `self`. Referenced agents must exist, must not be archived, and must not themselves have `multiagent` set (depth limit 1).
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsMultiagentRosterEntryParams'
+          examples:
+          - - agent_011CZkYqphY8vELVzwCUpqiQ
+            - type: self
+      example:
+        type: coordinator
+        agents:
+        - agent_011CZkYqphY8vELVzwCUpqiQ
+        - type: self
+    BetaManagedAgentsMultiagentRosterEntryParams:
+      description: 'An entry in a multiagent roster: an agent ID string, a versioned agent reference, or `self`.'
+      oneOf:
+      - type: string
+      - oneOf:
+        - $ref: '#/components/schemas/BetaManagedAgentsAgentParams'
+        - $ref: '#/components/schemas/BetaManagedAgentsMultiagentSelfParams'
+        - $ref: '#/components/schemas/BetaManagedAgentsAdvisorParams'
+        discriminator:
+          propertyName: type
+          mapping:
+            agent: '#/components/schemas/BetaManagedAgentsAgentParams'
+            self: '#/components/schemas/BetaManagedAgentsMultiagentSelfParams'
+            advisor: '#/components/schemas/BetaManagedAgentsAdvisorParams'
+    BetaManagedAgentsSkillParams:
+      description: Skill to load in the session container.
+      discriminator:
+        propertyName: type
+        mapping:
+          anthropic: '#/components/schemas/BetaManagedAgentsAnthropicSkillParams'
+          custom: '#/components/schemas/BetaManagedAgentsCustomSkillParams'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsAnthropicSkillParams'
+      - $ref: '#/components/schemas/BetaManagedAgentsCustomSkillParams'
+    BetaManagedAgentsMultiagentCoordinator:
+      description: Resolved coordinator topology with a concrete agent roster.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - agents
+      properties:
+        type:
+          type: string
+          enum:
+          - coordinator
+        agents:
+          description: Agents the coordinator may spawn as session threads, each resolved to a specific version.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsMultiagentRosterEntry'
+    BetaOverloadedError:
+      properties:
+        message:
+          default: Overloaded
+          title: Message
+          type: string
+        type:
+          const: overloaded_error
+          default: overloaded_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: OverloadedError
+      type: object
+    BetaManagedAgentsModelConfigParams:
+      description: An object that defines additional configuration control over model use
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      properties:
+        id:
+          $ref: '#/components/schemas/BetaManagedAgentsModel'
+        speed:
+          description: Inference speed mode. Defaults to `standard`.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsSpeed'
+          - type: 'null'
+        effort:
+          description: 'How hard Claude works on each inference call. Accepts a bare level string (`"high"`) or `{"type": "high"}`. On create, omitting it resolves the per-model default; on update, omitting it leaves the stored value unchanged.'
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsEffortParams'
+          - type: 'null'
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+        inference_geo:
+          description: Geographic region for model inference. When unset, requests fall through to the workspace's default_inference_geo. On update, `model` is whole-object replacement — omitting inference_geo clears it.
+          anyOf:
+          - type: string
+          - type: 'null'
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+      example:
+        id: claude-opus-5
+    BetaManagedAgentsMCPToolsetDefaultConfigParams:
+      description: Default configuration for all tools from an MCP server.
+      type: object
+      additionalProperties: false
+      properties:
+        enabled:
+          description: Whether tools are enabled by default. Defaults to true if not specified.
+          anyOf:
+          - type: boolean
+          - type: 'null'
+        permission_policy:
+          description: Default permission policy for tools from this server.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+          - type: 'null'
+    BetaManagedAgentsMCPServerURLDefinition:
+      description: URL-based MCP server connection as returned in API responses.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - name
+      - url
+      properties:
+        type:
+          type: string
+          enum:
+          - url
+          examples:
+          - url
+        name:
+          type: string
+          examples:
+          - example-mcp
+        url:
+          type: string
+          examples:
+          - https://example-server.modelcontextprotocol.io/sse
+      example:
+        type: url
+        name: example-mcp
+        url: https://example-server.modelcontextprotocol.io/sse
+    BetaInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    BetaManagedAgentsMCPServer:
+      description: Union type for MCP server connection definitions returned in API responses.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          url: '#/components/schemas/BetaManagedAgentsMCPServerURLDefinition'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsMCPServerURLDefinition'
+    BetaManagedAgentsWriteToolConfigParams:
+      description: Configuration override for the write tool.
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      properties:
+        type:
+          type: string
+          const: write
+        name:
+          description: Must be "write".
+          type: string
+          const: write
+        enabled:
+          description: Whether this tool is enabled and available to Claude. Overrides the default_config setting.
+          anyOf:
+          - type: boolean
+          - type: 'null'
+        permission_policy:
+          description: Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+          - type: 'null'
+    BetaErrorResponse:
+      properties:
+        error:
+          discriminator:
+            mapping:
+              api_error: '#/components/schemas/BetaAPIError'
+              authentication_error: '#/components/schemas/BetaAuthenticationError'
+              billing_error: '#/components/schemas/BetaBillingError'
+              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
+              not_found_error: '#/components/schemas/BetaNotFoundError'
+              overloaded_error: '#/components/schemas/BetaOverloadedError'
+              permission_error: '#/components/schemas/BetaPermissionError'
+              rate_limit_error: '#/components/schemas/BetaRateLimitError'
+              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/BetaInvalidRequestError'
+          - $ref: '#/components/schemas/BetaAuthenticationError'
+          - $ref: '#/components/schemas/BetaBillingError'
+          - $ref: '#/components/schemas/BetaPermissionError'
+          - $ref: '#/components/schemas/BetaNotFoundError'
+          - $ref: '#/components/schemas/BetaRateLimitError'
+          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
+          - $ref: '#/components/schemas/BetaAPIError'
+          - $ref: '#/components/schemas/BetaOverloadedError'
+          title: Error
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Request Id
+        type:
+          const: error
+          default: error
+          title: Type
+          type: string
+      required:
+      - error
+      - request_id
+      - type
+      title: ErrorResponse
+      type: object
+    BetaManagedAgentsMCPToolset:
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - mcp_server_name
+      - default_config
+      - configs
+      properties:
+        type:
+          type: string
+          enum:
+          - mcp_toolset
+        mcp_server_name:
+          type: string
+        default_config:
+          $ref: '#/components/schemas/BetaManagedAgentsMCPToolsetDefaultConfig'
+        configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsMCPToolConfig'
+    BetaManagedAgentsCustomToolParams:
+      description: A custom tool that is executed by the API client rather than the agent. When the agent calls this tool, an `agent.custom_tool_use` event is emitted and the session goes idle, waiting for the client to provide the result via a `user.custom_tool_result` event.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - name
+      - description
+      - input_schema
+      properties:
+        type:
+          type: string
+          enum:
+          - custom
+        name:
+          description: Unique name for the tool. 1-128 characters; letters, digits, underscores, and hyphens.
+          type: string
+          minLength: 1
+          maxLength: 128
+        description:
+          description: Description of what the tool does, shown to the agent to help it decide when to use the tool.
+          type: string
+          minLength: 1
+        input_schema:
+          description: JSON Schema defining the expected input parameters for the tool.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsCustomToolInputSchema'
+    BetaManagedAgentsAgentToolConfigUnion:
+      description: Configuration for a specific agent tool.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          bash: '#/components/schemas/BetaManagedAgentsBashToolConfig'
+          edit: '#/components/schemas/BetaManagedAgentsEditToolConfig'
+          read: '#/components/schemas/BetaManagedAgentsReadToolConfig'
+          write: '#/components/schemas/BetaManagedAgentsWriteToolConfig'
+          glob: '#/components/schemas/BetaManagedAgentsGlobToolConfig'
+          grep: '#/components/schemas/BetaManagedAgentsGrepToolConfig'
+          web_fetch: '#/components/schemas/BetaManagedAgentsWebFetchToolConfig'
+          web_search: '#/components/schemas/BetaManagedAgentsWebSearchToolConfig'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsBashToolConfig'
+      - $ref: '#/components/schemas/BetaManagedAgentsEditToolConfig'
+      - $ref: '#/components/schemas/BetaManagedAgentsReadToolConfig'
+      - $ref: '#/components/schemas/BetaManagedAgentsWriteToolConfig'
+      - $ref: '#/components/schemas/BetaManagedAgentsGlobToolConfig'
+      - $ref: '#/components/schemas/BetaManagedAgentsGrepToolConfig'
+      - $ref: '#/components/schemas/BetaManagedAgentsWebFetchToolConfig'
+      - $ref: '#/components/schemas/BetaManagedAgentsWebSearchToolConfig'
+    BetaManagedAgentsMCPToolsetParams:
+      description: Configuration for tools from an MCP server defined in `mcp_servers`.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - mcp_server_name
+      properties:
+        type:
+          type: string
+          enum:
+          - mcp_toolset
+        mcp_server_name:
+          description: Name of the MCP server. Must match a server name from the mcp_servers array. 1-255 characters.
+          type: string
+          minLength: 1
+          maxLength: 255
+        default_config:
+          description: Default configuration for all tools from this server.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsMCPToolsetDefaultConfigParams'
+          - type: 'null'
+        configs:
+          description: Per-tool configuration overrides.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsMCPToolConfigParams'
     BetaManagedAgentsAgent:
       description: A Managed Agents `agent`.
       type: object
@@ -2145,42 +1899,138 @@ components:
         created_at: '2026-03-15T10:00:00Z'
         updated_at: '2026-03-15T10:00:00Z'
         archived_at: null
-    BetaTimestamp:
-      description: A timestamp in RFC 3339 format
-      type: string
-      format: date-time
-    BetaOverloadedError:
-      properties:
-        message:
-          default: Overloaded
-          title: Message
-          type: string
-        type:
-          const: overloaded_error
-          default: overloaded_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: OverloadedError
+    BetaManagedAgentsModelConfig:
+      description: Model identifier and configuration.
       type: object
-    BetaBillingError:
-      properties:
-        message:
-          default: Billing error
-          title: Message
-          type: string
-        type:
-          const: billing_error
-          default: billing_error
-          title: Type
-          type: string
+      additionalProperties: false
       required:
-      - message
-      - type
-      title: BillingError
+      - id
+      properties:
+        id:
+          $ref: '#/components/schemas/BetaManagedAgentsModel'
+        speed:
+          description: Inference speed mode. `fast` provides significantly faster output token generation at premium pricing. Defaults to `standard`. Not all models support `fast`; invalid combinations are rejected at create time.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsSpeed'
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+          - fast-mode-2026-02-01
+          examples:
+          - standard
+        effort:
+          description: How hard Claude works on each inference call. One of `low`, `medium`, `high`, `xhigh`, `max`. Always present; resolved to the per-model default at save time when not supplied.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsEffort'
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+        inference_geo:
+          description: Geographic region for model inference. When unset, requests fall through to the workspace's default_inference_geo.
+          type: string
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+      example:
+        id: claude-opus-5
+        speed: standard
+    BetaManagedAgentsEffortParams:
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsEffortLevel'
+      - $ref: '#/components/schemas/BetaManagedAgentsEffort'
+    BetaManagedAgentsAdvisor:
+      description: 'Platform advisor roster entry: a model the session''s primary thread may consult mid-turn.'
       type: object
+      additionalProperties: false
+      required:
+      - type
+      - model
+      properties:
+        type:
+          type: string
+          enum:
+          - advisor
+        model:
+          description: The advisor model id.
+          type: string
+    BetaManagedAgentsCustomSkillParams:
+      description: A user-created custom skill.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - skill_id
+      properties:
+        type:
+          type: string
+          enum:
+          - custom
+          examples:
+          - custom
+        skill_id:
+          description: Tagged ID of the custom skill (e.g., "skill_01XJ5...").
+          type: string
+          minLength: 1
+          maxLength: 64
+          examples:
+          - skill_011CZkZFNu9hAbo3jZPRgTlx
+        version:
+          description: Version to pin. Defaults to latest if omitted.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 64
+          - type: 'null'
+          examples:
+          - '2'
+      example:
+        type: custom
+        skill_id: skill_011CZkZFNu9hAbo3jZPRgTlx
+        version: '2'
+    BetaManagedAgentsModel:
+      title: BetaManagedAgentsModel
+      description: 'The model that will power your agent.
+
+
+        See [models](https://docs.anthropic.com/en/docs/models-overview) for additional details and options.'
+      anyOf:
+      - type: string
+      - const: claude-sonnet-5
+        description: High-performance model for coding and agents
+        x-stainless-nominal: false
+      - const: claude-fable-5
+        description: Next generation of intelligence for the hardest knowledge work and coding problems
+        x-stainless-nominal: false
+      - const: claude-opus-5
+        description: Powerful intelligence for long-running agents and coding
+        x-stainless-nominal: false
+      - const: claude-opus-4-8
+        description: Powerful intelligence for long-running agents and coding
+        x-stainless-nominal: false
+      - const: claude-opus-4-7
+        description: Powerful intelligence for long-running agents and coding
+        x-stainless-nominal: false
+      - const: claude-opus-4-6
+        description: Powerful intelligence for long-running agents and coding
+        x-stainless-nominal: false
+      - const: claude-sonnet-4-6
+        description: Best combination of speed and intelligence
+        x-stainless-nominal: false
+      - const: claude-haiku-4-5
+        description: Fastest model with near-frontier intelligence
+        x-stainless-nominal: false
+      - const: claude-haiku-4-5-20251001
+        description: Fastest model with near-frontier intelligence
+        x-stainless-nominal: false
+      - const: claude-opus-4-5
+        description: Powerful intelligence for long-running agents and coding
+        x-stainless-nominal: false
+      - const: claude-opus-4-5-20251101
+        description: Powerful intelligence for long-running agents and coding
+        x-stainless-nominal: false
+      - const: claude-sonnet-4-5
+        description: High-performance model for agents and coding
+        x-stainless-nominal: false
+      - const: claude-sonnet-4-5-20250929
+        description: High-performance model for agents and coding
+        x-stainless-nominal: false
     BetaManagedAgentsEditToolConfig:
       description: Configuration for the edit tool.
       type: object
@@ -2201,6 +2051,253 @@ components:
           type: boolean
         permission_policy:
           $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+    BetaManagedAgentsAgentToolset20260401:
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - default_config
+      - configs
+      properties:
+        type:
+          type: string
+          enum:
+          - agent_toolset_20260401
+        default_config:
+          $ref: '#/components/schemas/BetaManagedAgentsAgentToolsetDefaultConfig'
+        configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsAgentToolConfigUnion'
+    BetaBillingError:
+      properties:
+        message:
+          default: Billing error
+          title: Message
+          type: string
+        type:
+          const: billing_error
+          default: billing_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: BillingError
+      type: object
+    BetaManagedAgentsReadToolConfigParams:
+      description: Configuration override for the read tool.
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      properties:
+        type:
+          type: string
+          const: read
+        name:
+          description: Must be "read".
+          type: string
+          const: read
+        enabled:
+          description: Whether this tool is enabled and available to Claude. Overrides the default_config setting.
+          anyOf:
+          - type: boolean
+          - type: 'null'
+        permission_policy:
+          description: Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+          - type: 'null'
+    BetaManagedAgentsListAgentVersions:
+      description: Paginated list of agent versions.
+      type: object
+      additionalProperties: false
+      required:
+      - data
+      properties:
+        data:
+          description: Agent versions.
+          x-stainless-pagination-property:
+            purpose: items
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsAgent'
+        next_page:
+          description: Opaque cursor for the next page. Null when no more results.
+          x-stainless-pagination-property:
+            purpose: next_cursor_field
+          anyOf:
+          - type: string
+          - type: 'null'
+    BetaManagedAgentsAgentTool:
+      description: Union type for tool configurations returned in API responses.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          agent_toolset_20260401: '#/components/schemas/BetaManagedAgentsAgentToolset20260401'
+          mcp_toolset: '#/components/schemas/BetaManagedAgentsMCPToolset'
+          custom: '#/components/schemas/BetaManagedAgentsCustomTool'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsAgentToolset20260401'
+      - $ref: '#/components/schemas/BetaManagedAgentsMCPToolset'
+      - $ref: '#/components/schemas/BetaManagedAgentsCustomTool'
+    BetaManagedAgentsMultiagentSelfParams:
+      description: Sentinel roster entry meaning "the agent that owns this configuration". Resolved server-side to a concrete agent reference.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - self
+          examples:
+          - self
+      example:
+        type: self
+    BetaTimestamp:
+      description: A timestamp in RFC 3339 format
+      type: string
+      format: date-time
+    BetaManagedAgentsCustomTool:
+      description: A custom tool as returned in API responses.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - name
+      - description
+      - input_schema
+      properties:
+        type:
+          type: string
+          enum:
+          - custom
+        name:
+          type: string
+        description:
+          type: string
+        input_schema:
+          $ref: '#/components/schemas/BetaManagedAgentsCustomToolInputSchema'
+    BetaManagedAgentsEffortHigh:
+      description: High effort. Favors reasoning depth.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - high
+    BetaManagedAgentsAnthropicSkillParams:
+      description: An Anthropic-managed skill.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - skill_id
+      properties:
+        type:
+          type: string
+          enum:
+          - anthropic
+          examples:
+          - anthropic
+        skill_id:
+          description: Identifier of the Anthropic skill (e.g., "xlsx").
+          type: string
+          minLength: 1
+          maxLength: 64
+          examples:
+          - xlsx
+        version:
+          description: Version to pin. Defaults to latest if omitted.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 64
+          - type: 'null'
+          examples:
+          - '1'
+      example:
+        type: anthropic
+        skill_id: xlsx
+        version: '1'
+    BetaManagedAgentsGlobToolConfig:
+      description: Configuration for the glob tool.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - name
+      - enabled
+      - permission_policy
+      properties:
+        type:
+          type: string
+          const: glob
+        name:
+          type: string
+          const: glob
+        enabled:
+          type: boolean
+        permission_policy:
+          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+    BetaManagedAgentsEffortLevel:
+      type: string
+      description: How hard Claude works on each turn. Higher levels favor reasoning depth over latency. Not all models accept every level; invalid combinations are rejected at create time.
+      enum:
+      - low
+      - medium
+      - high
+      - xhigh
+      - max
+    BetaManagedAgentsCustomSkill:
+      description: A resolved user-created custom skill.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - skill_id
+      - version
+      properties:
+        type:
+          type: string
+          enum:
+          - custom
+          examples:
+          - custom
+        skill_id:
+          type: string
+          examples:
+          - skill_011CZkZFNu9hAbo3jZPRgTlx
+        version:
+          type: string
+          examples:
+          - '2'
+      example:
+        type: custom
+        skill_id: skill_011CZkZFNu9hAbo3jZPRgTlx
+        version: '2'
+    BetaManagedAgentsMCPToolConfig:
+      description: Resolved configuration for a specific MCP tool.
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      - enabled
+      - permission_policy
+      properties:
+        name:
+          type: string
+        enabled:
+          type: boolean
+        permission_policy:
+          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
     BetaManagedAgentsEffortMax:
       description: Maximum effort. Favors reasoning depth over latency.
       type: object
@@ -2212,6 +2309,61 @@ components:
           type: string
           enum:
           - max
+    BetaAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    BetaManagedAgentsEffortXhigh:
+      description: Extra-high effort. Not all models accept this level.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - xhigh
+    BetaManagedAgentsAgentReference:
+      description: A resolved agent reference with a concrete version.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - id
+      - version
+      properties:
+        type:
+          type: string
+          enum:
+          - agent
+          examples:
+          - agent
+        id:
+          type: string
+          examples:
+          - agent_011CZkYqphY8vELVzwCUpqiQ
+        version:
+          type: integer
+          format: int32
+          examples:
+          - 1
+      example:
+        type: agent
+        id: agent_011CZkYqphY8vELVzwCUpqiQ
+        version: 1
     BetaManagedAgentsEditToolConfigParams:
       description: Configuration override for the edit tool.
       type: object
@@ -2236,441 +2388,257 @@ components:
           anyOf:
           - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
           - type: 'null'
-    BetaManagedAgentsAlwaysAskPolicy:
-      description: Tool calls require user confirmation before execution.
+    BetaManagedAgentsGlobToolConfigParams:
+      description: Configuration override for the glob tool.
       type: object
       additionalProperties: false
       required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - always_ask
-    BetaAuthenticationError:
-      properties:
-        message:
-          default: Authentication error
-          title: Message
-          type: string
-        type:
-          const: authentication_error
-          default: authentication_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: AuthenticationError
-      type: object
-    BetaNotFoundError:
-      properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
-        type:
-          const: not_found_error
-          default: not_found_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: NotFoundError
-      type: object
-    BetaManagedAgentsAdvisor:
-      description: 'Platform advisor roster entry: a model the session''s primary thread may consult mid-turn.'
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - model
-      properties:
-        type:
-          type: string
-          enum:
-          - advisor
-        model:
-          description: The advisor model id.
-          type: string
-    BetaManagedAgentsSkillParams:
-      description: Skill to load in the session container.
-      discriminator:
-        propertyName: type
-        mapping:
-          anthropic: '#/components/schemas/BetaManagedAgentsAnthropicSkillParams'
-          custom: '#/components/schemas/BetaManagedAgentsCustomSkillParams'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsAnthropicSkillParams'
-      - $ref: '#/components/schemas/BetaManagedAgentsCustomSkillParams'
-    BetaManagedAgentsEffort:
-      description: How hard Claude works on each turn. Sets `output_config.effort` on every Messages call the session makes.
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          low: '#/components/schemas/BetaManagedAgentsEffortLow'
-          medium: '#/components/schemas/BetaManagedAgentsEffortMedium'
-          high: '#/components/schemas/BetaManagedAgentsEffortHigh'
-          xhigh: '#/components/schemas/BetaManagedAgentsEffortXhigh'
-          max: '#/components/schemas/BetaManagedAgentsEffortMax'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsEffortLow'
-      - $ref: '#/components/schemas/BetaManagedAgentsEffortMedium'
-      - $ref: '#/components/schemas/BetaManagedAgentsEffortHigh'
-      - $ref: '#/components/schemas/BetaManagedAgentsEffortXhigh'
-      - $ref: '#/components/schemas/BetaManagedAgentsEffortMax'
-    BetaPermissionError:
-      properties:
-        message:
-          default: Permission denied
-          title: Message
-          type: string
-        type:
-          const: permission_error
-          default: permission_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: PermissionError
-      type: object
-    BetaManagedAgentsAgentToolsetDefaultConfig:
-      description: Resolved default configuration for agent tools.
-      type: object
-      additionalProperties: false
-      required:
-      - enabled
-      - permission_policy
-      properties:
-        enabled:
-          type: boolean
-        permission_policy:
-          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-    BetaManagedAgentsBashToolConfig:
-      description: Configuration for the bash tool.
-      type: object
-      additionalProperties: false
-      required:
-      - type
       - name
-      - enabled
-      - permission_policy
       properties:
         type:
           type: string
-          const: bash
+          const: glob
         name:
+          description: Must be "glob".
           type: string
-          const: bash
+          const: glob
         enabled:
-          type: boolean
-        permission_policy:
-          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
-    BetaManagedAgentsSkill:
-      description: Resolved skill as returned in API responses.
-      discriminator:
-        propertyName: type
-        mapping:
-          anthropic: '#/components/schemas/BetaManagedAgentsAnthropicSkill'
-          custom: '#/components/schemas/BetaManagedAgentsCustomSkill'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsAnthropicSkill'
-      - $ref: '#/components/schemas/BetaManagedAgentsCustomSkill'
-    BetaManagedAgentsAlwaysAllowPolicy:
-      description: Tool calls are automatically approved without user confirmation.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - always_allow
-    BetaManagedAgentsMultiagent:
-      description: Resolved multiagent orchestration configuration as returned in API responses.
-      discriminator:
-        propertyName: type
-        mapping:
-          coordinator: '#/components/schemas/BetaManagedAgentsMultiagentCoordinator'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsMultiagentCoordinator'
-    BetaManagedAgentsMCPToolsetDefaultConfigParams:
-      description: Default configuration for all tools from an MCP server.
-      type: object
-      additionalProperties: false
-      properties:
-        enabled:
-          description: Whether tools are enabled by default. Defaults to true if not specified.
+          description: Whether this tool is enabled and available to Claude. Overrides the default_config setting.
           anyOf:
           - type: boolean
           - type: 'null'
         permission_policy:
-          description: Default permission policy for tools from this server.
+          description: Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.
           anyOf:
           - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
           - type: 'null'
-    BetaManagedAgentsCustomTool:
-      description: A custom tool as returned in API responses.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - name
-      - description
-      - input_schema
+    BetaGatewayTimeoutError:
       properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
         type:
-          type: string
-          enum:
-          - custom
-        name:
-          type: string
-        description:
-          type: string
-        input_schema:
-          $ref: '#/components/schemas/BetaManagedAgentsCustomToolInputSchema'
-    BetaErrorResponse:
-      properties:
-        error:
-          discriminator:
-            mapping:
-              api_error: '#/components/schemas/BetaAPIError'
-              authentication_error: '#/components/schemas/BetaAuthenticationError'
-              billing_error: '#/components/schemas/BetaBillingError'
-              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
-              not_found_error: '#/components/schemas/BetaNotFoundError'
-              overloaded_error: '#/components/schemas/BetaOverloadedError'
-              permission_error: '#/components/schemas/BetaPermissionError'
-              rate_limit_error: '#/components/schemas/BetaRateLimitError'
-              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
-            propertyName: type
-          oneOf:
-          - $ref: '#/components/schemas/BetaInvalidRequestError'
-          - $ref: '#/components/schemas/BetaAuthenticationError'
-          - $ref: '#/components/schemas/BetaBillingError'
-          - $ref: '#/components/schemas/BetaPermissionError'
-          - $ref: '#/components/schemas/BetaNotFoundError'
-          - $ref: '#/components/schemas/BetaRateLimitError'
-          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
-          - $ref: '#/components/schemas/BetaAPIError'
-          - $ref: '#/components/schemas/BetaOverloadedError'
-          title: Error
-        request_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          title: Request Id
-        type:
-          const: error
-          default: error
+          const: timeout_error
+          default: timeout_error
           title: Type
           type: string
       required:
-      - error
-      - request_id
+      - message
       - type
-      title: ErrorResponse
+      title: GatewayTimeoutError
       type: object
-    BetaManagedAgentsWebFetchToolConfig:
-      description: Configuration for the web_fetch tool.
+    BetaManagedAgentsCustomToolInputSchema:
+      additionalProperties: true
+      description: JSON Schema for custom tool input parameters.
+      properties:
+        properties:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Properties
+          x-stainless-skip:
+          - terraform
+        required:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Required
+        type:
+          const: object
+          title: Type
+          type: string
+      required:
+      - type
+      type: object
+    BetaManagedAgentsMultiagentParams:
+      description: Multiagent orchestration configuration. Currently supports the `coordinator` topology.
+      discriminator:
+        propertyName: type
+        mapping:
+          coordinator: '#/components/schemas/BetaManagedAgentsMultiagentCoordinatorParams'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsMultiagentCoordinatorParams'
+    BetaManagedAgentsMultiagentRosterEntry:
+      description: A resolved multiagent roster entry.
+      discriminator:
+        propertyName: type
+        mapping:
+          agent: '#/components/schemas/BetaManagedAgentsAgentReference'
+          advisor: '#/components/schemas/BetaManagedAgentsAdvisor'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsAgentReference'
+      - $ref: '#/components/schemas/BetaManagedAgentsAdvisor'
+    BetaManagedAgentsGrepToolConfigParams:
+      description: Configuration override for the grep tool.
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      properties:
+        type:
+          type: string
+          const: grep
+        name:
+          description: Must be "grep".
+          type: string
+          const: grep
+        enabled:
+          description: Whether this tool is enabled and available to Claude. Overrides the default_config setting.
+          anyOf:
+          - type: boolean
+          - type: 'null'
+        permission_policy:
+          description: Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+          - type: 'null'
+    BetaManagedAgentsAgentToolsetDefaultConfigParams:
+      description: Default configuration for all tools in a toolset.
+      type: object
+      additionalProperties: false
+      properties:
+        enabled:
+          description: Whether tools are enabled and available to Claude by default. Defaults to true if not specified.
+          anyOf:
+          - type: boolean
+          - type: 'null'
+        permission_policy:
+          description: Default permission policy for tools. Controls whether tool calls are auto-approved or require confirmation.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+          - type: 'null'
+    BetaManagedAgentsUserLocation:
+      description: Approximate user location for search result localization.
       type: object
       additionalProperties: false
       required:
       - type
+      properties:
+        type:
+          description: Location precision. Only "approximate" is supported.
+          type: string
+          const: approximate
+        city:
+          description: City name.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 255
+          - type: 'null'
+        region:
+          description: Region or state name.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 255
+          - type: 'null'
+        country:
+          description: Two-letter ISO 3166-1 country code, uppercase.
+          anyOf:
+          - type: string
+          - type: 'null'
+        timezone:
+          description: IANA timezone identifier, e.g. "America/Los_Angeles".
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 255
+          - type: 'null'
+    BetaManagedAgentsWebSearchToolConfigParams:
+      description: Configuration override for the web_search tool.
+      type: object
+      additionalProperties: false
+      required:
       - name
-      - enabled
-      - permission_policy
       properties:
         type:
           type: string
-          const: web_fetch
+          const: web_search
         name:
+          description: Must be "web_search".
           type: string
-          const: web_fetch
+          const: web_search
         enabled:
-          type: boolean
+          description: Whether this tool is enabled and available to Claude. Overrides the default_config setting.
+          anyOf:
+          - type: boolean
+          - type: 'null'
         permission_policy:
-          $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+          description: Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+          - type: 'null'
         allowed_domains:
+          description: Only return search results whose host is one of these domains or a subdomain of one. Each entry is a plain hostname like "docs.example.com" (no scheme or port; an optional path suffix is accepted). At most 64 entries; an empty list is rejected (omit the field instead). Cannot be combined with blocked_domains.
           type: array
           items:
             type: string
         blocked_domains:
+          description: Never return search results whose host is one of these domains or a subdomain of one. Each entry is a plain hostname like "ads.example.com" (no scheme or port; an optional path suffix is accepted). At most 64 entries; an empty list is rejected (omit the field instead). Cannot be combined with allowed_domains.
           type: array
           items:
             type: string
-        max_content_tokens:
+        user_location:
+          description: Approximate user location for search result localization.
           anyOf:
-          - type: integer
-            format: int32
+          - $ref: '#/components/schemas/BetaManagedAgentsUserLocation'
           - type: 'null'
-    AnthropicBeta:
-      anyOf:
-      - type: string
-      - type: string
-        enum:
-        - message-batches-2024-09-24
-        - prompt-caching-2024-07-31
-        - computer-use-2024-10-22
-        - computer-use-2025-01-24
-        - pdfs-2024-09-25
-        - token-counting-2024-11-01
-        - token-efficient-tools-2025-02-19
-        - output-128k-2025-02-19
-        - files-api-2025-04-14
-        - mcp-client-2025-04-04
-        - mcp-client-2025-11-20
-        - dev-full-thinking-2025-05-14
-        - interleaved-thinking-2025-05-14
-        - code-execution-2025-05-22
-        - extended-cache-ttl-2025-04-11
-        - context-1m-2025-08-07
-        - context-management-2025-06-27
-        - model-context-window-exceeded-2025-08-26
-        - skills-2025-10-02
-        - fast-mode-2026-02-01
-        - output-300k-2026-03-24
-        - user-profiles-2026-03-24
-        - user-profiles-2026-08-18
-        - advisor-tool-2026-03-01
-        - managed-agents-2026-04-01
-        - cache-diagnosis-2026-04-07
-        - dreaming-2026-04-21
-        - thinking-token-count-2026-05-13
-        - server-side-fallback-2026-06-01
-        - server-side-fallback-2026-07-01
-        - fallback-credit-2026-06-01
-        - fallback-credit-2026-07-01
-        - agent-memory-2026-07-22
-        - mid-conversation-tool-changes-2026-07-01
-        - compact-2026-01-12
-        - computer-use-2025-11-24
-        - mcp-tunnels-2026-06-22
-        - structured-outputs-2025-11-13
-        - task-budgets-2026-03-13
-        - thinking-display-updates-2026-08-18
-        - ce-user-management-2026-07-13
-        x-stainless-nominal: false
-    BetaManagedAgentsUpdateAgentParams:
-      description: Request parameters for updating an `agent`. Omit a field to preserve its current value.
+    BetaAPIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
+          type: string
+        type:
+          const: api_error
+          default: api_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
+    BetaManagedAgentsBashToolConfigParams:
+      description: Configuration override for the bash tool.
       type: object
       additionalProperties: false
-      properties:
-        version:
-          description: The agent's current version, used to prevent concurrent overwrites. Obtain this value from a create or retrieve response. Must be at least 1 if specified. When supplied, the request fails if it does not match the server's current version; omit to apply the update unconditionally.
-          type: integer
-          format: int32
-          examples:
-          - 1
-        name:
-          description: Human-readable name. Must be non-empty. Omit to preserve. Cannot be cleared.
-          type: string
-          maxLength: 256
-        description:
-          description: Description. Omit to preserve; send empty string or null to clear.
-          anyOf:
-          - type: string
-            maxLength: 2048
-          - type: 'null'
-        model:
-          description: Model identifier. Accepts the [model string](https://platform.claude.com/docs/en/about-claude/models/overview#latest-models-comparison), e.g. `claude-opus-5`, or a `model_config` object for additional configuration control. Omit to preserve. Cannot be cleared.
-          allOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsModelParams'
-        system:
-          description: System prompt. Omit to preserve; send empty string or null to clear.
-          anyOf:
-          - type: string
-            maxLength: 100000
-          - type: 'null'
-          examples:
-          - You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.
-        tools:
-          description: Tool configurations available to the agent. Full replacement. Omit to preserve; send empty array or null to clear. Maximum of 128 tools across all toolsets allowed.
-          anyOf:
-          - type: array
-            items:
-              $ref: '#/components/schemas/BetaManagedAgentsAgentToolParams'
-          - type: 'null'
-        mcp_servers:
-          description: MCP servers. Full replacement. Omit to preserve; send empty array or `null` to clear. Names must be unique. Maximum 20. Every server must be referenced by an `mcp_toolset` in the agent's resulting `tools`; unreferenced servers are rejected. See the [MCP connector guide](https://platform.claude.com/docs/en/managed-agents/mcp-connector).
-          anyOf:
-          - type: array
-            items:
-              $ref: '#/components/schemas/BetaManagedAgentsMCPServerParams'
-          - type: 'null'
-        skills:
-          description: Skills. Full replacement. Omit to preserve; send empty array or null to clear.
-          anyOf:
-          - type: array
-            items:
-              $ref: '#/components/schemas/BetaManagedAgentsSkillParams'
-          - type: 'null'
-        metadata:
-          description: Metadata patch. Set a key to a string to upsert it, or to null to delete it. Omit the field to preserve. The stored bag is limited to 16 keys (up to 64 chars each) with values up to 512 chars.
-          anyOf:
-          - type: object
-            additionalProperties:
-              anyOf:
-              - type: string
-              - type: 'null'
-          - type: 'null'
-        multiagent:
-          description: Multiagent orchestration configuration. Full replacement. Omit to preserve; send null to clear.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsMultiagentParams'
-          - type: 'null'
-          x-anthropic-beta-required:
-          - managed-agents-2026-04-01
-      example:
-        version: 1
-        system: You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.
-    AgentList:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Agent'
-        has_more:
-          type: boolean
-    UpdateAgentRequest:
-      type: object
       required:
-      - version
+      - name
       properties:
-        version:
-          type: integer
+        type:
+          type: string
+          const: bash
         name:
+          description: Must be "bash".
           type: string
-        model:
-          oneOf:
-          - type: string
-          - type: object
-        system:
+          const: bash
+        enabled:
+          description: Whether this tool is enabled and available to Claude. Overrides the default_config setting.
+          anyOf:
+          - type: boolean
+          - type: 'null'
+        permission_policy:
+          description: Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsPermissionPolicy'
+          - type: 'null'
+    Error:
+      type: object
+      properties:
+        type:
           type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        tools:
-          type: array
-          items:
-            type: object
-        mcp_servers:
-          type: array
-          items:
-            type: object
-        skills:
-          type: array
-          items:
-            type: object
-        metadata:
+        error:
           type: object
+          properties:
+            type:
+              type: string
+            message:
+              type: string
     Agent:
       type: object
       properties:
@@ -2720,6 +2688,39 @@ components:
           type: string
           format: date-time
           nullable: true
+    UpdateAgentRequest:
+      type: object
+      required:
+      - version
+      properties:
+        version:
+          type: integer
+        name:
+          type: string
+        model:
+          oneOf:
+          - type: string
+          - type: object
+        system:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        tools:
+          type: array
+          items:
+            type: object
+        mcp_servers:
+          type: array
+          items:
+            type: object
+        skills:
+          type: array
+          items:
+            type: object
+        metadata:
+          type: object
     CreateAgentRequest:
       type: object
       required:
@@ -2762,39 +2763,16 @@ components:
           type: object
         metadata:
           type: object
-    Error:
+    AgentList:
       type: object
       properties:
-        type:
-          type: string
-        error:
-          type: object
-          properties:
-            type:
-              type: string
-            message:
-              type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Agent'
+        has_more:
+          type: boolean
   parameters:
-    AgentIdPath:
-      name: agent_id
-      in: path
-      required: true
-      schema:
-        type: string
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
-      required: true
-      schema:
-        type: string
-        default: '2023-06-01'
-    Limit:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 20
     AnthropicBeta:
       name: anthropic-beta
       in: header
@@ -2803,6 +2781,26 @@ components:
       schema:
         type: string
         default: managed-agents-2026-04-01
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 20
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: '2023-06-01'
+    AgentIdPath:
+      name: agent_id
+      in: path
+      required: true
+      schema:
+        type: string
   responses:
     ErrorResponse:
       description: Error response.

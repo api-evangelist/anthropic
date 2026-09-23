@@ -1274,21 +1274,306 @@ paths:
       - Skills
 components:
   schemas:
-    BetaGatewayTimeoutError:
+    BetaBillingError:
       properties:
         message:
-          default: Request timeout
+          default: Billing error
           title: Message
           type: string
         type:
-          const: timeout_error
-          default: timeout_error
+          const: billing_error
+          default: billing_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: GatewayTimeoutError
+      title: BillingError
+      type: object
+    AnthropicBeta:
+      anyOf:
+      - type: string
+      - type: string
+        enum:
+        - message-batches-2024-09-24
+        - prompt-caching-2024-07-31
+        - computer-use-2024-10-22
+        - computer-use-2025-01-24
+        - pdfs-2024-09-25
+        - token-counting-2024-11-01
+        - token-efficient-tools-2025-02-19
+        - output-128k-2025-02-19
+        - files-api-2025-04-14
+        - mcp-client-2025-04-04
+        - mcp-client-2025-11-20
+        - dev-full-thinking-2025-05-14
+        - interleaved-thinking-2025-05-14
+        - code-execution-2025-05-22
+        - extended-cache-ttl-2025-04-11
+        - context-1m-2025-08-07
+        - context-management-2025-06-27
+        - model-context-window-exceeded-2025-08-26
+        - skills-2025-10-02
+        - fast-mode-2026-02-01
+        - output-300k-2026-03-24
+        - user-profiles-2026-03-24
+        - user-profiles-2026-08-18
+        - advisor-tool-2026-03-01
+        - managed-agents-2026-04-01
+        - cache-diagnosis-2026-04-07
+        - dreaming-2026-04-21
+        - thinking-token-count-2026-05-13
+        - server-side-fallback-2026-06-01
+        - server-side-fallback-2026-07-01
+        - fallback-credit-2026-06-01
+        - fallback-credit-2026-07-01
+        - agent-memory-2026-07-22
+        - mid-conversation-tool-changes-2026-07-01
+        - compact-2026-01-12
+        - computer-use-2025-11-24
+        - mcp-tunnels-2026-06-22
+        - structured-outputs-2025-11-13
+        - task-budgets-2026-03-13
+        - thinking-display-updates-2026-08-18
+        - ce-user-management-2026-07-13
+        x-stainless-nominal: false
+    AuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    BetaBody_create_skill_version_v1_skills__skill_id__versions_post:
+      properties:
+        files:
+          items:
+            type: string
+            format: binary
+          type: array
+          title: Files
+          description: 'Files to upload for the skill.
+
+
+            All files must be in the same top-level directory and must include a SKILL.md file at the root of that directory.'
+      type: object
+      required:
+      - files
+      title: Body_create_skill_version_v1_skills__skill_id__versions_post
+    BetaDeleteSkillResponse:
+      properties:
+        id:
+          description: 'Unique identifier for the skill.
+
+
+            The format and length of IDs may change over time.'
+          examples:
+          - skill_01JAbcdefghijklmnopqrstuvw
+          title: Id
+          type: string
+        type:
+          default: skill_deleted
+          description: 'Deleted object type.
+
+
+            For Skills, this is always `"skill_deleted"`.'
+          title: Type
+          type: string
+      required:
+      - id
+      - type
+      title: DeleteSkillResponse
+      type: object
+    ListSkillVersionsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SkillVersion'
+          type: array
+          title: Data
+          description: List of skills.
+        next_page:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Next Page
+          description: 'Token for fetching the next page of results.
+
+
+            If `null`, there are no more results available. Pass this value to the `page` parameter in the next request to get the next page.'
+      type: object
+      required:
+      - data
+      - next_page
+      title: ListSkillVersionsResponse
+    ListSkillsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Skill'
+          type: array
+          title: Data
+          description: List of skills.
+        next_page:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Next Page
+          description: 'Token for fetching the next page of results.
+
+
+            If `null`, there are no more results available. Pass this value to the `page` parameter in the next request to get the next page.'
+      type: object
+      required:
+      - data
+      - next_page
+      title: ListSkillsResponse
+    PermissionError:
+      properties:
+        message:
+          default: Permission denied
+          title: Message
+          type: string
+        type:
+          const: permission_error
+          default: permission_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: PermissionError
+      type: object
+    Body_create_skill_version_v1_skills__skill_id__versions_post:
+      properties:
+        files:
+          items:
+            type: string
+            format: binary
+          type: array
+          title: Files
+          description: 'Files to upload for the skill.
+
+
+            All files must be in the same top-level directory and must include a SKILL.md file at the root of that directory.'
+      type: object
+      required:
+      - files
+      title: Body_create_skill_version_v1_skills__skill_id__versions_post
+    BetaPermissionError:
+      properties:
+        message:
+          default: Permission denied
+          title: Message
+          type: string
+        type:
+          const: permission_error
+          default: permission_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: PermissionError
+      type: object
+    SkillSource:
+      properties:
+        type:
+          type: string
+          enum:
+          - custom
+          - anthropic
+          - anthropic_example
+          - plugin
+          title: Type
+          description: 'Where the Skill comes from.
+
+
+            Possible values:
+
+            * `"custom"`: authored by the platform user; private to their workspace
+
+            * `"anthropic"`: published by Anthropic; shared and read-only
+
+            * `"anthropic_example"`: Anthropic-published sample Skill
+
+            * `"plugin"`: resolved from an installed plugin'
+      type: object
+      required:
+      - type
+      title: SkillSource
+    RateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    BetaNotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    NotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
       type: object
     BetaCreateSkillVersionResponse:
       properties:
@@ -1368,23 +1653,150 @@ components:
       - version
       title: CreateSkillVersionResponse
       type: object
-    BetaOverloadedError:
+    Skill:
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: ISO 8601 timestamp of when the skill was created.
+          examples:
+          - '2024-10-30T23:58:27.427722Z'
+        display_name:
+          type: string
+          title: Display Name
+          description: 'Human-readable, single-line label for the Skill. Maximum 255 characters.
+
+            Always set: derived from the SKILL.md frontmatter `name` when omitted at
+
+            creation. Not unique.'
+        id:
+          type: string
+          title: Id
+          description: 'Unique identifier for the skill.
+
+
+            The format and length of IDs may change over time.'
+          examples:
+          - skill_01JAbcdefghijklmnopqrstuvw
+        latest_version_id:
+          type: string
+          title: Latest Version Id
+          description: 'ID of the newest Skill Version — what `latest` references resolve to. Always set: a Skill holds at least one version.'
+        source:
+          $ref: '#/components/schemas/SkillSource'
+          description: 'Where the Skill comes from.
+
+
+            Possible values:
+
+            * `"custom"`: authored by the platform user; private to their workspace
+
+            * `"anthropic"`: published by Anthropic; shared and read-only
+
+            * `"anthropic_example"`: Anthropic-published sample Skill
+
+            * `"plugin"`: resolved from an installed plugin'
+        type:
+          type: string
+          const: skill
+          title: Type
+          description: 'Object type.
+
+
+            For Skills, this is always `"skill"`.'
+          default: skill
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+          description: ISO 8601 timestamp of when the skill was last updated.
+          examples:
+          - '2024-10-30T23:58:27.427722Z'
+      type: object
+      required:
+      - created_at
+      - display_name
+      - id
+      - latest_version_id
+      - source
+      - type
+      - updated_at
+      title: Skill
+    DeletedSkill:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: 'Unique identifier for the skill.
+
+
+            The format and length of IDs may change over time.'
+          examples:
+          - skill_01JAbcdefghijklmnopqrstuvw
+        type:
+          type: string
+          const: skill_deleted
+          title: Type
+          description: 'Deleted object type.
+
+
+            For Skills, this is always `"skill_deleted"`.'
+          default: skill_deleted
+      type: object
+      required:
+      - id
+      - type
+      title: DeletedSkill
+    BetaInvalidRequestError:
       properties:
         message:
-          default: Overloaded
+          default: Invalid request
           title: Message
           type: string
         type:
-          const: overloaded_error
-          default: overloaded_error
+          const: invalid_request_error
+          default: invalid_request_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: OverloadedError
+      title: InvalidRequestError
       type: object
-    BetaBillingError:
+    BetaAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    GatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
+      type: object
+    BillingError:
       properties:
         message:
           default: Billing error
@@ -1400,65 +1812,6 @@ components:
       - type
       title: BillingError
       type: object
-    SkillVersion:
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-          description: ISO 8601 timestamp of when the skill was created.
-          examples:
-          - '2024-10-30T23:58:27.427722Z'
-        description:
-          type: string
-          title: Description
-          description: 'Description of the skill version.
-
-
-            This is extracted from the SKILL.md file in the skill upload.'
-        id:
-          type: string
-          title: Id
-          description: 'Unique identifier for this Skill Version. The id addresses the version in
-
-            paths and pins it in references.'
-        name:
-          type: string
-          title: Name
-          description: 'The Skill''s immutable kebab-case slug, set at creation from the first
-
-            upload''s SKILL.md frontmatter `name` (or its enclosing directory). Every
-
-            later upload must resolve to the same value. Also the top-level directory
-
-            of the Skill''s mounted files and the base name of a downloaded archive.'
-        skill_id:
-          type: string
-          title: Skill Id
-          description: 'Unique identifier for the skill.
-
-
-            The format and length of IDs may change over time.'
-          examples:
-          - skill_01JAbcdefghijklmnopqrstuvw
-        type:
-          type: string
-          const: skill_version
-          title: Type
-          description: 'Object type.
-
-
-            For Skill Versions, this is always `"skill_version"`.'
-          default: skill_version
-      type: object
-      required:
-      - created_at
-      - description
-      - id
-      - name
-      - skill_id
-      - type
-      title: SkillVersion
     BetaDeleteSkillVersionResponse:
       properties:
         id:
@@ -1483,59 +1836,205 @@ components:
       - type
       title: DeleteSkillVersionResponse
       type: object
-    Body_create_skill_version_v1_skills__skill_id__versions_post:
+    DeletedSkillVersion:
       properties:
-        files:
-          items:
-            type: string
-            format: binary
-          type: array
-          title: Files
-          description: 'Files to upload for the skill.
+        id:
+          type: string
+          title: Id
+          description: 'Unique identifier for this Skill Version. The id addresses the version in
+
+            paths and pins it in references.'
+        type:
+          type: string
+          const: skill_version_deleted
+          title: Type
+          description: 'Deleted object type.
 
 
-            All files must be in the same top-level directory and must include a SKILL.md file at the root of that directory.'
+            For Skill Versions, this is always `"skill_version_deleted"`.'
+          default: skill_version_deleted
       type: object
       required:
-      - files
-      title: Body_create_skill_version_v1_skills__skill_id__versions_post
-    ListSkillsResponse:
+      - id
+      - type
+      title: DeletedSkillVersion
+    BetaErrorResponse:
       properties:
-        data:
-          items:
-            $ref: '#/components/schemas/Skill'
-          type: array
-          title: Data
-          description: List of skills.
-        next_page:
+        error:
+          discriminator:
+            mapping:
+              api_error: '#/components/schemas/BetaAPIError'
+              authentication_error: '#/components/schemas/BetaAuthenticationError'
+              billing_error: '#/components/schemas/BetaBillingError'
+              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
+              not_found_error: '#/components/schemas/BetaNotFoundError'
+              overloaded_error: '#/components/schemas/BetaOverloadedError'
+              permission_error: '#/components/schemas/BetaPermissionError'
+              rate_limit_error: '#/components/schemas/BetaRateLimitError'
+              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/BetaInvalidRequestError'
+          - $ref: '#/components/schemas/BetaAuthenticationError'
+          - $ref: '#/components/schemas/BetaBillingError'
+          - $ref: '#/components/schemas/BetaPermissionError'
+          - $ref: '#/components/schemas/BetaNotFoundError'
+          - $ref: '#/components/schemas/BetaRateLimitError'
+          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
+          - $ref: '#/components/schemas/BetaAPIError'
+          - $ref: '#/components/schemas/BetaOverloadedError'
+          title: Error
+        request_id:
           anyOf:
           - type: string
           - type: 'null'
-          title: Next Page
-          description: 'Token for fetching the next page of results.
-
-
-            If `null`, there are no more results available. Pass this value to the `page` parameter in the next request to get the next page.'
-      type: object
+          default: null
+          title: Request Id
+        type:
+          const: error
+          default: error
+          title: Type
+          type: string
       required:
-      - data
-      - next_page
-      title: ListSkillsResponse
-    PermissionError:
+      - error
+      - request_id
+      - type
+      title: ErrorResponse
+      type: object
+    ErrorResponse:
+      properties:
+        error:
+          discriminator:
+            mapping:
+              api_error: '#/components/schemas/APIError'
+              authentication_error: '#/components/schemas/AuthenticationError'
+              billing_error: '#/components/schemas/BillingError'
+              invalid_request_error: '#/components/schemas/InvalidRequestError'
+              not_found_error: '#/components/schemas/NotFoundError'
+              overloaded_error: '#/components/schemas/OverloadedError'
+              permission_error: '#/components/schemas/PermissionError'
+              rate_limit_error: '#/components/schemas/RateLimitError'
+              timeout_error: '#/components/schemas/GatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/InvalidRequestError'
+          - $ref: '#/components/schemas/AuthenticationError'
+          - $ref: '#/components/schemas/BillingError'
+          - $ref: '#/components/schemas/PermissionError'
+          - $ref: '#/components/schemas/NotFoundError'
+          - $ref: '#/components/schemas/RateLimitError'
+          - $ref: '#/components/schemas/GatewayTimeoutError'
+          - $ref: '#/components/schemas/APIError'
+          - $ref: '#/components/schemas/OverloadedError'
+          title: Error
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Request Id
+        type:
+          const: error
+          default: error
+          title: Type
+          type: string
+      required:
+      - error
+      - request_id
+      - type
+      title: ErrorResponse
+      type: object
+    BetaGetSkillResponse:
+      properties:
+        created_at:
+          description: ISO 8601 timestamp of when the skill was created.
+          examples:
+          - '2024-10-30T23:58:27.427722Z'
+          title: Created At
+          type: string
+        display_title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 'Display title for the skill.
+
+
+            This is a human-readable label that is not included in the prompt sent to the model.'
+          examples:
+          - My Custom Skill
+          title: Display Title
+        id:
+          description: 'Unique identifier for the skill.
+
+
+            The format and length of IDs may change over time.'
+          examples:
+          - skill_01JAbcdefghijklmnopqrstuvw
+          title: Id
+          type: string
+        latest_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 'The latest version identifier for the skill.
+
+
+            This represents the most recent version of the skill that has been created.'
+          examples:
+          - '1759178010641129'
+          title: Latest Version
+        source:
+          description: 'Source of the skill.
+
+
+            This may be one of the following values:
+
+            * `"custom"`: the skill was created by a user
+
+            * `"anthropic"`: the skill was created by Anthropic'
+          examples:
+          - custom
+          title: Source
+          type: string
+        type:
+          default: skill
+          description: 'Object type.
+
+
+            For Skills, this is always `"skill"`.'
+          title: Type
+          type: string
+        updated_at:
+          description: ISO 8601 timestamp of when the skill was last updated.
+          examples:
+          - '2024-10-30T23:58:27.427722Z'
+          title: Updated At
+          type: string
+      required:
+      - created_at
+      - display_title
+      - id
+      - latest_version
+      - source
+      - type
+      - updated_at
+      title: GetSkillResponse
+      type: object
+    BetaGatewayTimeoutError:
       properties:
         message:
-          default: Permission denied
+          default: Request timeout
           title: Message
           type: string
         type:
-          const: permission_error
-          default: permission_error
+          const: timeout_error
+          default: timeout_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: PermissionError
+      title: GatewayTimeoutError
       type: object
     BetaGetSkillVersionResponse:
       properties:
@@ -1615,338 +2114,6 @@ components:
       - version
       title: GetSkillVersionResponse
       type: object
-    NotFoundError:
-      properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
-        type:
-          const: not_found_error
-          default: not_found_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: NotFoundError
-      type: object
-    BetaAuthenticationError:
-      properties:
-        message:
-          default: Authentication error
-          title: Message
-          type: string
-        type:
-          const: authentication_error
-          default: authentication_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: AuthenticationError
-      type: object
-    BillingError:
-      properties:
-        message:
-          default: Billing error
-          title: Message
-          type: string
-        type:
-          const: billing_error
-          default: billing_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: BillingError
-      type: object
-    BetaNotFoundError:
-      properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
-        type:
-          const: not_found_error
-          default: not_found_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: NotFoundError
-      type: object
-    ErrorResponse:
-      properties:
-        error:
-          discriminator:
-            mapping:
-              api_error: '#/components/schemas/APIError'
-              authentication_error: '#/components/schemas/AuthenticationError'
-              billing_error: '#/components/schemas/BillingError'
-              invalid_request_error: '#/components/schemas/InvalidRequestError'
-              not_found_error: '#/components/schemas/NotFoundError'
-              overloaded_error: '#/components/schemas/OverloadedError'
-              permission_error: '#/components/schemas/PermissionError'
-              rate_limit_error: '#/components/schemas/RateLimitError'
-              timeout_error: '#/components/schemas/GatewayTimeoutError'
-            propertyName: type
-          oneOf:
-          - $ref: '#/components/schemas/InvalidRequestError'
-          - $ref: '#/components/schemas/AuthenticationError'
-          - $ref: '#/components/schemas/BillingError'
-          - $ref: '#/components/schemas/PermissionError'
-          - $ref: '#/components/schemas/NotFoundError'
-          - $ref: '#/components/schemas/RateLimitError'
-          - $ref: '#/components/schemas/GatewayTimeoutError'
-          - $ref: '#/components/schemas/APIError'
-          - $ref: '#/components/schemas/OverloadedError'
-          title: Error
-        request_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          title: Request Id
-        type:
-          const: error
-          default: error
-          title: Type
-          type: string
-      required:
-      - error
-      - request_id
-      - type
-      title: ErrorResponse
-      type: object
-    BetaDeleteSkillResponse:
-      properties:
-        id:
-          description: 'Unique identifier for the skill.
-
-
-            The format and length of IDs may change over time.'
-          examples:
-          - skill_01JAbcdefghijklmnopqrstuvw
-          title: Id
-          type: string
-        type:
-          default: skill_deleted
-          description: 'Deleted object type.
-
-
-            For Skills, this is always `"skill_deleted"`.'
-          title: Type
-          type: string
-      required:
-      - id
-      - type
-      title: DeleteSkillResponse
-      type: object
-    GatewayTimeoutError:
-      properties:
-        message:
-          default: Request timeout
-          title: Message
-          type: string
-        type:
-          const: timeout_error
-          default: timeout_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: GatewayTimeoutError
-      type: object
-    BetaInvalidRequestError:
-      properties:
-        message:
-          default: Invalid request
-          title: Message
-          type: string
-        type:
-          const: invalid_request_error
-          default: invalid_request_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: InvalidRequestError
-      type: object
-    BetaPermissionError:
-      properties:
-        message:
-          default: Permission denied
-          title: Message
-          type: string
-        type:
-          const: permission_error
-          default: permission_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: PermissionError
-      type: object
-    APIError:
-      properties:
-        message:
-          default: Internal server error
-          title: Message
-          type: string
-        type:
-          const: api_error
-          default: api_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: APIError
-      type: object
-    DeletedSkill:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: 'Unique identifier for the skill.
-
-
-            The format and length of IDs may change over time.'
-          examples:
-          - skill_01JAbcdefghijklmnopqrstuvw
-        type:
-          type: string
-          const: skill_deleted
-          title: Type
-          description: 'Deleted object type.
-
-
-            For Skills, this is always `"skill_deleted"`.'
-          default: skill_deleted
-      type: object
-      required:
-      - id
-      - type
-      title: DeletedSkill
-    BetaBody_create_skill_version_v1_skills__skill_id__versions_post:
-      properties:
-        files:
-          items:
-            type: string
-            format: binary
-          type: array
-          title: Files
-          description: 'Files to upload for the skill.
-
-
-            All files must be in the same top-level directory and must include a SKILL.md file at the root of that directory.'
-      type: object
-      required:
-      - files
-      title: Body_create_skill_version_v1_skills__skill_id__versions_post
-    SkillSource:
-      properties:
-        type:
-          type: string
-          enum:
-          - custom
-          - anthropic
-          - anthropic_example
-          - plugin
-          title: Type
-          description: 'Where the Skill comes from.
-
-
-            Possible values:
-
-            * `"custom"`: authored by the platform user; private to their workspace
-
-            * `"anthropic"`: published by Anthropic; shared and read-only
-
-            * `"anthropic_example"`: Anthropic-published sample Skill
-
-            * `"plugin"`: resolved from an installed plugin'
-      type: object
-      required:
-      - type
-      title: SkillSource
-    Skill:
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-          description: ISO 8601 timestamp of when the skill was created.
-          examples:
-          - '2024-10-30T23:58:27.427722Z'
-        display_name:
-          type: string
-          title: Display Name
-          description: 'Human-readable, single-line label for the Skill. Maximum 255 characters.
-
-            Always set: derived from the SKILL.md frontmatter `name` when omitted at
-
-            creation. Not unique.'
-        id:
-          type: string
-          title: Id
-          description: 'Unique identifier for the skill.
-
-
-            The format and length of IDs may change over time.'
-          examples:
-          - skill_01JAbcdefghijklmnopqrstuvw
-        latest_version_id:
-          type: string
-          title: Latest Version Id
-          description: 'ID of the newest Skill Version — what `latest` references resolve to. Always set: a Skill holds at least one version.'
-        source:
-          $ref: '#/components/schemas/SkillSource'
-          description: 'Where the Skill comes from.
-
-
-            Possible values:
-
-            * `"custom"`: authored by the platform user; private to their workspace
-
-            * `"anthropic"`: published by Anthropic; shared and read-only
-
-            * `"anthropic_example"`: Anthropic-published sample Skill
-
-            * `"plugin"`: resolved from an installed plugin'
-        type:
-          type: string
-          const: skill
-          title: Type
-          description: 'Object type.
-
-
-            For Skills, this is always `"skill"`.'
-          default: skill
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-          description: ISO 8601 timestamp of when the skill was last updated.
-          examples:
-          - '2024-10-30T23:58:27.427722Z'
-      type: object
-      required:
-      - created_at
-      - display_name
-      - id
-      - latest_version_id
-      - source
-      - type
-      - updated_at
-      title: Skill
     Body_create_skill_v1_skills_post:
       properties:
         files:
@@ -1973,104 +2140,81 @@ components:
       required:
       - files
       title: Body_create_skill_v1_skills_post
-    BetaGetSkillResponse:
+    SkillVersion:
       properties:
         created_at:
+          type: string
+          format: date-time
+          title: Created At
           description: ISO 8601 timestamp of when the skill was created.
           examples:
           - '2024-10-30T23:58:27.427722Z'
-          title: Created At
+        description:
           type: string
-        display_title:
-          anyOf:
-          - type: string
-          - type: 'null'
-          description: 'Display title for the skill.
+          title: Description
+          description: 'Description of the skill version.
 
 
-            This is a human-readable label that is not included in the prompt sent to the model.'
-          examples:
-          - My Custom Skill
-          title: Display Title
-        id:
-          description: 'Unique identifier for the skill.
-
-
-            The format and length of IDs may change over time.'
-          examples:
-          - skill_01JAbcdefghijklmnopqrstuvw
-          title: Id
-          type: string
-        latest_version:
-          anyOf:
-          - type: string
-          - type: 'null'
-          description: 'The latest version identifier for the skill.
-
-
-            This represents the most recent version of the skill that has been created.'
-          examples:
-          - '1759178010641129'
-          title: Latest Version
-        source:
-          description: 'Source of the skill.
-
-
-            This may be one of the following values:
-
-            * `"custom"`: the skill was created by a user
-
-            * `"anthropic"`: the skill was created by Anthropic'
-          examples:
-          - custom
-          title: Source
-          type: string
-        type:
-          default: skill
-          description: 'Object type.
-
-
-            For Skills, this is always `"skill"`.'
-          title: Type
-          type: string
-        updated_at:
-          description: ISO 8601 timestamp of when the skill was last updated.
-          examples:
-          - '2024-10-30T23:58:27.427722Z'
-          title: Updated At
-          type: string
-      required:
-      - created_at
-      - display_title
-      - id
-      - latest_version
-      - source
-      - type
-      - updated_at
-      title: GetSkillResponse
-      type: object
-    DeletedSkillVersion:
-      properties:
+            This is extracted from the SKILL.md file in the skill upload.'
         id:
           type: string
           title: Id
           description: 'Unique identifier for this Skill Version. The id addresses the version in
 
             paths and pins it in references.'
+        name:
+          type: string
+          title: Name
+          description: 'The Skill''s immutable kebab-case slug, set at creation from the first
+
+            upload''s SKILL.md frontmatter `name` (or its enclosing directory). Every
+
+            later upload must resolve to the same value. Also the top-level directory
+
+            of the Skill''s mounted files and the base name of a downloaded archive.'
+        skill_id:
+          type: string
+          title: Skill Id
+          description: 'Unique identifier for the skill.
+
+
+            The format and length of IDs may change over time.'
+          examples:
+          - skill_01JAbcdefghijklmnopqrstuvw
         type:
           type: string
-          const: skill_version_deleted
+          const: skill_version
           title: Type
-          description: 'Deleted object type.
+          description: 'Object type.
 
 
-            For Skill Versions, this is always `"skill_version_deleted"`.'
-          default: skill_version_deleted
+            For Skill Versions, this is always `"skill_version"`.'
+          default: skill_version
       type: object
       required:
+      - created_at
+      - description
       - id
+      - name
+      - skill_id
       - type
-      title: DeletedSkillVersion
+      title: SkillVersion
+    BetaOverloadedError:
+      properties:
+        message:
+          default: Overloaded
+          title: Message
+          type: string
+        type:
+          const: overloaded_error
+          default: overloaded_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: OverloadedError
+      type: object
     InvalidRequestError:
       properties:
         message:
@@ -2087,64 +2231,21 @@ components:
       - type
       title: InvalidRequestError
       type: object
-    OverloadedError:
+    APIError:
       properties:
         message:
-          default: Overloaded
+          default: Internal server error
           title: Message
           type: string
         type:
-          const: overloaded_error
-          default: overloaded_error
+          const: api_error
+          default: api_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: OverloadedError
-      type: object
-    BetaErrorResponse:
-      properties:
-        error:
-          discriminator:
-            mapping:
-              api_error: '#/components/schemas/BetaAPIError'
-              authentication_error: '#/components/schemas/BetaAuthenticationError'
-              billing_error: '#/components/schemas/BetaBillingError'
-              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
-              not_found_error: '#/components/schemas/BetaNotFoundError'
-              overloaded_error: '#/components/schemas/BetaOverloadedError'
-              permission_error: '#/components/schemas/BetaPermissionError'
-              rate_limit_error: '#/components/schemas/BetaRateLimitError'
-              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
-            propertyName: type
-          oneOf:
-          - $ref: '#/components/schemas/BetaInvalidRequestError'
-          - $ref: '#/components/schemas/BetaAuthenticationError'
-          - $ref: '#/components/schemas/BetaBillingError'
-          - $ref: '#/components/schemas/BetaPermissionError'
-          - $ref: '#/components/schemas/BetaNotFoundError'
-          - $ref: '#/components/schemas/BetaRateLimitError'
-          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
-          - $ref: '#/components/schemas/BetaAPIError'
-          - $ref: '#/components/schemas/BetaOverloadedError'
-          title: Error
-        request_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          title: Request Id
-        type:
-          const: error
-          default: error
-          title: Type
-          type: string
-      required:
-      - error
-      - request_id
-      - type
-      title: ErrorResponse
+      title: APIError
       type: object
     BetaAPIError:
       properties:
@@ -2161,91 +2262,6 @@ components:
       - message
       - type
       title: APIError
-      type: object
-    ListSkillVersionsResponse:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/SkillVersion'
-          type: array
-          title: Data
-          description: List of skills.
-        next_page:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Next Page
-          description: 'Token for fetching the next page of results.
-
-
-            If `null`, there are no more results available. Pass this value to the `page` parameter in the next request to get the next page.'
-      type: object
-      required:
-      - data
-      - next_page
-      title: ListSkillVersionsResponse
-    AnthropicBeta:
-      anyOf:
-      - type: string
-      - type: string
-        enum:
-        - message-batches-2024-09-24
-        - prompt-caching-2024-07-31
-        - computer-use-2024-10-22
-        - computer-use-2025-01-24
-        - pdfs-2024-09-25
-        - token-counting-2024-11-01
-        - token-efficient-tools-2025-02-19
-        - output-128k-2025-02-19
-        - files-api-2025-04-14
-        - mcp-client-2025-04-04
-        - mcp-client-2025-11-20
-        - dev-full-thinking-2025-05-14
-        - interleaved-thinking-2025-05-14
-        - code-execution-2025-05-22
-        - extended-cache-ttl-2025-04-11
-        - context-1m-2025-08-07
-        - context-management-2025-06-27
-        - model-context-window-exceeded-2025-08-26
-        - skills-2025-10-02
-        - fast-mode-2026-02-01
-        - output-300k-2026-03-24
-        - user-profiles-2026-03-24
-        - user-profiles-2026-08-18
-        - advisor-tool-2026-03-01
-        - managed-agents-2026-04-01
-        - cache-diagnosis-2026-04-07
-        - dreaming-2026-04-21
-        - thinking-token-count-2026-05-13
-        - server-side-fallback-2026-06-01
-        - server-side-fallback-2026-07-01
-        - fallback-credit-2026-06-01
-        - fallback-credit-2026-07-01
-        - agent-memory-2026-07-22
-        - mid-conversation-tool-changes-2026-07-01
-        - compact-2026-01-12
-        - computer-use-2025-11-24
-        - mcp-tunnels-2026-06-22
-        - structured-outputs-2025-11-13
-        - task-budgets-2026-03-13
-        - thinking-display-updates-2026-08-18
-        - ce-user-management-2026-07-13
-        x-stainless-nominal: false
-    BetaRateLimitError:
-      properties:
-        message:
-          default: Rate limited
-          title: Message
-          type: string
-        type:
-          const: rate_limit_error
-          default: rate_limit_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: RateLimitError
       type: object
     BetaListSkillVersionsResponse:
       properties:
@@ -2278,35 +2294,19 @@ components:
       - next_page
       title: ListSkillVersionsResponse
       type: object
-    RateLimitError:
+    OverloadedError:
       properties:
         message:
-          default: Rate limited
+          default: Overloaded
           title: Message
           type: string
         type:
-          const: rate_limit_error
-          default: rate_limit_error
+          const: overloaded_error
+          default: overloaded_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: RateLimitError
-      type: object
-    AuthenticationError:
-      properties:
-        message:
-          default: Authentication error
-          title: Message
-          type: string
-        type:
-          const: authentication_error
-          default: authentication_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: AuthenticationError
+      title: OverloadedError
       type: object

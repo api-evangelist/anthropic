@@ -13,7 +13,7 @@ info:
   version: 1.0.0
 sourceDescriptions:
 - name: messageBatchesApi
-  url: ../openapi/anthropic-message-batches-api-openapi.yml
+  url: ../openapi/_superseded/anthropic-message-batches-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: create-poll-retrieve-batch

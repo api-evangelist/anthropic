@@ -1,4 +1,4 @@
-generated: '2026-06-20'
+generated: '2026-08-27'
 method: searched
 source: https://docs.anthropic.com/en/api/versioning, https://platform.claude.com/docs/en/release-notes/api
 versioning:
@@ -6,32 +6,70 @@ versioning:
   header: anthropic-version
   current: '2023-06-01'
   docs: https://docs.anthropic.com/en/api/versioning
-  notes: The API is versioned by a required anthropic-version request header (e.g.
-    2023-06-01). Non-breaking additions ship without a version bump; the error type
-    and other enum values may expand over time.
+  notes: The API is versioned by a required anthropic-version request header (e.g. 2023-06-01). Non-breaking
+    additions ship without a version bump; the error type and other enum values may expand over time.
 beta_headers:
   header: anthropic-beta
   docs: https://docs.anthropic.com/en/api/beta-headers
-  notes: Opt into pre-GA features with dated beta identifiers (e.g. skills-2025-10-02,
-    managed-agents-2026-04-01, agent-memory-2026-07-22, output-300k-2026-03-24, mcp-tunnels-2026-06-22).
+  notes: Opt into pre-GA features with dated beta identifiers (e.g. skills-2025-10-02, managed-agents-2026-04-01,
+    agent-memory-2026-07-22, output-300k-2026-03-24, mcp-tunnels-2026-06-22).
 deprecation:
-  policy_url: https://docs.anthropic.com/en/about-claude/model-deprecations
+  policy_url: https://platform.claude.com/docs/en/about-claude/model-deprecations
   sunset_header: false
-  notes: Model deprecations are announced in release notes with a dated retirement.
-    Retired models return an error. No RFC 8594 Sunset/Deprecation HTTP headers.
+  notes: Model deprecations are announced in release notes with a dated retirement. Retired models return
+    an error. No RFC 8594 Sunset/Deprecation HTTP headers.
   recent_retirements:
-  - {model: claude-sonnet-4-20250514, retired: '2026-06-15'}
-  - {model: claude-opus-4-20250514, retired: '2026-06-15'}
+  - model: claude-opus-4-1-20250805
+    retired: '2026-08-05'
+    note: All requests now return an error. Researchers can request ongoing access through the External
+      Researcher Access Program.
+  - model: claude-sonnet-4-20250514
+    retired: '2026-06-15'
+  - model: claude-opus-4-20250514
+    retired: '2026-06-15'
   recent_deprecations:
-  - {model: claude-opus-4-1-20250805, retirement: '2026-08-05'}
-  - {feature: fast-mode (Claude Opus 4.7), removal: '2026-07-24'}
+  - model: claude-opus-4-1-20250805
+    retirement: '2026-08-05'
+  - feature: fast-mode (Claude Opus 4.7)
+    removal: '2026-07-24'
+  recent_feature_removals:
+  - feature: fast mode on Claude Opus 4.7
+    removed: '2026-07-24'
+    note: speed:"fast" now returns an error with NO fallback to standard speed (unlike Opus 4.6, which
+      fell back silently). Migrate to Opus 5 or Opus 4.8.
+  - feature: fast mode on Claude Opus 4.6
+    removed: '2026-06-29'
+    note: Requests run at standard speed and rates; no error.
+  - feature: Text Completions API, and temperature/top_p/top_k on Messages methods (Python SDK)
+    removed: '2026-08-20'
+    note: Removed in Python SDK v1.0. SDK-level removal of long-deprecated surface.
+  beta_graduations:
+  - feature: Files API
+    ga: '2026-08-19'
+    note: files-api-2025-04-14 header no longer required; requests without it get the new response format.
+  - feature: Agent Skills / Skills API (/v1/skills)
+    ga: '2026-08-19'
+    note: skills-2025-10-02 header no longer required.
+  - feature: Computer use tool
+    ga: '2026-08-19'
+    note: Now the computer_toolset_20260801 toolset; upgrading changes the request shape.
+  - feature: Admin API Claude Enterprise user management
+    ga: '2026-08-19'
+  - feature: Compliance API session endpoints (Cowork, Claude Code)
+    ga: '2026-08-26'
+  pattern_note: Anthropic's deprecation mechanism is MODEL RETIREMENT, not endpoint sunset. A retired
+    model id returns an error; endpoints themselves are stable behind the anthropic-version date header.
+    There are no RFC 8594 Sunset or Deprecation HTTP headers, so a client cannot detect an impending retirement
+    from a response — it has to read the release notes. That is the single largest lifecycle gap on this
+    API.
 sla:
   url: https://trust.anthropic.com/
-  notes: Enterprise agreements carry availability commitments; no public numeric uptime
-    SLA published on the developer docs.
+  notes: Enterprise agreements carry availability commitments; no public numeric uptime SLA published
+    on the developer docs.
 status_page: https://status.anthropic.com/
 data_retention:
   docs: https://docs.anthropic.com/en/manage-claude/api-and-data-retention
-  notes: Zero Data Retention (ZDR) available for eligible orgs; some frontier models
-    (e.g. Claude Fable 5) require 30-day retention and are not available under ZDR.
+  notes: Zero Data Retention (ZDR) available for eligible orgs; some frontier models (e.g. Claude Fable
+    5) require 30-day retention and are not available under ZDR.
 deprecated_operations: []
+console_note: Workbench was renamed Playground on 2026-08-18; see sandbox/anthropic-sandbox.yml.

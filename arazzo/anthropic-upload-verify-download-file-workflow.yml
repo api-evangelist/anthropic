@@ -43,7 +43,7 @@ workflows:
     description: >-
       Upload a file to Anthropic's servers for later use, sending the binary as
       multipart form data.
-    operationId: createFile
+    operationId: upload_file_v1_files_post
     parameters:
     - name: x-api-key
       in: header
@@ -65,7 +65,7 @@ workflows:
     description: >-
       Retrieve the stored file metadata to confirm the upload succeeded and
       inspect its mime type, size, and downloadable flag.
-    operationId: getFileMetadata
+    operationId: get_file_metadata_v1_files__file_id__get
     parameters:
     - name: x-api-key
       in: header
@@ -100,7 +100,7 @@ workflows:
     description: >-
       Download the raw content of the uploaded file now that it is confirmed
       downloadable.
-    operationId: downloadFileContent
+    operationId: download_file_v1_files__file_id__content_get
     parameters:
     - name: x-api-key
       in: header

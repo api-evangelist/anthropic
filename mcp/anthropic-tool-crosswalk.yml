@@ -1,0 +1,95 @@
+generated: '2026-08-27'
+method: derived
+source: mcp/anthropic-mcp.yml, openapi/*.yml, graphql/anthropic-graphql.md
+notes: >-
+  This crosswalk is unusual and the shape of the divergence is the finding.
+  Anthropic's ONE published first-party MCP server is Claude Code over stdio
+  (`claude mcp serve`), whose tools are a coding agent's local file/shell/edit
+  toolset — they do NOT front the Claude REST API and therefore bind to NO
+  OpenAPI operation. The tools[] in mcp/anthropic-mcp.yml are a DERIVED candidate
+  set (status: candidate) showing how the REST API could be exposed over MCP; the
+  crosswalk below binds those candidates to their backing operationIds so the
+  mapping is auditable if Anthropic ever ships such a server. Every row is marked
+  candidate in `binding` for that reason. There is no live MCP schema to
+  introspect: `tools/list` was not answerable anonymously on any Anthropic host
+  (probed 2026-08-27).
+surfaces:
+  openapi:
+    files: openapi/*.yml
+    master: openapi/_original/anthropic-api-openapi.json
+    operations_total: 212
+    gated: false
+  graphql:
+    endpoint: null
+    published: false
+    note: Anthropic publishes no GraphQL API. graphql/anthropic-graphql.md records that
+      absence and is not a schema.
+  mcp:
+    published_server: claude-code (stdio, `claude mcp serve`)
+    published_server_fronts_rest_api: false
+    url: null
+    gated: n/a — local stdio, no network endpoint
+crosswalk:
+- {tool: create_message, category: inference, rest: [createMessage], binding: candidate, confidence: high}
+- {tool: count_tokens, category: inference, rest: [countMessageTokens, countTokens], binding: candidate, confidence: high,
+   note: Two refined specs expose the same POST /v1/messages/count_tokens under different operationIds (countMessageTokens, countTokens) — a split artefact of tag-based refinement, not two endpoints.}
+- {tool: list_models, category: catalog, rest: [listModels], binding: candidate, confidence: high}
+- {tool: get_model, category: catalog, rest: [getModel], binding: candidate, confidence: high}
+- {tool: create_message_batch, category: batch, rest: [createMessageBatch], binding: candidate, confidence: high}
+- {tool: list_message_batches, category: batch, rest: [listMessageBatches], binding: candidate, confidence: high}
+- {tool: upload_file, category: files, rest: [createFile], binding: candidate, confidence: high}
+- {tool: list_files, category: files, rest: [listFiles], binding: candidate, confidence: high}
+- {tool: create_skill, category: skills, rest: [createSkill], binding: candidate, confidence: high}
+- {tool: list_skills, category: skills, rest: [listSkills], binding: candidate, confidence: high}
+- {tool: create_agent, category: managed-agents, rest: [createAgent], binding: candidate, confidence: high}
+- {tool: create_session, category: managed-agents, rest: [createSession], binding: candidate, confidence: high}
+- {tool: get_usage_report, category: usage, rest: [getMessagesUsageReport], binding: candidate, confidence: medium,
+   note: The candidate tool name says "usage report"; the repo exposes the messages usage report and, separately, getClaudeCodeUsageReport. Bound to the messages report.}
+- {tool: get_cost_report, category: usage, rest: [getCostReport], binding: candidate, confidence: high}
+- {tool: list_workspaces, category: admin, rest: [listWorkspaces], binding: candidate, confidence: high}
+mcp_only:
+- tool: (claude-code stdio toolset)
+  reason: >-
+    The one server Anthropic actually publishes exposes Claude Code's local tools
+    — file read/edit, bash, search, task management — to an MCP client. None of
+    these has a public REST equivalent on api.anthropic.com; they act on the
+    caller's own machine, not on Anthropic's API. Anthropic does not publish a
+    tools/list manifest for it, and it cannot be introspected without running the
+    binary locally.
+- tool: mcp_connector (Messages API `mcp_servers` parameter)
+  reason: >-
+    Inverted direction. This is Anthropic acting as an MCP CLIENT — the Messages
+    API calls out to third-party remote MCP servers named in the request body
+    (beta header mcp-client-2025-04-04). It is not a tool an agent can call on
+    Anthropic; it is Anthropic calling tools elsewhere. Only tool calls are
+    supported, and local stdio servers cannot be attached.
+rest_only:
+- {operations: [getAgent, updateAgent, archiveAgent, listAgents, listAgentVersions], reason: No candidate tool drafted; Managed Agents lifecycle beyond create.}
+- {operations: [getSession, listSessions, updateSession, deleteSession, archiveSession], reason: Session lifecycle beyond create.}
+- {operations: [sendSessionEvents, streamSession], reason: SSE stream and event ingestion — a streaming surface MCP tools do not model.}
+- {operations: [createEnvironment, listEnvironments, getEnvironment, deleteEnvironment, archiveEnvironment], reason: Environments.}
+- {operations: [retrieveMessageBatch, retrieveMessageBatchResults, cancelMessageBatch, deleteMessageBatch], reason: Batch poll/retrieve/reverse.}
+- {operations: [getFileMetadata, deleteFile, downloadFileContent], reason: File read and delete.}
+- {operations: [getSkill, deleteSkill, listSkillVersions, createSkillVersion, getSkillVersion], reason: Skill read/version lifecycle.}
+- {operations: [generatePrompt, improvePrompt, templatizePrompt], reason: Experimental prompt tools.}
+- {operations: [getClaudeCodeUsageReport], reason: Claude Code analytics.}
+- {operations: [getCurrentOrganization, listOrganizationMembers, getOrganizationMember, updateOrganizationMember, removeOrganizationMember], reason: Admin — organization members.}
+- {operations: [listOrganizationInvites, createOrganizationInvite, getOrganizationInvite, deleteOrganizationInvite], reason: Admin — invites.}
+- {operations: [createWorkspace, getWorkspace, updateWorkspace, archiveWorkspace], reason: Admin — workspace lifecycle beyond list.}
+- {operations: [listWorkspaceMembers, addWorkspaceMember, getWorkspaceMember, updateWorkspaceMember, removeWorkspaceMember], reason: Admin — workspace members.}
+- {operations: [listApiKeys, getApiKey, updateApiKey], reason: Admin — API keys.}
+coverage:
+  rest_operations_in_repo: 66
+  mcp_candidate_tools: 15
+  bound_rows: 15
+  bound_operations: 16
+  mcp_only_surfaces: 2
+  rest_only_operation_groups: 14
+  live_mcp_tools_verified: 0
+  note: >-
+    bound_operations exceeds bound_rows because count_tokens binds to two
+    duplicate operationIds for the same path. rest_operations_in_repo counts the
+    refined per-tag specs; the harvested master spec at
+    openapi/_original/anthropic-api-openapi.json carries 212 operations including
+    beta surfaces (Dreams, Vaults, Memory Stores, Deployments, MCP Tunnels,
+    Compliance, Federation) that the refined set does not yet cover.

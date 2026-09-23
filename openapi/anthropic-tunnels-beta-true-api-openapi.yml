@@ -295,37 +295,21 @@ paths:
       - Tunnels?beta=true
 components:
   schemas:
-    BetaGatewayTimeoutError:
+    BetaBillingError:
       properties:
         message:
-          default: Request timeout
+          default: Billing error
           title: Message
           type: string
         type:
-          const: timeout_error
-          default: timeout_error
+          const: billing_error
+          default: billing_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: GatewayTimeoutError
-      type: object
-    BetaAPIError:
-      properties:
-        message:
-          default: Internal server error
-          title: Message
-          type: string
-        type:
-          const: api_error
-          default: api_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: APIError
+      title: BillingError
       type: object
     BetaErrorResponse:
       properties:
@@ -369,92 +353,6 @@ components:
       - request_id
       - type
       title: ErrorResponse
-      type: object
-    BetaTimestamp:
-      description: A timestamp in RFC 3339 format
-      type: string
-      format: date-time
-    BetaOverloadedError:
-      properties:
-        message:
-          default: Overloaded
-          title: Message
-          type: string
-        type:
-          const: overloaded_error
-          default: overloaded_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: OverloadedError
-      type: object
-    BetaAuthenticationError:
-      properties:
-        message:
-          default: Authentication error
-          title: Message
-          type: string
-        type:
-          const: authentication_error
-          default: authentication_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: AuthenticationError
-      type: object
-    BetaListTunnelsResponse:
-      description: A paginated list of tunnels.
-      type: object
-      additionalProperties: false
-      required:
-      - data
-      - next_page
-      properties:
-        data:
-          description: List of tunnels, ordered by created_at descending.
-          type: array
-          items:
-            $ref: '#/components/schemas/BetaTunnel'
-        next_page:
-          description: Pagination cursor for the next page, or null if no more results.
-          anyOf:
-          - type: string
-          - type: 'null'
-    BetaNotFoundError:
-      properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
-        type:
-          const: not_found_error
-          default: not_found_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: NotFoundError
-      type: object
-    BetaBillingError:
-      properties:
-        message:
-          default: Billing error
-          title: Message
-          type: string
-        type:
-          const: billing_error
-          default: billing_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: BillingError
       type: object
     AnthropicBeta:
       anyOf:
@@ -503,6 +401,70 @@ components:
         - thinking-display-updates-2026-08-18
         - ce-user-management-2026-07-13
         x-stainless-nominal: false
+    BetaNotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    BetaOverloadedError:
+      properties:
+        message:
+          default: Overloaded
+          title: Message
+          type: string
+        type:
+          const: overloaded_error
+          default: overloaded_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: OverloadedError
+      type: object
+    BetaAPIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
+          type: string
+        type:
+          const: api_error
+          default: api_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
+    BetaInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
     BetaTunnel:
       description: An MCP tunnel.
       type: object
@@ -538,38 +500,72 @@ components:
           anyOf:
           - $ref: '#/components/schemas/BetaTimestamp'
           - type: 'null'
-    BetaRateLimitError:
+    BetaGatewayTimeoutError:
       properties:
         message:
-          default: Rate limited
+          default: Request timeout
           title: Message
           type: string
         type:
-          const: rate_limit_error
-          default: rate_limit_error
+          const: timeout_error
+          default: timeout_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: RateLimitError
+      title: GatewayTimeoutError
       type: object
-    BetaInvalidRequestError:
+    BetaListTunnelsResponse:
+      description: A paginated list of tunnels.
+      type: object
+      additionalProperties: false
+      required:
+      - data
+      - next_page
+      properties:
+        data:
+          description: List of tunnels, ordered by created_at descending.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaTunnel'
+        next_page:
+          description: Pagination cursor for the next page, or null if no more results.
+          anyOf:
+          - type: string
+          - type: 'null'
+    BetaAuthenticationError:
       properties:
         message:
-          default: Invalid request
+          default: Authentication error
           title: Message
           type: string
         type:
-          const: invalid_request_error
-          default: invalid_request_error
+          const: authentication_error
+          default: authentication_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: InvalidRequestError
+      title: AuthenticationError
       type: object
+    BetaCreateTunnelRequest:
+      description: Request parameters for creating a tunnel.
+      type: object
+      additionalProperties: false
+      properties:
+        display_name:
+          description: Optional human-readable name for the tunnel (1-255 characters).
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 255
+          - type: 'null'
+    BetaTimestamp:
+      description: A timestamp in RFC 3339 format
+      type: string
+      format: date-time
     BetaPermissionError:
       properties:
         message:
@@ -586,15 +582,19 @@ components:
       - type
       title: PermissionError
       type: object
-    BetaCreateTunnelRequest:
-      description: Request parameters for creating a tunnel.
-      type: object
-      additionalProperties: false
+    BetaRateLimitError:
       properties:
-        display_name:
-          description: Optional human-readable name for the tunnel (1-255 characters).
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 255
-          - type: 'null'
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object

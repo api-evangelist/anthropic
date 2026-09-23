@@ -16,7 +16,7 @@ servers:
 security:
 - AdminApiKeyAuth: []
 tags:
-- name: Api Keys
+- name: API Keys
   description: Monitor and manage API keys
 paths:
   /organizations/api_keys:
@@ -25,7 +25,7 @@ paths:
       description: Retrieves a paginated list of API keys for the organization.
       operationId: listApiKeys
       tags:
-      - Api Keys
+      - API Keys
       parameters:
       - $ref: '#/components/parameters/AnthropicVersion'
       - $ref: '#/components/parameters/Limit'
@@ -74,7 +74,7 @@ paths:
       description: Retrieves details about a specific API key.
       operationId: getApiKey
       tags:
-      - Api Keys
+      - API Keys
       parameters:
       - $ref: '#/components/parameters/AnthropicVersion'
       - $ref: '#/components/parameters/ApiKeyId'
@@ -98,7 +98,7 @@ paths:
       description: Updates an API key's name or status.
       operationId: updateApiKey
       tags:
-      - Api Keys
+      - API Keys
       parameters:
       - $ref: '#/components/parameters/AnthropicVersion'
       - $ref: '#/components/parameters/ApiKeyId'
@@ -127,79 +127,19 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"ApiKeyExample\"\n}\n"
 components:
-  examples:
-    ErrorExample:
-      summary: Error Response
-      value:
-        type: invalid_request_error
-        message: The request was invalid or malformed.
-    UpdateApiKeyRequestExample:
-      summary: Update Api Key Request
-      value:
-        name: Production API Key - Renamed
-        status: active
-    ApiKeyListExample:
-      summary: Api Key List Response
-      value:
-        data:
-        - id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
-          type: api_key
-          name: Production API Key
-          workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-          created_at: '2024-10-30T23:58:27.427722Z'
-          created_by:
-            id: user_01WCz1FkmYMm4gnmykNKUu3Q
-            type: user
-          status: active
-          last_used_at: '2024-11-15T10:30:00.000000Z'
-        first_id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
-        has_more: false
-        last_id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
-    ApiKeyExample:
-      summary: Api Key Response
-      value:
-        id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
-        type: api_key
-        name: Production API Key
-        workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-        created_at: '2024-10-30T23:58:27.427722Z'
-        created_by:
-          id: user_01WCz1FkmYMm4gnmykNKUu3Q
-          type: user
-        status: active
-        last_used_at: '2024-11-15T10:30:00.000000Z'
   schemas:
-    ApiKeyStatus:
-      type: string
-      enum:
-      - active
-      - inactive
-      - archived
-      description: Current status of the API key
-    ApiKeyList:
+    Error:
       type: object
       required:
-      - data
-      - has_more
-      - first_id
-      - last_id
+      - type
+      - message
       properties:
-        data:
-          type: array
-          description: List of API keys
-          items:
-            $ref: '#/components/schemas/ApiKey'
-        first_id:
+        type:
           type: string
-          nullable: true
-          description: First ID in the data list for pagination
-        has_more:
-          type: boolean
-          description: Indicates if there are more results available
-        last_id:
+          description: Error type identifier
+        message:
           type: string
-          nullable: true
-          description: Last ID in the data list for pagination
+          description: Human-readable error message
     ApiKey:
       type: object
       required:
@@ -256,35 +196,89 @@ components:
           description: Updated display name for the API key
         status:
           $ref: '#/components/schemas/ApiKeyStatus'
-    Error:
+    ApiKeyStatus:
+      type: string
+      enum:
+      - active
+      - inactive
+      - archived
+      description: Current status of the API key
+    ApiKeyList:
       type: object
       required:
-      - type
-      - message
+      - data
+      - has_more
+      - first_id
+      - last_id
       properties:
-        type:
+        data:
+          type: array
+          description: List of API keys
+          items:
+            $ref: '#/components/schemas/ApiKey'
+        first_id:
           type: string
-          description: Error type identifier
-        message:
+          nullable: true
+          description: First ID in the data list for pagination
+        has_more:
+          type: boolean
+          description: Indicates if there are more results available
+        last_id:
           type: string
-          description: Human-readable error message
+          nullable: true
+          description: Last ID in the data list for pagination
+  examples:
+    UpdateApiKeyRequestExample:
+      summary: Update Api Key Request
+      value:
+        name: Production API Key - Renamed
+        status: active
+    ApiKeyExample:
+      summary: Api Key Response
+      value:
+        id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+        type: api_key
+        name: Production API Key
+        workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        created_at: '2024-10-30T23:58:27.427722Z'
+        created_by:
+          id: user_01WCz1FkmYMm4gnmykNKUu3Q
+          type: user
+        status: active
+        last_used_at: '2024-11-15T10:30:00.000000Z'
+    ApiKeyListExample:
+      summary: Api Key List Response
+      value:
+        data:
+        - id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+          type: api_key
+          name: Production API Key
+          workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+          created_at: '2024-10-30T23:58:27.427722Z'
+          created_by:
+            id: user_01WCz1FkmYMm4gnmykNKUu3Q
+            type: user
+          status: active
+          last_used_at: '2024-11-15T10:30:00.000000Z'
+        first_id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+        has_more: false
+        last_id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The request was invalid or malformed.
+  responses:
+    ErrorResponse:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
   parameters:
-    ApiKeyId:
-      name: api_key_id
-      in: path
-      required: true
-      description: Unique identifier for the API key
-      schema:
-        type: string
-      example: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
-      required: true
-      description: The version of the Anthropic API to use
-      schema:
-        type: string
-        example: '2023-06-01'
     Limit:
       name: limit
       in: query
@@ -309,16 +303,22 @@ components:
       description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
       schema:
         type: string
-  responses:
-    ErrorResponse:
-      description: Error Response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            ErrorExample:
-              $ref: '#/components/examples/ErrorExample'
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
+      schema:
+        type: string
+        example: '2023-06-01'
+    ApiKeyId:
+      name: api_key_id
+      in: path
+      required: true
+      description: Unique identifier for the API key
+      schema:
+        type: string
+      example: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
   securitySchemes:
     AdminApiKeyAuth:
       type: apiKey

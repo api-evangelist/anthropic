@@ -1,4 +1,4 @@
-generated: '2026-06-20'
+generated: '2026-08-27'
 method: searched
 source: openapi/*.yml, https://platform.claude.com/docs/en/api/overview, https://platform.claude.com/docs/en/api/errors
 base_url: https://api.anthropic.com
@@ -53,3 +53,138 @@ request_size_limits:
   token_counting: 32MB
   batches: 256MB
   files: 500MB
+reversibility:
+  grade: verified
+  grade_basis: >-
+    At least one write surface publishes BOTH a reversal operation and a stated
+    window: cancelMessageBatch is documented as callable "any time before
+    processing ends", and the batch results window is stated as 29 days from
+    creation with a 24-hour processing expiry. Most other write surfaces publish a
+    reversal path with NO stated window, and several publish no reversal at all —
+    recorded honestly below rather than averaged away.
+  docs: https://platform.claude.com/docs/en/build-with-claude/batch-processing
+  surfaces:
+  - resource: message batch
+    write: createMessageBatch
+    reversal: cancelMessageBatch
+    window: Any time before processing ends. Cancellation is best-effort — the batch
+      enters a `canceling` state and the system may complete in-progress,
+      non-interruptible requests first, so a cancel may result in zero canceled
+      requests. Check request_counts.canceled.
+    window_stated: true
+    grade: verified
+    docs: https://platform.claude.com/docs/en/api/messages/batches/cancel
+  - resource: message batch (expiry, not a reversal)
+    write: createMessageBatch
+    reversal: null
+    window: Batches expire if processing does not complete within 24 hours; results
+      are downloadable for 29 days after creation, after which the batch remains
+      readable but its results do not. Expired requests are not billed.
+    window_stated: true
+    grade: verified
+    note: A time bound, not an undo. Recorded because it is the window an agent must
+      plan against.
+    docs: https://platform.claude.com/docs/en/build-with-claude/batch-processing
+  - resource: message batch (hard delete)
+    write: createMessageBatch
+    reversal: deleteMessageBatch
+    window: null
+    window_stated: false
+    grade: documented
+    note: Permanent. Delete is the opposite of a reversal here — it destroys the
+      results, it does not restore anything.
+  - resource: file
+    write: createFile
+    reversal: deleteFile
+    window: null
+    window_stated: false
+    grade: documented
+    note: >-
+      Permanent delete with no published restore and no grace window. The soft
+      alternative is expiry: set expires_in_seconds at upload and the file object
+      reports expires_at.
+    docs: https://platform.claude.com/docs/en/build-with-claude/files
+  - resource: managed agent
+    write: createAgent
+    reversal: archiveAgent
+    window: null
+    window_stated: false
+    grade: documented
+    note: Archive is a soft state; Anthropic's docs do not state an un-archive
+      operation or a restore window.
+  - resource: managed agent session
+    write: createSession
+    reversal: archiveSession
+    window: null
+    window_stated: false
+    grade: documented
+    note: >-
+      deleteSession also exists and is permanent — the webhook catalog states
+      session.deleted leaves no object to fetch. Archive and delete are different
+      actions; archive terminates the session (session.status_terminated).
+  - resource: environment
+    write: createEnvironment
+    reversal: archiveEnvironment
+    window: null
+    window_stated: false
+    grade: documented
+    note: deleteEnvironment is permanent, including deleting an already-archived
+      environment.
+  - resource: workspace
+    write: createWorkspace
+    reversal: archiveWorkspace
+    window: null
+    window_stated: false
+    grade: documented
+    note: No published un-archive operation or window. Treat as one-way.
+  - resource: organization invite
+    write: createOrganizationInvite
+    reversal: deleteOrganizationInvite
+    window: Before acceptance only. Once the invite is accepted there is no invite
+      left to revoke; removeOrganizationMember is the action instead.
+    window_stated: true
+    grade: verified
+  - resource: workspace member
+    write: addWorkspaceMember
+    reversal: removeWorkspaceMember
+    window: null
+    window_stated: false
+    grade: documented
+    note: Removes workspace access only; the user remains in the organization.
+      removeOrganizationMember is the wider, separate action.
+  - resource: skill
+    write: createSkill
+    reversal: deleteSkill
+    window: null
+    window_stated: false
+    grade: documented
+    note: >-
+      Versioned — createSkillVersion adds a version rather than overwriting, so
+      rolling back to an earlier getSkillVersion is the practical reversal for a
+      bad publish. Deleting the skill is not.
+  - resource: message (inference)
+    write: createMessage
+    reversal: null
+    window: null
+    window_stated: false
+    grade: na
+    note: >-
+      Inference is not reversible and Anthropic does not claim it is. A generated
+      message cannot be un-generated, un-billed, or recalled. This is the honest
+      answer for the API's highest-volume write, and an agent should treat spend as
+      the irreversible consequence — cap it with a workspace spend limit or a
+      Managed Agents session budget rather than expecting an undo.
+  irreversible:
+  - createMessage (inference and its token spend)
+  - deleteFile
+  - deleteMessageBatch
+  - deleteSession / deleteEnvironment / memory store delete (webhook docs state these
+    leave no object to fetch)
+  spend_controls:
+  - {control: workspace spend limit, docs: https://platform.claude.com/docs/en/api/rate-limits}
+  - {control: Managed Agents session budget, docs: 'https://platform.claude.com/docs/en/managed-agents/budgets',
+     note: 'A hard cap on session spend at public list rates; the session pauses with stop reason budget_reached instead of starting new model requests, and changing or removing the budget resumes it.'}
+dry_run_mode:
+  supported: partial
+  mechanism: countMessageTokens
+  ref: sandbox/anthropic-sandbox.yml

@@ -1,6 +1,7 @@
-generated: '2026-06-20'
+generated: '2026-08-27'
 method: searched
-source: live fetch of /.well-known/* on Anthropic hosts
+source: live probe of /.well-known/* on every Anthropic and Claude host, 2026-08-27
+hit_count: 1
 hosts:
 - host: https://www.anthropic.com
   documents:
@@ -8,17 +9,69 @@ hosts:
     status: 200
     file: anthropic-security.txt
     standard: RFC 9116
+    bytes: 315
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
 - host: https://api.anthropic.com
   documents:
   - path: /.well-known/openid-configuration
     status: 404
   - path: /.well-known/oauth-authorization-server
     status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
   - path: /.well-known/api-catalog
     status: 404
   - path: /.well-known/ai-plugin.json
     status: 404
-notes: Anthropic publishes a canonical security.txt at anthropic.com. The Claude
-  API (api.anthropic.com) authenticates with x-api-key and does not expose OIDC/OAuth
-  discovery documents; MCP OAuth discovery is served per remote MCP server, not on
-  the API host.
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://claude.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://platform.claude.com
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://docs.claude.com
+  documents:
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://docs.anthropic.com
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+notes: >-
+  One real document across six hosts: the RFC 9116 security.txt at anthropic.com,
+  re-fetched verbatim 2026-08-27 (315 bytes, HackerOne embedded submission
+  contact + responsible-disclosure policy). Everything else 404s. The Claude API
+  authenticates with x-api-key, not OAuth, so there is no OIDC or RFC 8414
+  discovery document on the API host; MCP OAuth discovery is served per remote
+  MCP server, not by Anthropic. No api-catalog, no ai-plugin.json, and no A2A
+  agent card on any host — see a2a/ (deliberately absent, nothing was authored).
+false_positive_guard: >-
+  www.anthropic.com, docs.*, platform.claude.com and docs.claude.com are Next.js
+  apps that return a large HTML error shell WITH a 404 status on unknown
+  /.well-known/* paths (59KB–288KB bodies). Those are correctly recorded as 404
+  and not as documents. claude.com returns a short 404 body. No host on this
+  provider answers 200 with an SPA shell, so the soft-404 catch-all failure mode
+  does not apply here.

@@ -17,7 +17,7 @@ sourceDescriptions:
   url: ../openapi/anthropic-messages-api-openapi.yml
   type: openapi
 - name: tokenCountingApi
-  url: ../openapi/anthropic-token-counting-api-openapi.yml
+  url: ../openapi/_superseded/anthropic-token-counting-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: count-tokens-then-message
@@ -95,7 +95,7 @@ workflows:
     description: >-
       Send the prompt as a real message now that the input token total is known
       to be within budget, and capture the generated response.
-    operationId: createMessage
+    operationId: messages_post
     parameters:
     - name: x-api-key
       in: header

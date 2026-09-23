@@ -144,102 +144,6 @@ paths:
       - Deployment Runs
 components:
   schemas:
-    BetaManagedAgentsOrganizationDisabledRunError:
-      description: The deployment's organization is disabled.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          enum:
-          - organization_disabled_error
-        message:
-          description: Human-readable error description.
-          type: string
-    BetaManagedAgentsUnknownRunError:
-      description: An unknown or unexpected error caused the run to fail. A fallback variant; clients that do not recognize a new error type can match on message alone.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          enum:
-          - unknown_error
-        message:
-          description: Human-readable error description.
-          type: string
-    BetaGatewayTimeoutError:
-      properties:
-        message:
-          default: Request timeout
-          title: Message
-          type: string
-        type:
-          const: timeout_error
-          default: timeout_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: GatewayTimeoutError
-      type: object
-    BetaManagedAgentsSkillNotFoundRunError:
-      description: A skill referenced by the deployment's agent no longer exists.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          enum:
-          - skill_not_found_error
-        message:
-          description: Human-readable error description.
-          type: string
-    BetaManagedAgentsSessionCreationRejectedRunError:
-      description: The session create request was rejected with a non-retryable validation error.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          enum:
-          - session_creation_rejected_error
-        message:
-          description: Human-readable error description.
-          type: string
-    BetaTimestamp:
-      description: A timestamp in RFC 3339 format
-      type: string
-      format: date-time
-    BetaOverloadedError:
-      properties:
-        message:
-          default: Overloaded
-          title: Message
-          type: string
-        type:
-          const: overloaded_error
-          default: overloaded_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: OverloadedError
-      type: object
     BetaBillingError:
       properties:
         message:
@@ -256,8 +160,94 @@ components:
       - type
       title: BillingError
       type: object
-    BetaManagedAgentsVaultArchivedRunError:
-      description: A vault referenced by the deployment is archived.
+    AnthropicBeta:
+      anyOf:
+      - type: string
+      - type: string
+        enum:
+        - message-batches-2024-09-24
+        - prompt-caching-2024-07-31
+        - computer-use-2024-10-22
+        - computer-use-2025-01-24
+        - pdfs-2024-09-25
+        - token-counting-2024-11-01
+        - token-efficient-tools-2025-02-19
+        - output-128k-2025-02-19
+        - files-api-2025-04-14
+        - mcp-client-2025-04-04
+        - mcp-client-2025-11-20
+        - dev-full-thinking-2025-05-14
+        - interleaved-thinking-2025-05-14
+        - code-execution-2025-05-22
+        - extended-cache-ttl-2025-04-11
+        - context-1m-2025-08-07
+        - context-management-2025-06-27
+        - model-context-window-exceeded-2025-08-26
+        - skills-2025-10-02
+        - fast-mode-2026-02-01
+        - output-300k-2026-03-24
+        - user-profiles-2026-03-24
+        - user-profiles-2026-08-18
+        - advisor-tool-2026-03-01
+        - managed-agents-2026-04-01
+        - cache-diagnosis-2026-04-07
+        - dreaming-2026-04-21
+        - thinking-token-count-2026-05-13
+        - server-side-fallback-2026-06-01
+        - server-side-fallback-2026-07-01
+        - fallback-credit-2026-06-01
+        - fallback-credit-2026-07-01
+        - agent-memory-2026-07-22
+        - mid-conversation-tool-changes-2026-07-01
+        - compact-2026-01-12
+        - computer-use-2025-11-24
+        - mcp-tunnels-2026-06-22
+        - structured-outputs-2025-11-13
+        - task-budgets-2026-03-13
+        - thinking-display-updates-2026-08-18
+        - ce-user-management-2026-07-13
+        x-stainless-nominal: false
+    BetaManagedAgentsRunError:
+      description: Why the run failed to create a session. The type identifies the failure; message is human-readable detail.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          environment_archived_error: '#/components/schemas/BetaManagedAgentsEnvironmentArchivedRunError'
+          agent_archived_error: '#/components/schemas/BetaManagedAgentsAgentArchivedRunError'
+          environment_not_found_error: '#/components/schemas/BetaManagedAgentsEnvironmentNotFoundRunError'
+          vault_not_found_error: '#/components/schemas/BetaManagedAgentsVaultNotFoundRunError'
+          vault_archived_error: '#/components/schemas/BetaManagedAgentsVaultArchivedRunError'
+          file_not_found_error: '#/components/schemas/BetaManagedAgentsFileNotFoundRunError'
+          memory_store_archived_error: '#/components/schemas/BetaManagedAgentsMemoryStoreArchivedRunError'
+          skill_not_found_error: '#/components/schemas/BetaManagedAgentsSkillNotFoundRunError'
+          session_resource_not_found_error: '#/components/schemas/BetaManagedAgentsSessionResourceNotFoundRunError'
+          workspace_archived_error: '#/components/schemas/BetaManagedAgentsWorkspaceArchivedRunError'
+          organization_disabled_error: '#/components/schemas/BetaManagedAgentsOrganizationDisabledRunError'
+          session_rate_limited_error: '#/components/schemas/BetaManagedAgentsSessionRateLimitedRunError'
+          session_creation_rejected_error: '#/components/schemas/BetaManagedAgentsSessionCreationRejectedRunError'
+          unknown_error: '#/components/schemas/BetaManagedAgentsUnknownRunError'
+          self_hosted_resources_unsupported_error: '#/components/schemas/BetaManagedAgentsSelfHostedResourcesUnsupportedRunError'
+          mcp_egress_blocked_error: '#/components/schemas/BetaManagedAgentsMcpEgressBlockedRunError'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsEnvironmentArchivedRunError'
+      - $ref: '#/components/schemas/BetaManagedAgentsAgentArchivedRunError'
+      - $ref: '#/components/schemas/BetaManagedAgentsEnvironmentNotFoundRunError'
+      - $ref: '#/components/schemas/BetaManagedAgentsVaultNotFoundRunError'
+      - $ref: '#/components/schemas/BetaManagedAgentsVaultArchivedRunError'
+      - $ref: '#/components/schemas/BetaManagedAgentsFileNotFoundRunError'
+      - $ref: '#/components/schemas/BetaManagedAgentsMemoryStoreArchivedRunError'
+      - $ref: '#/components/schemas/BetaManagedAgentsSkillNotFoundRunError'
+      - $ref: '#/components/schemas/BetaManagedAgentsSessionResourceNotFoundRunError'
+      - $ref: '#/components/schemas/BetaManagedAgentsWorkspaceArchivedRunError'
+      - $ref: '#/components/schemas/BetaManagedAgentsOrganizationDisabledRunError'
+      - $ref: '#/components/schemas/BetaManagedAgentsSessionRateLimitedRunError'
+      - $ref: '#/components/schemas/BetaManagedAgentsSessionCreationRejectedRunError'
+      - $ref: '#/components/schemas/BetaManagedAgentsUnknownRunError'
+      - $ref: '#/components/schemas/BetaManagedAgentsSelfHostedResourcesUnsupportedRunError'
+      - $ref: '#/components/schemas/BetaManagedAgentsMcpEgressBlockedRunError'
+    BetaManagedAgentsEnvironmentNotFoundRunError:
+      description: The deployment's environment no longer exists.
       type: object
       additionalProperties: false
       required:
@@ -267,7 +257,181 @@ components:
         type:
           type: string
           enum:
-          - vault_archived_error
+          - environment_not_found_error
+        message:
+          description: Human-readable error description.
+          type: string
+    BetaTimestamp:
+      description: A timestamp in RFC 3339 format
+      type: string
+      format: date-time
+    BetaManagedAgentsSelfHostedResourcesUnsupportedRunError:
+      description: The deployment configures resources, but its environment is self-hosted and cannot mount them.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          enum:
+          - self_hosted_resources_unsupported_error
+        message:
+          description: Human-readable error description.
+          type: string
+    BetaManagedAgentsFileNotFoundRunError:
+      description: A file resource referenced by the deployment no longer exists.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          enum:
+          - file_not_found_error
+        message:
+          description: Human-readable error description.
+          type: string
+    BetaPermissionError:
+      properties:
+        message:
+          default: Permission denied
+          title: Message
+          type: string
+        type:
+          const: permission_error
+          default: permission_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: PermissionError
+      type: object
+    BetaManagedAgentsAgentArchivedRunError:
+      description: The deployment's agent was archived.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          enum:
+          - agent_archived_error
+        message:
+          description: Human-readable error description.
+          type: string
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    BetaNotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    BetaManagedAgentsSkillNotFoundRunError:
+      description: A skill referenced by the deployment's agent no longer exists.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          enum:
+          - skill_not_found_error
+        message:
+          description: Human-readable error description.
+          type: string
+    BetaInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    BetaManagedAgentsSessionResourceNotFoundRunError:
+      description: A referenced resource no longer exists and its kind was not reported.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          enum:
+          - session_resource_not_found_error
+        message:
+          description: Human-readable error description.
+          type: string
+    BetaAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    BetaManagedAgentsVaultNotFoundRunError:
+      description: A vault referenced by the deployment no longer exists.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          enum:
+          - vault_not_found_error
         message:
           description: Human-readable error description.
           type: string
@@ -299,8 +463,8 @@ components:
         type: agent
         id: agent_011CZkYqphY8vELVzwCUpqiQ
         version: 1
-    BetaManagedAgentsSelfHostedResourcesUnsupportedRunError:
-      description: The deployment configures resources, but its environment is self-hosted and cannot mount them.
+    BetaManagedAgentsWorkspaceArchivedRunError:
+      description: The deployment's workspace was archived.
       type: object
       additionalProperties: false
       required:
@@ -310,203 +474,10 @@ components:
         type:
           type: string
           enum:
-          - self_hosted_resources_unsupported_error
+          - workspace_archived_error
         message:
           description: Human-readable error description.
           type: string
-    BetaManagedAgentsFileNotFoundRunError:
-      description: A file resource referenced by the deployment no longer exists.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          enum:
-          - file_not_found_error
-        message:
-          description: Human-readable error description.
-          type: string
-    BetaAuthenticationError:
-      properties:
-        message:
-          default: Authentication error
-          title: Message
-          type: string
-        type:
-          const: authentication_error
-          default: authentication_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: AuthenticationError
-      type: object
-    BetaNotFoundError:
-      properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
-        type:
-          const: not_found_error
-          default: not_found_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: NotFoundError
-      type: object
-    BetaManagedAgentsSessionResourceNotFoundRunError:
-      description: A referenced resource no longer exists and its kind was not reported.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          enum:
-          - session_resource_not_found_error
-        message:
-          description: Human-readable error description.
-          type: string
-    BetaManagedAgentsEnvironmentArchivedRunError:
-      description: The deployment's environment was archived.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          enum:
-          - environment_archived_error
-        message:
-          description: Human-readable error description.
-          type: string
-    BetaManagedAgentsTriggerContext:
-      description: Describes what triggered a deployment run, with trigger-specific metadata.
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          schedule: '#/components/schemas/BetaManagedAgentsScheduleTriggerContext'
-          manual: '#/components/schemas/BetaManagedAgentsManualTriggerContext'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsScheduleTriggerContext'
-      - $ref: '#/components/schemas/BetaManagedAgentsManualTriggerContext'
-    BetaManagedAgentsManualTriggerContext:
-      description: The run was started manually by creating a session directly against the deployment.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - manual
-    BetaInvalidRequestError:
-      properties:
-        message:
-          default: Invalid request
-          title: Message
-          type: string
-        type:
-          const: invalid_request_error
-          default: invalid_request_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: InvalidRequestError
-      type: object
-    BetaPermissionError:
-      properties:
-        message:
-          default: Permission denied
-          title: Message
-          type: string
-        type:
-          const: permission_error
-          default: permission_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: PermissionError
-      type: object
-    BetaManagedAgentsSessionRateLimitedRunError:
-      description: Session creation was rejected due to rate limiting. The schedule keeps firing; subsequent runs may succeed.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          enum:
-          - session_rate_limited_error
-        message:
-          description: Human-readable error description.
-          type: string
-    BetaManagedAgentsAgentArchivedRunError:
-      description: The deployment's agent was archived.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          enum:
-          - agent_archived_error
-        message:
-          description: Human-readable error description.
-          type: string
-    BetaManagedAgentsScheduleTriggerContext:
-      description: The run was fired by the deployment's cron schedule.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - scheduled_at
-      properties:
-        type:
-          type: string
-          enum:
-          - schedule
-        scheduled_at:
-          description: The UTC instant at which the cron expression matched in the configured timezone, before jitter is applied. At most one run is recorded per (deployment_id, scheduled_at) pair.
-          allOf:
-          - $ref: '#/components/schemas/BetaTimestamp'
-    BetaAPIError:
-      properties:
-        message:
-          default: Internal server error
-          title: Message
-          type: string
-        type:
-          const: api_error
-          default: api_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: APIError
-      type: object
     BetaErrorResponse:
       properties:
         error:
@@ -596,94 +567,8 @@ components:
           description: Time this run record was persisted.
           allOf:
           - $ref: '#/components/schemas/BetaTimestamp'
-    BetaManagedAgentsRunError:
-      description: Why the run failed to create a session. The type identifies the failure; message is human-readable detail.
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          environment_archived_error: '#/components/schemas/BetaManagedAgentsEnvironmentArchivedRunError'
-          agent_archived_error: '#/components/schemas/BetaManagedAgentsAgentArchivedRunError'
-          environment_not_found_error: '#/components/schemas/BetaManagedAgentsEnvironmentNotFoundRunError'
-          vault_not_found_error: '#/components/schemas/BetaManagedAgentsVaultNotFoundRunError'
-          vault_archived_error: '#/components/schemas/BetaManagedAgentsVaultArchivedRunError'
-          file_not_found_error: '#/components/schemas/BetaManagedAgentsFileNotFoundRunError'
-          memory_store_archived_error: '#/components/schemas/BetaManagedAgentsMemoryStoreArchivedRunError'
-          skill_not_found_error: '#/components/schemas/BetaManagedAgentsSkillNotFoundRunError'
-          session_resource_not_found_error: '#/components/schemas/BetaManagedAgentsSessionResourceNotFoundRunError'
-          workspace_archived_error: '#/components/schemas/BetaManagedAgentsWorkspaceArchivedRunError'
-          organization_disabled_error: '#/components/schemas/BetaManagedAgentsOrganizationDisabledRunError'
-          session_rate_limited_error: '#/components/schemas/BetaManagedAgentsSessionRateLimitedRunError'
-          session_creation_rejected_error: '#/components/schemas/BetaManagedAgentsSessionCreationRejectedRunError'
-          unknown_error: '#/components/schemas/BetaManagedAgentsUnknownRunError'
-          self_hosted_resources_unsupported_error: '#/components/schemas/BetaManagedAgentsSelfHostedResourcesUnsupportedRunError'
-          mcp_egress_blocked_error: '#/components/schemas/BetaManagedAgentsMcpEgressBlockedRunError'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsEnvironmentArchivedRunError'
-      - $ref: '#/components/schemas/BetaManagedAgentsAgentArchivedRunError'
-      - $ref: '#/components/schemas/BetaManagedAgentsEnvironmentNotFoundRunError'
-      - $ref: '#/components/schemas/BetaManagedAgentsVaultNotFoundRunError'
-      - $ref: '#/components/schemas/BetaManagedAgentsVaultArchivedRunError'
-      - $ref: '#/components/schemas/BetaManagedAgentsFileNotFoundRunError'
-      - $ref: '#/components/schemas/BetaManagedAgentsMemoryStoreArchivedRunError'
-      - $ref: '#/components/schemas/BetaManagedAgentsSkillNotFoundRunError'
-      - $ref: '#/components/schemas/BetaManagedAgentsSessionResourceNotFoundRunError'
-      - $ref: '#/components/schemas/BetaManagedAgentsWorkspaceArchivedRunError'
-      - $ref: '#/components/schemas/BetaManagedAgentsOrganizationDisabledRunError'
-      - $ref: '#/components/schemas/BetaManagedAgentsSessionRateLimitedRunError'
-      - $ref: '#/components/schemas/BetaManagedAgentsSessionCreationRejectedRunError'
-      - $ref: '#/components/schemas/BetaManagedAgentsUnknownRunError'
-      - $ref: '#/components/schemas/BetaManagedAgentsSelfHostedResourcesUnsupportedRunError'
-      - $ref: '#/components/schemas/BetaManagedAgentsMcpEgressBlockedRunError'
-    AnthropicBeta:
-      anyOf:
-      - type: string
-      - type: string
-        enum:
-        - message-batches-2024-09-24
-        - prompt-caching-2024-07-31
-        - computer-use-2024-10-22
-        - computer-use-2025-01-24
-        - pdfs-2024-09-25
-        - token-counting-2024-11-01
-        - token-efficient-tools-2025-02-19
-        - output-128k-2025-02-19
-        - files-api-2025-04-14
-        - mcp-client-2025-04-04
-        - mcp-client-2025-11-20
-        - dev-full-thinking-2025-05-14
-        - interleaved-thinking-2025-05-14
-        - code-execution-2025-05-22
-        - extended-cache-ttl-2025-04-11
-        - context-1m-2025-08-07
-        - context-management-2025-06-27
-        - model-context-window-exceeded-2025-08-26
-        - skills-2025-10-02
-        - fast-mode-2026-02-01
-        - output-300k-2026-03-24
-        - user-profiles-2026-03-24
-        - user-profiles-2026-08-18
-        - advisor-tool-2026-03-01
-        - managed-agents-2026-04-01
-        - cache-diagnosis-2026-04-07
-        - dreaming-2026-04-21
-        - thinking-token-count-2026-05-13
-        - server-side-fallback-2026-06-01
-        - server-side-fallback-2026-07-01
-        - fallback-credit-2026-06-01
-        - fallback-credit-2026-07-01
-        - agent-memory-2026-07-22
-        - mid-conversation-tool-changes-2026-07-01
-        - compact-2026-01-12
-        - computer-use-2025-11-24
-        - mcp-tunnels-2026-06-22
-        - structured-outputs-2025-11-13
-        - task-budgets-2026-03-13
-        - thinking-display-updates-2026-08-18
-        - ce-user-management-2026-07-13
-        x-stainless-nominal: false
-    BetaManagedAgentsVaultNotFoundRunError:
-      description: A vault referenced by the deployment no longer exists.
+    BetaManagedAgentsSessionCreationRejectedRunError:
+      description: The session create request was rejected with a non-retryable validation error.
       type: object
       additionalProperties: false
       required:
@@ -693,12 +578,12 @@ components:
         type:
           type: string
           enum:
-          - vault_not_found_error
+          - session_creation_rejected_error
         message:
           description: Human-readable error description.
           type: string
-    BetaManagedAgentsWorkspaceArchivedRunError:
-      description: The deployment's workspace was archived.
+    BetaManagedAgentsUnknownRunError:
+      description: An unknown or unexpected error caused the run to fail. A fallback variant; clients that do not recognize a new error type can match on message alone.
       type: object
       additionalProperties: false
       required:
@@ -708,25 +593,98 @@ components:
         type:
           type: string
           enum:
-          - workspace_archived_error
+          - unknown_error
         message:
           description: Human-readable error description.
           type: string
-    BetaRateLimitError:
+    BetaGatewayTimeoutError:
       properties:
         message:
-          default: Rate limited
+          default: Request timeout
           title: Message
           type: string
         type:
-          const: rate_limit_error
-          default: rate_limit_error
+          const: timeout_error
+          default: timeout_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: RateLimitError
+      title: GatewayTimeoutError
+      type: object
+    BetaManagedAgentsOrganizationDisabledRunError:
+      description: The deployment's organization is disabled.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          enum:
+          - organization_disabled_error
+        message:
+          description: Human-readable error description.
+          type: string
+    BetaManagedAgentsTriggerContext:
+      description: Describes what triggered a deployment run, with trigger-specific metadata.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          schedule: '#/components/schemas/BetaManagedAgentsScheduleTriggerContext'
+          manual: '#/components/schemas/BetaManagedAgentsManualTriggerContext'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsScheduleTriggerContext'
+      - $ref: '#/components/schemas/BetaManagedAgentsManualTriggerContext'
+    BetaManagedAgentsMcpEgressBlockedRunError:
+      description: An MCP server host used by the deployment's agent is blocked by the environment's network policy.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          enum:
+          - mcp_egress_blocked_error
+        message:
+          description: Human-readable error description.
+          type: string
+    BetaOverloadedError:
+      properties:
+        message:
+          default: Overloaded
+          title: Message
+          type: string
+        type:
+          const: overloaded_error
+          default: overloaded_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: OverloadedError
+      type: object
+    BetaAPIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
+          type: string
+        type:
+          const: api_error
+          default: api_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: APIError
       type: object
     BetaManagedAgentsMemoryStoreArchivedRunError:
       description: A memory store referenced by the deployment is archived.
@@ -743,8 +701,35 @@ components:
         message:
           description: Human-readable error description.
           type: string
-    BetaManagedAgentsEnvironmentNotFoundRunError:
-      description: The deployment's environment no longer exists.
+    BetaManagedAgentsManualTriggerContext:
+      description: The run was started manually by creating a session directly against the deployment.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - manual
+    BetaManagedAgentsScheduleTriggerContext:
+      description: The run was fired by the deployment's cron schedule.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - scheduled_at
+      properties:
+        type:
+          type: string
+          enum:
+          - schedule
+        scheduled_at:
+          description: The UTC instant at which the cron expression matched in the configured timezone, before jitter is applied. At most one run is recorded per (deployment_id, scheduled_at) pair.
+          allOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+    BetaManagedAgentsSessionRateLimitedRunError:
+      description: Session creation was rejected due to rate limiting. The schedule keeps firing; subsequent runs may succeed.
       type: object
       additionalProperties: false
       required:
@@ -754,12 +739,12 @@ components:
         type:
           type: string
           enum:
-          - environment_not_found_error
+          - session_rate_limited_error
         message:
           description: Human-readable error description.
           type: string
-    BetaManagedAgentsMcpEgressBlockedRunError:
-      description: An MCP server host used by the deployment's agent is blocked by the environment's network policy.
+    BetaManagedAgentsVaultArchivedRunError:
+      description: A vault referenced by the deployment is archived.
       type: object
       additionalProperties: false
       required:
@@ -769,7 +754,22 @@ components:
         type:
           type: string
           enum:
-          - mcp_egress_blocked_error
+          - vault_archived_error
+        message:
+          description: Human-readable error description.
+          type: string
+    BetaManagedAgentsEnvironmentArchivedRunError:
+      description: The deployment's environment was archived.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          enum:
+          - environment_archived_error
         message:
           description: Human-readable error description.
           type: string

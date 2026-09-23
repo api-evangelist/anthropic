@@ -287,37 +287,21 @@ paths:
       - Vaults?beta=true
 components:
   schemas:
-    BetaGatewayTimeoutError:
+    BetaBillingError:
       properties:
         message:
-          default: Request timeout
+          default: Billing error
           title: Message
           type: string
         type:
-          const: timeout_error
-          default: timeout_error
+          const: billing_error
+          default: billing_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: GatewayTimeoutError
-      type: object
-    BetaAPIError:
-      properties:
-        message:
-          default: Internal server error
-          title: Message
-          type: string
-        type:
-          const: api_error
-          default: api_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: APIError
+      title: BillingError
       type: object
     BetaErrorResponse:
       properties:
@@ -362,136 +346,6 @@ components:
       - type
       title: ErrorResponse
       type: object
-    BetaTimestamp:
-      description: A timestamp in RFC 3339 format
-      type: string
-      format: date-time
-    BetaManagedAgentsListVaultsResponse:
-      description: Response containing a paginated list of vaults.
-      type: object
-      additionalProperties: false
-      properties:
-        data:
-          description: List of vaults.
-          type: array
-          items:
-            $ref: '#/components/schemas/BetaManagedAgentsVault'
-          examples:
-          - - type: vault
-              id: vlt_011CZkZDLs7fYzm1hXNPeRjv
-              display_name: Example vault
-              metadata:
-                environment: production
-              created_at: '2026-03-15T10:00:00Z'
-              updated_at: '2026-03-15T10:00:00Z'
-              archived_at: null
-        next_page:
-          description: Pagination token for the next page, or null if no more results.
-          anyOf:
-          - type: string
-          - type: 'null'
-          examples:
-          - page_MjAyNS0wNS0xNFQwMDowMDowMFo=
-      example:
-        data:
-        - type: vault
-          id: vlt_011CZkZDLs7fYzm1hXNPeRjv
-          display_name: Example vault
-          metadata:
-            environment: production
-          created_at: '2026-03-15T10:00:00Z'
-          updated_at: '2026-03-15T10:00:00Z'
-          archived_at: null
-        next_page: page_MjAyNS0wNS0xNFQwMDowMDowMFo=
-    BetaOverloadedError:
-      properties:
-        message:
-          default: Overloaded
-          title: Message
-          type: string
-        type:
-          const: overloaded_error
-          default: overloaded_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: OverloadedError
-      type: object
-    BetaAuthenticationError:
-      properties:
-        message:
-          default: Authentication error
-          title: Message
-          type: string
-        type:
-          const: authentication_error
-          default: authentication_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: AuthenticationError
-      type: object
-    BetaBillingError:
-      properties:
-        message:
-          default: Billing error
-          title: Message
-          type: string
-        type:
-          const: billing_error
-          default: billing_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: BillingError
-      type: object
-    BetaNotFoundError:
-      properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
-        type:
-          const: not_found_error
-          default: not_found_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: NotFoundError
-      type: object
-    BetaManagedAgentsCreateVaultRequest:
-      description: Request parameters for creating a vault.
-      type: object
-      additionalProperties: false
-      required:
-      - display_name
-      properties:
-        display_name:
-          description: Human-readable name for the vault. 1-255 characters.
-          type: string
-          minLength: 1
-          maxLength: 255
-          examples:
-          - Example vault
-        metadata:
-          description: Arbitrary key-value metadata to attach to the vault. Maximum 16 pairs, keys up to 64 chars, values up to 512 chars.
-          type: object
-          additionalProperties:
-            type: string
-          examples:
-          - environment: production
-      example:
-        display_name: Example vault
-        metadata:
-          environment: production
     AnthropicBeta:
       anyOf:
       - type: string
@@ -539,6 +393,200 @@ components:
         - thinking-display-updates-2026-08-18
         - ce-user-management-2026-07-13
         x-stainless-nominal: false
+    BetaNotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    BetaOverloadedError:
+      properties:
+        message:
+          default: Overloaded
+          title: Message
+          type: string
+        type:
+          const: overloaded_error
+          default: overloaded_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: OverloadedError
+      type: object
+    BetaAPIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
+          type: string
+        type:
+          const: api_error
+          default: api_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
+    BetaInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    BetaManagedAgentsListVaultsResponse:
+      description: Response containing a paginated list of vaults.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          description: List of vaults.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsVault'
+          examples:
+          - - type: vault
+              id: vlt_011CZkZDLs7fYzm1hXNPeRjv
+              display_name: Example vault
+              metadata:
+                environment: production
+              created_at: '2026-03-15T10:00:00Z'
+              updated_at: '2026-03-15T10:00:00Z'
+              archived_at: null
+        next_page:
+          description: Pagination token for the next page, or null if no more results.
+          anyOf:
+          - type: string
+          - type: 'null'
+          examples:
+          - page_MjAyNS0wNS0xNFQwMDowMDowMFo=
+      example:
+        data:
+        - type: vault
+          id: vlt_011CZkZDLs7fYzm1hXNPeRjv
+          display_name: Example vault
+          metadata:
+            environment: production
+          created_at: '2026-03-15T10:00:00Z'
+          updated_at: '2026-03-15T10:00:00Z'
+          archived_at: null
+        next_page: page_MjAyNS0wNS0xNFQwMDowMDowMFo=
+    BetaGatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
+      type: object
+    BetaAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    BetaTimestamp:
+      description: A timestamp in RFC 3339 format
+      type: string
+      format: date-time
+    BetaManagedAgentsCreateVaultRequest:
+      description: Request parameters for creating a vault.
+      type: object
+      additionalProperties: false
+      required:
+      - display_name
+      properties:
+        display_name:
+          description: Human-readable name for the vault. 1-255 characters.
+          type: string
+          minLength: 1
+          maxLength: 255
+          examples:
+          - Example vault
+        metadata:
+          description: Arbitrary key-value metadata to attach to the vault. Maximum 16 pairs, keys up to 64 chars, values up to 512 chars.
+          type: object
+          additionalProperties:
+            type: string
+          examples:
+          - environment: production
+      example:
+        display_name: Example vault
+        metadata:
+          environment: production
+    BetaPermissionError:
+      properties:
+        message:
+          default: Permission denied
+          title: Message
+          type: string
+        type:
+          const: permission_error
+          default: permission_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: PermissionError
+      type: object
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
     BetaManagedAgentsVault:
       description: A vault that stores credentials for use by agents during sessions.
       type: object
@@ -599,51 +647,3 @@ components:
         created_at: '2026-03-15T10:00:00Z'
         updated_at: '2026-03-15T10:00:00Z'
         archived_at: null
-    BetaRateLimitError:
-      properties:
-        message:
-          default: Rate limited
-          title: Message
-          type: string
-        type:
-          const: rate_limit_error
-          default: rate_limit_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: RateLimitError
-      type: object
-    BetaInvalidRequestError:
-      properties:
-        message:
-          default: Invalid request
-          title: Message
-          type: string
-        type:
-          const: invalid_request_error
-          default: invalid_request_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: InvalidRequestError
-      type: object
-    BetaPermissionError:
-      properties:
-        message:
-          default: Permission denied
-          title: Message
-          type: string
-        type:
-          const: permission_error
-          default: permission_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: PermissionError
-      type: object

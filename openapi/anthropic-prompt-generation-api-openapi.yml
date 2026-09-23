@@ -10,9 +10,7 @@ info:
 
     Anthropic Workbench, and are intended for use by other prompt engineering
 
-    platforms and playgrounds.
-
-    '
+    platforms and playgrounds.'
   version: 1.0.0
   contact:
     name: Anthropic Support
@@ -43,9 +41,7 @@ paths:
 
         - Must use the API directly (not available in SDK)
 
-        - Must include the beta header `prompt-tools-2025-04-02`
-
-        '
+        - Must include the beta header `prompt-tools-2025-04-02`'
       operationId: generatePrompt
       tags:
       - Prompt Generation
@@ -127,20 +123,6 @@ paths:
                   $ref: '#/components/examples/ErrorServerExample'
 components:
   examples:
-    ErrorBadRequestExample:
-      summary: Bad request error
-      value:
-        type: invalid_request_error
-        message: Invalid request format
-    ErrorRateLimitExample:
-      summary: Rate limit error
-      value:
-        type: rate_limit_error
-        message: Rate limit exceeded. Please retry after some time.
-    GeneratePromptRequestDefaultExample:
-      summary: Basic task only
-      value:
-        task: a helpful writing assistant for creative fiction
     ErrorUnauthorizedExample:
       summary: Unauthorized error
       value:
@@ -156,6 +138,10 @@ components:
       value:
         task: a chef for a meal prep planning service
         target_model: claude-3-7-sonnet-20250219
+    GeneratePromptRequestDefaultExample:
+      summary: Basic task only
+      value:
+        task: a helpful writing assistant for creative fiction
     GeneratePromptResponseChefExample:
       summary: Chef prompt response
       value:
@@ -177,72 +163,82 @@ components:
       value:
         type: api_error
         message: An internal server error occurred
-  parameters:
-    ApiKeyHeader:
-      name: x-api-key
-      in: header
-      required: true
-      description: A valid API token.
-      schema:
-        type: string
-    BrowserAccessHeader:
-      name: anthropic-dangerous-direct-browser-access
-      in: header
-      required: false
-      description: Enable CORS.
-      schema:
-        type: string
-        default: 'true'
-    AnthropicVersionHeader:
-      name: anthropic-version
-      in: header
-      required: true
-      description: Which version of the Anthropic API to use.
-      schema:
-        type: string
-        default: '2023-06-01'
-    ContentTypeHeader:
-      name: Content-Type
-      in: header
-      required: true
-      description: The content type.
-      schema:
-        type: string
-        default: application/json
-    AnthropicBetaHeader:
-      name: anthropic-beta
-      in: header
-      description: 'Optional header to specify the beta version(s) you want to use.
-
-        To use multiple betas, use a comma separated list like `beta1,beta2`
-
-        or specify the header multiple times for each beta.
-
-        '
-      required: false
-      schema:
-        type: array
-        items:
-          type: string
-        example:
-        - prompt-tools-2025-04-02
-      style: simple
-      explode: false
+    ErrorRateLimitExample:
+      summary: Rate limit error
+      value:
+        type: rate_limit_error
+        message: Rate limit exceeded. Please retry after some time.
+    ErrorBadRequestExample:
+      summary: Bad request error
+      value:
+        type: invalid_request_error
+        message: Invalid request format
   schemas:
-    TextContentBlock:
+    PromptMessage:
       type: object
       required:
-      - type
-      - text
+      - role
+      - content
       properties:
-        type:
+        role:
           type: string
           enum:
-          - text
-          description: The type of content block
-        text:
+          - user
+          - assistant
+          description: The role of the message sender
+        content:
+          type: array
+          description: The content of the message
+          items:
+            $ref: '#/components/schemas/TextContentBlock'
+    GeneratePromptRequest:
+      type: object
+      required:
+      - task
+      properties:
+        task:
           type: string
-          description: The text content
+          description: 'Description of the prompt''s purpose.
+
+            The `task` parameter tells Claude what the prompt should do
+
+            or what kind of role or functionality you want to create.
+
+            This helps guide the prompt generation process toward your
+
+            intended use case.
+
+            '
+        target_model:
+          type: string
+          nullable: true
+          default: null
+          description: 'The model this prompt will be used for. This optional
+
+            parameter helps us understand which models our prompt tools
+
+            are being used with, but it doesn''t currently affect
+
+            functionality.
+
+            '
+          minLength: 1
+          maxLength: 256
+    UsageInfo:
+      type: object
+      description: Usage information
+      required:
+      - input_tokens
+      - output_tokens
+      properties:
+        input_tokens:
+          type: integer
+          description: Number of input tokens used
+          minimum: 0
+        output_tokens:
+          type: integer
+          description: Number of output tokens generated
+          minimum: 0
     GeneratePromptResponse:
       type: object
       required:
@@ -277,54 +273,6 @@ components:
             '
         usage:
           $ref: '#/components/schemas/UsageInfo'
-    UsageInfo:
-      type: object
-      description: Usage information
-      required:
-      - input_tokens
-      - output_tokens
-      properties:
-        input_tokens:
-          type: integer
-          description: Number of input tokens used
-          minimum: 0
-        output_tokens:
-          type: integer
-          description: Number of output tokens generated
-          minimum: 0
-    GeneratePromptRequest:
-      type: object
-      required:
-      - task
-      properties:
-        task:
-          type: string
-          description: 'Description of the prompt''s purpose.
-
-            The `task` parameter tells Claude what the prompt should do
-
-            or what kind of role or functionality you want to create.
-
-            This helps guide the prompt generation process toward your
-
-            intended use case.
-
-            '
-        target_model:
-          type: string
-          nullable: true
-          default: null
-          description: 'The model this prompt will be used for. This optional
-
-            parameter helps us understand which models our prompt tools
-
-            are being used with, but it doesn''t currently affect
-
-            functionality.
-
-            '
-          minLength: 1
-          maxLength: 256
     ErrorResponse:
       type: object
       required:
@@ -337,23 +285,71 @@ components:
         message:
           type: string
           description: A human-readable error message
-    PromptMessage:
+    TextContentBlock:
       type: object
       required:
-      - role
-      - content
+      - type
+      - text
       properties:
-        role:
+        type:
           type: string
           enum:
-          - user
-          - assistant
-          description: The role of the message sender
-        content:
-          type: array
-          description: The content of the message
-          items:
-            $ref: '#/components/schemas/TextContentBlock'
+          - text
+          description: The type of content block
+        text:
+          type: string
+          description: The text content
+  parameters:
+    ContentTypeHeader:
+      name: Content-Type
+      in: header
+      required: true
+      description: The content type.
+      schema:
+        type: string
+        default: application/json
+    ApiKeyHeader:
+      name: x-api-key
+      in: header
+      required: true
+      description: A valid API token.
+      schema:
+        type: string
+    AnthropicBetaHeader:
+      name: anthropic-beta
+      in: header
+      description: 'Optional header to specify the beta version(s) you want to use.
+
+        To use multiple betas, use a comma separated list like `beta1,beta2`
+
+        or specify the header multiple times for each beta.
+
+        '
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+        example:
+        - prompt-tools-2025-04-02
+      style: simple
+      explode: false
+    AnthropicVersionHeader:
+      name: anthropic-version
+      in: header
+      required: true
+      description: Which version of the Anthropic API to use.
+      schema:
+        type: string
+        default: '2023-06-01'
+    BrowserAccessHeader:
+      name: anthropic-dangerous-direct-browser-access
+      in: header
+      required: false
+      description: Enable CORS.
+      schema:
+        type: string
+        default: 'true'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

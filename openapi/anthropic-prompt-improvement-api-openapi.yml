@@ -10,9 +10,7 @@ info:
 
     Anthropic Workbench, and are intended for use by other prompt engineering
 
-    platforms and playgrounds.
-
-    '
+    platforms and playgrounds.'
   version: 1.0.0
   contact:
     name: Anthropic Support
@@ -51,9 +49,7 @@ paths:
 
         - No tool calls, images, or prompt caching blocks allowed
 
-        - Only contiguous user messages with text content are permitted
-
-        '
+        - Only contiguous user messages with text content are permitted'
       operationId: improvePrompt
       tags:
       - Prompt Improvement
@@ -135,11 +131,16 @@ paths:
                   $ref: '#/components/examples/ErrorServerExample'
 components:
   examples:
-    ErrorBadRequestExample:
-      summary: Bad request error
+    ErrorUnauthorizedExample:
+      summary: Unauthorized error
       value:
-        type: invalid_request_error
-        message: Invalid request format
+        type: authentication_error
+        message: Invalid or missing API key
+    ErrorForbiddenExample:
+      summary: Forbidden error
+      value:
+        type: permission_error
+        message: Access denied or not in closed research preview
     ImprovePromptResponseExample:
       summary: Improved recipe prompt response
       value:
@@ -156,16 +157,16 @@ components:
         usage:
           input_tokens: 45
           output_tokens: 180
+    ErrorServerExample:
+      summary: Server error
+      value:
+        type: api_error
+        message: An internal server error occurred
     ErrorRateLimitExample:
       summary: Rate limit error
       value:
         type: rate_limit_error
         message: Rate limit exceeded. Please retry after some time.
-    ErrorUnauthorizedExample:
-      summary: Unauthorized error
-      value:
-        type: authentication_error
-        message: Invalid or missing API key
     ImprovePromptRequestRecipeExample:
       summary: Recipe prompt with example interaction
       value:
@@ -192,17 +193,44 @@ components:
           - type: text
             text: Concise recipe for {{food}}
         feedback: Make the recipes shorter
-    ErrorForbiddenExample:
-      summary: Forbidden error
+    ErrorBadRequestExample:
+      summary: Bad request error
       value:
-        type: permission_error
-        message: Access denied or not in closed research preview
-    ErrorServerExample:
-      summary: Server error
-      value:
-        type: api_error
-        message: An internal server error occurred
+        type: invalid_request_error
+        message: Invalid request format
   schemas:
+    PromptMessage:
+      type: object
+      required:
+      - role
+      - content
+      properties:
+        role:
+          type: string
+          enum:
+          - user
+          - assistant
+          description: The role of the message sender
+        content:
+          type: array
+          description: The content of the message
+          items:
+            $ref: '#/components/schemas/TextContentBlock'
+    UsageInfo:
+      type: object
+      description: Usage information
+      required:
+      - input_tokens
+      - output_tokens
+      properties:
+        input_tokens:
+          type: integer
+          description: Number of input tokens used
+          minimum: 0
+        output_tokens:
+          type: integer
+          description: Number of output tokens generated
+          minimum: 0
     ImprovePromptResponse:
       type: object
       required:
@@ -230,35 +258,6 @@ components:
             '
         usage:
           $ref: '#/components/schemas/UsageInfo'
-    TextContentBlock:
-      type: object
-      required:
-      - type
-      - text
-      properties:
-        type:
-          type: string
-          enum:
-          - text
-          description: The type of content block
-        text:
-          type: string
-          description: The text content
-    UsageInfo:
-      type: object
-      description: Usage information
-      required:
-      - input_tokens
-      - output_tokens
-      properties:
-        input_tokens:
-          type: integer
-          description: Number of input tokens used
-          minimum: 0
-        output_tokens:
-          type: integer
-          description: Number of output tokens generated
-          minimum: 0
     ErrorResponse:
       type: object
       required:
@@ -271,23 +270,6 @@ components:
         message:
           type: string
           description: A human-readable error message
-    PromptMessage:
-      type: object
-      required:
-      - role
-      - content
-      properties:
-        role:
-          type: string
-          enum:
-          - user
-          - assistant
-          description: The role of the message sender
-        content:
-          type: array
-          description: The content of the message
-          items:
-            $ref: '#/components/schemas/TextContentBlock'
     ImprovePromptRequest:
       type: object
       required:
@@ -351,30 +333,21 @@ components:
             '
           minLength: 1
           maxLength: 256
+    TextContentBlock:
+      type: object
+      required:
+      - type
+      - text
+      properties:
+        type:
+          type: string
+          enum:
+          - text
+          description: The type of content block
+        text:
+          type: string
+          description: The text content
   parameters:
-    ApiKeyHeader:
-      name: x-api-key
-      in: header
-      required: true
-      description: A valid API token.
-      schema:
-        type: string
-    BrowserAccessHeader:
-      name: anthropic-dangerous-direct-browser-access
-      in: header
-      required: false
-      description: Enable CORS.
-      schema:
-        type: string
-        default: 'true'
-    AnthropicVersionHeader:
-      name: anthropic-version
-      in: header
-      required: true
-      description: Which version of the Anthropic API to use.
-      schema:
-        type: string
-        default: '2023-06-01'
     ContentTypeHeader:
       name: Content-Type
       in: header
@@ -383,6 +356,13 @@ components:
       schema:
         type: string
         default: application/json
+    ApiKeyHeader:
+      name: x-api-key
+      in: header
+      required: true
+      description: A valid API token.
+      schema:
+        type: string
     AnthropicBetaHeader:
       name: anthropic-beta
       in: header
@@ -402,6 +382,22 @@ components:
         - prompt-tools-2025-04-02
       style: simple
       explode: false
+    AnthropicVersionHeader:
+      name: anthropic-version
+      in: header
+      required: true
+      description: Which version of the Anthropic API to use.
+      schema:
+        type: string
+        default: '2023-06-01'
+    BrowserAccessHeader:
+      name: anthropic-dangerous-direct-browser-access
+      in: header
+      required: false
+      description: Enable CORS.
+      schema:
+        type: string
+        default: 'true'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

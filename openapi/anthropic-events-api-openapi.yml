@@ -1,9 +1,7 @@
 openapi: 3.2.0
 info:
   title: Anthropic Managed Agents Events API
-  description: 'Claude Managed Agents is a fully managed agent harness for running Claude as an autonomous agent with secure sandboxing, built-in tools, and server-sent event streaming. Define reusable, versioned Agents, configure Environments (cloud containers or self-hosted sandboxes), and run stateful Sessions that perform long-running tasks. All endpoints require the managed-agents-2026-04-01 beta header.
-
-    '
+  description: Claude Managed Agents is a fully managed agent harness for running Claude as an autonomous agent with secure sandboxing, built-in tools, and server-sent event streaming. Define reusable, versioned Agents, configure Environments (cloud containers or self-hosted sandboxes), and run stateful Sessions that perform long-running tasks. All endpoints require the managed-agents-2026-04-01 beta header.
   version: 2026-04-01
   contact:
     name: Anthropic Support
@@ -23,9 +21,7 @@ paths:
   /v1/sessions/{session_id}/events:
     post:
       summary: Anthropic Send Session Events
-      description: 'Send user events to drive session execution. Event types include user.message, tool.result, and interrupt.
-
-        '
+      description: Send user events to drive session execution. Event types include user.message, tool.result, and interrupt.
       operationId: sendSessionEvents
       tags:
       - Events
@@ -45,9 +41,7 @@ paths:
   /v1/sessions/{session_id}/stream:
     get:
       summary: Anthropic Stream Session Events
-      description: 'Server-sent events stream of agent execution: assistant messages, tool calls, tool results, and status changes.
-
-        '
+      description: 'Server-sent events stream of agent execution: assistant messages, tool calls, tool results, and status changes.'
       operationId: streamSession
       tags:
       - Events
@@ -72,6 +66,12 @@ components:
       schema:
         type: string
         default: managed-agents-2026-04-01
+    SessionIdPath:
+      name: session_id
+      in: path
+      required: true
+      schema:
+        type: string
     AnthropicVersion:
       name: anthropic-version
       in: header
@@ -79,12 +79,6 @@ components:
       schema:
         type: string
         default: '2023-06-01'
-    SessionIdPath:
-      name: session_id
-      in: path
-      required: true
-      schema:
-        type: string
   schemas:
     EventBatch:
       type: object

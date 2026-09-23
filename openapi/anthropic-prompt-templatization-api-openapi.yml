@@ -10,9 +10,7 @@ info:
 
     Anthropic Workbench, and are intended for use by other prompt engineering
 
-    platforms and playgrounds.
-
-    '
+    platforms and playgrounds.'
   version: 1.0.0
   contact:
     name: Anthropic Support
@@ -51,9 +49,7 @@ paths:
 
         - No tool calls, images, or prompt caching blocks allowed
 
-        - Only contiguous user messages with text content are permitted
-
-        '
+        - Only contiguous user messages with text content are permitted'
       operationId: templatizePrompt
       tags:
       - Prompt Templatization
@@ -134,145 +130,7 @@ paths:
                 ServerErrorExample:
                   $ref: '#/components/examples/ErrorServerExample'
 components:
-  examples:
-    ErrorBadRequestExample:
-      summary: Bad request error
-      value:
-        type: invalid_request_error
-        message: Invalid request format
-    ErrorRateLimitExample:
-      summary: Rate limit error
-      value:
-        type: rate_limit_error
-        message: Rate limit exceeded. Please retry after some time.
-    TemplatizePromptResponseExample:
-      summary: Templatized translation prompt
-      value:
-        messages:
-        - role: user
-          content:
-          - type: text
-            text: Translate {{WORD_TO_TRANSLATE}} to {{TARGET_LANGUAGE}}
-        system: You are a professional English to {{TARGET_LANGUAGE}} translator
-        usage:
-          input_tokens: 15
-          output_tokens: 25
-        variable_values:
-          WORD_TO_TRANSLATE: hello
-          TARGET_LANGUAGE: German
-    ErrorUnauthorizedExample:
-      summary: Unauthorized error
-      value:
-        type: authentication_error
-        message: Invalid or missing API key
-    ErrorForbiddenExample:
-      summary: Forbidden error
-      value:
-        type: permission_error
-        message: Access denied or not in closed research preview
-    TemplatizePromptRequestTranslationExample:
-      summary: Translation with system prompt
-      value:
-        messages:
-        - role: user
-          content:
-          - type: text
-            text: Translate hello to German
-        system: You are a professional English to German translator
-    ErrorServerExample:
-      summary: Server error
-      value:
-        type: api_error
-        message: An internal server error occurred
-    TemplatizePromptRequestDefaultExample:
-      summary: Simple translation prompt
-      value:
-        messages:
-        - role: user
-          content:
-          - type: text
-            text: Translate hello to German
-  parameters:
-    ApiKeyHeader:
-      name: x-api-key
-      in: header
-      required: true
-      description: A valid API token.
-      schema:
-        type: string
-    BrowserAccessHeader:
-      name: anthropic-dangerous-direct-browser-access
-      in: header
-      required: false
-      description: Enable CORS.
-      schema:
-        type: string
-        default: 'true'
-    AnthropicVersionHeader:
-      name: anthropic-version
-      in: header
-      required: true
-      description: Which version of the Anthropic API to use.
-      schema:
-        type: string
-        default: '2023-06-01'
-    ContentTypeHeader:
-      name: Content-Type
-      in: header
-      required: true
-      description: The content type.
-      schema:
-        type: string
-        default: application/json
-    AnthropicBetaHeader:
-      name: anthropic-beta
-      in: header
-      description: 'Optional header to specify the beta version(s) you want to use.
-
-        To use multiple betas, use a comma separated list like `beta1,beta2`
-
-        or specify the header multiple times for each beta.
-
-        '
-      required: false
-      schema:
-        type: array
-        items:
-          type: string
-        example:
-        - prompt-tools-2025-04-02
-      style: simple
-      explode: false
   schemas:
-    TextContentBlock:
-      type: object
-      required:
-      - type
-      - text
-      properties:
-        type:
-          type: string
-          enum:
-          - text
-          description: The type of content block
-        text:
-          type: string
-          description: The text content
-    UsageInfo:
-      type: object
-      description: Usage information
-      required:
-      - input_tokens
-      - output_tokens
-      properties:
-        input_tokens:
-          type: integer
-          description: Number of input tokens used
-          minimum: 0
-        output_tokens:
-          type: integer
-          description: Number of output tokens generated
-          minimum: 0
     TemplatizePromptRequest:
       type: object
       required:
@@ -307,18 +165,6 @@ components:
             the system prompt as well.
 
             '
-    ErrorResponse:
-      type: object
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          description: The type of error
-        message:
-          type: string
-          description: A human-readable error message
     TemplatizePromptResponse:
       type: object
       required:
@@ -387,6 +233,156 @@ components:
           description: The content of the message
           items:
             $ref: '#/components/schemas/TextContentBlock'
+    UsageInfo:
+      type: object
+      description: Usage information
+      required:
+      - input_tokens
+      - output_tokens
+      properties:
+        input_tokens:
+          type: integer
+          description: Number of input tokens used
+          minimum: 0
+        output_tokens:
+          type: integer
+          description: Number of output tokens generated
+          minimum: 0
+    ErrorResponse:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: The type of error
+        message:
+          type: string
+          description: A human-readable error message
+    TextContentBlock:
+      type: object
+      required:
+      - type
+      - text
+      properties:
+        type:
+          type: string
+          enum:
+          - text
+          description: The type of content block
+        text:
+          type: string
+          description: The text content
+  examples:
+    ErrorUnauthorizedExample:
+      summary: Unauthorized error
+      value:
+        type: authentication_error
+        message: Invalid or missing API key
+    ErrorForbiddenExample:
+      summary: Forbidden error
+      value:
+        type: permission_error
+        message: Access denied or not in closed research preview
+    TemplatizePromptRequestDefaultExample:
+      summary: Simple translation prompt
+      value:
+        messages:
+        - role: user
+          content:
+          - type: text
+            text: Translate hello to German
+    ErrorServerExample:
+      summary: Server error
+      value:
+        type: api_error
+        message: An internal server error occurred
+    TemplatizePromptRequestTranslationExample:
+      summary: Translation with system prompt
+      value:
+        messages:
+        - role: user
+          content:
+          - type: text
+            text: Translate hello to German
+        system: You are a professional English to German translator
+    ErrorRateLimitExample:
+      summary: Rate limit error
+      value:
+        type: rate_limit_error
+        message: Rate limit exceeded. Please retry after some time.
+    TemplatizePromptResponseExample:
+      summary: Templatized translation prompt
+      value:
+        messages:
+        - role: user
+          content:
+          - type: text
+            text: Translate {{WORD_TO_TRANSLATE}} to {{TARGET_LANGUAGE}}
+        system: You are a professional English to {{TARGET_LANGUAGE}} translator
+        usage:
+          input_tokens: 15
+          output_tokens: 25
+        variable_values:
+          WORD_TO_TRANSLATE: hello
+          TARGET_LANGUAGE: German
+    ErrorBadRequestExample:
+      summary: Bad request error
+      value:
+        type: invalid_request_error
+        message: Invalid request format
+  parameters:
+    ContentTypeHeader:
+      name: Content-Type
+      in: header
+      required: true
+      description: The content type.
+      schema:
+        type: string
+        default: application/json
+    ApiKeyHeader:
+      name: x-api-key
+      in: header
+      required: true
+      description: A valid API token.
+      schema:
+        type: string
+    AnthropicBetaHeader:
+      name: anthropic-beta
+      in: header
+      description: 'Optional header to specify the beta version(s) you want to use.
+
+        To use multiple betas, use a comma separated list like `beta1,beta2`
+
+        or specify the header multiple times for each beta.
+
+        '
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+        example:
+        - prompt-tools-2025-04-02
+      style: simple
+      explode: false
+    AnthropicVersionHeader:
+      name: anthropic-version
+      in: header
+      required: true
+      description: Which version of the Anthropic API to use.
+      schema:
+        type: string
+        default: '2023-06-01'
+    BrowserAccessHeader:
+      name: anthropic-dangerous-direct-browser-access
+      in: header
+      required: false
+      description: Enable CORS.
+      schema:
+        type: string
+        default: 'true'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

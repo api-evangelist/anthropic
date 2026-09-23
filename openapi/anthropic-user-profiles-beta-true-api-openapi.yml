@@ -289,42 +289,48 @@ paths:
       - User Profiles?beta=true
 components:
   schemas:
-    BetaGatewayTimeoutError:
-      properties:
-        message:
-          default: Request timeout
-          title: Message
-          type: string
-        type:
-          const: timeout_error
-          default: timeout_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: GatewayTimeoutError
+    BetaCreateUserProfileRequest:
       type: object
-    BetaTimestamp:
-      description: A timestamp in RFC 3339 format
-      type: string
-      format: date-time
-    BetaOverloadedError:
+      additionalProperties: false
       properties:
-        message:
-          default: Overloaded
-          title: Message
-          type: string
-        type:
-          const: overloaded_error
-          default: overloaded_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: OverloadedError
-      type: object
+        external_id:
+          description: Platform's own identifier for this user. Not enforced unique. Maximum 255 characters.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 255
+          - type: 'null'
+          examples:
+          - user_12345
+        name:
+          description: Optional for all profiles. Real-world name of the entity this profile represents (company or individual); for a resold-to company (`relationship` `resold` / `access_type` `passthrough`), that company's name where known. Maximum 255 characters.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 255
+          - type: 'null'
+        relationship:
+          description: 'How the entity relates to the platform. `external` (default): an individual end-user. `resold`: a company the platform resells Claude access to. `internal`: the platform''s own usage.'
+          allOf:
+          - $ref: '#/components/schemas/BetaUserProfileRelationship'
+          x-anthropic-beta-required:
+          - user-profiles-2026-03-24
+        access_type:
+          description: 'How the platform uses the API for this entity. `application` (default): the profile represents an individual end-user of the platform''s product. `passthrough`: the profile identifies a company the platform resells Claude access to.'
+          allOf:
+          - $ref: '#/components/schemas/BetaUserProfileAccessType'
+          x-anthropic-beta-required:
+          - user-profiles-2026-08-18
+        metadata:
+          description: Free-form key-value data to attach to this user profile. Maximum 16 keys, with keys up to 64 characters and values up to 512 characters. Values must be non-empty strings.
+          type: object
+          additionalProperties:
+            type: string
+          examples:
+          - {}
+      example:
+        external_id: user_12345
+        metadata: {}
     BetaBillingError:
       properties:
         message:
@@ -340,6 +346,138 @@ components:
       - message
       - type
       title: BillingError
+      type: object
+    AnthropicBeta:
+      anyOf:
+      - type: string
+      - type: string
+        enum:
+        - message-batches-2024-09-24
+        - prompt-caching-2024-07-31
+        - computer-use-2024-10-22
+        - computer-use-2025-01-24
+        - pdfs-2024-09-25
+        - token-counting-2024-11-01
+        - token-efficient-tools-2025-02-19
+        - output-128k-2025-02-19
+        - files-api-2025-04-14
+        - mcp-client-2025-04-04
+        - mcp-client-2025-11-20
+        - dev-full-thinking-2025-05-14
+        - interleaved-thinking-2025-05-14
+        - code-execution-2025-05-22
+        - extended-cache-ttl-2025-04-11
+        - context-1m-2025-08-07
+        - context-management-2025-06-27
+        - model-context-window-exceeded-2025-08-26
+        - skills-2025-10-02
+        - fast-mode-2026-02-01
+        - output-300k-2026-03-24
+        - user-profiles-2026-03-24
+        - user-profiles-2026-08-18
+        - advisor-tool-2026-03-01
+        - managed-agents-2026-04-01
+        - cache-diagnosis-2026-04-07
+        - dreaming-2026-04-21
+        - thinking-token-count-2026-05-13
+        - server-side-fallback-2026-06-01
+        - server-side-fallback-2026-07-01
+        - fallback-credit-2026-06-01
+        - fallback-credit-2026-07-01
+        - agent-memory-2026-07-22
+        - mid-conversation-tool-changes-2026-07-01
+        - compact-2026-01-12
+        - computer-use-2025-11-24
+        - mcp-tunnels-2026-06-22
+        - structured-outputs-2025-11-13
+        - task-budgets-2026-03-13
+        - thinking-display-updates-2026-08-18
+        - ce-user-management-2026-07-13
+        x-stainless-nominal: false
+    BetaUserProfileTrustGrant:
+      type: object
+      additionalProperties: false
+      required:
+      - status
+      properties:
+        status:
+          description: Status of the trust grant.
+          type: string
+          enum:
+          - active
+          - pending
+          - rejected
+          examples:
+          - active
+      example:
+        status: active
+    BetaTimestamp:
+      description: A timestamp in RFC 3339 format
+      type: string
+      format: date-time
+    BetaPermissionError:
+      properties:
+        message:
+          default: Permission denied
+          title: Message
+          type: string
+        type:
+          const: permission_error
+          default: permission_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: PermissionError
+      type: object
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    BetaNotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    BetaInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
       type: object
     BetaUserProfile:
       type: object
@@ -447,21 +585,48 @@ components:
       - type
       title: AuthenticationError
       type: object
-    BetaNotFoundError:
+    BetaErrorResponse:
       properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
+        error:
+          discriminator:
+            mapping:
+              api_error: '#/components/schemas/BetaAPIError'
+              authentication_error: '#/components/schemas/BetaAuthenticationError'
+              billing_error: '#/components/schemas/BetaBillingError'
+              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
+              not_found_error: '#/components/schemas/BetaNotFoundError'
+              overloaded_error: '#/components/schemas/BetaOverloadedError'
+              permission_error: '#/components/schemas/BetaPermissionError'
+              rate_limit_error: '#/components/schemas/BetaRateLimitError'
+              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/BetaInvalidRequestError'
+          - $ref: '#/components/schemas/BetaAuthenticationError'
+          - $ref: '#/components/schemas/BetaBillingError'
+          - $ref: '#/components/schemas/BetaPermissionError'
+          - $ref: '#/components/schemas/BetaNotFoundError'
+          - $ref: '#/components/schemas/BetaRateLimitError'
+          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
+          - $ref: '#/components/schemas/BetaAPIError'
+          - $ref: '#/components/schemas/BetaOverloadedError'
+          title: Error
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Request Id
         type:
-          const: not_found_error
-          default: not_found_error
+          const: error
+          default: error
           title: Type
           type: string
       required:
-      - message
+      - error
+      - request_id
       - type
-      title: NotFoundError
+      title: ErrorResponse
       type: object
     BetaUserProfileAccessType:
       type: string
@@ -469,6 +634,22 @@ components:
       enum:
       - application
       - passthrough
+    BetaGatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
+      type: object
     BetaListUserProfilesResponse:
       type: object
       additionalProperties: false
@@ -514,86 +695,22 @@ components:
           created_at: '2026-03-15T10:00:00Z'
           updated_at: '2026-03-15T10:00:00Z'
         next_page: page_MjAyNS0wNS0xNFQwMDowMDowMFo=
-    BetaInvalidRequestError:
+    BetaOverloadedError:
       properties:
         message:
-          default: Invalid request
+          default: Overloaded
           title: Message
           type: string
         type:
-          const: invalid_request_error
-          default: invalid_request_error
+          const: overloaded_error
+          default: overloaded_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: InvalidRequestError
+      title: OverloadedError
       type: object
-    BetaPermissionError:
-      properties:
-        message:
-          default: Permission denied
-          title: Message
-          type: string
-        type:
-          const: permission_error
-          default: permission_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: PermissionError
-      type: object
-    BetaCreateUserProfileRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        external_id:
-          description: Platform's own identifier for this user. Not enforced unique. Maximum 255 characters.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 255
-          - type: 'null'
-          examples:
-          - user_12345
-        name:
-          description: Optional for all profiles. Real-world name of the entity this profile represents (company or individual); for a resold-to company (`relationship` `resold` / `access_type` `passthrough`), that company's name where known. Maximum 255 characters.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 255
-          - type: 'null'
-        relationship:
-          description: 'How the entity relates to the platform. `external` (default): an individual end-user. `resold`: a company the platform resells Claude access to. `internal`: the platform''s own usage.'
-          allOf:
-          - $ref: '#/components/schemas/BetaUserProfileRelationship'
-          x-anthropic-beta-required:
-          - user-profiles-2026-03-24
-        access_type:
-          description: 'How the platform uses the API for this entity. `application` (default): the profile represents an individual end-user of the platform''s product. `passthrough`: the profile identifies a company the platform resells Claude access to.'
-          allOf:
-          - $ref: '#/components/schemas/BetaUserProfileAccessType'
-          x-anthropic-beta-required:
-          - user-profiles-2026-08-18
-        metadata:
-          description: Free-form key-value data to attach to this user profile. Maximum 16 keys, with keys up to 64 characters and values up to 512 characters. Values must be non-empty strings.
-          type: object
-          additionalProperties:
-            type: string
-          examples:
-          - {}
-      example:
-        external_id: user_12345
-        metadata: {}
-    BetaUserProfileListOrder:
-      type: string
-      description: ListOrder enum
-      enum:
-      - asc
-      - desc
     BetaUserProfileRelationship:
       type: string
       description: 'How the entity behind a user profile relates to the platform that owns the API key. `external`: an individual end-user of the platform. `resold`: a company the platform resells Claude access to. `internal`: the platform''s own usage.'
@@ -601,49 +718,6 @@ components:
       - external
       - resold
       - internal
-    BetaErrorResponse:
-      properties:
-        error:
-          discriminator:
-            mapping:
-              api_error: '#/components/schemas/BetaAPIError'
-              authentication_error: '#/components/schemas/BetaAuthenticationError'
-              billing_error: '#/components/schemas/BetaBillingError'
-              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
-              not_found_error: '#/components/schemas/BetaNotFoundError'
-              overloaded_error: '#/components/schemas/BetaOverloadedError'
-              permission_error: '#/components/schemas/BetaPermissionError'
-              rate_limit_error: '#/components/schemas/BetaRateLimitError'
-              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
-            propertyName: type
-          oneOf:
-          - $ref: '#/components/schemas/BetaInvalidRequestError'
-          - $ref: '#/components/schemas/BetaAuthenticationError'
-          - $ref: '#/components/schemas/BetaBillingError'
-          - $ref: '#/components/schemas/BetaPermissionError'
-          - $ref: '#/components/schemas/BetaNotFoundError'
-          - $ref: '#/components/schemas/BetaRateLimitError'
-          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
-          - $ref: '#/components/schemas/BetaAPIError'
-          - $ref: '#/components/schemas/BetaOverloadedError'
-          title: Error
-        request_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          title: Request Id
-        type:
-          const: error
-          default: error
-          title: Type
-          type: string
-      required:
-      - error
-      - request_id
-      - type
-      title: ErrorResponse
-      type: object
     BetaAPIError:
       properties:
         message:
@@ -660,83 +734,9 @@ components:
       - type
       title: APIError
       type: object
-    AnthropicBeta:
-      anyOf:
-      - type: string
-      - type: string
-        enum:
-        - message-batches-2024-09-24
-        - prompt-caching-2024-07-31
-        - computer-use-2024-10-22
-        - computer-use-2025-01-24
-        - pdfs-2024-09-25
-        - token-counting-2024-11-01
-        - token-efficient-tools-2025-02-19
-        - output-128k-2025-02-19
-        - files-api-2025-04-14
-        - mcp-client-2025-04-04
-        - mcp-client-2025-11-20
-        - dev-full-thinking-2025-05-14
-        - interleaved-thinking-2025-05-14
-        - code-execution-2025-05-22
-        - extended-cache-ttl-2025-04-11
-        - context-1m-2025-08-07
-        - context-management-2025-06-27
-        - model-context-window-exceeded-2025-08-26
-        - skills-2025-10-02
-        - fast-mode-2026-02-01
-        - output-300k-2026-03-24
-        - user-profiles-2026-03-24
-        - user-profiles-2026-08-18
-        - advisor-tool-2026-03-01
-        - managed-agents-2026-04-01
-        - cache-diagnosis-2026-04-07
-        - dreaming-2026-04-21
-        - thinking-token-count-2026-05-13
-        - server-side-fallback-2026-06-01
-        - server-side-fallback-2026-07-01
-        - fallback-credit-2026-06-01
-        - fallback-credit-2026-07-01
-        - agent-memory-2026-07-22
-        - mid-conversation-tool-changes-2026-07-01
-        - compact-2026-01-12
-        - computer-use-2025-11-24
-        - mcp-tunnels-2026-06-22
-        - structured-outputs-2025-11-13
-        - task-budgets-2026-03-13
-        - thinking-display-updates-2026-08-18
-        - ce-user-management-2026-07-13
-        x-stainless-nominal: false
-    BetaRateLimitError:
-      properties:
-        message:
-          default: Rate limited
-          title: Message
-          type: string
-        type:
-          const: rate_limit_error
-          default: rate_limit_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: RateLimitError
-      type: object
-    BetaUserProfileTrustGrant:
-      type: object
-      additionalProperties: false
-      required:
-      - status
-      properties:
-        status:
-          description: Status of the trust grant.
-          type: string
-          enum:
-          - active
-          - pending
-          - rejected
-          examples:
-          - active
-      example:
-        status: active
+    BetaUserProfileListOrder:
+      type: string
+      description: ListOrder enum
+      enum:
+      - asc
+      - desc

@@ -309,26 +309,84 @@ paths:
       - Dreams?beta=true
 components:
   schemas:
-    BetaTimestamp:
-      description: A timestamp in RFC 3339 format
-      type: string
-      format: date-time
-    BetaDreamSessionsInput:
-      description: Input session transcripts the dream reads.
+    AnthropicBeta:
+      anyOf:
+      - type: string
+      - type: string
+        enum:
+        - message-batches-2024-09-24
+        - prompt-caching-2024-07-31
+        - computer-use-2024-10-22
+        - computer-use-2025-01-24
+        - pdfs-2024-09-25
+        - token-counting-2024-11-01
+        - token-efficient-tools-2025-02-19
+        - output-128k-2025-02-19
+        - files-api-2025-04-14
+        - mcp-client-2025-04-04
+        - mcp-client-2025-11-20
+        - dev-full-thinking-2025-05-14
+        - interleaved-thinking-2025-05-14
+        - code-execution-2025-05-22
+        - extended-cache-ttl-2025-04-11
+        - context-1m-2025-08-07
+        - context-management-2025-06-27
+        - model-context-window-exceeded-2025-08-26
+        - skills-2025-10-02
+        - fast-mode-2026-02-01
+        - output-300k-2026-03-24
+        - user-profiles-2026-03-24
+        - user-profiles-2026-08-18
+        - advisor-tool-2026-03-01
+        - managed-agents-2026-04-01
+        - cache-diagnosis-2026-04-07
+        - dreaming-2026-04-21
+        - thinking-token-count-2026-05-13
+        - server-side-fallback-2026-06-01
+        - server-side-fallback-2026-07-01
+        - fallback-credit-2026-06-01
+        - fallback-credit-2026-07-01
+        - agent-memory-2026-07-22
+        - mid-conversation-tool-changes-2026-07-01
+        - compact-2026-01-12
+        - computer-use-2025-11-24
+        - mcp-tunnels-2026-06-22
+        - structured-outputs-2025-11-13
+        - task-budgets-2026-03-13
+        - thinking-display-updates-2026-08-18
+        - ce-user-management-2026-07-13
+        x-stainless-nominal: false
+    BetaOutputBehavior:
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          create_new: '#/components/schemas/BetaOutputBehaviorCreateNew'
+          update_existing: '#/components/schemas/BetaOutputBehaviorUpdateExisting'
+      oneOf:
+      - $ref: '#/components/schemas/BetaOutputBehaviorCreateNew'
+      - $ref: '#/components/schemas/BetaOutputBehaviorUpdateExisting'
+    BetaDreamModelParams:
+      oneOf:
+      - type: string
+      - $ref: '#/components/schemas/BetaDreamModelConfigParams'
+    BetaDreamModelConfigParams:
+      description: Model identifier and configuration applied to every pipeline stage.
       type: object
       additionalProperties: false
       required:
-      - type
-      - session_ids
+      - id
       properties:
-        type:
+        id:
+          description: Model identifier, e.g. "claude-opus-5". 1-256 characters.
           type: string
-          enum:
-          - sessions
-        session_ids:
-          type: array
-          items:
-            type: string
+          minLength: 1
+          maxLength: 256
+        speed:
+          description: Inference speed mode. Defaults to `standard`.
+          anyOf:
+          - $ref: '#/components/schemas/BetaSpeed'
+          - type: 'null'
     BetaDreamUsage:
       description: Cumulative token usage for the dream across every pipeline stage.
       type: object
@@ -355,157 +413,10 @@ components:
           description: Total tokens used to create prompt-cache entries (sum of all TTL tiers).
           type: integer
           format: int32
-    BetaOutputBehaviorUpdateExisting:
-      description: The job writes the consolidated memories into this existing memory store instead of creating one. In EAP the store must be the job's own memory_store input, so the job consolidates the store in place.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - memory_store_id
-      properties:
-        type:
-          type: string
-          enum:
-          - update_existing
-        memory_store_id:
-          type: string
-          minLength: 1
-    BetaDreamModelConfig:
-      description: Model identifier and configuration applied to every pipeline stage. Same wire shape as the Agents API ModelConfig.
-      type: object
-      additionalProperties: false
-      required:
-      - id
-      properties:
-        id:
-          description: Model identifier, e.g. "claude-opus-5". 1-256 characters.
-          type: string
-          minLength: 1
-          maxLength: 256
-        speed:
-          description: Inference speed mode. Defaults to `standard`.
-          allOf:
-          - $ref: '#/components/schemas/BetaSpeed'
-          x-anthropic-beta-required:
-          - managed-agents-2026-04-01
-          - fast-mode-2026-02-01
-    BetaDreamError:
-      description: Failure detail for a Dream whose `status` is `failed`.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-        message:
-          type: string
-    BetaDreamStatus:
+    BetaTimestamp:
+      description: A timestamp in RFC 3339 format
       type: string
-      description: Lifecycle status of a Dream.
-      enum:
-      - pending
-      - running
-      - completed
-      - failed
-      - canceled
-    BetaDreamModelParams:
-      oneOf:
-      - type: string
-      - $ref: '#/components/schemas/BetaDreamModelConfigParams'
-    BetaDreamMemoryStoreInput:
-      description: 'An input memory store the dream reads from. The dream never mutates this store unless it is also the destination: with output_behavior {type: "update_existing"} the job consolidates this store in place.'
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - memory_store_id
-      properties:
-        type:
-          type: string
-          enum:
-          - memory_store
-        memory_store_id:
-          type: string
-          minLength: 1
-    BetaDreamingErrorResponse:
-      type: object
-      required:
-      - type
-      - error
-      properties:
-        type:
-          type: string
-          const: error
-          description: Always "error" for error responses
-        error:
-          type: object
-          discriminator:
-            propertyName: type
-            mapping:
-              conflict_error: '#/components/schemas/BetaTargetStoreHeldError'
-          oneOf:
-          - $ref: '#/components/schemas/BetaTargetStoreHeldError'
-    BetaListDreamsResponse:
-      type: object
-      additionalProperties: false
-      required:
-      - data
-      - next_page
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/BetaDream'
-        next_page:
-          anyOf:
-          - type: string
-          - type: 'null'
-    BetaTargetStoreHeldError:
-      description: 'The `output_behavior.memory_store_id` target is still held by a prior `{type: "update_existing"}` dream — one that is `pending` or `running`, or was canceled with its final writes still landing. Rarely the named dream has just finished (`completed`/`failed`) and its execution is still closing; an immediate retry then almost always succeeds. The message names the holding dream when the server can identify it (rarely omitted); poll it to a terminal state or cancel it, then retry. Carried with `x-should-retry: false`.'
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          const: conflict_error
-        message:
-          description: Human-readable description of the conflict, naming the dream that holds the target store when the server can identify it.
-          type: string
-    BetaCreateDreamRequest:
-      type: object
-      additionalProperties: false
-      required:
-      - inputs
-      - model
-      properties:
-        inputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/BetaDreamInput'
-        model:
-          $ref: '#/components/schemas/BetaDreamModelParams'
-        instructions:
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 4096
-          - type: 'null'
-        output_behavior:
-          $ref: '#/components/schemas/BetaOutputBehavior'
-    BetaDreamInput:
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          memory_store: '#/components/schemas/BetaDreamMemoryStoreInput'
-          sessions: '#/components/schemas/BetaDreamSessionsInput'
-      oneOf:
-      - $ref: '#/components/schemas/BetaDreamMemoryStoreInput'
-      - $ref: '#/components/schemas/BetaDreamSessionsInput'
+      format: date-time
     BetaOutputBehaviorCreateNew:
       description: 'The default destination: the job creates a new output memory store as a clone of the memory_store input and writes the consolidated memories into it. The input store is never mutated.'
       type: object
@@ -517,55 +428,6 @@ components:
           type: string
           enum:
           - create_new
-    BetaDreamMemoryStoreOutput:
-      description: An output memory store the dream writes consolidated memories into.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - memory_store_id
-      properties:
-        type:
-          type: string
-          enum:
-          - memory_store
-        memory_store_id:
-          type: string
-    BetaDreamModelConfigParams:
-      description: Model identifier and configuration applied to every pipeline stage.
-      type: object
-      additionalProperties: false
-      required:
-      - id
-      properties:
-        id:
-          description: Model identifier, e.g. "claude-opus-5". 1-256 characters.
-          type: string
-          minLength: 1
-          maxLength: 256
-        speed:
-          description: Inference speed mode. Defaults to `standard`.
-          anyOf:
-          - $ref: '#/components/schemas/BetaSpeed'
-          - type: 'null'
-    BetaDreamOutput:
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          memory_store: '#/components/schemas/BetaDreamMemoryStoreOutput'
-      oneOf:
-      - $ref: '#/components/schemas/BetaDreamMemoryStoreOutput'
-    BetaOutputBehavior:
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          create_new: '#/components/schemas/BetaOutputBehaviorCreateNew'
-          update_existing: '#/components/schemas/BetaOutputBehaviorUpdateExisting'
-      oneOf:
-      - $ref: '#/components/schemas/BetaOutputBehaviorCreateNew'
-      - $ref: '#/components/schemas/BetaOutputBehaviorUpdateExisting'
     BetaDream:
       description: 'An asynchronous memory-consolidation job that reads a memory store plus a set of session transcripts and writes consolidated memories into an output memory store — a new store by default, or an existing store chosen via output_behavior. The Dreams API is in research preview: the request and response shapes are volatile and may change without the deprecation period that applies to generally-available endpoints.'
       type: object
@@ -630,56 +492,194 @@ components:
           $ref: '#/components/schemas/BetaDreamUsage'
         output_behavior:
           $ref: '#/components/schemas/BetaOutputBehavior'
+    BetaDreamSessionsInput:
+      description: Input session transcripts the dream reads.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - session_ids
+      properties:
+        type:
+          type: string
+          enum:
+          - sessions
+        session_ids:
+          type: array
+          items:
+            type: string
+    BetaDreamOutput:
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          memory_store: '#/components/schemas/BetaDreamMemoryStoreOutput'
+      oneOf:
+      - $ref: '#/components/schemas/BetaDreamMemoryStoreOutput'
+    BetaDreamMemoryStoreOutput:
+      description: An output memory store the dream writes consolidated memories into.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - memory_store_id
+      properties:
+        type:
+          type: string
+          enum:
+          - memory_store
+        memory_store_id:
+          type: string
+    BetaDreamError:
+      description: Failure detail for a Dream whose `status` is `failed`.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+        message:
+          type: string
+    BetaListDreamsResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - data
+      - next_page
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaDream'
+        next_page:
+          anyOf:
+          - type: string
+          - type: 'null'
+    BetaDreamInput:
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          memory_store: '#/components/schemas/BetaDreamMemoryStoreInput'
+          sessions: '#/components/schemas/BetaDreamSessionsInput'
+      oneOf:
+      - $ref: '#/components/schemas/BetaDreamMemoryStoreInput'
+      - $ref: '#/components/schemas/BetaDreamSessionsInput'
+    BetaDreamModelConfig:
+      description: Model identifier and configuration applied to every pipeline stage. Same wire shape as the Agents API ModelConfig.
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      properties:
+        id:
+          description: Model identifier, e.g. "claude-opus-5". 1-256 characters.
+          type: string
+          minLength: 1
+          maxLength: 256
+        speed:
+          description: Inference speed mode. Defaults to `standard`.
+          allOf:
+          - $ref: '#/components/schemas/BetaSpeed'
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+          - fast-mode-2026-02-01
+    BetaDreamMemoryStoreInput:
+      description: 'An input memory store the dream reads from. The dream never mutates this store unless it is also the destination: with output_behavior {type: "update_existing"} the job consolidates this store in place.'
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - memory_store_id
+      properties:
+        type:
+          type: string
+          enum:
+          - memory_store
+        memory_store_id:
+          type: string
+          minLength: 1
+    BetaDreamingErrorResponse:
+      type: object
+      required:
+      - type
+      - error
+      properties:
+        type:
+          type: string
+          const: error
+          description: Always "error" for error responses
+        error:
+          type: object
+          discriminator:
+            propertyName: type
+            mapping:
+              conflict_error: '#/components/schemas/BetaTargetStoreHeldError'
+          oneOf:
+          - $ref: '#/components/schemas/BetaTargetStoreHeldError'
+    BetaOutputBehaviorUpdateExisting:
+      description: The job writes the consolidated memories into this existing memory store instead of creating one. In EAP the store must be the job's own memory_store input, so the job consolidates the store in place.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - memory_store_id
+      properties:
+        type:
+          type: string
+          enum:
+          - update_existing
+        memory_store_id:
+          type: string
+          minLength: 1
+    BetaTargetStoreHeldError:
+      description: 'The `output_behavior.memory_store_id` target is still held by a prior `{type: "update_existing"}` dream — one that is `pending` or `running`, or was canceled with its final writes still landing. Rarely the named dream has just finished (`completed`/`failed`) and its execution is still closing; an immediate retry then almost always succeeds. The message names the holding dream when the server can identify it (rarely omitted); poll it to a terminal state or cancel it, then retry. Carried with `x-should-retry: false`.'
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          const: conflict_error
+        message:
+          description: Human-readable description of the conflict, naming the dream that holds the target store when the server can identify it.
+          type: string
+    BetaCreateDreamRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - inputs
+      - model
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaDreamInput'
+        model:
+          $ref: '#/components/schemas/BetaDreamModelParams'
+        instructions:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 4096
+          - type: 'null'
+        output_behavior:
+          $ref: '#/components/schemas/BetaOutputBehavior'
     BetaSpeed:
       type: string
       description: Inference speed mode. `fast` provides significantly faster output token generation at premium pricing. Not all models support `fast`; invalid combinations are rejected at create time.
       enum:
       - standard
       - fast
-    AnthropicBeta:
-      anyOf:
-      - type: string
-      - type: string
-        enum:
-        - message-batches-2024-09-24
-        - prompt-caching-2024-07-31
-        - computer-use-2024-10-22
-        - computer-use-2025-01-24
-        - pdfs-2024-09-25
-        - token-counting-2024-11-01
-        - token-efficient-tools-2025-02-19
-        - output-128k-2025-02-19
-        - files-api-2025-04-14
-        - mcp-client-2025-04-04
-        - mcp-client-2025-11-20
-        - dev-full-thinking-2025-05-14
-        - interleaved-thinking-2025-05-14
-        - code-execution-2025-05-22
-        - extended-cache-ttl-2025-04-11
-        - context-1m-2025-08-07
-        - context-management-2025-06-27
-        - model-context-window-exceeded-2025-08-26
-        - skills-2025-10-02
-        - fast-mode-2026-02-01
-        - output-300k-2026-03-24
-        - user-profiles-2026-03-24
-        - user-profiles-2026-08-18
-        - advisor-tool-2026-03-01
-        - managed-agents-2026-04-01
-        - cache-diagnosis-2026-04-07
-        - dreaming-2026-04-21
-        - thinking-token-count-2026-05-13
-        - server-side-fallback-2026-06-01
-        - server-side-fallback-2026-07-01
-        - fallback-credit-2026-06-01
-        - fallback-credit-2026-07-01
-        - agent-memory-2026-07-22
-        - mid-conversation-tool-changes-2026-07-01
-        - compact-2026-01-12
-        - computer-use-2025-11-24
-        - mcp-tunnels-2026-06-22
-        - structured-outputs-2025-11-13
-        - task-budgets-2026-03-13
-        - thinking-display-updates-2026-08-18
-        - ce-user-management-2026-07-13
-        x-stainless-nominal: false
+    BetaDreamStatus:
+      type: string
+      description: Lifecycle status of a Dream.
+      enum:
+      - pending
+      - running
+      - completed
+      - failed
+      - canceled

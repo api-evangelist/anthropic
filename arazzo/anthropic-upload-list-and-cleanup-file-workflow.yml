@@ -37,7 +37,7 @@ workflows:
     description: >-
       Upload a file to Anthropic's servers, sending the binary as multipart form
       data.
-    operationId: createFile
+    operationId: upload_file_v1_files_post
     parameters:
     - name: x-api-key
       in: header
@@ -58,7 +58,7 @@ workflows:
     description: >-
       List the files stored for the organization to confirm the freshly
       uploaded file is present.
-    operationId: listFiles
+    operationId: list_files_v1_files_get
     parameters:
     - name: x-api-key
       in: header
@@ -78,7 +78,7 @@ workflows:
     description: >-
       Delete the uploaded file to clean up storage now that its presence has
       been confirmed.
-    operationId: deleteFile
+    operationId: delete_file_v1_files__file_id__delete
     parameters:
     - name: x-api-key
       in: header

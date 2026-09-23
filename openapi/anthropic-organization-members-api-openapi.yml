@@ -136,130 +136,7 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"UserDeletedResponseExample\"\n}\n"
 components:
-  examples:
-    ErrorExample:
-      summary: Error Response
-      value:
-        type: invalid_request_error
-        message: The request was invalid or malformed.
-    UpdateOrganizationMemberRequestExample:
-      summary: Update Organization Member Request
-      value:
-        role: developer
-    OrganizationMemberExample:
-      summary: Organization Member Response
-      value:
-        id: user_01WCz1FkmYMm4gnmykNKUu3Q
-        type: user
-        email: jane.doe@example.com
-        name: Jane Doe
-        role: developer
-        added_at: '2024-10-30T23:58:27.427722Z'
-    OrganizationMemberListExample:
-      summary: Organization Member List Response
-      value:
-        data:
-        - id: user_01WCz1FkmYMm4gnmykNKUu3Q
-          type: user
-          email: jane.doe@example.com
-          name: Jane Doe
-          role: developer
-          added_at: '2024-10-30T23:58:27.427722Z'
-        - id: user_02XDa2GlnYNn5hoozlNLVu4R
-          type: user
-          email: john.smith@example.com
-          name: John Smith
-          role: user
-          added_at: '2024-10-15T10:30:00.000000Z'
-        first_id: user_01WCz1FkmYMm4gnmykNKUu3Q
-        has_more: false
-        last_id: user_02XDa2GlnYNn5hoozlNLVu4R
-    UserDeletedResponseExample:
-      summary: User Deleted Response
-      value:
-        id: user_01WCz1FkmYMm4gnmykNKUu3Q
-        type: user_deleted
-  parameters:
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
-      required: true
-      description: The version of the Anthropic API to use
-      schema:
-        type: string
-        example: '2023-06-01'
-    UserId:
-      name: user_id
-      in: path
-      required: true
-      description: Unique identifier for the user
-      schema:
-        type: string
-      example: user_01WCz1FkmYMm4gnmykNKUu3Q
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.
-      schema:
-        type: integer
-        default: 20
-        minimum: 1
-        maximum: 1000
-    AfterId:
-      name: after_id
-      in: query
-      required: false
-      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
-      schema:
-        type: string
-    BeforeId:
-      name: before_id
-      in: query
-      required: false
-      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
-      schema:
-        type: string
   schemas:
-    UpdateOrganizationMemberRequest:
-      type: object
-      required:
-      - role
-      properties:
-        role:
-          $ref: '#/components/schemas/OrganizationRole'
-    OrganizationMember:
-      type: object
-      required:
-      - id
-      - type
-      - email
-      - name
-      - role
-      - added_at
-      properties:
-        id:
-          type: string
-          description: Unique user identifier
-        type:
-          type: string
-          enum:
-          - user
-          default: user
-          description: Object type identifier
-        email:
-          type: string
-          format: email
-          description: User email address
-        name:
-          type: string
-          description: User display name
-        role:
-          $ref: '#/components/schemas/OrganizationRole'
-        added_at:
-          type: string
-          format: date-time
-          description: RFC 3339 datetime when user joined the organization
     Error:
       type: object
       required:
@@ -305,6 +182,45 @@ components:
       - billing
       - admin
       description: Role within the organization
+    OrganizationMember:
+      type: object
+      required:
+      - id
+      - type
+      - email
+      - name
+      - role
+      - added_at
+      properties:
+        id:
+          type: string
+          description: Unique user identifier
+        type:
+          type: string
+          enum:
+          - user
+          default: user
+          description: Object type identifier
+        email:
+          type: string
+          format: email
+          description: User email address
+        name:
+          type: string
+          description: User display name
+        role:
+          $ref: '#/components/schemas/OrganizationRole'
+        added_at:
+          type: string
+          format: date-time
+          description: RFC 3339 datetime when user joined the organization
+    UpdateOrganizationMemberRequest:
+      type: object
+      required:
+      - role
+      properties:
+        role:
+          $ref: '#/components/schemas/OrganizationRole'
     UserDeletedResponse:
       type: object
       required:
@@ -320,6 +236,90 @@ components:
           - user_deleted
           default: user_deleted
           description: Deletion confirmation type
+  examples:
+    UpdateOrganizationMemberRequestExample:
+      summary: Update Organization Member Request
+      value:
+        role: developer
+    UserDeletedResponseExample:
+      summary: User Deleted Response
+      value:
+        id: user_01WCz1FkmYMm4gnmykNKUu3Q
+        type: user_deleted
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The request was invalid or malformed.
+    OrganizationMemberListExample:
+      summary: Organization Member List Response
+      value:
+        data:
+        - id: user_01WCz1FkmYMm4gnmykNKUu3Q
+          type: user
+          email: jane.doe@example.com
+          name: Jane Doe
+          role: developer
+          added_at: '2024-10-30T23:58:27.427722Z'
+        - id: user_02XDa2GlnYNn5hoozlNLVu4R
+          type: user
+          email: john.smith@example.com
+          name: John Smith
+          role: user
+          added_at: '2024-10-15T10:30:00.000000Z'
+        first_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+        has_more: false
+        last_id: user_02XDa2GlnYNn5hoozlNLVu4R
+    OrganizationMemberExample:
+      summary: Organization Member Response
+      value:
+        id: user_01WCz1FkmYMm4gnmykNKUu3Q
+        type: user
+        email: jane.doe@example.com
+        name: Jane Doe
+        role: developer
+        added_at: '2024-10-30T23:58:27.427722Z'
+  parameters:
+    UserId:
+      name: user_id
+      in: path
+      required: true
+      description: Unique identifier for the user
+      schema:
+        type: string
+      example: user_01WCz1FkmYMm4gnmykNKUu3Q
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 1000
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
+      schema:
+        type: string
+    BeforeId:
+      name: before_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
+      schema:
+        type: string
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
+      schema:
+        type: string
+        example: '2023-06-01'
   responses:
     ErrorResponse:
       description: Error Response

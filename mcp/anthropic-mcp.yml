@@ -1,4 +1,4 @@
-generated: '2026-06-20'
+generated: '2026-08-27'
 method: derived
 status: candidate
 source: openapi/*.yml
@@ -11,6 +11,12 @@ references:
   spec: https://modelcontextprotocol.io
   github: https://github.com/modelcontextprotocol
   managed_agents_mcp: https://platform.claude.com/docs/en/managed-agents/overview
+deployment:
+  mode: none
+  verified: derived
+  tools: 15
+  checked: '2026-08-12'
+  source: catalog MCP census
 server:
   name: anthropic-claude-api
   transport: http
@@ -60,9 +66,3 @@ tools:
 - name: list_workspaces
   description: List organization workspaces (Admin API).
   source_operation: openapi/anthropic-admin-api-openapi.yml#listWorkspaces
-deployment:
-  mode: none
-  verified: derived
-  tools: 15
-  checked: '2026-08-12'
-  source: catalog MCP census

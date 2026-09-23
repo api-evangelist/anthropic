@@ -1176,22 +1176,156 @@ paths:
       description: Production Server
 components:
   schemas:
-    BetaGatewayTimeoutError:
+    BetaCloudConfigParams:
       properties:
-        message:
-          default: Request timeout
-          title: Message
-          type: string
+        networking:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/BetaUnrestrictedNetwork'
+            - $ref: '#/components/schemas/BetaLimitedNetworkParams'
+              x-anthropic-beta-required:
+              - managed-agents-2026-04-01
+            discriminator:
+              propertyName: type
+              mapping:
+                limited: '#/components/schemas/BetaLimitedNetworkParams'
+                unrestricted: '#/components/schemas/BetaUnrestrictedNetwork'
+          - type: 'null'
+          title: Networking
+          description: Network configuration policy. Omit on update to preserve the existing value.
+          examples:
+          - type: limited
+            allowed_hosts:
+            - api.example.com
+            allow_package_managers: true
+        packages:
+          anyOf:
+          - $ref: '#/components/schemas/BetaPackagesParams'
+          - type: 'null'
+          description: Package manager configuration. Under `limited` networking, requires `networking.allow_package_managers` to be `true`. Omit on update to preserve the existing value.
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+          examples:
+          - pip:
+            - pandas
+            - numpy
         type:
-          const: timeout_error
-          default: timeout_error
-          title: Type
           type: string
-      required:
-      - message
-      - type
-      title: GatewayTimeoutError
+          const: cloud
+          title: Type
+          description: Environment type
+          examples:
+          - cloud
+      additionalProperties: false
       type: object
+      required:
+      - type
+      title: CloudConfigParams
+      description: 'Request params for `cloud` environment configuration.
+
+
+        Fields default to null; on update, omitted fields preserve the
+
+        existing value.'
+      example:
+        type: cloud
+        networking:
+          type: limited
+          allowed_hosts:
+          - api.example.com
+          allow_package_managers: true
+        packages:
+          pip:
+          - pandas
+          - numpy
+    BetaEnvironmentDeleteResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Environment identifier
+          examples:
+          - env_011CZkZ9X2dpNyB7HsEFoRfW
+        type:
+          type: string
+          title: Type
+          description: The type of response
+          default: environment_deleted
+          examples:
+          - environment_deleted
+          enum:
+          - environment_deleted
+      type: object
+      required:
+      - id
+      - type
+      title: EnvironmentDeleteResponse
+      description: Response after deleting an environment.
+      example:
+        type: environment_deleted
+        id: env_011CZkZ9X2dpNyB7HsEFoRfW
+    BetaSelfHostedWorkUpdateRequest:
+      properties:
+        metadata:
+          additionalProperties:
+            anyOf:
+            - type: string
+            - type: 'null'
+          type: object
+          title: Metadata
+          description: Metadata patch. Set a key to a string to upsert it, or to null to delete it. Omit the field to preserve existing metadata.
+      type: object
+      required:
+      - metadata
+      title: SelfHostedWorkUpdateRequest
+      description: Request to update work item metadata.
+    AnthropicBeta:
+      anyOf:
+      - type: string
+      - type: string
+        enum:
+        - message-batches-2024-09-24
+        - prompt-caching-2024-07-31
+        - computer-use-2024-10-22
+        - computer-use-2025-01-24
+        - pdfs-2024-09-25
+        - token-counting-2024-11-01
+        - token-efficient-tools-2025-02-19
+        - output-128k-2025-02-19
+        - files-api-2025-04-14
+        - mcp-client-2025-04-04
+        - mcp-client-2025-11-20
+        - dev-full-thinking-2025-05-14
+        - interleaved-thinking-2025-05-14
+        - code-execution-2025-05-22
+        - extended-cache-ttl-2025-04-11
+        - context-1m-2025-08-07
+        - context-management-2025-06-27
+        - model-context-window-exceeded-2025-08-26
+        - skills-2025-10-02
+        - fast-mode-2026-02-01
+        - output-300k-2026-03-24
+        - user-profiles-2026-03-24
+        - user-profiles-2026-08-18
+        - advisor-tool-2026-03-01
+        - managed-agents-2026-04-01
+        - cache-diagnosis-2026-04-07
+        - dreaming-2026-04-21
+        - thinking-token-count-2026-05-13
+        - server-side-fallback-2026-06-01
+        - server-side-fallback-2026-07-01
+        - fallback-credit-2026-06-01
+        - fallback-credit-2026-07-01
+        - agent-memory-2026-07-22
+        - mid-conversation-tool-changes-2026-07-01
+        - compact-2026-01-12
+        - computer-use-2025-11-24
+        - mcp-tunnels-2026-06-22
+        - structured-outputs-2025-11-13
+        - task-budgets-2026-03-13
+        - thinking-display-updates-2026-08-18
+        - ce-user-management-2026-07-13
+        x-stainless-nominal: false
     BetaUnrestrictedNetwork:
       properties:
         type:
@@ -1205,22 +1339,47 @@ components:
       - type
       title: UnrestrictedNetwork
       description: Unrestricted network access.
-    BetaOverloadedError:
+    BetaSelfHostedWorkQueueStats:
       properties:
-        message:
-          default: Overloaded
-          title: Message
-          type: string
+        depth:
+          type: integer
+          title: Depth
+          description: Number of work items waiting to be picked up (lag from consumer group)
+        oldest_queued_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Oldest Queued At
+          description: RFC 3339 timestamp of oldest item in the work stream (includes both queued and pending items), null if stream empty
+        pending:
+          type: integer
+          title: Pending
+          description: Number of work items being processed (polled but not acknowledged)
+          default: 0
         type:
-          const: overloaded_error
-          default: overloaded_error
-          title: Type
           type: string
-      required:
-      - message
-      - type
-      title: OverloadedError
+          const: work_queue_stats
+          title: Type
+          description: The type of object
+          default: work_queue_stats
+        workers_polling:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Workers Polling
+          description: Number of workers that have polled for work in the last 30 seconds. Requires worker_id to be sent with poll requests.
       type: object
+      required:
+      - depth
+      - oldest_queued_at
+      - pending
+      - type
+      - workers_polling
+      title: SelfHostedWorkQueueStats
+      description: 'Statistics about the work queue for an environment.
+
+
+        Uses Redis Stream consumer group metrics for O(1) queries.'
     BetaBillingError:
       properties:
         message:
@@ -1237,6 +1396,150 @@ components:
       - type
       title: BillingError
       type: object
+    BetaSessionWorkData:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Session identifier (e.g., 'session_...')
+        type:
+          type: string
+          const: session
+          title: Type
+          description: Type of work data
+      type: object
+      required:
+      - id
+      - type
+      title: SessionWorkData
+      description: 'Work data for session work items.
+
+
+        This resource type is used when work represents a session that needs to be executed
+
+        in a self-hosted environment.'
+    BetaPackages:
+      properties:
+        apt:
+          items:
+            type: string
+          type: array
+          title: Apt
+          description: Ubuntu/Debian packages to install
+        cargo:
+          items:
+            type: string
+          type: array
+          title: Cargo
+          description: Rust packages to install
+        gem:
+          items:
+            type: string
+          type: array
+          title: Gem
+          description: Ruby packages to install
+        go:
+          items:
+            type: string
+          type: array
+          title: Go
+          description: Go packages to install
+        npm:
+          items:
+            type: string
+          type: array
+          title: Npm
+          description: Node.js packages to install
+        pip:
+          items:
+            type: string
+          type: array
+          title: Pip
+          description: Python packages to install
+        type:
+          type: string
+          const: packages
+          title: Type
+          description: Package configuration type
+          default: packages
+      type: object
+      required:
+      - apt
+      - cargo
+      - gem
+      - go
+      - npm
+      - pip
+      title: Packages
+      description: Packages (and their versions) available in this environment.
+    BetaCloudConfig:
+      properties:
+        networking:
+          oneOf:
+          - $ref: '#/components/schemas/BetaUnrestrictedNetwork'
+          - $ref: '#/components/schemas/BetaLimitedNetwork'
+            x-anthropic-beta-required:
+            - managed-agents-2026-04-01
+          title: Networking
+          description: Network configuration policy.
+          discriminator:
+            propertyName: type
+            mapping:
+              limited: '#/components/schemas/BetaLimitedNetwork'
+              unrestricted: '#/components/schemas/BetaUnrestrictedNetwork'
+          examples:
+          - type: limited
+            allowed_hosts:
+            - api.example.com
+            allow_package_managers: true
+            allow_mcp_servers: false
+        packages:
+          $ref: '#/components/schemas/BetaPackages'
+          description: Package manager configuration.
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+          examples:
+          - type: packages
+            pip:
+            - pandas
+            - numpy
+            npm: []
+            apt: []
+            cargo: []
+            gem: []
+            go: []
+        type:
+          type: string
+          const: cloud
+          title: Type
+          description: Environment type
+          examples:
+          - cloud
+      type: object
+      required:
+      - networking
+      - packages
+      - type
+      title: CloudConfig
+      description: '`cloud` environment configuration.'
+      example:
+        type: cloud
+        networking:
+          type: limited
+          allowed_hosts:
+          - api.example.com
+          allow_package_managers: true
+          allow_mcp_servers: false
+        packages:
+          type: packages
+          pip:
+          - pandas
+          - numpy
+          npm: []
+          apt: []
+          cargo: []
+          gem: []
+          go: []
     BetaSelfHostedWorkStopRequest:
       properties:
         force:
@@ -1247,6 +1550,330 @@ components:
       type: object
       title: SelfHostedWorkStopRequest
       description: Request to stop a work item.
+    BetaPermissionError:
+      properties:
+        message:
+          default: Permission denied
+          title: Message
+          type: string
+        type:
+          const: permission_error
+          default: permission_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: PermissionError
+      type: object
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    BetaLimitedNetworkParams:
+      properties:
+        allow_mcp_servers:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Allow Mcp Servers
+          description: Permits outbound access to MCP server endpoints configured on the agent, beyond those listed in the `allowed_hosts` array. Defaults to `false`.
+        allow_package_managers:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Allow Package Managers
+          description: Permits outbound access to public package registries (PyPI, npm, etc.) beyond those listed in the `allowed_hosts` array. Defaults to `false` on creation. Must be `true` when `packages` are specified.
+        allowed_hosts:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Allowed Hosts
+          description: Specifies domains the container can reach.
+        type:
+          type: string
+          const: limited
+          title: Type
+          description: Network policy type
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      title: LimitedNetworkParams
+      description: 'Limited network request params.
+
+
+        Fields default to null; on update, omitted fields preserve the
+
+        existing value.'
+    BetaSelfHostedWorkHeartbeatResponse:
+      properties:
+        last_heartbeat:
+          type: string
+          title: Last Heartbeat
+          description: RFC 3339 timestamp of the actual heartbeat from DB
+        lease_extended:
+          type: boolean
+          title: Lease Extended
+          description: Whether the heartbeat succeeded in extending the lease
+        state:
+          type: string
+          enum:
+          - queued
+          - starting
+          - active
+          - stopping
+          - stopped
+          title: State
+          description: Current state of the work item (active/stopping/stopped)
+        ttl_seconds:
+          type: integer
+          title: Ttl Seconds
+          description: Effective TTL applied to the lease
+        type:
+          type: string
+          const: work_heartbeat
+          title: Type
+          description: The type of response
+          default: work_heartbeat
+      type: object
+      required:
+      - last_heartbeat
+      - lease_extended
+      - state
+      - ttl_seconds
+      - type
+      title: SelfHostedWorkHeartbeatResponse
+      description: Response after recording a heartbeat for a work item.
+    BetaLimitedNetwork:
+      properties:
+        allow_mcp_servers:
+          type: boolean
+          title: Allow Mcp Servers
+          description: Permits outbound access to MCP server endpoints configured on the agent, beyond those listed in the `allowed_hosts` array.
+        allow_package_managers:
+          type: boolean
+          title: Allow Package Managers
+          description: Permits outbound access to public package registries (PyPI, npm, etc.) beyond those listed in the `allowed_hosts` array.
+        allowed_hosts:
+          items:
+            type: string
+          type: array
+          title: Allowed Hosts
+          description: Specifies domains the container can reach.
+        type:
+          type: string
+          const: limited
+          title: Type
+          description: Network policy type
+      type: object
+      required:
+      - allow_mcp_servers
+      - allow_package_managers
+      - allowed_hosts
+      - type
+      title: LimitedNetwork
+      description: Limited network access.
+    BetaPackagesParams:
+      properties:
+        apt:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Apt
+          description: Ubuntu/Debian packages to install
+        cargo:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Cargo
+          description: Rust packages to install
+        gem:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Gem
+          description: Ruby packages to install
+        go:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Go
+          description: Go packages to install
+        npm:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Npm
+          description: Node.js packages to install
+        pip:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Pip
+          description: Python packages to install
+        type:
+          type: string
+          const: packages
+          title: Type
+          description: Package configuration type
+          default: packages
+      additionalProperties: false
+      type: object
+      title: PackagesParams
+      description: 'Specify packages (and optionally their versions) available in this environment.
+
+
+        When versioning, use the version semantics relevant for the package manager, e.g. for `pip` use `package==1.0.0`. You are responsible for validating the package and version exist. Unversioned installs the latest.
+
+
+        Under `limited` networking, requires `networking.allow_package_managers` to be `true`.'
+    BetaNotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    BetaPublicEnvironmentUpdateRequest:
+      properties:
+        config:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/BetaCloudConfigParams'
+            - $ref: '#/components/schemas/BetaSelfHostedConfigParams'
+              x-anthropic-beta-required:
+              - managed-agents-2026-04-01
+            discriminator:
+              propertyName: type
+              mapping:
+                cloud: '#/components/schemas/BetaCloudConfigParams'
+                self_hosted: '#/components/schemas/BetaSelfHostedConfigParams'
+          - type: 'null'
+          title: Config
+          description: Updated environment configuration
+        description:
+          anyOf:
+          - type: string
+            maxLength: 1024
+          - type: 'null'
+          title: Description
+          description: Updated description of the environment. Omit to preserve; null clears to null; an empty string is stored as an empty string.
+          examples:
+          - Python environment with data-analysis packages.
+        metadata:
+          additionalProperties:
+            anyOf:
+            - type: string
+            - type: 'null'
+          type: object
+          title: Metadata
+          description: User-provided metadata key-value pairs. Set a value to null or empty string to delete the key.
+        name:
+          anyOf:
+          - type: string
+            maxLength: 256
+            minLength: 1
+          - type: 'null'
+          title: Name
+          description: Updated name for the environment
+        scope:
+          anyOf:
+          - type: string
+            enum:
+            - organization
+            - account
+          - type: 'null'
+          title: Scope
+          description: The visibility scope for this environment. 'organization' makes the environment visible to all accounts. 'account' restricts visibility to the owning account only.
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+      additionalProperties: false
+      type: object
+      title: PublicEnvironmentUpdateRequest
+      description: Public API request to update an environment (without org/account fields).
+      example:
+        description: Python environment with data-analysis packages.
+    BetaInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    BetaAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    BetaSelfHostedConfigParams:
+      properties:
+        type:
+          type: string
+          const: self_hosted
+          title: Type
+          description: Environment type
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      title: SelfHostedConfigParams
+      description: Request params for `self_hosted` environment configuration.
     BetaSelfHostedWork:
       properties:
         acknowledged_at:
@@ -1346,266 +1973,89 @@ components:
         receive new messages. The environment worker polls for work to execute in a
 
         self-hosted sandbox.'
-    BetaSelfHostedWorkHeartbeatResponse:
+    BetaSelfHostedWorkListResponse:
       properties:
-        last_heartbeat:
-          type: string
-          title: Last Heartbeat
-          description: RFC 3339 timestamp of the actual heartbeat from DB
-        lease_extended:
-          type: boolean
-          title: Lease Extended
-          description: Whether the heartbeat succeeded in extending the lease
-        state:
-          type: string
-          enum:
-          - queued
-          - starting
-          - active
-          - stopping
-          - stopped
-          title: State
-          description: Current state of the work item (active/stopping/stopped)
-        ttl_seconds:
-          type: integer
-          title: Ttl Seconds
-          description: Effective TTL applied to the lease
-        type:
-          type: string
-          const: work_heartbeat
-          title: Type
-          description: The type of response
-          default: work_heartbeat
-      type: object
-      required:
-      - last_heartbeat
-      - lease_extended
-      - state
-      - ttl_seconds
-      - type
-      title: SelfHostedWorkHeartbeatResponse
-      description: Response after recording a heartbeat for a work item.
-    BetaAuthenticationError:
-      properties:
-        message:
-          default: Authentication error
-          title: Message
-          type: string
-        type:
-          const: authentication_error
-          default: authentication_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: AuthenticationError
-      type: object
-    BetaNotFoundError:
-      properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
-        type:
-          const: not_found_error
-          default: not_found_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: NotFoundError
-      type: object
-    BetaCloudConfigParams:
-      properties:
-        networking:
-          anyOf:
-          - oneOf:
-            - $ref: '#/components/schemas/BetaUnrestrictedNetwork'
-            - $ref: '#/components/schemas/BetaLimitedNetworkParams'
-              x-anthropic-beta-required:
-              - managed-agents-2026-04-01
-            discriminator:
-              propertyName: type
-              mapping:
-                limited: '#/components/schemas/BetaLimitedNetworkParams'
-                unrestricted: '#/components/schemas/BetaUnrestrictedNetwork'
-          - type: 'null'
-          title: Networking
-          description: Network configuration policy. Omit on update to preserve the existing value.
-          examples:
-          - type: limited
-            allowed_hosts:
-            - api.example.com
-            allow_package_managers: true
-        packages:
-          anyOf:
-          - $ref: '#/components/schemas/BetaPackagesParams'
-          - type: 'null'
-          description: Package manager configuration. Under `limited` networking, requires `networking.allow_package_managers` to be `true`. Omit on update to preserve the existing value.
-          x-anthropic-beta-required:
-          - managed-agents-2026-04-01
-          examples:
-          - pip:
-            - pandas
-            - numpy
-        type:
-          type: string
-          const: cloud
-          title: Type
-          description: Environment type
-          examples:
-          - cloud
-      additionalProperties: false
-      type: object
-      required:
-      - type
-      title: CloudConfigParams
-      description: 'Request params for `cloud` environment configuration.
-
-
-        Fields default to null; on update, omitted fields preserve the
-
-        existing value.'
-      example:
-        type: cloud
-        networking:
-          type: limited
-          allowed_hosts:
-          - api.example.com
-          allow_package_managers: true
-        packages:
-          pip:
-          - pandas
-          - numpy
-    BetaPublicEnvironmentUpdateRequest:
-      properties:
-        config:
-          anyOf:
-          - oneOf:
-            - $ref: '#/components/schemas/BetaCloudConfigParams'
-            - $ref: '#/components/schemas/BetaSelfHostedConfigParams'
-              x-anthropic-beta-required:
-              - managed-agents-2026-04-01
-            discriminator:
-              propertyName: type
-              mapping:
-                cloud: '#/components/schemas/BetaCloudConfigParams'
-                self_hosted: '#/components/schemas/BetaSelfHostedConfigParams'
-          - type: 'null'
-          title: Config
-          description: Updated environment configuration
-        description:
+        data:
+          items:
+            $ref: '#/components/schemas/BetaSelfHostedWork'
+          type: array
+          title: Data
+          description: List of work items
+          x-stainless-pagination-property:
+            purpose: items
+        next_page:
           anyOf:
           - type: string
-            maxLength: 1024
           - type: 'null'
-          title: Description
-          description: Updated description of the environment. Omit to preserve; null clears to null; an empty string is stored as an empty string.
-          examples:
-          - Python environment with data-analysis packages.
-        metadata:
-          additionalProperties:
-            anyOf:
-            - type: string
-            - type: 'null'
-          type: object
-          title: Metadata
-          description: User-provided metadata key-value pairs. Set a value to null or empty string to delete the key.
-        name:
-          anyOf:
-          - type: string
-            maxLength: 256
-            minLength: 1
-          - type: 'null'
-          title: Name
-          description: Updated name for the environment
-        scope:
-          anyOf:
-          - type: string
-            enum:
-            - organization
-            - account
-          - type: 'null'
-          title: Scope
-          description: The visibility scope for this environment. 'organization' makes the environment visible to all accounts. 'account' restricts visibility to the owning account only.
-          x-anthropic-beta-required:
-          - managed-agents-2026-04-01
-      additionalProperties: false
+          title: Next Page
+          description: Opaque cursor for fetching the next page of results
+          x-stainless-pagination-property:
+            purpose: next_cursor_field
       type: object
-      title: PublicEnvironmentUpdateRequest
-      description: Public API request to update an environment (without org/account fields).
-      example:
-        description: Python environment with data-analysis packages.
-    BetaCloudConfig:
+      required:
+      - data
+      - next_page
+      title: SelfHostedWorkListResponse
+      description: Response when listing work items with cursor-based pagination.
+    BetaErrorResponse:
       properties:
-        networking:
-          oneOf:
-          - $ref: '#/components/schemas/BetaUnrestrictedNetwork'
-          - $ref: '#/components/schemas/BetaLimitedNetwork'
-            x-anthropic-beta-required:
-            - managed-agents-2026-04-01
-          title: Networking
-          description: Network configuration policy.
+        error:
           discriminator:
-            propertyName: type
             mapping:
-              limited: '#/components/schemas/BetaLimitedNetwork'
-              unrestricted: '#/components/schemas/BetaUnrestrictedNetwork'
-          examples:
-          - type: limited
-            allowed_hosts:
-            - api.example.com
-            allow_package_managers: true
-            allow_mcp_servers: false
-        packages:
-          $ref: '#/components/schemas/BetaPackages'
-          description: Package manager configuration.
-          x-anthropic-beta-required:
-          - managed-agents-2026-04-01
-          examples:
-          - type: packages
-            pip:
-            - pandas
-            - numpy
-            npm: []
-            apt: []
-            cargo: []
-            gem: []
-            go: []
+              api_error: '#/components/schemas/BetaAPIError'
+              authentication_error: '#/components/schemas/BetaAuthenticationError'
+              billing_error: '#/components/schemas/BetaBillingError'
+              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
+              not_found_error: '#/components/schemas/BetaNotFoundError'
+              overloaded_error: '#/components/schemas/BetaOverloadedError'
+              permission_error: '#/components/schemas/BetaPermissionError'
+              rate_limit_error: '#/components/schemas/BetaRateLimitError'
+              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/BetaInvalidRequestError'
+          - $ref: '#/components/schemas/BetaAuthenticationError'
+          - $ref: '#/components/schemas/BetaBillingError'
+          - $ref: '#/components/schemas/BetaPermissionError'
+          - $ref: '#/components/schemas/BetaNotFoundError'
+          - $ref: '#/components/schemas/BetaRateLimitError'
+          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
+          - $ref: '#/components/schemas/BetaAPIError'
+          - $ref: '#/components/schemas/BetaOverloadedError'
+          title: Error
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Request Id
         type:
-          type: string
-          const: cloud
+          const: error
+          default: error
           title: Type
-          description: Environment type
-          examples:
-          - cloud
-      type: object
+          type: string
       required:
-      - networking
-      - packages
+      - error
+      - request_id
       - type
-      title: CloudConfig
-      description: '`cloud` environment configuration.'
-      example:
-        type: cloud
-        networking:
-          type: limited
-          allowed_hosts:
-          - api.example.com
-          allow_package_managers: true
-          allow_mcp_servers: false
-        packages:
-          type: packages
-          pip:
-          - pandas
-          - numpy
-          npm: []
-          apt: []
-          cargo: []
-          gem: []
-          go: []
+      title: ErrorResponse
+      type: object
+    BetaGatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
+      type: object
     BetaEnvironment:
       properties:
         archived_at:
@@ -1744,233 +2194,22 @@ components:
         archived_at: null
         created_at: '2026-03-15T10:00:00Z'
         updated_at: '2026-03-15T10:00:00Z'
-    BetaInvalidRequestError:
+    BetaOverloadedError:
       properties:
         message:
-          default: Invalid request
+          default: Overloaded
           title: Message
           type: string
         type:
-          const: invalid_request_error
-          default: invalid_request_error
+          const: overloaded_error
+          default: overloaded_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: InvalidRequestError
+      title: OverloadedError
       type: object
-    BetaPackagesParams:
-      properties:
-        apt:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Apt
-          description: Ubuntu/Debian packages to install
-        cargo:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Cargo
-          description: Rust packages to install
-        gem:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Gem
-          description: Ruby packages to install
-        go:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Go
-          description: Go packages to install
-        npm:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Npm
-          description: Node.js packages to install
-        pip:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Pip
-          description: Python packages to install
-        type:
-          type: string
-          const: packages
-          title: Type
-          description: Package configuration type
-          default: packages
-      additionalProperties: false
-      type: object
-      title: PackagesParams
-      description: 'Specify packages (and optionally their versions) available in this environment.
-
-
-        When versioning, use the version semantics relevant for the package manager, e.g. for `pip` use `package==1.0.0`. You are responsible for validating the package and version exist. Unversioned installs the latest.
-
-
-        Under `limited` networking, requires `networking.allow_package_managers` to be `true`.'
-    BetaPermissionError:
-      properties:
-        message:
-          default: Permission denied
-          title: Message
-          type: string
-        type:
-          const: permission_error
-          default: permission_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: PermissionError
-      type: object
-    BetaEnvironmentDeleteResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: Environment identifier
-          examples:
-          - env_011CZkZ9X2dpNyB7HsEFoRfW
-        type:
-          type: string
-          title: Type
-          description: The type of response
-          default: environment_deleted
-          examples:
-          - environment_deleted
-          enum:
-          - environment_deleted
-      type: object
-      required:
-      - id
-      - type
-      title: EnvironmentDeleteResponse
-      description: Response after deleting an environment.
-      example:
-        type: environment_deleted
-        id: env_011CZkZ9X2dpNyB7HsEFoRfW
-    BetaSessionWorkData:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: Session identifier (e.g., 'session_...')
-        type:
-          type: string
-          const: session
-          title: Type
-          description: Type of work data
-      type: object
-      required:
-      - id
-      - type
-      title: SessionWorkData
-      description: 'Work data for session work items.
-
-
-        This resource type is used when work represents a session that needs to be executed
-
-        in a self-hosted environment.'
-    BetaSelfHostedConfig:
-      properties:
-        type:
-          type: string
-          const: self_hosted
-          title: Type
-          description: Environment type
-      additionalProperties: false
-      type: object
-      required:
-      - type
-      title: SelfHostedConfig
-      description: Configuration for self-hosted environments.
-    BetaSelfHostedWorkListResponse:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/BetaSelfHostedWork'
-          type: array
-          title: Data
-          description: List of work items
-          x-stainless-pagination-property:
-            purpose: items
-        next_page:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Next Page
-          description: Opaque cursor for fetching the next page of results
-          x-stainless-pagination-property:
-            purpose: next_cursor_field
-      type: object
-      required:
-      - data
-      - next_page
-      title: SelfHostedWorkListResponse
-      description: Response when listing work items with cursor-based pagination.
-    BetaLimitedNetwork:
-      properties:
-        allow_mcp_servers:
-          type: boolean
-          title: Allow Mcp Servers
-          description: Permits outbound access to MCP server endpoints configured on the agent, beyond those listed in the `allowed_hosts` array.
-        allow_package_managers:
-          type: boolean
-          title: Allow Package Managers
-          description: Permits outbound access to public package registries (PyPI, npm, etc.) beyond those listed in the `allowed_hosts` array.
-        allowed_hosts:
-          items:
-            type: string
-          type: array
-          title: Allowed Hosts
-          description: Specifies domains the container can reach.
-        type:
-          type: string
-          const: limited
-          title: Type
-          description: Network policy type
-      type: object
-      required:
-      - allow_mcp_servers
-      - allow_package_managers
-      - allowed_hosts
-      - type
-      title: LimitedNetwork
-      description: Limited network access.
-    BetaSelfHostedWorkUpdateRequest:
-      properties:
-        metadata:
-          additionalProperties:
-            anyOf:
-            - type: string
-            - type: 'null'
-          type: object
-          title: Metadata
-          description: Metadata patch. Set a key to a string to upsert it, or to null to delete it. Omit the field to preserve existing metadata.
-      type: object
-      required:
-      - metadata
-      title: SelfHostedWorkUpdateRequest
-      description: Request to update work item metadata.
     BetaAPIError:
       properties:
         message:
@@ -1987,176 +2226,7 @@ components:
       - type
       title: APIError
       type: object
-    BetaErrorResponse:
-      properties:
-        error:
-          discriminator:
-            mapping:
-              api_error: '#/components/schemas/BetaAPIError'
-              authentication_error: '#/components/schemas/BetaAuthenticationError'
-              billing_error: '#/components/schemas/BetaBillingError'
-              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
-              not_found_error: '#/components/schemas/BetaNotFoundError'
-              overloaded_error: '#/components/schemas/BetaOverloadedError'
-              permission_error: '#/components/schemas/BetaPermissionError'
-              rate_limit_error: '#/components/schemas/BetaRateLimitError'
-              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
-            propertyName: type
-          oneOf:
-          - $ref: '#/components/schemas/BetaInvalidRequestError'
-          - $ref: '#/components/schemas/BetaAuthenticationError'
-          - $ref: '#/components/schemas/BetaBillingError'
-          - $ref: '#/components/schemas/BetaPermissionError'
-          - $ref: '#/components/schemas/BetaNotFoundError'
-          - $ref: '#/components/schemas/BetaRateLimitError'
-          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
-          - $ref: '#/components/schemas/BetaAPIError'
-          - $ref: '#/components/schemas/BetaOverloadedError'
-          title: Error
-        request_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          title: Request Id
-        type:
-          const: error
-          default: error
-          title: Type
-          type: string
-      required:
-      - error
-      - request_id
-      - type
-      title: ErrorResponse
-      type: object
-    BetaLimitedNetworkParams:
-      properties:
-        allow_mcp_servers:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Allow Mcp Servers
-          description: Permits outbound access to MCP server endpoints configured on the agent, beyond those listed in the `allowed_hosts` array. Defaults to `false`.
-        allow_package_managers:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Allow Package Managers
-          description: Permits outbound access to public package registries (PyPI, npm, etc.) beyond those listed in the `allowed_hosts` array. Defaults to `false` on creation. Must be `true` when `packages` are specified.
-        allowed_hosts:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Allowed Hosts
-          description: Specifies domains the container can reach.
-        type:
-          type: string
-          const: limited
-          title: Type
-          description: Network policy type
-      additionalProperties: false
-      type: object
-      required:
-      - type
-      title: LimitedNetworkParams
-      description: 'Limited network request params.
-
-
-        Fields default to null; on update, omitted fields preserve the
-
-        existing value.'
-    AnthropicBeta:
-      anyOf:
-      - type: string
-      - type: string
-        enum:
-        - message-batches-2024-09-24
-        - prompt-caching-2024-07-31
-        - computer-use-2024-10-22
-        - computer-use-2025-01-24
-        - pdfs-2024-09-25
-        - token-counting-2024-11-01
-        - token-efficient-tools-2025-02-19
-        - output-128k-2025-02-19
-        - files-api-2025-04-14
-        - mcp-client-2025-04-04
-        - mcp-client-2025-11-20
-        - dev-full-thinking-2025-05-14
-        - interleaved-thinking-2025-05-14
-        - code-execution-2025-05-22
-        - extended-cache-ttl-2025-04-11
-        - context-1m-2025-08-07
-        - context-management-2025-06-27
-        - model-context-window-exceeded-2025-08-26
-        - skills-2025-10-02
-        - fast-mode-2026-02-01
-        - output-300k-2026-03-24
-        - user-profiles-2026-03-24
-        - user-profiles-2026-08-18
-        - advisor-tool-2026-03-01
-        - managed-agents-2026-04-01
-        - cache-diagnosis-2026-04-07
-        - dreaming-2026-04-21
-        - thinking-token-count-2026-05-13
-        - server-side-fallback-2026-06-01
-        - server-side-fallback-2026-07-01
-        - fallback-credit-2026-06-01
-        - fallback-credit-2026-07-01
-        - agent-memory-2026-07-22
-        - mid-conversation-tool-changes-2026-07-01
-        - compact-2026-01-12
-        - computer-use-2025-11-24
-        - mcp-tunnels-2026-06-22
-        - structured-outputs-2025-11-13
-        - task-budgets-2026-03-13
-        - thinking-display-updates-2026-08-18
-        - ce-user-management-2026-07-13
-        x-stainless-nominal: false
-    BetaSelfHostedWorkQueueStats:
-      properties:
-        depth:
-          type: integer
-          title: Depth
-          description: Number of work items waiting to be picked up (lag from consumer group)
-        oldest_queued_at:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Oldest Queued At
-          description: RFC 3339 timestamp of oldest item in the work stream (includes both queued and pending items), null if stream empty
-        pending:
-          type: integer
-          title: Pending
-          description: Number of work items being processed (polled but not acknowledged)
-          default: 0
-        type:
-          type: string
-          const: work_queue_stats
-          title: Type
-          description: The type of object
-          default: work_queue_stats
-        workers_polling:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Workers Polling
-          description: Number of workers that have polled for work in the last 30 seconds. Requires worker_id to be sent with poll requests.
-      type: object
-      required:
-      - depth
-      - oldest_queued_at
-      - pending
-      - type
-      - workers_polling
-      title: SelfHostedWorkQueueStats
-      description: 'Statistics about the work queue for an environment.
-
-
-        Uses Redis Stream consumer group metrics for O(1) queries.'
-    BetaSelfHostedConfigParams:
+    BetaSelfHostedConfig:
       properties:
         type:
           type: string
@@ -2167,87 +2237,27 @@ components:
       type: object
       required:
       - type
-      title: SelfHostedConfigParams
-      description: Request params for `self_hosted` environment configuration.
-    BetaRateLimitError:
+      title: SelfHostedConfig
+      description: Configuration for self-hosted environments.
+    Environment:
+      type: object
       properties:
-        message:
-          default: Rate limited
-          title: Message
+        id:
           type: string
         type:
-          const: rate_limit_error
-          default: rate_limit_error
-          title: Type
           type: string
-      required:
-      - message
-      - type
-      title: RateLimitError
-      type: object
-    BetaPackages:
-      properties:
-        apt:
-          items:
-            type: string
-          type: array
-          title: Apt
-          description: Ubuntu/Debian packages to install
-        cargo:
-          items:
-            type: string
-          type: array
-          title: Cargo
-          description: Rust packages to install
-        gem:
-          items:
-            type: string
-          type: array
-          title: Gem
-          description: Ruby packages to install
-        go:
-          items:
-            type: string
-          type: array
-          title: Go
-          description: Go packages to install
-        npm:
-          items:
-            type: string
-          type: array
-          title: Npm
-          description: Node.js packages to install
-        pip:
-          items:
-            type: string
-          type: array
-          title: Pip
-          description: Python packages to install
-        type:
+          example: environment
+        name:
           type: string
-          const: packages
-          title: Type
-          description: Package configuration type
-          default: packages
-      type: object
-      required:
-      - apt
-      - cargo
-      - gem
-      - go
-      - npm
-      - pip
-      title: Packages
-      description: Packages (and their versions) available in this environment.
-    EnvironmentList:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Environment'
-        has_more:
-          type: boolean
+        config:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        archived_at:
+          type: string
+          format: date-time
+          nullable: true
     CreateEnvironmentRequest:
       type: object
       required:
@@ -2288,33 +2298,16 @@ components:
                   type: boolean
                 allow_package_managers:
                   type: boolean
-    Environment:
+    EnvironmentList:
       type: object
       properties:
-        id:
-          type: string
-        type:
-          type: string
-          example: environment
-        name:
-          type: string
-        config:
-          type: object
-        created_at:
-          type: string
-          format: date-time
-        archived_at:
-          type: string
-          format: date-time
-          nullable: true
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Environment'
+        has_more:
+          type: boolean
   parameters:
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
-      required: true
-      schema:
-        type: string
-        default: '2023-06-01'
     AnthropicBeta:
       name: anthropic-beta
       in: header
@@ -2329,6 +2322,13 @@ components:
       required: true
       schema:
         type: string
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: '2023-06-01'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

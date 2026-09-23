@@ -1,64 +1,124 @@
-generated: '2026-06-20'
+generated: '2026-08-27'
 method: searched
-source: https://platform.claude.com/docs/en/release-notes/api
+source: https://platform.claude.com/docs/en/release-notes/overview
 scheme: date-based
 current_version: '2023-06-01'
-notes: The Claude Platform release notes are the source of truth; this captures the
-  recent window only. Claude Code has a separate CHANGELOG.md, and Claude Apps have
-  separate release notes.
+notes: The Claude Platform release notes are the source of truth; this captures the recent window only.
+  Claude Code has a separate CHANGELOG.md, and Claude Apps have separate release notes.
 entries:
+- date: '2026-08-26'
+  breaking: false
+  highlights: Compliance API session endpoints out of beta for Cowork and Claude Code sessions; local
+    session endpoints now also return Claude Science and Claude for Microsoft 365 transcripts (beta, Enterprise).
+    Admin API now available in the ant CLI and the Python, TypeScript, C#, Go, Java, PHP and Ruby SDKs
+    under client.beta.organization — usage/cost reports and Claude Enterprise user-management remain curl-only.
+- date: '2026-08-20'
+  breaking: true
+  highlights: Python SDK v1.0. HTTP layer moves from httpx to httpx2; requires Python 3.10+; removes the
+    legacy Text Completions API and the temperature, top_p and top_k parameters on Messages methods; async
+    .with_raw_response now needs await response.parse(); AnthropicBedrock errors instead of defaulting
+    to us-east-1. Computer use and browser use toolsets (computer_toolset_20260801, browser_toolset_20260801)
+    reach Google Cloud.
+- date: '2026-08-19'
+  breaking: true
+  highlights: Computer use out of beta as computer_toolset_20260801 (changes request shape for existing
+    integrations). Browser use tool launched. Files API out of beta — files-api-2025-04-14 header no longer
+    required, and requests without it get the new response format (file expiration, page/next_page pagination,
+    ids[] filter). Agent Skills and the Skills API out of beta — skills-2025-10-02 header no longer required.
+    Admin API Claude Enterprise user-management out of beta.
+- date: '2026-08-18'
+  breaking: false
+  highlights: Workbench renamed to Playground in the Claude Console (platform.claude.com/playground);
+    supports every Messages API parameter and shows the full SDK request and API response per run.
+- date: '2026-08-11'
+  breaking: false
+  highlights: Compliance API returns Cowork and Claude Code transcripts from users machines (beta, Enterprise).
+    New anthropic-workspace-id response header carries the wrkspc_-prefixed workspace the request resolved
+    to.
+- date: '2026-08-10'
+  breaking: false
+  highlights: Claude Sonnet 5 introductory pricing ($2/$10 per MTok) becomes the standard price; the scheduled
+    2026-09-01 increase to $3/$15 will not occur.
+- date: '2026-08-07'
+  breaking: false
+  highlights: Managed Agents session budgets (hard spend cap; session pauses with stop reason budget_reached).
+    Session advisor. inference_geo pinning for agents and sessions.
+- date: '2026-08-05'
+  breaking: true
+  highlights: Claude Opus 4.1 (claude-opus-4-1-20250805) RETIRED — all requests now return an error. Inference
+    hooks in beta for Enterprise orgs.
+- date: '2026-08-03'
+  breaking: false
+  highlights: Compliance API returns Cowork session transcripts started on claude.ai web/mobile (beta,
+    Enterprise).
+- date: '2026-08-01'
+  breaking: false
+  highlights: Dreams (research preview) supports Claude Opus 5.
+- date: '2026-07-24'
+  breaking: true
+  highlights: 'Claude Opus 5 launched (claude-opus-5): 1M context default and max, 128k max output, thinking
+    on by default, $5/$25 per MTok. BREAKING on Opus 5: thinking:{"type":"disabled"} with effort xhigh
+    or max returns 400. Fast mode REMOVED for Claude Opus 4.7 — speed:"fast" now errors with no fallback.
+    Mid-conversation tool changes in beta. fallbacks gains a "default" mode.'
+- date: '2026-07-22'
+  breaking: false
+  highlights: effort on Managed Agents agent model config. Webhooks extended to environment.* (4 types)
+    and memory_store.* (3 types). Sessions accept initial_events (up to 50) on POST /v1/sessions. version
+    now optional on agent update (supply for optimistic concurrency, 409 on mismatch). Session thread
+    streams support event_deltas[].
 - date: '2026-07-15'
-  highlights: Mid-conversation system messages available on Claude Fable 5, Mythos 5,
-    and Opus 4.8 across Claude API, Bedrock, and Vertex AI (no beta header).
+  highlights: Mid-conversation system messages available on Claude Fable 5, Mythos 5, and Opus 4.8 across
+    Claude API, Bedrock, and Vertex AI (no beta header).
   breaking: false
 - date: '2026-07-14'
-  highlights: Admin API user management for Claude Enterprise (claude.ai) orgs in beta
-    — list/lookup members, change roles, invites, groups, custom roles.
+  highlights: Admin API user management for Claude Enterprise (claude.ai) orgs in beta — list/lookup members,
+    change roles, invites, groups, custom roles.
   breaking: false
 - date: '2026-07-10'
-  highlights: Dreams (research preview) adds Fable 5 and Sonnet 5; Access Transparency
-    cmek_preserve events expanded.
+  highlights: Dreams (research preview) adds Fable 5 and Sonnet 5; Access Transparency cmek_preserve events
+    expanded.
   breaking: false
 - date: '2026-07-08'
-  highlights: API key and Admin API key expiration dates configurable in the Console;
-    Admin API reports expires_at.
+  highlights: API key and Admin API key expiration dates configurable in the Console; Admin API reports
+    expires_at.
   breaking: false
 - date: '2026-07-02'
-  highlights: New agent-memory-2026-07-22 beta header changes memory list behavior;
-    SDKs updated (Python 0.116.0, TS 0.110.0, Go 1.56.0, Java 2.48.0, Ruby 1.55.0,
-    PHP 0.36.0, C# 12.35.0, CLI 1.16.0).
+  highlights: New agent-memory-2026-07-22 beta header changes memory list behavior; SDKs updated (Python
+    0.116.0, TS 0.110.0, Go 1.56.0, Java 2.48.0, Ruby 1.55.0, PHP 0.36.0, C# 12.35.0, CLI 1.16.0).
   breaking: true
 - date: '2026-07-01'
   highlights: Restored access to Claude Fable 5 and Claude Mythos 5.
   breaking: false
 - date: '2026-06-30'
-  highlights: Launched Claude Sonnet 5 (claude-sonnet-5) with 1M context, 128k output,
-    new tokenizer (~30% more tokens), adaptive thinking on by default; manual extended
-    thinking removed (400 error).
+  highlights: Launched Claude Sonnet 5 (claude-sonnet-5) with 1M context, 128k output, new tokenizer (~30%
+    more tokens), adaptive thinking on by default; manual extended thinking removed (400 error).
   breaking: true
 - date: '2026-06-29'
-  highlights: Removed fast mode for Claude Opus 4.6 (requests run at standard speed/rates,
-    no error).
+  highlights: Removed fast mode for Claude Opus 4.6 (requests run at standard speed/rates, no error).
   breaking: true
 - date: '2026-06-26'
-  highlights: Rate limits raised across the API; usage tiers consolidated into three
-    (Start, Build, Scale).
+  highlights: Rate limits raised across the API; usage tiers consolidated into three (Start, Build, Scale).
   breaking: false
 - date: '2026-06-22'
-  highlights: MCP tunnels management API moved from Admin API /v1/organizations/tunnels
-    to Claude API /v1/tunnels (mcp-tunnels-2026-06-22 header, workspace:manage_tunnels
-    WIF scope).
+  highlights: MCP tunnels management API moved from Admin API /v1/organizations/tunnels to Claude API
+    /v1/tunnels (mcp-tunnels-2026-06-22 header, workspace:manage_tunnels WIF scope).
   breaking: true
 - date: '2026-06-18'
-  highlights: SDKs add code_execution_20260120 (REPL state persistence; minimum for
-    programmatic tool calling).
+  highlights: SDKs add code_execution_20260120 (REPL state persistence; minimum for programmatic tool
+    calling).
   breaking: false
 - date: '2026-06-15'
-  highlights: Retired Claude Sonnet 4 (claude-sonnet-4-20250514) and Claude Opus 4
-    (claude-opus-4-20250514); requests now error.
+  highlights: Retired Claude Sonnet 4 (claude-sonnet-4-20250514) and Claude Opus 4 (claude-opus-4-20250514);
+    requests now error.
   breaking: true
 - date: '2026-06-09'
-  highlights: Launched Claude Fable 5 (claude-fable-5) and Claude Mythos 5 (claude-mythos-5)
-    with 1M context, always-on adaptive thinking; released beta Apple Foundation Models
-    Swift package.
+  highlights: Launched Claude Fable 5 (claude-fable-5) and Claude Mythos 5 (claude-mythos-5) with 1M context,
+    always-on adaptive thinking; released beta Apple Foundation Models Swift package.
   breaking: false
+docs: https://platform.claude.com/docs/en/release-notes/overview
+source_note: The previously recorded source https://platform.claude.com/docs/en/release-notes/api now
+  returns 404 (verified 2026-08-27); /release-notes/overview is the live page. Claude Code keeps a separate
+  CHANGELOG.md at https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md and Claude Apps have
+  their own release notes in the Help Center.
+window: 2026-07-01 through 2026-08-26 (recent window only)
+entry_count: 25

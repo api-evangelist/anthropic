@@ -129,6 +129,18 @@ paths:
         dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"InviteDeletedResponseExample\"\n}\n"
 components:
   schemas:
+    Error:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type identifier
+        message:
+          type: string
+          description: Human-readable error message
     OrganizationInviteList:
       type: object
       required:
@@ -153,29 +165,18 @@ components:
           type: string
           nullable: true
           description: Last ID in the data list for pagination
-    InviteStatus:
-      type: string
-      enum:
-      - pending
-      - accepted
-      - expired
-      - deleted
-      description: Current status of the invite
-    InviteDeletedResponse:
+    CreateOrganizationInviteRequest:
       type: object
       required:
-      - id
-      - type
+      - email
+      - role
       properties:
-        id:
+        email:
           type: string
-          description: ID of the deleted invite
-        type:
-          type: string
-          enum:
-          - invite_deleted
-          default: invite_deleted
-          description: Deletion confirmation type
+          format: email
+          description: Email address to send the invite to
+        role:
+          $ref: '#/components/schemas/OrganizationRole'
     OrganizationRole:
       type: string
       enum:
@@ -221,55 +222,35 @@ components:
           type: string
           format: date-time
           description: RFC 3339 datetime when invite expires
-    CreateOrganizationInviteRequest:
+    InviteStatus:
+      type: string
+      enum:
+      - pending
+      - accepted
+      - expired
+      - deleted
+      description: Current status of the invite
+    InviteDeletedResponse:
       type: object
       required:
-      - email
-      - role
-      properties:
-        email:
-          type: string
-          format: email
-          description: Email address to send the invite to
-        role:
-          $ref: '#/components/schemas/OrganizationRole'
-    Error:
-      type: object
-      required:
+      - id
       - type
-      - message
       properties:
+        id:
+          type: string
+          description: ID of the deleted invite
         type:
           type: string
-          description: Error type identifier
-        message:
-          type: string
-          description: Human-readable error message
+          enum:
+          - invite_deleted
+          default: invite_deleted
+          description: Deletion confirmation type
   examples:
-    ErrorExample:
-      summary: Error Response
-      value:
-        type: invalid_request_error
-        message: The request was invalid or malformed.
     InviteDeletedResponseExample:
       summary: Invite Deleted Response
       value:
         id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
         type: invite_deleted
-    OrganizationInviteListExample:
-      summary: Organization Invite List Response
-      value:
-        data:
-        - id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
-          type: invite
-          email: newuser@example.com
-          role: user
-          status: pending
-          invited_at: '2024-10-30T23:58:27.427722Z'
-          expires_at: '2024-11-20T23:58:27.427722Z'
-        first_id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
-        has_more: false
-        last_id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
     OrganizationInviteExample:
       summary: Organization Invite Response
       value:
@@ -285,23 +266,36 @@ components:
       value:
         email: newuser@example.com
         role: user
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The request was invalid or malformed.
+    OrganizationInviteListExample:
+      summary: Organization Invite List Response
+      value:
+        data:
+        - id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+          type: invite
+          email: newuser@example.com
+          role: user
+          status: pending
+          invited_at: '2024-10-30T23:58:27.427722Z'
+          expires_at: '2024-11-20T23:58:27.427722Z'
+        first_id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+        has_more: false
+        last_id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+  responses:
+    ErrorResponse:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
   parameters:
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
-      required: true
-      description: The version of the Anthropic API to use
-      schema:
-        type: string
-        example: '2023-06-01'
-    InviteId:
-      name: invite_id
-      in: path
-      required: true
-      description: Unique identifier for the invite
-      schema:
-        type: string
-      example: invite_015gWxCN9Hfg2QhZwTK7Mdeu
     Limit:
       name: limit
       in: query
@@ -326,16 +320,22 @@ components:
       description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
       schema:
         type: string
-  responses:
-    ErrorResponse:
-      description: Error Response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            ErrorExample:
-              $ref: '#/components/examples/ErrorExample'
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
+      schema:
+        type: string
+        example: '2023-06-01'
+    InviteId:
+      name: invite_id
+      in: path
+      required: true
+      description: Unique identifier for the invite
+      schema:
+        type: string
+      example: invite_015gWxCN9Hfg2QhZwTK7Mdeu
   securitySchemes:
     AdminApiKeyAuth:
       type: apiKey

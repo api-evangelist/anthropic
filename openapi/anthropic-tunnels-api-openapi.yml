@@ -1145,37 +1145,39 @@ paths:
       - Tunnels
 components:
   schemas:
-    BetaGatewayTimeoutError:
-      properties:
-        message:
-          default: Request timeout
-          title: Message
-          type: string
-        type:
-          const: timeout_error
-          default: timeout_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: GatewayTimeoutError
+    BetaTunnelToken:
+      description: A tunnel's connector token.
       type: object
-    BetaAPIError:
+      additionalProperties: false
+      required:
+      - type
+      - id
+      - tunnel_token
+      properties:
+        type:
+          type: string
+          const: tunnel_token
+        id:
+          description: Stable identifier for the current token value. Changes when the token is rotated.
+          type: string
+        tunnel_token:
+          description: The connector token used to run the tunnel. Treat as a credential.
+          type: string
+    BetaBillingError:
       properties:
         message:
-          default: Internal server error
+          default: Billing error
           title: Message
           type: string
         type:
-          const: api_error
-          default: api_error
+          const: billing_error
+          default: billing_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: APIError
+      title: BillingError
       type: object
     BetaErrorResponse:
       properties:
@@ -1220,167 +1222,23 @@ components:
       - type
       title: ErrorResponse
       type: object
-    BetaTimestamp:
-      description: A timestamp in RFC 3339 format
-      type: string
-      format: date-time
-    BetaOverloadedError:
-      properties:
-        message:
-          default: Overloaded
-          title: Message
-          type: string
-        type:
-          const: overloaded_error
-          default: overloaded_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: OverloadedError
-      type: object
-    BetaTunnelCertificate:
-      description: A CA certificate attached to a tunnel.
+    BetaListTunnelCertificatesResponse:
+      description: The tunnel's certificates.
       type: object
       additionalProperties: false
       required:
-      - type
-      - id
-      - tunnel_id
-      - fingerprint
-      - expires_at
-      - created_at
-      - archived_at
+      - data
+      - next_page
       properties:
-        type:
-          type: string
-          const: tunnel_certificate
-        id:
-          description: Unique identifier for the certificate, prefixed with `tcrt_`.
-          type: string
-        tunnel_id:
-          description: ID of the tunnel the certificate is registered against.
-          type: string
-        fingerprint:
-          description: Lowercase hex SHA-256 fingerprint of the certificate's DER encoding.
-          type: string
-        expires_at:
-          description: RFC 3339 datetime string indicating when the certificate expires, or `null` if it does not expire.
-          anyOf:
-          - $ref: '#/components/schemas/BetaTimestamp'
-          - type: 'null'
-        created_at:
-          description: RFC 3339 datetime string indicating when the certificate was registered.
-          allOf:
-          - $ref: '#/components/schemas/BetaTimestamp'
-        archived_at:
-          description: RFC 3339 datetime string indicating when the certificate was archived. Null if it is still in the trusted set.
-          anyOf:
-          - $ref: '#/components/schemas/BetaTimestamp'
-          - type: 'null'
-    BetaAuthenticationError:
-      properties:
-        message:
-          default: Authentication error
-          title: Message
-          type: string
-        type:
-          const: authentication_error
-          default: authentication_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: AuthenticationError
-      type: object
-    BetaRotateTunnelTokenRequestBody:
-      type: object
-      additionalProperties: false
-      properties:
-        reason:
-          description: Optional free-text reason for the rotation, recorded for audit.
+        data:
+          description: List of certificates, ordered by created_at descending.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaTunnelCertificate'
+        next_page:
+          description: Pagination cursor for the next page, or null if no more results.
           anyOf:
           - type: string
-            maxLength: 1024
-          - type: 'null'
-    BetaNotFoundError:
-      properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
-        type:
-          const: not_found_error
-          default: not_found_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: NotFoundError
-      type: object
-    BetaBillingError:
-      properties:
-        message:
-          default: Billing error
-          title: Message
-          type: string
-        type:
-          const: billing_error
-          default: billing_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: BillingError
-      type: object
-    BetaCreateTunnelCertificateRequestBody:
-      type: object
-      additionalProperties: false
-      required:
-      - ca_certificate_pem
-      properties:
-        ca_certificate_pem:
-          description: PEM-encoded X.509 CA certificate. Must contain exactly one certificate and no private-key material. Maximum 8KB.
-          type: string
-          maxLength: 8192
-    BetaTunnel:
-      description: An MCP tunnel.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - id
-      - domain
-      - display_name
-      - created_at
-      - archived_at
-      properties:
-        type:
-          type: string
-          const: tunnel
-        id:
-          description: Unique identifier for the tunnel, prefixed with `tnl_`.
-          type: string
-        domain:
-          description: Anthropic-assigned hostname for the tunnel. MCP server URLs whose host is a subdomain of this value are routed through the tunnel. Globally unique and never reused, even after the tunnel is archived.
-          type: string
-        display_name:
-          description: Human-readable name for the tunnel (1-255 characters). Null if unset.
-          anyOf:
-          - type: string
-          - type: 'null'
-        created_at:
-          description: RFC 3339 datetime string indicating when the tunnel was created.
-          allOf:
-          - $ref: '#/components/schemas/BetaTimestamp'
-        archived_at:
-          description: RFC 3339 datetime string indicating when the tunnel was archived. Null if it is not archived.
-          anyOf:
-          - $ref: '#/components/schemas/BetaTimestamp'
           - type: 'null'
     AnthropicBeta:
       anyOf:
@@ -1429,58 +1287,54 @@ components:
         - thinking-display-updates-2026-08-18
         - ce-user-management-2026-07-13
         x-stainless-nominal: false
-    BetaListTunnelCertificatesResponse:
-      description: The tunnel's certificates.
-      type: object
-      additionalProperties: false
-      required:
-      - data
-      - next_page
-      properties:
-        data:
-          description: List of certificates, ordered by created_at descending.
-          type: array
-          items:
-            $ref: '#/components/schemas/BetaTunnelCertificate'
-        next_page:
-          description: Pagination cursor for the next page, or null if no more results.
-          anyOf:
-          - type: string
-          - type: 'null'
-    BetaRateLimitError:
+    BetaNotFoundError:
       properties:
         message:
-          default: Rate limited
+          default: Not found
           title: Message
           type: string
         type:
-          const: rate_limit_error
-          default: rate_limit_error
+          const: not_found_error
+          default: not_found_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: RateLimitError
+      title: NotFoundError
       type: object
-    BetaTunnelToken:
-      description: A tunnel's connector token.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - id
-      - tunnel_token
+    BetaOverloadedError:
       properties:
+        message:
+          default: Overloaded
+          title: Message
+          type: string
         type:
+          const: overloaded_error
+          default: overloaded_error
+          title: Type
           type: string
-          const: tunnel_token
-        id:
-          description: Stable identifier for the current token value. Changes when the token is rotated.
+      required:
+      - message
+      - type
+      title: OverloadedError
+      type: object
+    BetaAPIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
           type: string
-        tunnel_token:
-          description: The connector token used to run the tunnel. Treat as a credential.
+        type:
+          const: api_error
+          default: api_error
+          title: Type
           type: string
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
     BetaInvalidRequestError:
       properties:
         message:
@@ -1497,6 +1351,87 @@ components:
       - type
       title: InvalidRequestError
       type: object
+    BetaTunnel:
+      description: An MCP tunnel.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - id
+      - domain
+      - display_name
+      - created_at
+      - archived_at
+      properties:
+        type:
+          type: string
+          const: tunnel
+        id:
+          description: Unique identifier for the tunnel, prefixed with `tnl_`.
+          type: string
+        domain:
+          description: Anthropic-assigned hostname for the tunnel. MCP server URLs whose host is a subdomain of this value are routed through the tunnel. Globally unique and never reused, even after the tunnel is archived.
+          type: string
+        display_name:
+          description: Human-readable name for the tunnel (1-255 characters). Null if unset.
+          anyOf:
+          - type: string
+          - type: 'null'
+        created_at:
+          description: RFC 3339 datetime string indicating when the tunnel was created.
+          allOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+        archived_at:
+          description: RFC 3339 datetime string indicating when the tunnel was archived. Null if it is not archived.
+          anyOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+          - type: 'null'
+    BetaCreateTunnelCertificateRequestBody:
+      type: object
+      additionalProperties: false
+      required:
+      - ca_certificate_pem
+      properties:
+        ca_certificate_pem:
+          description: PEM-encoded X.509 CA certificate. Must contain exactly one certificate and no private-key material. Maximum 8KB.
+          type: string
+          maxLength: 8192
+    BetaGatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
+      type: object
+    BetaAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    BetaTimestamp:
+      description: A timestamp in RFC 3339 format
+      type: string
+      format: date-time
     BetaPermissionError:
       properties:
         message:
@@ -1513,3 +1448,68 @@ components:
       - type
       title: PermissionError
       type: object
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    BetaTunnelCertificate:
+      description: A CA certificate attached to a tunnel.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - id
+      - tunnel_id
+      - fingerprint
+      - expires_at
+      - created_at
+      - archived_at
+      properties:
+        type:
+          type: string
+          const: tunnel_certificate
+        id:
+          description: Unique identifier for the certificate, prefixed with `tcrt_`.
+          type: string
+        tunnel_id:
+          description: ID of the tunnel the certificate is registered against.
+          type: string
+        fingerprint:
+          description: Lowercase hex SHA-256 fingerprint of the certificate's DER encoding.
+          type: string
+        expires_at:
+          description: RFC 3339 datetime string indicating when the certificate expires, or `null` if it does not expire.
+          anyOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+          - type: 'null'
+        created_at:
+          description: RFC 3339 datetime string indicating when the certificate was registered.
+          allOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+        archived_at:
+          description: RFC 3339 datetime string indicating when the certificate was archived. Null if it is still in the trusted set.
+          anyOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+          - type: 'null'
+    BetaRotateTunnelTokenRequestBody:
+      type: object
+      additionalProperties: false
+      properties:
+        reason:
+          description: Optional free-text reason for the rotation, recorded for audit.
+          anyOf:
+          - type: string
+            maxLength: 1024
+          - type: 'null'

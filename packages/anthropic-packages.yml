@@ -1,4 +1,4 @@
-generated: '2026-06-20'
+generated: '2026-08-27'
 method: searched
 source: https://platform.claude.com/docs/en/api/client-sdks
 docs: https://docs.anthropic.com/en/api/client-sdks
@@ -10,20 +10,29 @@ packages:
   install: pip install anthropic
   repo: https://github.com/anthropics/anthropic-sdk-python
   official: true
+  version: 1.1.0
+  published: '2026-08-26'
+  registry_metadata: https://pypi.org/pypi/anthropic/json
 - language: javascript
   registry: npm
-  name: "@anthropic-ai/sdk"
+  name: '@anthropic-ai/sdk'
   url: https://www.npmjs.com/package/@anthropic-ai/sdk
   install: npm install @anthropic-ai/sdk
   repo: https://github.com/anthropics/anthropic-sdk-typescript
   official: true
+  version: 0.121.0
+  published: '2026-08-26'
+  registry_metadata: https://registry.npmjs.org/@anthropic-ai/sdk
 - language: java
   registry: maven-central
   name: com.anthropic:anthropic-java
   url: https://central.sonatype.com/artifact/com.anthropic/anthropic-java
-  install: "implementation(\"com.anthropic:anthropic-java:2.49.0\")"
+  install: implementation("com.anthropic:anthropic-java:2.58.0")
   repo: https://github.com/anthropics/anthropic-sdk-java
   official: true
+  version: 2.58.0
+  published: '2026-08-26'
+  registry_metadata: https://repo1.maven.org/maven2/com/anthropic/anthropic-java/maven-metadata.xml
 - language: go
   registry: pkg.go.dev
   name: github.com/anthropics/anthropic-sdk-go
@@ -31,6 +40,9 @@ packages:
   install: go get github.com/anthropics/anthropic-sdk-go
   repo: https://github.com/anthropics/anthropic-sdk-go
   official: true
+  version: v1.67.0
+  published: '2026-08-26'
+  registry_metadata: https://proxy.golang.org/github.com/anthropics/anthropic-sdk-go/@latest
 - language: ruby
   registry: rubygems
   name: anthropic
@@ -38,6 +50,9 @@ packages:
   install: gem install anthropic
   repo: https://github.com/anthropics/anthropic-sdk-ruby
   official: true
+  version: 1.66.0
+  published: '2026-08-26'
+  registry_metadata: https://rubygems.org/api/v1/gems/anthropic.json
 - language: csharp
   registry: nuget
   name: Anthropic
@@ -45,6 +60,9 @@ packages:
   install: dotnet add package Anthropic
   repo: https://github.com/anthropics/anthropic-sdk-csharp
   official: true
+  version: 12.43.0
+  published: '2026-08-26'
+  registry_metadata: https://api.nuget.org/v3/registration5-semver1/anthropic/index.json
 - language: php
   registry: packagist
   name: anthropic-ai/sdk
@@ -52,14 +70,20 @@ packages:
   install: composer require anthropic-ai/sdk
   repo: https://github.com/anthropics/anthropic-sdk-php
   official: true
+  version: v0.44.0
+  published: '2026-08-26'
+  registry_metadata: https://repo.packagist.org/p2/anthropic-ai/sdk.json
 - language: javascript
   registry: npm
-  name: "@anthropic-ai/claude-agent-sdk"
+  name: '@anthropic-ai/claude-agent-sdk'
   url: https://www.npmjs.com/package/@anthropic-ai/claude-agent-sdk
   install: npm install @anthropic-ai/claude-agent-sdk
   repo: https://github.com/anthropics/claude-agent-sdk-typescript
   official: true
   note: Higher-level agent-loop SDK, not a Messages API client.
+  version: 0.3.247
+  published: '2026-08-26'
+  registry_metadata: https://registry.npmjs.org/@anthropic-ai/claude-agent-sdk
 - language: python
   registry: pypi
   name: claude-agent-sdk
@@ -68,18 +92,36 @@ packages:
   repo: https://github.com/anthropics/claude-agent-sdk-python
   official: true
   note: Higher-level agent-loop SDK, not a Messages API client.
+  version: 0.2.145
+  published: '2026-08-27'
+  registry_metadata: https://pypi.org/pypi/claude-agent-sdk/json
 - language: javascript
   registry: npm
-  name: "@anthropic-ai/claude-code"
+  name: '@anthropic-ai/claude-code'
   url: https://www.npmjs.com/package/@anthropic-ai/claude-code
   install: npm install -g @anthropic-ai/claude-code
   repo: https://github.com/anthropics/claude-code
   official: true
   note: Claude Code terminal agent (ships the CLI binary).
+  version: 2.1.247
+  published: '2026-08-26'
+  registry_metadata: https://registry.npmjs.org/@anthropic-ai/claude-code
 - language: swift
   registry: swift-package-manager
   name: anthropic-sdk-swift
   url: https://docs.anthropic.com/en/cli-sdks-libraries/libraries/apple-foundation-models
-  install: "Swift Package Manager (Apple Foundation Models LanguageModel adapter, beta)"
+  install: Swift Package Manager (Apple Foundation Models LanguageModel adapter, beta)
   official: true
-  note: Beta Swift package exposing Claude as a server-side LanguageModel in Apple's Foundation Models framework.
+  note: Beta Swift package exposing Claude as a server-side LanguageModel in Apple's Foundation Models
+    framework. Distributed through Swift Package Manager as part of the Apple Foundation Models adapter;
+    no queryable registry metadata endpoint, and Anthropic documents it only on the docs page (no pinned
+    version in the install instruction), so version and date are checked-and-unavailable, not unchecked.
+  version: null
+  published: null
+currency_checked: '2026-08-27'
+currency_note: Every registry answered unauthenticated on 2026-08-27. Nine of ten first-party SDKs published
+  a release on 2026-08-26 or 2026-08-27 — Anthropic releases the whole SDK fleet in lockstep from one
+  Stainless-generated spec, so no SDK here lags the API. The tenth (the Swift/Foundation Models adapter)
+  has no registry metadata endpoint to query.
+spec_provenance: 'The SDK repos name their source spec in .stats.yml: https://storage.googleapis.com/stainless-sdk-openapi-specs/anthropic/anthropic-446ddab751d9f0172400b17fc72736e9353d3b49780317f90c24aa98357fd39e.yml
+  (199 configured endpoints as of 2026-08-27). Harvested to openapi/_original/anthropic-api-openapi.json.'

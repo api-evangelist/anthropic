@@ -1,9 +1,7 @@
 openapi: 3.2.0
 info:
   title: Anthropic and Cost Usage API
-  description: 'Programmatically access your organization''s API usage and cost data via the Usage & Cost Admin API. The Usage API tracks token consumption across your organization with breakdowns by model, workspace, and service tier. The Cost API retrieves service-level cost breakdowns in USD. Both endpoints require an Admin API key (sk-ant-admin...).
-
-    '
+  description: Programmatically access your organization's API usage and cost data via the Usage & Cost Admin API. The Usage API tracks token consumption across your organization with breakdowns by model, workspace, and service tier. The Cost API retrieves service-level cost breakdowns in USD. Both endpoints require an Admin API key (sk-ant-admin...).
   version: 2023-06-01
   contact:
     name: Anthropic Support
@@ -23,9 +21,7 @@ paths:
   /v1/organizations/usage_report/messages:
     get:
       summary: Anthropic Get Messages Usage Report
-      description: 'Aggregated token usage for Messages API requests, broken down by day, model, workspace, and service tier.
-
-        '
+      description: Aggregated token usage for Messages API requests, broken down by day, model, workspace, and service tier.
       operationId: getMessagesUsageReport
       tags:
       - Usage
@@ -49,91 +45,19 @@ paths:
         4XX:
           $ref: '#/components/responses/ErrorResponse'
 components:
-  parameters:
-    StartingAt:
-      name: starting_at
-      in: query
-      required: true
-      description: RFC3339 inclusive lower bound for the report window.
-      schema:
-        type: string
-        format: date-time
-    WorkspaceIds:
-      name: workspace_ids
-      in: query
-      required: false
-      explode: true
-      schema:
-        type: array
-        items:
-          type: string
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
-      required: true
-      schema:
-        type: string
-        default: '2023-06-01'
-    Models:
-      name: models
-      in: query
-      required: false
-      explode: true
-      schema:
-        type: array
-        items:
-          type: string
-    Bucket:
-      name: bucket_width
-      in: query
-      required: false
-      description: Aggregation bucket size.
-      schema:
-        type: string
-        enum:
-        - 1h
-        - 1d
-        default: 1d
-    Page:
-      name: page
-      in: query
-      required: false
-      schema:
-        type: string
-    Limit:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 1000
-        default: 20
-    GroupBy:
-      name: group_by
-      in: query
-      required: false
-      description: Dimensions to group the report by.
-      explode: true
-      schema:
-        type: array
-        items:
-          type: string
-          enum:
-          - workspace_id
-          - api_key_id
-          - model
-          - service_tier
-          - context_window
-    EndingAt:
-      name: ending_at
-      in: query
-      required: false
-      description: RFC3339 exclusive upper bound for the report window.
-      schema:
-        type: string
-        format: date-time
   schemas:
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+            message:
+              type: string
     UsageReport:
       type: object
       properties:
@@ -185,18 +109,90 @@ components:
         next_page:
           type: string
           nullable: true
-    Error:
-      type: object
-      properties:
-        type:
+  parameters:
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: string
+    WorkspaceIds:
+      name: workspace_ids
+      in: query
+      required: false
+      explode: true
+      schema:
+        type: array
+        items:
           type: string
-        error:
-          type: object
-          properties:
-            type:
-              type: string
-            message:
-              type: string
+    Models:
+      name: models
+      in: query
+      required: false
+      explode: true
+      schema:
+        type: array
+        items:
+          type: string
+    EndingAt:
+      name: ending_at
+      in: query
+      required: false
+      description: RFC3339 exclusive upper bound for the report window.
+      schema:
+        type: string
+        format: date-time
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 20
+    GroupBy:
+      name: group_by
+      in: query
+      required: false
+      description: Dimensions to group the report by.
+      explode: true
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+          - workspace_id
+          - api_key_id
+          - model
+          - service_tier
+          - context_window
+    StartingAt:
+      name: starting_at
+      in: query
+      required: true
+      description: RFC3339 inclusive lower bound for the report window.
+      schema:
+        type: string
+        format: date-time
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: '2023-06-01'
+    Bucket:
+      name: bucket_width
+      in: query
+      required: false
+      description: Aggregation bucket size.
+      schema:
+        type: string
+        enum:
+        - 1h
+        - 1d
+        default: 1d
   responses:
     ErrorResponse:
       description: Error response.

@@ -1,44 +1,42 @@
-generated: '2026-06-20'
-method: derived
+generated: '2026-08-27'
+method: searched
 source: openapi/*.yml, https://platform.claude.com/docs/en/api/errors, https://docs.anthropic.com/en/api/versioning
 standards:
 - id: oauth2
   conforms: false
-  evidence: Claude API authenticates with x-api-key (apiKey); no oauth2 securitySchemes
-    in the OpenAPI. OAuth is used only for remote MCP server connections and vault
-    credentials, not for the REST API.
+  evidence: Claude API authenticates with x-api-key (apiKey); no oauth2 securitySchemes in the OpenAPI.
+    OAuth is used only for remote MCP server connections and vault credentials, not for the REST API.
 - id: oidc
   conforms: partial
-  evidence: Workload Identity Federation (GA) authenticates workloads via short-lived
-    OIDC tokens from external IdPs (AWS IAM, GCP, GitHub Actions, Kubernetes, Entra
-    ID, Okta, SPIFFE), exchanged for API access.
+  evidence: Workload Identity Federation (GA) authenticates workloads via short-lived OIDC tokens from
+    external IdPs (AWS IAM, GCP, GitHub Actions, Kubernetes, Entra ID, Okta, SPIFFE), exchanged for API
+    access.
 - id: rfc9457-problem-details
   conforms: false
-  evidence: Errors use a custom {type,error{type,message},request_id} envelope, not
-    application/problem+json.
+  evidence: Errors use a custom {type,error{type,message},request_id} envelope, not application/problem+json.
 - id: rfc9116-security-txt
   conforms: true
   evidence: Canonical security.txt published at anthropic.com/.well-known/security.txt.
 - id: rfc8594-sunset-header
   conforms: false
-  evidence: Deprecations are announced via dated release notes and a model-deprecation
-    page rather than Sunset/Deprecation HTTP headers.
+  evidence: Deprecations are announced via dated release notes and a model-deprecation page rather than
+    Sunset/Deprecation HTTP headers.
 - id: pagination
   conforms: true
   evidence: List endpoints use cursor pagination (before_id/after_id/limit with has_more/first_id/last_id;
     Managed Agents sessions use next_page/prev_page).
 - id: idempotency
   conforms: false
-  evidence: No idempotency-key header documented for the Messages API; the Message
-    Batches API provides at-most-once semantics via batch custom_id.
+  evidence: No idempotency-key header documented for the Messages API; the Message Batches API provides
+    at-most-once semantics via batch custom_id.
 - id: sse-streaming
   conforms: true
   evidence: Messages API streams responses as server-sent events (message_start, content_block_delta,
     message_delta, message_stop, error events).
 - id: json-schema
   conforms: true
-  evidence: OpenAPI 3.1.0 (JSON Schema 2020-12) specs; structured outputs accept JSON
-    Schema; tool input_schema is JSON Schema.
+  evidence: OpenAPI 3.1.0 (JSON Schema 2020-12) specs; structured outputs accept JSON Schema; tool input_schema
+    is JSON Schema.
 - id: mcp
   conforms: true
   evidence: Anthropic authors and stewards the open Model Context Protocol (modelcontextprotocol.io);
@@ -58,3 +56,87 @@ standards:
 - id: gdpr
   conforms: true
   evidence: GDPR-aligned processing; EU data residency and zero-data-retention options.
+- id: mcp-2026-spec
+  conforms: true
+  evidence: Anthropic AUTHORS the Model Context Protocol and publishes the specification at modelcontextprotocol.io.
+    It ships a first-party MCP server (Claude Code over stdio, `claude mcp serve`) and an MCP client in
+    the Messages API (mcp_servers parameter, beta header mcp-client-2025-04-04). See mcp/anthropic-mcp.yml.
+- id: agent-skills
+  conforms: true
+  evidence: Anthropic authors the Agent Skills specification (https://github.com/anthropics/skills/blob/main/spec/agent-skills-spec.md)
+    and publishes a 19-skill first-party library at github.com/anthropics/skills. The Skills API (/v1/skills)
+    left beta on 2026-08-19. See skills/_index.yml.
+- id: a2a
+  conforms: false
+  evidence: 'No A2A Agent Card served. Probed 2026-08-27: /.well-known/agent-card.json and /.well-known/agent.json
+    returned 404 on www.anthropic.com, api.anthropic.com, claude.com, platform.claude.com, docs.claude.com
+    and docs.anthropic.com.'
+- id: llms-txt
+  conforms: true
+  evidence: A first-party llms.txt is served at docs.anthropic.com/llms.txt, docs.claude.com/llms.txt
+    and platform.claude.com/llms.txt (identical 72,234-byte document, HTTP 200, probed 2026-08-27), indexing
+    688 English doc pages. Every page is additionally available as a .md twin at <page>.md. A second,
+    product-level llms.txt is served at claude.com/llms.txt.
+- id: webhook-signature-verification
+  conforms: true
+  evidence: Webhook deliveries carry webhook-id, webhook-timestamp and webhook-signature headers signed
+    with a 32-byte whsec_-prefixed secret; the SDK unwrap() helper rejects an invalid signature or a payload
+    older than 5 minutes. See asyncapi/anthropic-webhooks.yml.
+- id: sse
+  conforms: true
+  evidence: Both the Messages API stream and Managed Agents session/thread streams are Server-Sent Events
+    over HTTP. Modelled in asyncapi/anthropic-asyncapi.yml.
+- id: asyncapi
+  conforms: false
+  evidence: Anthropic publishes no AsyncAPI document for either its SSE or its webhook surface. The AsyncAPI
+    in this repo was authored by API Evangelist from the published event catalogue, not harvested.
+- id: openapi
+  conforms: true
+  evidence: 'OpenAPI 3.1.0. The SDK repos name the source spec in .stats.yml: https://storage.googleapis.com/stainless-sdk-openapi-specs/anthropic/anthropic-446ddab751d9f0172400b17fc72736e9353d3b49780317f90c24aa98357fd39e.yml
+    — info.title "Anthropic API", servers [https://api.anthropic.com], 139 paths / 212 operations / 1,219
+    component schemas. Harvested 2026-08-27 to openapi/_original/anthropic-api-openapi.json.'
+- id: rfc9116-security-txt-canonical
+  conforms: true
+  evidence: security.txt declares a Canonical field (https://anthropic.com/.well-known/security.txt),
+    a Policy URL, an Expires date of 2026-12-31 and a HackerOne contact. Re-fetched verbatim 2026-08-27.
+- id: oauth2-device-and-token-exchange
+  conforms: partial
+  evidence: 'The REST API itself is x-api-key only. OAuth appears at the edges: Claude Code runs an OAuth
+    flow per MCP server (claude mcp login), Managed Agents store mcp_oauth credentials in vaults, and
+    the Admin API accepts an org:admin OAuth token via ANTHROPIC_AUTH_TOKEN (release notes 2026-08-26).
+    No anonymous RFC 8414 discovery document is published on any Anthropic host.'
+domain_standard:
+  sector: Artificial Intelligence / foundation-model APIs
+  assessment: author-of-record
+  standards_declared_in_contract:
+  - standard: Model Context Protocol (MCP)
+    role: author and steward
+    evidence: 'modelcontextprotocol.io is Anthropic''s specification. The contract itself carries the
+      surface: the Messages API request schema defines an mcp_servers parameter, /v1/tunnels manages MCP
+      tunnels, and the harvested master spec carries MCP tunnel and tunnel-certificate operations.'
+    spec_location: openapi/_original/anthropic-api-openapi.json — Messages request schema (mcp_servers),
+      /v1/tunnels* paths
+  - standard: Agent Skills
+    role: author and steward
+    evidence: github.com/anthropics/skills/spec/agent-skills-spec.md. The contract carries /v1/skills
+      and /v1/skills/{skill_id}/versions operations, and the Messages API loads Skills through the container
+      parameter.
+    spec_location: openapi/anthropic-skills-api-openapi.yml, openapi/anthropic-skill-versions-api-openapi.yml
+  - standard: JSON Schema 2020-12
+    role: consumer
+    evidence: Tool definitions take a JSON Schema input_schema, and structured outputs accept a JSON Schema.
+      The OpenAPI is 3.1.0, which is JSON Schema 2020-12 aligned.
+    spec_location: openapi/_original/anthropic-api-openapi.json — components.schemas (1,219 schemas)
+  note: 'This is the unusual case for the domain_standard check: the market Anthropic sells into has no
+    pre-existing interoperability standard the way health has FHIR or finance has ISO 20022 — MCP is the
+    de-facto standard for agent-tool interoperability and ANTHROPIC WROTE IT. The contract declares it
+    rather than conforming to someone else''s. Recorded as author-of-record, not as a conformance claim
+    against an external body. Reward-only: nothing here is scored as a failure.'
+compliance_certifications:
+- SOC 2 Type I
+- SOC 2 Type II
+- ISO 27001:2022
+- ISO/IEC 42001:2023
+- HIPAA BAA (Enterprise / direct API)
+- GDPR-aligned processing with EU data residency and ZDR options
+compliance_source: https://trust.anthropic.com/ ; https://privacy.claude.com/en/articles/10015870-what-certifications-has-anthropic-obtained

@@ -12,10 +12,10 @@ paths:
       description: '[Legacy] Create a Text Completion.
 
 
-        The Text Completions API is a legacy API. We recommend using the [Messages API](https://platform.claude.com/docs/en/api/messages) going forward.
+        The Text Completions API is a legacy API. We recommend using the Messages API going forward.
 
 
-        Future models and features will not be compatible with Text Completions. See our [migration guide](https://platform.claude.com/docs/en/build-with-claude/working-with-messages) for guidance in migrating from Text Completions to Messages.'
+        Future models and features will not be compatible with Text Completions. See our migration guide for guidance in migrating from Text Completions to Messages.'
       operationId: complete_post
       parameters:
       - name: anthropic-version
@@ -81,6 +81,53 @@ paths:
       - Complete
 components:
   schemas:
+    AnthropicBeta:
+      anyOf:
+      - type: string
+      - type: string
+        enum:
+        - message-batches-2024-09-24
+        - prompt-caching-2024-07-31
+        - computer-use-2024-10-22
+        - computer-use-2025-01-24
+        - pdfs-2024-09-25
+        - token-counting-2024-11-01
+        - token-efficient-tools-2025-02-19
+        - output-128k-2025-02-19
+        - files-api-2025-04-14
+        - mcp-client-2025-04-04
+        - mcp-client-2025-11-20
+        - dev-full-thinking-2025-05-14
+        - interleaved-thinking-2025-05-14
+        - code-execution-2025-05-22
+        - extended-cache-ttl-2025-04-11
+        - context-1m-2025-08-07
+        - context-management-2025-06-27
+        - model-context-window-exceeded-2025-08-26
+        - skills-2025-10-02
+        - fast-mode-2026-02-01
+        - output-300k-2026-03-24
+        - user-profiles-2026-03-24
+        - user-profiles-2026-08-18
+        - advisor-tool-2026-03-01
+        - managed-agents-2026-04-01
+        - cache-diagnosis-2026-04-07
+        - dreaming-2026-04-21
+        - thinking-token-count-2026-05-13
+        - server-side-fallback-2026-06-01
+        - server-side-fallback-2026-07-01
+        - fallback-credit-2026-06-01
+        - fallback-credit-2026-07-01
+        - agent-memory-2026-07-22
+        - mid-conversation-tool-changes-2026-07-01
+        - compact-2026-01-12
+        - computer-use-2025-11-24
+        - mcp-tunnels-2026-06-22
+        - structured-outputs-2025-11-13
+        - task-budgets-2026-03-13
+        - thinking-display-updates-2026-08-18
+        - ce-user-management-2026-07-13
+        x-stainless-nominal: false
     APIError:
       properties:
         message:
@@ -96,6 +143,97 @@ components:
       - message
       - type
       title: APIError
+      type: object
+    NotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    InvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    AuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    ErrorResponse:
+      properties:
+        error:
+          discriminator:
+            mapping:
+              api_error: '#/components/schemas/APIError'
+              authentication_error: '#/components/schemas/AuthenticationError'
+              billing_error: '#/components/schemas/BillingError'
+              invalid_request_error: '#/components/schemas/InvalidRequestError'
+              not_found_error: '#/components/schemas/NotFoundError'
+              overloaded_error: '#/components/schemas/OverloadedError'
+              permission_error: '#/components/schemas/PermissionError'
+              rate_limit_error: '#/components/schemas/RateLimitError'
+              timeout_error: '#/components/schemas/GatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/InvalidRequestError'
+          - $ref: '#/components/schemas/AuthenticationError'
+          - $ref: '#/components/schemas/BillingError'
+          - $ref: '#/components/schemas/PermissionError'
+          - $ref: '#/components/schemas/NotFoundError'
+          - $ref: '#/components/schemas/RateLimitError'
+          - $ref: '#/components/schemas/GatewayTimeoutError'
+          - $ref: '#/components/schemas/APIError'
+          - $ref: '#/components/schemas/OverloadedError'
+          title: Error
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Request Id
+        type:
+          const: error
+          default: error
+          title: Type
+          type: string
+      required:
+      - error
+      - request_id
+      - type
+      title: ErrorResponse
       type: object
     Model:
       title: Model
@@ -168,55 +306,6 @@ components:
       - type
       title: PermissionError
       type: object
-    Metadata:
-      additionalProperties: false
-      properties:
-        user_id:
-          anyOf:
-          - maxLength: 512
-            type: string
-          - type: 'null'
-          description: 'An external identifier for the user who is associated with the request.
-
-
-            This should be a uuid, hash value, or other opaque identifier. Anthropic may use this id to help detect abuse. Do not include any identifying information such as name, email address, or phone number.'
-          examples:
-          - 13803d75-b4b5-4c3e-b2a2-6f21399b021b
-          title: User Id
-      title: Metadata
-      type: object
-    InvalidRequestError:
-      properties:
-        message:
-          default: Invalid request
-          title: Message
-          type: string
-        type:
-          const: invalid_request_error
-          default: invalid_request_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: InvalidRequestError
-      type: object
-    NotFoundError:
-      properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
-        type:
-          const: not_found_error
-          default: not_found_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: NotFoundError
-      type: object
     OverloadedError:
       properties:
         message:
@@ -233,167 +322,22 @@ components:
       - type
       title: OverloadedError
       type: object
-    BillingError:
+    GatewayTimeoutError:
       properties:
         message:
-          default: Billing error
+          default: Request timeout
           title: Message
           type: string
         type:
-          const: billing_error
-          default: billing_error
+          const: timeout_error
+          default: timeout_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: BillingError
+      title: GatewayTimeoutError
       type: object
-    ErrorResponse:
-      properties:
-        error:
-          discriminator:
-            mapping:
-              api_error: '#/components/schemas/APIError'
-              authentication_error: '#/components/schemas/AuthenticationError'
-              billing_error: '#/components/schemas/BillingError'
-              invalid_request_error: '#/components/schemas/InvalidRequestError'
-              not_found_error: '#/components/schemas/NotFoundError'
-              overloaded_error: '#/components/schemas/OverloadedError'
-              permission_error: '#/components/schemas/PermissionError'
-              rate_limit_error: '#/components/schemas/RateLimitError'
-              timeout_error: '#/components/schemas/GatewayTimeoutError'
-            propertyName: type
-          oneOf:
-          - $ref: '#/components/schemas/InvalidRequestError'
-          - $ref: '#/components/schemas/AuthenticationError'
-          - $ref: '#/components/schemas/BillingError'
-          - $ref: '#/components/schemas/PermissionError'
-          - $ref: '#/components/schemas/NotFoundError'
-          - $ref: '#/components/schemas/RateLimitError'
-          - $ref: '#/components/schemas/GatewayTimeoutError'
-          - $ref: '#/components/schemas/APIError'
-          - $ref: '#/components/schemas/OverloadedError'
-          title: Error
-        request_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          title: Request Id
-        type:
-          const: error
-          default: error
-          title: Type
-          type: string
-      required:
-      - error
-      - request_id
-      - type
-      title: ErrorResponse
-      type: object
-    CompletionResponse:
-      properties:
-        completion:
-          type: string
-          title: Completion
-          description: The resulting completion up to and excluding the stop sequences.
-          examples:
-          - ' Hello! My name is Claude.'
-        id:
-          type: string
-          title: Id
-          description: 'Unique object identifier.
-
-
-            The format and length of IDs may change over time.'
-        model:
-          $ref: '#/components/schemas/Model'
-        stop_reason:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Stop Reason
-          description: 'The reason that we stopped.
-
-
-            This may be one the following values:
-
-            * `"stop_sequence"`: we reached a stop sequence — either provided by you via the `stop_sequences` parameter, or a stop sequence built into the model
-
-            * `"max_tokens"`: we exceeded `max_tokens_to_sample` or the model''s maximum'
-          examples:
-          - stop_sequence
-        type:
-          type: string
-          const: completion
-          title: Type
-          description: 'Object type.
-
-
-            For Text Completions, this is always `"completion"`.'
-          default: completion
-      type: object
-      required:
-      - completion
-      - id
-      - model
-      - stop_reason
-      - type
-      title: CompletionResponse
-      example:
-        completion: ' Hello! My name is Claude.'
-        id: compl_018CKm6gsux7P8yMcwZbeCPw
-        model: claude-2.1
-        stop_reason: stop_sequence
-        type: completion
-    AnthropicBeta:
-      anyOf:
-      - type: string
-      - type: string
-        enum:
-        - message-batches-2024-09-24
-        - prompt-caching-2024-07-31
-        - computer-use-2024-10-22
-        - computer-use-2025-01-24
-        - pdfs-2024-09-25
-        - token-counting-2024-11-01
-        - token-efficient-tools-2025-02-19
-        - output-128k-2025-02-19
-        - files-api-2025-04-14
-        - mcp-client-2025-04-04
-        - mcp-client-2025-11-20
-        - dev-full-thinking-2025-05-14
-        - interleaved-thinking-2025-05-14
-        - code-execution-2025-05-22
-        - extended-cache-ttl-2025-04-11
-        - context-1m-2025-08-07
-        - context-management-2025-06-27
-        - model-context-window-exceeded-2025-08-26
-        - skills-2025-10-02
-        - fast-mode-2026-02-01
-        - output-300k-2026-03-24
-        - user-profiles-2026-03-24
-        - user-profiles-2026-08-18
-        - advisor-tool-2026-03-01
-        - managed-agents-2026-04-01
-        - cache-diagnosis-2026-04-07
-        - dreaming-2026-04-21
-        - thinking-token-count-2026-05-13
-        - server-side-fallback-2026-06-01
-        - server-side-fallback-2026-07-01
-        - fallback-credit-2026-06-01
-        - fallback-credit-2026-07-01
-        - agent-memory-2026-07-22
-        - mid-conversation-tool-changes-2026-07-01
-        - compact-2026-01-12
-        - computer-use-2025-11-24
-        - mcp-tunnels-2026-06-22
-        - structured-outputs-2025-11-13
-        - task-budgets-2026-03-13
-        - thinking-display-updates-2026-08-18
-        - ce-user-management-2026-07-13
-        x-stainless-nominal: false
     CompletionRequest:
       additionalProperties: false
       examples:
@@ -523,6 +467,77 @@ components:
       - prompt
       title: CompletionRequest
       type: object
+    BillingError:
+      properties:
+        message:
+          default: Billing error
+          title: Message
+          type: string
+        type:
+          const: billing_error
+          default: billing_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: BillingError
+      type: object
+    CompletionResponse:
+      properties:
+        completion:
+          type: string
+          title: Completion
+          description: The resulting completion up to and excluding the stop sequences.
+          examples:
+          - ' Hello! My name is Claude.'
+        id:
+          type: string
+          title: Id
+          description: 'Unique object identifier.
+
+
+            The format and length of IDs may change over time.'
+        model:
+          $ref: '#/components/schemas/Model'
+        stop_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stop Reason
+          description: 'The reason that we stopped.
+
+
+            This may be one the following values:
+
+            * `"stop_sequence"`: we reached a stop sequence — either provided by you via the `stop_sequences` parameter, or a stop sequence built into the model
+
+            * `"max_tokens"`: we exceeded `max_tokens_to_sample` or the model''s maximum'
+          examples:
+          - stop_sequence
+        type:
+          type: string
+          const: completion
+          title: Type
+          description: 'Object type.
+
+
+            For Text Completions, this is always `"completion"`.'
+          default: completion
+      type: object
+      required:
+      - completion
+      - id
+      - model
+      - stop_reason
+      - type
+      title: CompletionResponse
+      example:
+        completion: ' Hello! My name is Claude.'
+        id: compl_018CKm6gsux7P8yMcwZbeCPw
+        model: claude-2.1
+        stop_reason: stop_sequence
+        type: completion
     RateLimitError:
       properties:
         message:
@@ -539,35 +554,20 @@ components:
       - type
       title: RateLimitError
       type: object
-    GatewayTimeoutError:
+    Metadata:
+      additionalProperties: false
       properties:
-        message:
-          default: Request timeout
-          title: Message
-          type: string
-        type:
-          const: timeout_error
-          default: timeout_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: GatewayTimeoutError
-      type: object
-    AuthenticationError:
-      properties:
-        message:
-          default: Authentication error
-          title: Message
-          type: string
-        type:
-          const: authentication_error
-          default: authentication_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: AuthenticationError
+        user_id:
+          anyOf:
+          - maxLength: 512
+            type: string
+          - type: 'null'
+          description: 'An external identifier for the user who is associated with the request.
+
+
+            This should be a uuid, hash value, or other opaque identifier. Anthropic may use this id to help detect abuse. Do not include any identifying information such as name, email address, or phone number.'
+          examples:
+          - 13803d75-b4b5-4c3e-b2a2-6f21399b021b
+          title: User Id
+      title: Metadata
       type: object

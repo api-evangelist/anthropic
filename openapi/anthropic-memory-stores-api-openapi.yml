@@ -1805,42 +1805,6 @@ paths:
       - Memory Stores
 components:
   schemas:
-    BetaGatewayTimeoutError:
-      properties:
-        message:
-          default: Request timeout
-          title: Message
-          type: string
-        type:
-          const: timeout_error
-          default: timeout_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: GatewayTimeoutError
-      type: object
-    BetaTimestamp:
-      description: A timestamp in RFC 3339 format
-      type: string
-      format: date-time
-    BetaOverloadedError:
-      properties:
-        message:
-          default: Overloaded
-          title: Message
-          type: string
-        type:
-          const: overloaded_error
-          default: overloaded_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: OverloadedError
-      type: object
     BetaBillingError:
       properties:
         message:
@@ -1857,37 +1821,84 @@ components:
       - type
       title: BillingError
       type: object
-    BetaManagedAgentsMemoryPathConflictError:
+    AnthropicBeta:
+      anyOf:
+      - type: string
+      - type: string
+        enum:
+        - message-batches-2024-09-24
+        - prompt-caching-2024-07-31
+        - computer-use-2024-10-22
+        - computer-use-2025-01-24
+        - pdfs-2024-09-25
+        - token-counting-2024-11-01
+        - token-efficient-tools-2025-02-19
+        - output-128k-2025-02-19
+        - files-api-2025-04-14
+        - mcp-client-2025-04-04
+        - mcp-client-2025-11-20
+        - dev-full-thinking-2025-05-14
+        - interleaved-thinking-2025-05-14
+        - code-execution-2025-05-22
+        - extended-cache-ttl-2025-04-11
+        - context-1m-2025-08-07
+        - context-management-2025-06-27
+        - model-context-window-exceeded-2025-08-26
+        - skills-2025-10-02
+        - fast-mode-2026-02-01
+        - output-300k-2026-03-24
+        - user-profiles-2026-03-24
+        - user-profiles-2026-08-18
+        - advisor-tool-2026-03-01
+        - managed-agents-2026-04-01
+        - cache-diagnosis-2026-04-07
+        - dreaming-2026-04-21
+        - thinking-token-count-2026-05-13
+        - server-side-fallback-2026-06-01
+        - server-side-fallback-2026-07-01
+        - fallback-credit-2026-06-01
+        - fallback-credit-2026-07-01
+        - agent-memory-2026-07-22
+        - mid-conversation-tool-changes-2026-07-01
+        - compact-2026-01-12
+        - computer-use-2025-11-24
+        - mcp-tunnels-2026-06-22
+        - structured-outputs-2025-11-13
+        - task-budgets-2026-03-13
+        - thinking-display-updates-2026-08-18
+        - ce-user-management-2026-07-13
+        x-stainless-nominal: false
+    BetaManagedAgentsActor:
+      description: Identifies who performed a write or redact operation. Captured at write time on the `memory_version` row. The API key that created a session is not recorded on agent writes; attribution answers who made the write, not who is ultimately responsible. Look up session provenance separately via the [Sessions API](/en/api/sessions-retrieve).
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          session_actor: '#/components/schemas/BetaManagedAgentsSessionActor'
+          api_actor: '#/components/schemas/BetaManagedAgentsApiActor'
+          user_actor: '#/components/schemas/BetaManagedAgentsUserActor'
+          service_account_actor: '#/components/schemas/BetaManagedAgentsServiceAccountActor'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsSessionActor'
+      - $ref: '#/components/schemas/BetaManagedAgentsApiActor'
+      - $ref: '#/components/schemas/BetaManagedAgentsUserActor'
+      - $ref: '#/components/schemas/BetaManagedAgentsServiceAccountActor'
+    BetaManagedAgentsApiActor:
+      description: Attribution for a write made directly via the public API (outside of any session).
       type: object
       additionalProperties: false
       required:
       - type
+      - api_key_id
       properties:
         type:
           type: string
           enum:
-          - memory_path_conflict_error
-        message:
+          - api_actor
+        api_key_id:
+          description: ID of the API key that performed the write. This identifies the key, not the secret.
           type: string
-        conflicting_path:
-          type: string
-        conflicting_memory_id:
-          type: string
-    BetaManagedAgentsListMemoriesResult:
-      description: Response payload for [List memories](/en/api/beta/memory_stores/memories/list).
-      type: object
-      additionalProperties: false
-      properties:
-        data:
-          description: One page of results. Each item is either a `memory` object or, when `depth` was set, a `memory_prefix` rollup marker. Items are returned in a stable, server-defined order.
-          type: array
-          items:
-            $ref: '#/components/schemas/BetaManagedAgentsMemoryListItem'
-        next_page:
-          description: Opaque cursor for the next page (a `page_...` value), or `null` if there are no more results. Pass as `page` on the next request.
-          anyOf:
-          - type: string
-          - type: 'null'
+          minLength: 1
     BetaManagedAgentsError:
       discriminator:
         propertyName: type
@@ -1959,195 +1970,10 @@ components:
           anyOf:
           - $ref: '#/components/schemas/BetaTimestamp'
           - type: 'null'
-    BetaManagedAgentsUpdateMemoryStoreResponse:
-      description: Response from updating a `memory_store`. Returns the store with the changes applied.
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          memory_store: '#/components/schemas/BetaManagedAgentsMemoryStore'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsMemoryStore'
-    BetaManagedAgentsListMemoryVersionsResult:
-      description: Response payload for [List memory versions](/en/api/beta/memory_stores/memory_versions/list).
-      type: object
-      additionalProperties: false
-      properties:
-        data:
-          description: One page of `memory_version` objects, ordered by `created_at` descending (newest first), with `id` as tiebreak.
-          type: array
-          items:
-            $ref: '#/components/schemas/BetaManagedAgentsMemoryVersion'
-        next_page:
-          description: Opaque cursor for the next page (a `page_...` value), or `null` if there are no more results. Pass as `page` on the next request.
-          anyOf:
-          - type: string
-          - type: 'null'
-    BetaAuthenticationError:
-      properties:
-        message:
-          default: Authentication error
-          title: Message
-          type: string
-        type:
-          const: authentication_error
-          default: authentication_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: AuthenticationError
-      type: object
-    BetaManagedAgentsCreateMemoryParams:
-      description: 'Request parameters for [Create a memory](/en/api/beta/memory_stores/memories/create). The path must be unoccupied: if a memory already exists at the path, or the path is an ancestor or descendant of an existing memory''s path, the request returns `memory_path_conflict_error` (HTTP 409). Create never overwrites; to modify an existing memory, use [Update a memory](/en/api/beta/memory_stores/memories/update).'
-      type: object
-      additionalProperties: false
-      required:
-      - path
-      - content
-      properties:
-        path:
-          description: Hierarchical path for the new memory, e.g. `/projects/foo/notes.md`. Must start with `/`, contain at least one non-empty segment, and be at most 1,024 bytes. Must not contain empty segments, `.` or `..` segments, control or format characters, and must be NFC-normalized. Paths are case-sensitive.
-          type: string
-          minLength: 2
-          maxLength: 1024
-        content:
-          description: UTF-8 text content for the new memory. Maximum 100 kB (102,400 bytes). Required; pass `""` explicitly to create an empty memory.
-          anyOf:
-          - type: string
-          - type: 'null'
-    BetaNotFoundError:
-      properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
-        type:
-          const: not_found_error
-          default: not_found_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: NotFoundError
-      type: object
-    BetaManagedAgentsUpdateMemoryParams:
-      description: 'Request parameters for [Update a memory](/en/api/beta/memory_stores/memories/update). At least one of `content` or `path` must be provided. Renaming onto a path occupied by a different memory returns `memory_path_conflict_error` (HTTP 409). Rename never overwrites; delete or rename the blocking memory first. An update where every supplied field already matches the stored value is a no-op: it returns 200 with the existing memory and writes no new version.'
-      type: object
-      additionalProperties: false
-      properties:
-        content:
-          description: New UTF-8 text content for the memory. Maximum 100 kB (102,400 bytes). Omit to leave the content unchanged (e.g., for a rename-only update).
-          anyOf:
-          - type: string
-          - type: 'null'
-        path:
-          description: New path for the memory (a rename). Must start with `/`, contain at least one non-empty segment, and be at most 1,024 bytes. Must not contain empty segments, `.` or `..` segments, control or format characters, and must be NFC-normalized. Paths are case-sensitive. The memory's `id` is preserved across renames. Omit to leave the path unchanged.
-          anyOf:
-          - type: string
-            minLength: 2
-            maxLength: 1024
-          - type: 'null'
-        precondition:
-          description: Optional optimistic-concurrency precondition. When supplied, the update applies only if the memory's current state matches; on mismatch the request returns `memory_precondition_failed_error` (HTTP 409). When omitted, the update is unconditional.
-          allOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsPrecondition'
-    BetaManagedAgentsArchiveMemoryStoreResponse:
-      description: Response from archiving a `memory_store`. Returns the store with `archived_at` set.
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          memory_store: '#/components/schemas/BetaManagedAgentsMemoryStore'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsMemoryStore'
-    BetaManagedAgentsApiActor:
-      description: Attribution for a write made directly via the public API (outside of any session).
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - api_key_id
-      properties:
-        type:
-          type: string
-          enum:
-          - api_actor
-        api_key_id:
-          description: ID of the API key that performed the write. This identifies the key, not the secret.
-          type: string
-          minLength: 1
-    BetaManagedAgentsDeletedMemoryStore:
-      description: Confirmation that a `memory_store` was deleted.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - id
-      properties:
-        type:
-          type: string
-          enum:
-          - memory_store_deleted
-        id:
-          description: ID of the deleted memory store (a `memstore_...` identifier). The store and all its memories and versions are no longer retrievable.
-          type: string
-    BetaManagedAgentsMemoryListItem:
-      description: 'One item in a [List memories](/en/api/beta/memory_stores/memories/list) response: either a `memory` object or, when `depth` is set, a `memory_prefix` rollup marker.'
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          memory: '#/components/schemas/BetaManagedAgentsMemory'
-          memory_prefix: '#/components/schemas/BetaManagedAgentsMemoryPrefix'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsMemory'
-      - $ref: '#/components/schemas/BetaManagedAgentsMemoryPrefix'
-    BetaManagedAgentsMemoryPreconditionFailedError:
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - memory_precondition_failed_error
-        message:
-          type: string
-    BetaInvalidRequestError:
-      properties:
-        message:
-          default: Invalid request
-          title: Message
-          type: string
-        type:
-          const: invalid_request_error
-          default: invalid_request_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: InvalidRequestError
-      type: object
-    BetaManagedAgentsDeletedMemory:
-      description: 'Tombstone returned by [Delete a memory](/en/api/beta/memory_stores/memories/delete). Deleting a memory does not erase its version history: its versions remain listable via [List memory versions](/en/api/beta/memory_stores/memory_versions/list) while they are retained (each version is kept for at least the version retention period after it was written, unless the store itself is deleted).'
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - id
-      properties:
-        type:
-          type: string
-          enum:
-          - memory_deleted
-        id:
-          description: ID of the deleted memory (a `mem_...` value).
-          type: string
+    BetaTimestamp:
+      description: A timestamp in RFC 3339 format
+      type: string
+      format: date-time
     BetaPermissionError:
       properties:
         message:
@@ -2164,48 +1990,66 @@ components:
       - type
       title: PermissionError
       type: object
-    BetaManagedAgentsConflictError:
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - conflict_error
-        message:
-          type: string
-    BetaManagedAgentsDeleteMemoryStoreResponse:
-      description: Response from deleting a `memory_store`. Confirms the deleted ID.
+    BetaManagedAgentsUpdateMemoryStoreResponse:
+      description: Response from updating a `memory_store`. Returns the store with the changes applied.
       type: object
       discriminator:
         propertyName: type
         mapping:
-          memory_store_deleted: '#/components/schemas/BetaManagedAgentsDeletedMemoryStore'
+          memory_store: '#/components/schemas/BetaManagedAgentsMemoryStore'
       oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsDeletedMemoryStore'
-    BetaManagedAgentsMemoryView:
-      type: string
-      description: 'Selects which projection of a `memory` or `memory_version` the server returns. `basic` returns the object with `content` set to `null`; `full` populates `content`. When omitted, the default is endpoint-specific: retrieve operations default to `full`; list, create, and update operations default to `basic`. Listing with `view=full` caps `limit` at 20.'
-      enum:
-      - basic
-      - full
-    BetaManagedAgentsServiceAccountActor:
-      description: Attribution for a write made by a workload authenticated as a service account, for example via Workload Identity Federation.
+      - $ref: '#/components/schemas/BetaManagedAgentsMemoryStore'
+    BetaManagedAgentsUpdateMemoryStoreRequestBody:
       type: object
       additionalProperties: false
-      required:
-      - type
-      - service_account_id
       properties:
+        name:
+          description: New human-readable name for the store. 1–255 characters; no control characters. Renaming changes the slug used for the store's `mount_path` in sessions created after the update.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 255
+          - type: 'null'
+        description:
+          description: New description for the store, up to 1024 characters. Pass an empty string to clear it.
+          anyOf:
+          - type: string
+            maxLength: 1024
+          - type: 'null'
+        metadata:
+          description: Metadata patch. Set a key to a string to upsert it, or to null to delete it. Omit the field to preserve. The stored bag is limited to 16 keys (up to 64 chars each) with values up to 512 chars.
+          anyOf:
+          - type: object
+            additionalProperties:
+              anyOf:
+              - type: string
+              - type: 'null'
+          - type: 'null'
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
         type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
           type: string
-          const: service_account_actor
-        service_account_id:
-          description: ID of the service account that performed the write (a `svac_...` value).
-          type: string
-          minLength: 1
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    BetaManagedAgentsPrecondition:
+      description: Optional condition that must hold for an update to apply. When omitted, the update is unconditional. Asserts the current state of the memory being updated. When an update changes `path`, the precondition still refers to the memory's current content, not the destination path. Currently the only supported variant is `content_sha256`.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          content_sha256: '#/components/schemas/BetaManagedAgentsContentSha256Precondition'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsContentSha256Precondition'
     BetaManagedAgentsMemoryVersion:
       description: 'A `memory_version` object: one immutable, attributed row in a memory''s append-only history. Every non-no-op mutation to a memory produces a new version. Versions belong to the store (not the individual memory) and are not deleted with the memory; each version is retained for at least the version retention period after it was written, unless the store itself is deleted. Retrieving a redacted version returns 200 with `content`, `path`, `content_size_bytes`, and `content_sha256` set to `null`; branch on `redacted_at`, not HTTP status.'
       type: object
@@ -2273,46 +2117,96 @@ components:
           description: Who redacted this version, or `null` if it has not been redacted. In practice always an `api_actor`, `user_actor`, or `service_account_actor` (agents do not have a redact capability).
           allOf:
           - $ref: '#/components/schemas/BetaManagedAgentsActor'
-    BetaManagedAgentsActor:
-      description: Identifies who performed a write or redact operation. Captured at write time on the `memory_version` row. The API key that created a session is not recorded on agent writes; attribution answers who made the write, not who is ultimately responsible. Look up session provenance separately via the [Sessions API](/en/api/sessions-retrieve).
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          session_actor: '#/components/schemas/BetaManagedAgentsSessionActor'
-          api_actor: '#/components/schemas/BetaManagedAgentsApiActor'
-          user_actor: '#/components/schemas/BetaManagedAgentsUserActor'
-          service_account_actor: '#/components/schemas/BetaManagedAgentsServiceAccountActor'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsSessionActor'
-      - $ref: '#/components/schemas/BetaManagedAgentsApiActor'
-      - $ref: '#/components/schemas/BetaManagedAgentsUserActor'
-      - $ref: '#/components/schemas/BetaManagedAgentsServiceAccountActor'
-    BetaManagedAgentsPrecondition:
-      description: Optional condition that must hold for an update to apply. When omitted, the update is unconditional. Asserts the current state of the memory being updated. When an update changes `path`, the precondition still refers to the memory's current content, not the destination path. Currently the only supported variant is `content_sha256`.
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          content_sha256: '#/components/schemas/BetaManagedAgentsContentSha256Precondition'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsContentSha256Precondition'
-    BetaAPIError:
+    BetaNotFoundError:
       properties:
         message:
-          default: Internal server error
+          default: Not found
           title: Message
           type: string
         type:
-          const: api_error
-          default: api_error
+          const: not_found_error
+          default: not_found_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: APIError
+      title: NotFoundError
       type: object
+    BetaInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    BetaManagedAgentsContentSha256Precondition:
+      description: 'Optimistic-concurrency precondition: the update applies only if the memory''s stored `content_sha256` equals the supplied value. On mismatch, the request returns `memory_precondition_failed_error` (HTTP 409); re-read the memory and retry against the fresh state. If the precondition fails but the stored state already exactly matches the requested `content` and `path`, the server returns 200 instead of 409.'
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - content_sha256
+        content_sha256:
+          description: Expected `content_sha256` of the stored memory (64 lowercase hexadecimal characters). Typically the `content_sha256` returned by a prior read or list call. Because the server applies no content normalization, clients can also compute this locally as the SHA-256 of the UTF-8 content bytes.
+          type: string
+    BetaAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    BetaManagedAgentsMemoryView:
+      type: string
+      description: 'Selects which projection of a `memory` or `memory_version` the server returns. `basic` returns the object with `content` set to `null`; `full` populates `content`. When omitted, the default is endpoint-specific: retrieve operations default to `full`; list, create, and update operations default to `basic`. Listing with `view=full` caps `limit` at 20.'
+      enum:
+      - basic
+      - full
+    BetaManagedAgentsListMemoryVersionsResult:
+      description: Response payload for [List memory versions](/en/api/beta/memory_stores/memory_versions/list).
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          description: One page of `memory_version` objects, ordered by `created_at` descending (newest first), with `id` as tiebreak.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsMemoryVersion'
+        next_page:
+          description: Opaque cursor for the next page (a `page_...` value), or `null` if there are no more results. Pass as `page` on the next request.
+          anyOf:
+          - type: string
+          - type: 'null'
+    BetaManagedAgentsMemoryVersionOperation:
+      type: string
+      description: The kind of mutation a `memory_version` records. Every non-no-op mutation to a memory appends exactly one version row with one of these values.
+      enum:
+      - created
+      - modified
+      - deleted
     BetaManagedAgentsMemoryPrefix:
       description: A rolled-up directory marker returned by [List memories](/en/api/beta/memory_stores/memories/list) when `depth` is set. Indicates that one or more memories exist deeper than the requested depth under this prefix. This is a list-time rollup, not a stored resource; it has no ID and no lifecycle. Each prefix counts toward the page `limit` and interleaves with `memory` items in path order.
       type: object
@@ -2328,15 +2222,37 @@ components:
         path:
           description: The rolled-up path prefix, including a trailing `/` (e.g. `/projects/foo/`). Pass this value as `path_prefix` on a subsequent list call to drill into the directory.
           type: string
-    BetaManagedAgentsGetMemoryStoreResponse:
-      description: Response from retrieving a `memory_store`. Returns the store, including archived stores.
+    BetaManagedAgentsListMemoriesResult:
+      description: Response payload for [List memories](/en/api/beta/memory_stores/memories/list).
       type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          memory_store: '#/components/schemas/BetaManagedAgentsMemoryStore'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsMemoryStore'
+      additionalProperties: false
+      properties:
+        data:
+          description: One page of results. Each item is either a `memory` object or, when `depth` was set, a `memory_prefix` rollup marker. Items are returned in a stable, server-defined order.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsMemoryListItem'
+        next_page:
+          description: Opaque cursor for the next page (a `page_...` value), or `null` if there are no more results. Pass as `page` on the next request.
+          anyOf:
+          - type: string
+          - type: 'null'
+    BetaManagedAgentsSessionActor:
+      description: Attribution for a write made by an agent during a session, through the mounted filesystem at `/mnt/memory/`.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - session_id
+      properties:
+        type:
+          type: string
+          enum:
+          - session_actor
+        session_id:
+          description: ID of the session that performed the write (a `sesn_...` value). Look up the session via [Retrieve a session](/en/api/sessions-retrieve) for further provenance.
+          type: string
+          minLength: 1
     BetaErrorResponse:
       properties:
         error:
@@ -2380,38 +2296,89 @@ components:
       - type
       title: ErrorResponse
       type: object
-    BetaManagedAgentsUserActor:
-      description: Attribution for a write made by a human user through the Anthropic Console.
+    BetaManagedAgentsUpdateMemoryParams:
+      description: 'Request parameters for [Update a memory](/en/api/beta/memory_stores/memories/update). At least one of `content` or `path` must be provided. Renaming onto a path occupied by a different memory returns `memory_path_conflict_error` (HTTP 409). Rename never overwrites; delete or rename the blocking memory first. An update where every supplied field already matches the stored value is a no-op: it returns 200 with the existing memory and writes no new version.'
       type: object
       additionalProperties: false
+      properties:
+        content:
+          description: New UTF-8 text content for the memory. Maximum 100 kB (102,400 bytes). Omit to leave the content unchanged (e.g., for a rename-only update).
+          anyOf:
+          - type: string
+          - type: 'null'
+        path:
+          description: New path for the memory (a rename). Must start with `/`, contain at least one non-empty segment, and be at most 1,024 bytes. Must not contain empty segments, `.` or `..` segments, control or format characters, and must be NFC-normalized. Paths are case-sensitive. The memory's `id` is preserved across renames. Omit to leave the path unchanged.
+          anyOf:
+          - type: string
+            minLength: 2
+            maxLength: 1024
+          - type: 'null'
+        precondition:
+          description: Optional optimistic-concurrency precondition. When supplied, the update applies only if the memory's current state matches; on mismatch the request returns `memory_precondition_failed_error` (HTTP 409). When omitted, the update is unconditional.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsPrecondition'
+    BetaGatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
+      type: object
+    BetaManagedAgentsErrorResponse:
+      type: object
       required:
       - type
-      - user_id
+      - error
       properties:
         type:
           type: string
           enum:
-          - user_actor
-        user_id:
-          description: ID of the user who performed the write (a `user_...` value).
+          - error
+          description: Always "error" for error responses
+        error:
+          $ref: '#/components/schemas/BetaManagedAgentsError'
+    BetaManagedAgentsCreateMemoryParams:
+      description: 'Request parameters for [Create a memory](/en/api/beta/memory_stores/memories/create). The path must be unoccupied: if a memory already exists at the path, or the path is an ancestor or descendant of an existing memory''s path, the request returns `memory_path_conflict_error` (HTTP 409). Create never overwrites; to modify an existing memory, use [Update a memory](/en/api/beta/memory_stores/memories/update).'
+      type: object
+      additionalProperties: false
+      required:
+      - path
+      - content
+      properties:
+        path:
+          description: Hierarchical path for the new memory, e.g. `/projects/foo/notes.md`. Must start with `/`, contain at least one non-empty segment, and be at most 1,024 bytes. Must not contain empty segments, `.` or `..` segments, control or format characters, and must be NFC-normalized. Paths are case-sensitive.
           type: string
-          minLength: 1
-    BetaManagedAgentsSessionActor:
-      description: Attribution for a write made by an agent during a session, through the mounted filesystem at `/mnt/memory/`.
+          minLength: 2
+          maxLength: 1024
+        content:
+          description: UTF-8 text content for the new memory. Maximum 100 kB (102,400 bytes). Required; pass `""` explicitly to create an empty memory.
+          anyOf:
+          - type: string
+          - type: 'null'
+    BetaManagedAgentsDeletedMemoryStore:
+      description: Confirmation that a `memory_store` was deleted.
       type: object
       additionalProperties: false
       required:
       - type
-      - session_id
+      - id
       properties:
         type:
           type: string
           enum:
-          - session_actor
-        session_id:
-          description: ID of the session that performed the write (a `sesn_...` value). Look up the session via [Retrieve a session](/en/api/sessions-retrieve) for further provenance.
+          - memory_store_deleted
+        id:
+          description: ID of the deleted memory store (a `memstore_...` identifier). The store and all its memories and versions are no longer retrievable.
           type: string
-          minLength: 1
     BetaManagedAgentsMemory:
       description: 'A `memory` object: a single text document at a hierarchical path inside a memory store. The `content` field is populated when `view=full` and `null` when `view=basic`; the `content_size_bytes` and `content_sha256` fields are always populated so sync clients can diff without fetching content. Memories are addressed by their `mem_...` ID; the path is the create key and can be changed via update.'
       type: object
@@ -2463,110 +2430,56 @@ components:
           description: When this memory was last modified, in RFC 3339 format. Use this as a cheap freshness signal; for who made the change, look up the head version's `created_by` via [List memory versions](/en/api/beta/memory_stores/memory_versions/list).
           allOf:
           - $ref: '#/components/schemas/BetaTimestamp'
-    AnthropicBeta:
-      anyOf:
-      - type: string
-      - type: string
-        enum:
-        - message-batches-2024-09-24
-        - prompt-caching-2024-07-31
-        - computer-use-2024-10-22
-        - computer-use-2025-01-24
-        - pdfs-2024-09-25
-        - token-counting-2024-11-01
-        - token-efficient-tools-2025-02-19
-        - output-128k-2025-02-19
-        - files-api-2025-04-14
-        - mcp-client-2025-04-04
-        - mcp-client-2025-11-20
-        - dev-full-thinking-2025-05-14
-        - interleaved-thinking-2025-05-14
-        - code-execution-2025-05-22
-        - extended-cache-ttl-2025-04-11
-        - context-1m-2025-08-07
-        - context-management-2025-06-27
-        - model-context-window-exceeded-2025-08-26
-        - skills-2025-10-02
-        - fast-mode-2026-02-01
-        - output-300k-2026-03-24
-        - user-profiles-2026-03-24
-        - user-profiles-2026-08-18
-        - advisor-tool-2026-03-01
-        - managed-agents-2026-04-01
-        - cache-diagnosis-2026-04-07
-        - dreaming-2026-04-21
-        - thinking-token-count-2026-05-13
-        - server-side-fallback-2026-06-01
-        - server-side-fallback-2026-07-01
-        - fallback-credit-2026-06-01
-        - fallback-credit-2026-07-01
-        - agent-memory-2026-07-22
-        - mid-conversation-tool-changes-2026-07-01
-        - compact-2026-01-12
-        - computer-use-2025-11-24
-        - mcp-tunnels-2026-06-22
-        - structured-outputs-2025-11-13
-        - task-budgets-2026-03-13
-        - thinking-display-updates-2026-08-18
-        - ce-user-management-2026-07-13
-        x-stainless-nominal: false
-    BetaManagedAgentsUpdateMemoryStoreRequestBody:
+    BetaManagedAgentsArchiveMemoryStoreResponse:
+      description: Response from archiving a `memory_store`. Returns the store with `archived_at` set.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          memory_store: '#/components/schemas/BetaManagedAgentsMemoryStore'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsMemoryStore'
+    BetaManagedAgentsDeletedMemory:
+      description: 'Tombstone returned by [Delete a memory](/en/api/beta/memory_stores/memories/delete). Deleting a memory does not erase its version history: its versions remain listable via [List memory versions](/en/api/beta/memory_stores/memory_versions/list) while they are retained (each version is kept for at least the version retention period after it was written, unless the store itself is deleted).'
       type: object
       additionalProperties: false
+      required:
+      - type
+      - id
       properties:
-        name:
-          description: New human-readable name for the store. 1–255 characters; no control characters. Renaming changes the slug used for the store's `mount_path` in sessions created after the update.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 255
-          - type: 'null'
-        description:
-          description: New description for the store, up to 1024 characters. Pass an empty string to clear it.
-          anyOf:
-          - type: string
-            maxLength: 1024
-          - type: 'null'
-        metadata:
-          description: Metadata patch. Set a key to a string to upsert it, or to null to delete it. Omit the field to preserve. The stored bag is limited to 16 keys (up to 64 chars each) with values up to 512 chars.
-          anyOf:
-          - type: object
-            additionalProperties:
-              anyOf:
-              - type: string
-              - type: 'null'
-          - type: 'null'
-    BetaRateLimitError:
+        type:
+          type: string
+          enum:
+          - memory_deleted
+        id:
+          description: ID of the deleted memory (a `mem_...` value).
+          type: string
+    BetaManagedAgentsDeleteMemoryStoreResponse:
+      description: Response from deleting a `memory_store`. Confirms the deleted ID.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          memory_store_deleted: '#/components/schemas/BetaManagedAgentsDeletedMemoryStore'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsDeletedMemoryStore'
+    BetaOverloadedError:
       properties:
         message:
-          default: Rate limited
+          default: Overloaded
           title: Message
           type: string
         type:
-          const: rate_limit_error
-          default: rate_limit_error
+          const: overloaded_error
+          default: overloaded_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: RateLimitError
+      title: OverloadedError
       type: object
-    BetaManagedAgentsErrorResponse:
-      type: object
-      required:
-      - type
-      - error
-      properties:
-        type:
-          type: string
-          enum:
-          - error
-          description: Always "error" for error responses
-        error:
-          $ref: '#/components/schemas/BetaManagedAgentsError'
-    BetaManagedAgentsContentSha256Precondition:
-      description: 'Optimistic-concurrency precondition: the update applies only if the memory''s stored `content_sha256` equals the supplied value. On mismatch, the request returns `memory_precondition_failed_error` (HTTP 409); re-read the memory and retry against the fresh state. If the precondition fails but the stored state already exactly matches the requested `content` and `path`, the server returns 200 instead of 409.'
+    BetaManagedAgentsMemoryPreconditionFailedError:
       type: object
       additionalProperties: false
       required:
@@ -2575,14 +2488,101 @@ components:
         type:
           type: string
           enum:
-          - content_sha256
-        content_sha256:
-          description: Expected `content_sha256` of the stored memory (64 lowercase hexadecimal characters). Typically the `content_sha256` returned by a prior read or list call. Because the server applies no content normalization, clients can also compute this locally as the SHA-256 of the UTF-8 content bytes.
+          - memory_precondition_failed_error
+        message:
           type: string
-    BetaManagedAgentsMemoryVersionOperation:
-      type: string
-      description: The kind of mutation a `memory_version` records. Every non-no-op mutation to a memory appends exactly one version row with one of these values.
-      enum:
-      - created
-      - modified
-      - deleted
+    BetaAPIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
+          type: string
+        type:
+          const: api_error
+          default: api_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
+    BetaManagedAgentsMemoryPathConflictError:
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - memory_path_conflict_error
+        message:
+          type: string
+        conflicting_path:
+          type: string
+        conflicting_memory_id:
+          type: string
+    BetaManagedAgentsServiceAccountActor:
+      description: Attribution for a write made by a workload authenticated as a service account, for example via Workload Identity Federation.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - service_account_id
+      properties:
+        type:
+          type: string
+          const: service_account_actor
+        service_account_id:
+          description: ID of the service account that performed the write (a `svac_...` value).
+          type: string
+          minLength: 1
+    BetaManagedAgentsConflictError:
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - conflict_error
+        message:
+          type: string
+    BetaManagedAgentsUserActor:
+      description: Attribution for a write made by a human user through the Anthropic Console.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - user_id
+      properties:
+        type:
+          type: string
+          enum:
+          - user_actor
+        user_id:
+          description: ID of the user who performed the write (a `user_...` value).
+          type: string
+          minLength: 1
+    BetaManagedAgentsMemoryListItem:
+      description: 'One item in a [List memories](/en/api/beta/memory_stores/memories/list) response: either a `memory` object or, when `depth` is set, a `memory_prefix` rollup marker.'
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          memory: '#/components/schemas/BetaManagedAgentsMemory'
+          memory_prefix: '#/components/schemas/BetaManagedAgentsMemoryPrefix'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsMemory'
+      - $ref: '#/components/schemas/BetaManagedAgentsMemoryPrefix'
+    BetaManagedAgentsGetMemoryStoreResponse:
+      description: Response from retrieving a `memory_store`. Returns the store, including archived stores.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          memory_store: '#/components/schemas/BetaManagedAgentsMemoryStore'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsMemoryStore'

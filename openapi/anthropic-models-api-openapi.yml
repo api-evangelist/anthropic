@@ -291,38 +291,20 @@ paths:
       - Models
 components:
   schemas:
-    BetaGatewayTimeoutError:
+    BetaThinkingCapability:
       properties:
-        message:
-          default: Request timeout
-          title: Message
-          type: string
-        type:
-          const: timeout_error
-          default: timeout_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: GatewayTimeoutError
+        supported:
+          type: boolean
+          title: Supported
+          description: Whether this capability is supported by the model.
+        types:
+          $ref: '#/components/schemas/BetaThinkingTypes'
       type: object
-    BetaOverloadedError:
-      properties:
-        message:
-          default: Overloaded
-          title: Message
-          type: string
-        type:
-          const: overloaded_error
-          default: overloaded_error
-          title: Type
-          type: string
       required:
-      - message
-      - type
-      title: OverloadedError
-      type: object
+      - supported
+      - types
+      title: ThinkingCapability
+      description: Thinking capability details.
     BetaBillingError:
       properties:
         message:
@@ -339,66 +321,54 @@ components:
       - type
       title: BillingError
       type: object
-    RateLimitError:
-      properties:
-        message:
-          default: Rate limited
-          title: Message
-          type: string
-        type:
-          const: rate_limit_error
-          default: rate_limit_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: RateLimitError
-      type: object
-    PermissionError:
-      properties:
-        message:
-          default: Permission denied
-          title: Message
-          type: string
-        type:
-          const: permission_error
-          default: permission_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: PermissionError
-      type: object
-    BetaCapabilitySupport:
-      properties:
-        supported:
-          type: boolean
-          title: Supported
-          description: Whether this capability is supported by the model.
-      type: object
-      required:
-      - supported
-      title: CapabilitySupport
-      description: Indicates whether a capability is supported.
-    NotFoundError:
-      properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
-        type:
-          const: not_found_error
-          default: not_found_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: NotFoundError
-      type: object
-    BetaAuthenticationError:
+    AnthropicBeta:
+      anyOf:
+      - type: string
+      - type: string
+        enum:
+        - message-batches-2024-09-24
+        - prompt-caching-2024-07-31
+        - computer-use-2024-10-22
+        - computer-use-2025-01-24
+        - pdfs-2024-09-25
+        - token-counting-2024-11-01
+        - token-efficient-tools-2025-02-19
+        - output-128k-2025-02-19
+        - files-api-2025-04-14
+        - mcp-client-2025-04-04
+        - mcp-client-2025-11-20
+        - dev-full-thinking-2025-05-14
+        - interleaved-thinking-2025-05-14
+        - code-execution-2025-05-22
+        - extended-cache-ttl-2025-04-11
+        - context-1m-2025-08-07
+        - context-management-2025-06-27
+        - model-context-window-exceeded-2025-08-26
+        - skills-2025-10-02
+        - fast-mode-2026-02-01
+        - output-300k-2026-03-24
+        - user-profiles-2026-03-24
+        - user-profiles-2026-08-18
+        - advisor-tool-2026-03-01
+        - managed-agents-2026-04-01
+        - cache-diagnosis-2026-04-07
+        - dreaming-2026-04-21
+        - thinking-token-count-2026-05-13
+        - server-side-fallback-2026-06-01
+        - server-side-fallback-2026-07-01
+        - fallback-credit-2026-06-01
+        - fallback-credit-2026-07-01
+        - agent-memory-2026-07-22
+        - mid-conversation-tool-changes-2026-07-01
+        - compact-2026-01-12
+        - computer-use-2025-11-24
+        - mcp-tunnels-2026-06-22
+        - structured-outputs-2025-11-13
+        - task-budgets-2026-03-13
+        - thinking-display-updates-2026-08-18
+        - ce-user-management-2026-07-13
+        x-stainless-nominal: false
+    AuthenticationError:
       properties:
         message:
           default: Authentication error
@@ -414,161 +384,63 @@ components:
       - type
       title: AuthenticationError
       type: object
-    BillingError:
+    BetaModelCapabilities:
       properties:
-        message:
-          default: Billing error
-          title: Message
-          type: string
-        type:
-          const: billing_error
-          default: billing_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: BillingError
-      type: object
-    BetaNotFoundError:
-      properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
-        type:
-          const: not_found_error
-          default: not_found_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: NotFoundError
-      type: object
-    ErrorResponse:
-      properties:
-        error:
-          discriminator:
-            mapping:
-              api_error: '#/components/schemas/APIError'
-              authentication_error: '#/components/schemas/AuthenticationError'
-              billing_error: '#/components/schemas/BillingError'
-              invalid_request_error: '#/components/schemas/InvalidRequestError'
-              not_found_error: '#/components/schemas/NotFoundError'
-              overloaded_error: '#/components/schemas/OverloadedError'
-              permission_error: '#/components/schemas/PermissionError'
-              rate_limit_error: '#/components/schemas/RateLimitError'
-              timeout_error: '#/components/schemas/GatewayTimeoutError'
-            propertyName: type
-          oneOf:
-          - $ref: '#/components/schemas/InvalidRequestError'
-          - $ref: '#/components/schemas/AuthenticationError'
-          - $ref: '#/components/schemas/BillingError'
-          - $ref: '#/components/schemas/PermissionError'
-          - $ref: '#/components/schemas/NotFoundError'
-          - $ref: '#/components/schemas/RateLimitError'
-          - $ref: '#/components/schemas/GatewayTimeoutError'
-          - $ref: '#/components/schemas/APIError'
-          - $ref: '#/components/schemas/OverloadedError'
-          title: Error
-        request_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          title: Request Id
-        type:
-          const: error
-          default: error
-          title: Type
-          type: string
-      required:
-      - error
-      - request_id
-      - type
-      title: ErrorResponse
-      type: object
-    ThinkingCapability:
-      properties:
-        supported:
-          type: boolean
-          title: Supported
-          description: Whether this capability is supported by the model.
-        types:
-          $ref: '#/components/schemas/ThinkingTypes'
-      type: object
-      required:
-      - supported
-      - types
-      title: ThinkingCapability
-      description: Thinking capability details.
-    BetaEffortCapability:
-      properties:
-        high:
+        batch:
           $ref: '#/components/schemas/BetaCapabilitySupport'
-          description: Whether the model supports high effort level.
-        low:
+          description: Whether the model supports the Batch API.
+        citations:
           $ref: '#/components/schemas/BetaCapabilitySupport'
-          description: Whether the model supports low effort level.
-        max:
+          description: Whether the model supports citation generation.
+        code_execution:
           $ref: '#/components/schemas/BetaCapabilitySupport'
-          description: Whether the model supports max effort level.
-        medium:
+          description: Whether the model supports code execution tools.
+        context_management:
+          $ref: '#/components/schemas/BetaContextManagementCapability'
+          description: Context management support and available strategies.
+        effort:
+          $ref: '#/components/schemas/BetaEffortCapability'
+          description: Effort (reasoning_effort) support and available levels.
+        image_input:
           $ref: '#/components/schemas/BetaCapabilitySupport'
-          description: Whether the model supports medium effort level.
-        supported:
-          type: boolean
-          title: Supported
-          description: Whether this capability is supported by the model.
-        xhigh:
-          anyOf:
-          - $ref: '#/components/schemas/BetaCapabilitySupport'
-          - type: 'null'
-          description: Whether the model supports xhigh effort level.
+          description: Whether the model accepts image content blocks.
+        pdf_input:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model accepts PDF content blocks.
+        structured_outputs:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports structured output / JSON mode / strict tool schemas.
+        thinking:
+          $ref: '#/components/schemas/BetaThinkingCapability'
+          description: Thinking capability and supported type configurations.
       type: object
       required:
-      - high
-      - low
-      - max
-      - medium
-      - supported
-      - xhigh
-      title: EffortCapability
-      description: Effort (reasoning_effort) capability details.
-    GatewayTimeoutError:
+      - batch
+      - citations
+      - code_execution
+      - context_management
+      - effort
+      - image_input
+      - pdf_input
+      - structured_outputs
+      - thinking
+      title: ModelCapabilities
+      description: Model capability information.
+    ThinkingTypes:
       properties:
-        message:
-          default: Request timeout
-          title: Message
-          type: string
-        type:
-          const: timeout_error
-          default: timeout_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: GatewayTimeoutError
+        adaptive:
+          $ref: '#/components/schemas/CapabilitySupport'
+          description: Whether the model supports thinking with type 'adaptive' (auto).
+        enabled:
+          $ref: '#/components/schemas/CapabilitySupport'
+          description: Whether the model supports thinking with type 'enabled'.
       type: object
-    BetaInvalidRequestError:
-      properties:
-        message:
-          default: Invalid request
-          title: Message
-          type: string
-        type:
-          const: invalid_request_error
-          default: invalid_request_error
-          title: Type
-          type: string
       required:
-      - message
-      - type
-      title: InvalidRequestError
-      type: object
-    BetaPermissionError:
+      - adaptive
+      - enabled
+      title: ThinkingTypes
+      description: Supported thinking type configurations.
+    PermissionError:
       properties:
         message:
           default: Permission denied
@@ -641,6 +513,492 @@ components:
       - max_tokens
       - type
       title: ModelInfo
+    BetaPermissionError:
+      properties:
+        message:
+          default: Permission denied
+          title: Message
+          type: string
+        type:
+          const: permission_error
+          default: permission_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: PermissionError
+      type: object
+    RateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    EffortCapability:
+      properties:
+        high:
+          $ref: '#/components/schemas/CapabilitySupport'
+          description: Whether the model supports high effort level.
+        low:
+          $ref: '#/components/schemas/CapabilitySupport'
+          description: Whether the model supports low effort level.
+        max:
+          $ref: '#/components/schemas/CapabilitySupport'
+          description: Whether the model supports max effort level.
+        medium:
+          $ref: '#/components/schemas/CapabilitySupport'
+          description: Whether the model supports medium effort level.
+        supported:
+          type: boolean
+          title: Supported
+          description: Whether this capability is supported by the model.
+        xhigh:
+          anyOf:
+          - $ref: '#/components/schemas/CapabilitySupport'
+          - type: 'null'
+          description: Whether the model supports xhigh effort level.
+      type: object
+      required:
+      - high
+      - low
+      - max
+      - medium
+      - supported
+      - xhigh
+      title: EffortCapability
+      description: Effort (reasoning_effort) capability details.
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    ThinkingCapability:
+      properties:
+        supported:
+          type: boolean
+          title: Supported
+          description: Whether this capability is supported by the model.
+        types:
+          $ref: '#/components/schemas/ThinkingTypes'
+      type: object
+      required:
+      - supported
+      - types
+      title: ThinkingCapability
+      description: Thinking capability details.
+    BetaNotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    NotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    BetaInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    BetaAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    ModelCapabilities:
+      properties:
+        batch:
+          $ref: '#/components/schemas/CapabilitySupport'
+          description: Whether the model supports the Batch API.
+        citations:
+          $ref: '#/components/schemas/CapabilitySupport'
+          description: Whether the model supports citation generation.
+        code_execution:
+          $ref: '#/components/schemas/CapabilitySupport'
+          description: Whether the model supports code execution tools.
+        context_management:
+          $ref: '#/components/schemas/ContextManagementCapability'
+          description: Context management support and available strategies.
+        effort:
+          $ref: '#/components/schemas/EffortCapability'
+          description: Effort (reasoning_effort) support and available levels.
+        image_input:
+          $ref: '#/components/schemas/CapabilitySupport'
+          description: Whether the model accepts image content blocks.
+        pdf_input:
+          $ref: '#/components/schemas/CapabilitySupport'
+          description: Whether the model accepts PDF content blocks.
+        structured_outputs:
+          $ref: '#/components/schemas/CapabilitySupport'
+          description: Whether the model supports structured output / JSON mode / strict tool schemas.
+        thinking:
+          $ref: '#/components/schemas/ThinkingCapability'
+          description: Thinking capability and supported type configurations.
+      type: object
+      required:
+      - batch
+      - citations
+      - code_execution
+      - context_management
+      - effort
+      - image_input
+      - pdf_input
+      - structured_outputs
+      - thinking
+      title: ModelCapabilities
+      description: Model capability information.
+    GatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
+      type: object
+    BillingError:
+      properties:
+        message:
+          default: Billing error
+          title: Message
+          type: string
+        type:
+          const: billing_error
+          default: billing_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: BillingError
+      type: object
+    BetaContextManagementCapability:
+      properties:
+        clear_thinking_20251015:
+          anyOf:
+          - $ref: '#/components/schemas/BetaCapabilitySupport'
+          - type: 'null'
+          description: Whether the clear_thinking_20251015 strategy is supported.
+        clear_tool_uses_20250919:
+          anyOf:
+          - $ref: '#/components/schemas/BetaCapabilitySupport'
+          - type: 'null'
+          description: Whether the clear_tool_uses_20250919 strategy is supported.
+        compact_20260112:
+          anyOf:
+          - $ref: '#/components/schemas/BetaCapabilitySupport'
+          - type: 'null'
+          description: Whether the compact_20260112 strategy is supported.
+        supported:
+          type: boolean
+          title: Supported
+          description: Whether this capability is supported by the model.
+      type: object
+      required:
+      - clear_thinking_20251015
+      - clear_tool_uses_20250919
+      - compact_20260112
+      - supported
+      title: ContextManagementCapability
+      description: Context management capability details.
+    BetaErrorResponse:
+      properties:
+        error:
+          discriminator:
+            mapping:
+              api_error: '#/components/schemas/BetaAPIError'
+              authentication_error: '#/components/schemas/BetaAuthenticationError'
+              billing_error: '#/components/schemas/BetaBillingError'
+              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
+              not_found_error: '#/components/schemas/BetaNotFoundError'
+              overloaded_error: '#/components/schemas/BetaOverloadedError'
+              permission_error: '#/components/schemas/BetaPermissionError'
+              rate_limit_error: '#/components/schemas/BetaRateLimitError'
+              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/BetaInvalidRequestError'
+          - $ref: '#/components/schemas/BetaAuthenticationError'
+          - $ref: '#/components/schemas/BetaBillingError'
+          - $ref: '#/components/schemas/BetaPermissionError'
+          - $ref: '#/components/schemas/BetaNotFoundError'
+          - $ref: '#/components/schemas/BetaRateLimitError'
+          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
+          - $ref: '#/components/schemas/BetaAPIError'
+          - $ref: '#/components/schemas/BetaOverloadedError'
+          title: Error
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Request Id
+        type:
+          const: error
+          default: error
+          title: Type
+          type: string
+      required:
+      - error
+      - request_id
+      - type
+      title: ErrorResponse
+      type: object
+    ErrorResponse:
+      properties:
+        error:
+          discriminator:
+            mapping:
+              api_error: '#/components/schemas/APIError'
+              authentication_error: '#/components/schemas/AuthenticationError'
+              billing_error: '#/components/schemas/BillingError'
+              invalid_request_error: '#/components/schemas/InvalidRequestError'
+              not_found_error: '#/components/schemas/NotFoundError'
+              overloaded_error: '#/components/schemas/OverloadedError'
+              permission_error: '#/components/schemas/PermissionError'
+              rate_limit_error: '#/components/schemas/RateLimitError'
+              timeout_error: '#/components/schemas/GatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/InvalidRequestError'
+          - $ref: '#/components/schemas/AuthenticationError'
+          - $ref: '#/components/schemas/BillingError'
+          - $ref: '#/components/schemas/PermissionError'
+          - $ref: '#/components/schemas/NotFoundError'
+          - $ref: '#/components/schemas/RateLimitError'
+          - $ref: '#/components/schemas/GatewayTimeoutError'
+          - $ref: '#/components/schemas/APIError'
+          - $ref: '#/components/schemas/OverloadedError'
+          title: Error
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Request Id
+        type:
+          const: error
+          default: error
+          title: Type
+          type: string
+      required:
+      - error
+      - request_id
+      - type
+      title: ErrorResponse
+      type: object
+    BetaGatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
+      type: object
+    BetaEffortCapability:
+      properties:
+        high:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports high effort level.
+        low:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports low effort level.
+        max:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports max effort level.
+        medium:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports medium effort level.
+        supported:
+          type: boolean
+          title: Supported
+          description: Whether this capability is supported by the model.
+        xhigh:
+          anyOf:
+          - $ref: '#/components/schemas/BetaCapabilitySupport'
+          - type: 'null'
+          description: Whether the model supports xhigh effort level.
+      type: object
+      required:
+      - high
+      - low
+      - max
+      - medium
+      - supported
+      - xhigh
+      title: EffortCapability
+      description: Effort (reasoning_effort) capability details.
+    CapabilitySupport:
+      properties:
+        supported:
+          type: boolean
+          title: Supported
+          description: Whether this capability is supported by the model.
+      type: object
+      required:
+      - supported
+      title: CapabilitySupport
+      description: Indicates whether a capability is supported.
+    BetaThinkingTypes:
+      properties:
+        adaptive:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports thinking with type 'adaptive' (auto).
+        enabled:
+          $ref: '#/components/schemas/BetaCapabilitySupport'
+          description: Whether the model supports thinking with type 'enabled'.
+      type: object
+      required:
+      - adaptive
+      - enabled
+      title: ThinkingTypes
+      description: Supported thinking type configurations.
+    BetaOverloadedError:
+      properties:
+        message:
+          default: Overloaded
+          title: Message
+          type: string
+        type:
+          const: overloaded_error
+          default: overloaded_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: OverloadedError
+      type: object
+    InvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    APIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
+          type: string
+        type:
+          const: api_error
+          default: api_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
+    BetaAPIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
+          type: string
+        type:
+          const: api_error
+          default: api_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
     ListResponse_ModelInfo_:
       properties:
         data:
@@ -671,21 +1029,32 @@ components:
       - has_more
       - last_id
       title: ListResponse[ModelInfo]
-    APIError:
+    BetaCapabilitySupport:
+      properties:
+        supported:
+          type: boolean
+          title: Supported
+          description: Whether this capability is supported by the model.
+      type: object
+      required:
+      - supported
+      title: CapabilitySupport
+      description: Indicates whether a capability is supported.
+    OverloadedError:
       properties:
         message:
-          default: Internal server error
+          default: Overloaded
           title: Message
           type: string
         type:
-          const: api_error
-          default: api_error
+          const: overloaded_error
+          default: overloaded_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: APIError
+      title: OverloadedError
       type: object
     ContextManagementCapability:
       properties:
@@ -716,20 +1085,6 @@ components:
       - supported
       title: ContextManagementCapability
       description: Context management capability details.
-    ThinkingTypes:
-      properties:
-        adaptive:
-          $ref: '#/components/schemas/CapabilitySupport'
-          description: Whether the model supports thinking with type 'adaptive' (auto).
-        enabled:
-          $ref: '#/components/schemas/CapabilitySupport'
-          description: Whether the model supports thinking with type 'enabled'.
-      type: object
-      required:
-      - adaptive
-      - enabled
-      title: ThinkingTypes
-      description: Supported thinking type configurations.
     BetaModelInfo:
       properties:
         allowed_fallback_models:
@@ -799,358 +1154,3 @@ components:
       - max_tokens
       - type
       title: ModelInfo
-    EffortCapability:
-      properties:
-        high:
-          $ref: '#/components/schemas/CapabilitySupport'
-          description: Whether the model supports high effort level.
-        low:
-          $ref: '#/components/schemas/CapabilitySupport'
-          description: Whether the model supports low effort level.
-        max:
-          $ref: '#/components/schemas/CapabilitySupport'
-          description: Whether the model supports max effort level.
-        medium:
-          $ref: '#/components/schemas/CapabilitySupport'
-          description: Whether the model supports medium effort level.
-        supported:
-          type: boolean
-          title: Supported
-          description: Whether this capability is supported by the model.
-        xhigh:
-          anyOf:
-          - $ref: '#/components/schemas/CapabilitySupport'
-          - type: 'null'
-          description: Whether the model supports xhigh effort level.
-      type: object
-      required:
-      - high
-      - low
-      - max
-      - medium
-      - supported
-      - xhigh
-      title: EffortCapability
-      description: Effort (reasoning_effort) capability details.
-    ModelCapabilities:
-      properties:
-        batch:
-          $ref: '#/components/schemas/CapabilitySupport'
-          description: Whether the model supports the Batch API.
-        citations:
-          $ref: '#/components/schemas/CapabilitySupport'
-          description: Whether the model supports citation generation.
-        code_execution:
-          $ref: '#/components/schemas/CapabilitySupport'
-          description: Whether the model supports code execution tools.
-        context_management:
-          $ref: '#/components/schemas/ContextManagementCapability'
-          description: Context management support and available strategies.
-        effort:
-          $ref: '#/components/schemas/EffortCapability'
-          description: Effort (reasoning_effort) support and available levels.
-        image_input:
-          $ref: '#/components/schemas/CapabilitySupport'
-          description: Whether the model accepts image content blocks.
-        pdf_input:
-          $ref: '#/components/schemas/CapabilitySupport'
-          description: Whether the model accepts PDF content blocks.
-        structured_outputs:
-          $ref: '#/components/schemas/CapabilitySupport'
-          description: Whether the model supports structured output / JSON mode / strict tool schemas.
-        thinking:
-          $ref: '#/components/schemas/ThinkingCapability'
-          description: Thinking capability and supported type configurations.
-      type: object
-      required:
-      - batch
-      - citations
-      - code_execution
-      - context_management
-      - effort
-      - image_input
-      - pdf_input
-      - structured_outputs
-      - thinking
-      title: ModelCapabilities
-      description: Model capability information.
-    BetaContextManagementCapability:
-      properties:
-        clear_thinking_20251015:
-          anyOf:
-          - $ref: '#/components/schemas/BetaCapabilitySupport'
-          - type: 'null'
-          description: Whether the clear_thinking_20251015 strategy is supported.
-        clear_tool_uses_20250919:
-          anyOf:
-          - $ref: '#/components/schemas/BetaCapabilitySupport'
-          - type: 'null'
-          description: Whether the clear_tool_uses_20250919 strategy is supported.
-        compact_20260112:
-          anyOf:
-          - $ref: '#/components/schemas/BetaCapabilitySupport'
-          - type: 'null'
-          description: Whether the compact_20260112 strategy is supported.
-        supported:
-          type: boolean
-          title: Supported
-          description: Whether this capability is supported by the model.
-      type: object
-      required:
-      - clear_thinking_20251015
-      - clear_tool_uses_20250919
-      - compact_20260112
-      - supported
-      title: ContextManagementCapability
-      description: Context management capability details.
-    InvalidRequestError:
-      properties:
-        message:
-          default: Invalid request
-          title: Message
-          type: string
-        type:
-          const: invalid_request_error
-          default: invalid_request_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: InvalidRequestError
-      type: object
-    OverloadedError:
-      properties:
-        message:
-          default: Overloaded
-          title: Message
-          type: string
-        type:
-          const: overloaded_error
-          default: overloaded_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: OverloadedError
-      type: object
-    BetaErrorResponse:
-      properties:
-        error:
-          discriminator:
-            mapping:
-              api_error: '#/components/schemas/BetaAPIError'
-              authentication_error: '#/components/schemas/BetaAuthenticationError'
-              billing_error: '#/components/schemas/BetaBillingError'
-              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
-              not_found_error: '#/components/schemas/BetaNotFoundError'
-              overloaded_error: '#/components/schemas/BetaOverloadedError'
-              permission_error: '#/components/schemas/BetaPermissionError'
-              rate_limit_error: '#/components/schemas/BetaRateLimitError'
-              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
-            propertyName: type
-          oneOf:
-          - $ref: '#/components/schemas/BetaInvalidRequestError'
-          - $ref: '#/components/schemas/BetaAuthenticationError'
-          - $ref: '#/components/schemas/BetaBillingError'
-          - $ref: '#/components/schemas/BetaPermissionError'
-          - $ref: '#/components/schemas/BetaNotFoundError'
-          - $ref: '#/components/schemas/BetaRateLimitError'
-          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
-          - $ref: '#/components/schemas/BetaAPIError'
-          - $ref: '#/components/schemas/BetaOverloadedError'
-          title: Error
-        request_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          title: Request Id
-        type:
-          const: error
-          default: error
-          title: Type
-          type: string
-      required:
-      - error
-      - request_id
-      - type
-      title: ErrorResponse
-      type: object
-    BetaAPIError:
-      properties:
-        message:
-          default: Internal server error
-          title: Message
-          type: string
-        type:
-          const: api_error
-          default: api_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: APIError
-      type: object
-    BetaThinkingTypes:
-      properties:
-        adaptive:
-          $ref: '#/components/schemas/BetaCapabilitySupport'
-          description: Whether the model supports thinking with type 'adaptive' (auto).
-        enabled:
-          $ref: '#/components/schemas/BetaCapabilitySupport'
-          description: Whether the model supports thinking with type 'enabled'.
-      type: object
-      required:
-      - adaptive
-      - enabled
-      title: ThinkingTypes
-      description: Supported thinking type configurations.
-    AnthropicBeta:
-      anyOf:
-      - type: string
-      - type: string
-        enum:
-        - message-batches-2024-09-24
-        - prompt-caching-2024-07-31
-        - computer-use-2024-10-22
-        - computer-use-2025-01-24
-        - pdfs-2024-09-25
-        - token-counting-2024-11-01
-        - token-efficient-tools-2025-02-19
-        - output-128k-2025-02-19
-        - files-api-2025-04-14
-        - mcp-client-2025-04-04
-        - mcp-client-2025-11-20
-        - dev-full-thinking-2025-05-14
-        - interleaved-thinking-2025-05-14
-        - code-execution-2025-05-22
-        - extended-cache-ttl-2025-04-11
-        - context-1m-2025-08-07
-        - context-management-2025-06-27
-        - model-context-window-exceeded-2025-08-26
-        - skills-2025-10-02
-        - fast-mode-2026-02-01
-        - output-300k-2026-03-24
-        - user-profiles-2026-03-24
-        - user-profiles-2026-08-18
-        - advisor-tool-2026-03-01
-        - managed-agents-2026-04-01
-        - cache-diagnosis-2026-04-07
-        - dreaming-2026-04-21
-        - thinking-token-count-2026-05-13
-        - server-side-fallback-2026-06-01
-        - server-side-fallback-2026-07-01
-        - fallback-credit-2026-06-01
-        - fallback-credit-2026-07-01
-        - agent-memory-2026-07-22
-        - mid-conversation-tool-changes-2026-07-01
-        - compact-2026-01-12
-        - computer-use-2025-11-24
-        - mcp-tunnels-2026-06-22
-        - structured-outputs-2025-11-13
-        - task-budgets-2026-03-13
-        - thinking-display-updates-2026-08-18
-        - ce-user-management-2026-07-13
-        x-stainless-nominal: false
-    BetaRateLimitError:
-      properties:
-        message:
-          default: Rate limited
-          title: Message
-          type: string
-        type:
-          const: rate_limit_error
-          default: rate_limit_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: RateLimitError
-      type: object
-    BetaThinkingCapability:
-      properties:
-        supported:
-          type: boolean
-          title: Supported
-          description: Whether this capability is supported by the model.
-        types:
-          $ref: '#/components/schemas/BetaThinkingTypes'
-      type: object
-      required:
-      - supported
-      - types
-      title: ThinkingCapability
-      description: Thinking capability details.
-    BetaModelCapabilities:
-      properties:
-        batch:
-          $ref: '#/components/schemas/BetaCapabilitySupport'
-          description: Whether the model supports the Batch API.
-        citations:
-          $ref: '#/components/schemas/BetaCapabilitySupport'
-          description: Whether the model supports citation generation.
-        code_execution:
-          $ref: '#/components/schemas/BetaCapabilitySupport'
-          description: Whether the model supports code execution tools.
-        context_management:
-          $ref: '#/components/schemas/BetaContextManagementCapability'
-          description: Context management support and available strategies.
-        effort:
-          $ref: '#/components/schemas/BetaEffortCapability'
-          description: Effort (reasoning_effort) support and available levels.
-        image_input:
-          $ref: '#/components/schemas/BetaCapabilitySupport'
-          description: Whether the model accepts image content blocks.
-        pdf_input:
-          $ref: '#/components/schemas/BetaCapabilitySupport'
-          description: Whether the model accepts PDF content blocks.
-        structured_outputs:
-          $ref: '#/components/schemas/BetaCapabilitySupport'
-          description: Whether the model supports structured output / JSON mode / strict tool schemas.
-        thinking:
-          $ref: '#/components/schemas/BetaThinkingCapability'
-          description: Thinking capability and supported type configurations.
-      type: object
-      required:
-      - batch
-      - citations
-      - code_execution
-      - context_management
-      - effort
-      - image_input
-      - pdf_input
-      - structured_outputs
-      - thinking
-      title: ModelCapabilities
-      description: Model capability information.
-    AuthenticationError:
-      properties:
-        message:
-          default: Authentication error
-          title: Message
-          type: string
-        type:
-          const: authentication_error
-          default: authentication_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: AuthenticationError
-      type: object
-    CapabilitySupport:
-      properties:
-        supported:
-          type: boolean
-          title: Supported
-          description: Whether this capability is supported by the model.
-      type: object
-      required:
-      - supported
-      title: CapabilitySupport
-      description: Indicates whether a capability is supported.

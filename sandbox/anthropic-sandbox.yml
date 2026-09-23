@@ -1,0 +1,63 @@
+generated: '2026-08-27'
+method: searched
+source: https://platform.claude.com/playground, https://platform.claude.com/docs/en/release-notes/overview
+docs: https://support.claude.com/en/articles/8606378-how-do-i-use-playground
+notes: >-
+  Anthropic publishes an interactive CONSOLE PLAYGROUND, not a test-mode API.
+  This distinction matters for anyone budgeting an integration: there is no
+  sandbox key, no test-vs-live key prefix, no free simulated traffic and no
+  fixture/trigger tooling. Every call you make while developing is a real,
+  billed inference call against production. A payments-style test mode has no
+  equivalent here.
+console:
+  name: Playground
+  url: https://platform.claude.com/playground
+  former_name: Workbench
+  renamed: '2026-08-18'
+  renamed_note: >-
+    Workbench was renamed to Playground in the Claude Console on 2026-08-18.
+    https://platform.claude.com/workbench still resolved (HTTP 200) when probed
+    2026-08-27, but /playground is the current canonical path.
+  requires_login: true
+  capabilities:
+  - Supports every Messages API parameter.
+  - Ships templates demonstrating API features such as code execution and web search.
+  - Shows the full SDK request and the API response for each run.
+test_mode:
+  supported: false
+  test_key_prefix: null
+  live_key_prefix: sk-ant-
+  admin_key_prefix: sk-ant-admin
+  webhook_signing_secret_prefix: whsec_
+  note: >-
+    Key prefixes distinguish ROLE (standard vs Admin API), not ENVIRONMENT. There
+    is no test-mode credential. Isolate development traffic with a separate
+    workspace and its own key, and cap it with the workspace spend limit — that is
+    the closest available equivalent to a sandbox.
+test_fixtures:
+  test_values_published: false
+  time_simulation: false
+  trigger_tooling: false
+  note: Anthropic publishes no magic test identifiers, test cards, test clocks or
+    event-trigger tooling. Do not invent any.
+free_evaluation:
+  free_tier: false
+  note: >-
+    Access is credit-based. Tier 1 begins at a $5 credit purchase (see
+    plans/anthropic-plans-pricing.yml and rate-limits/anthropic-rate-limits.yml).
+    Token counting (POST /v1/messages/count_tokens, operationId countMessageTokens)
+    is the one way to size a request before paying for it — it is the practical
+    dry-run primitive on this API.
+dry_run:
+  supported: partial
+  mechanism: countMessageTokens (POST /v1/messages/count_tokens)
+  note: >-
+    Counts tokens for a fully-formed Messages request, including tools and system
+    prompt, without creating the message or billing for inference. It rehearses
+    the COST of a call, not its effect. No write operation elsewhere on the API
+    accepts a dry-run flag.
+related_environments:
+  managed_agents_sandboxes: https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes
+  note: >-
+    Managed Agents "sandboxes" are execution environments for agent code — where
+    an agent's tools run — not an API test environment. Do not conflate the two.
