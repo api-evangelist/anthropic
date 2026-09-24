@@ -26,8 +26,6 @@ apis:
     type: JSONSchema
   - url: json-ld/anthropic-context.jsonld
     type: JSONLD
-  - url: graphql/anthropic-graphql.md
-    type: GraphQL
   description: Send a structured list of input messages with text and/or image content, and the model
     will generate the next message in the conversation. The Messages API supports text, images, tool use,
     extended thinking, streaming, structured outputs, prompt caching, compaction, and the new advisor
@@ -1193,7 +1191,7 @@ tags:
 - Artificial Intelligence
 - Claude
 - Foundation Models
-- Machine-Learning
+- Machine Learning
 - MCP
 - Agents
 tags_raw:
@@ -1208,6 +1206,7 @@ tags_raw:
 - MCP
 - Agents
 - LLM
+- Machine-Learning
 kind: contract
 deliveryModel:
   model: saas
