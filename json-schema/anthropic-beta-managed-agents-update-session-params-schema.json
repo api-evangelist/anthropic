@@ -1,0 +1,990 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-managed-agents-update-session-params-schema.json",
+  "title": "BetaManagedAgentsUpdateSessionParams",
+  "description": "Request parameters for updating a `session`. Omit a field to preserve its current value.",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-sessions-api-openapi.yml#/components/schemas/BetaManagedAgentsUpdateSessionParams",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "title": {
+      "description": "Human-readable session title.",
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "metadata": {
+      "description": "Metadata patch. Set a key to a string to upsert it, or to null to delete it. Omit the field to preserve.",
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "vault_ids": {
+      "description": "Vault IDs (`vlt_*`) to attach to the session. Not yet supported; requests setting this field are rejected. Reserved for future use.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "agent": {
+      "description": "Agent configuration update. Only `tools` and `mcp_servers` are updatable mid-session. Only valid for sessions created from an agent or deployment reference. The session must not be running.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsSessionAgentUpdate"
+        }
+      ],
+      "x-anthropic-beta-required": [
+        "managed-agents-2026-04-01"
+      ]
+    },
+    "budget": {
+      "description": "Enforced spend ceiling for the session. Set an object to replace the budget of a session that was created with one, or `null` to remove it; omit to preserve. A budget cannot be added to a session created without one (rejected with reason `budget_create_only`), and a removed budget cannot be re-added. Allowed in any non-terminated status. Lowering `max_list_cost` to at or below the session's consumed list cost is rejected with reason `budget_not_raised`, and every model the session can run must have a public list price or the request is rejected with reason `model_not_budgetable`.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsBudget"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-anthropic-beta-required": [
+        "managed-agents-2026-04-01"
+      ]
+    }
+  },
+  "$defs": {
+    "BetaCurrency": {
+      "type": "string",
+      "enum": [
+        "USD"
+      ]
+    },
+    "BetaManagedAgentsAgentToolConfigUnionParams": {
+      "description": "Configuration override for a specific tool within a toolset.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsBashToolConfigParams"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsEditToolConfigParams"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsReadToolConfigParams"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsWriteToolConfigParams"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsGlobToolConfigParams"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsGrepToolConfigParams"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsWebFetchToolConfigParams"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsWebSearchToolConfigParams"
+        }
+      ]
+    },
+    "BetaManagedAgentsAgentToolParams": {
+      "description": "Union type for tool configurations in the tools array.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsAgentToolset20260401Params"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsMCPToolsetParams"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsCustomToolParams"
+        }
+      ]
+    },
+    "BetaManagedAgentsAgentToolset20260401Params": {
+      "description": "Configuration for built-in agent tools. Use this to enable or disable groups of tools available to the agent.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent_toolset_20260401"
+          ]
+        },
+        "default_config": {
+          "description": "Default configuration applied to all tools in this set.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsAgentToolsetDefaultConfigParams"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "configs": {
+          "description": "Per-tool configuration overrides.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsAgentToolConfigUnionParams"
+          }
+        }
+      }
+    },
+    "BetaManagedAgentsAgentToolsetDefaultConfigParams": {
+      "description": "Default configuration for all tools in a toolset.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "description": "Whether tools are enabled and available to Claude by default. Defaults to true if not specified.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "permission_policy": {
+          "description": "Default permission policy for tools. Controls whether tool calls are auto-approved or require confirmation.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsAlwaysAllowPolicy": {
+      "description": "Tool calls are automatically approved without user confirmation.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "always_allow"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsAlwaysAskPolicy": {
+      "description": "Tool calls require user confirmation before execution.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "always_ask"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsBashToolConfigParams": {
+      "description": "Configuration override for the bash tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "bash"
+        },
+        "name": {
+          "description": "Must be \"bash\".",
+          "type": "string",
+          "const": "bash"
+        },
+        "enabled": {
+          "description": "Whether this tool is enabled and available to Claude. Overrides the default_config setting.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "permission_policy": {
+          "description": "Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsBudget": {
+      "description": "An enforced spend ceiling on a session. Discriminated on `type`; `limit` is the only kind currently supported.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsBudgetLimit"
+        }
+      ]
+    },
+    "BetaManagedAgentsBudgetLimit": {
+      "description": "A hard spend ceiling. The session stops issuing new model requests once the tracked list cost reaches `max_list_cost`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "max_list_cost"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "limit"
+          ]
+        },
+        "max_list_cost": {
+          "description": "Maximum list cost the session may accrue. List price is used regardless of any negotiated discount, so the cap fires at or before the actual charge.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaMonetaryAmount"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsCustomToolInputSchema": {
+      "additionalProperties": true,
+      "description": "JSON Schema for custom tool input parameters.",
+      "properties": {
+        "properties": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Properties",
+          "x-stainless-skip": [
+            "terraform"
+          ]
+        },
+        "required": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Required"
+        },
+        "type": {
+          "const": "object",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "BetaManagedAgentsCustomToolParams": {
+      "description": "A custom tool that is executed by the API client rather than the agent. When the agent calls this tool, an `agent.custom_tool_use` event is emitted and the session goes idle, waiting for the client to provide the result via a `user.custom_tool_result` event.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name",
+        "description",
+        "input_schema"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "custom"
+          ]
+        },
+        "name": {
+          "description": "Unique name for the tool. 1-128 characters; letters, digits, underscores, and hyphens.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "description": "Description of what the tool does, shown to the agent to help it decide when to use the tool.",
+          "type": "string",
+          "minLength": 1
+        },
+        "input_schema": {
+          "description": "JSON Schema defining the expected input parameters for the tool.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsCustomToolInputSchema"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsEditToolConfigParams": {
+      "description": "Configuration override for the edit tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "edit"
+        },
+        "name": {
+          "description": "Must be \"edit\".",
+          "type": "string",
+          "const": "edit"
+        },
+        "enabled": {
+          "description": "Whether this tool is enabled and available to Claude. Overrides the default_config setting.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "permission_policy": {
+          "description": "Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsGlobToolConfigParams": {
+      "description": "Configuration override for the glob tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "glob"
+        },
+        "name": {
+          "description": "Must be \"glob\".",
+          "type": "string",
+          "const": "glob"
+        },
+        "enabled": {
+          "description": "Whether this tool is enabled and available to Claude. Overrides the default_config setting.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "permission_policy": {
+          "description": "Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsGrepToolConfigParams": {
+      "description": "Configuration override for the grep tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "grep"
+        },
+        "name": {
+          "description": "Must be \"grep\".",
+          "type": "string",
+          "const": "grep"
+        },
+        "enabled": {
+          "description": "Whether this tool is enabled and available to Claude. Overrides the default_config setting.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "permission_policy": {
+          "description": "Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsMCPServerParams": {
+      "description": "Union type for MCP server connection definitions.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsURLMCPServerParams"
+        }
+      ]
+    },
+    "BetaManagedAgentsMCPToolConfigParams": {
+      "description": "Configuration override for a specific MCP tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "description": "Name of the MCP tool to configure. 1-128 characters.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "enabled": {
+          "description": "Whether this tool is enabled. Overrides the `default_config` setting.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "permission_policy": {
+          "description": "Permission policy for this tool. Overrides the `default_config` setting.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsMCPToolsetDefaultConfigParams": {
+      "description": "Default configuration for all tools from an MCP server.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "description": "Whether tools are enabled by default. Defaults to true if not specified.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "permission_policy": {
+          "description": "Default permission policy for tools from this server.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsMCPToolsetParams": {
+      "description": "Configuration for tools from an MCP server defined in `mcp_servers`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "mcp_server_name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "mcp_toolset"
+          ]
+        },
+        "mcp_server_name": {
+          "description": "Name of the MCP server. Must match a server name from the mcp_servers array. 1-255 characters.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "default_config": {
+          "description": "Default configuration for all tools from this server.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsMCPToolsetDefaultConfigParams"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "configs": {
+          "description": "Per-tool configuration overrides.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsMCPToolConfigParams"
+          }
+        }
+      }
+    },
+    "BetaManagedAgentsPermissionPolicy": {
+      "description": "Permission policy for tool execution.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsAlwaysAllowPolicy"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsAlwaysAskPolicy"
+        }
+      ]
+    },
+    "BetaManagedAgentsReadToolConfigParams": {
+      "description": "Configuration override for the read tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "read"
+        },
+        "name": {
+          "description": "Must be \"read\".",
+          "type": "string",
+          "const": "read"
+        },
+        "enabled": {
+          "description": "Whether this tool is enabled and available to Claude. Overrides the default_config setting.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "permission_policy": {
+          "description": "Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSessionAgentUpdate": {
+      "description": "Mid-session agent configuration update. Only `tools` and `mcp_servers` are updatable. Full replacement: the provided array becomes the new value. To preserve existing entries, GET the session, modify the array, and POST it back.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tools": {
+          "description": "Replacement tool list. Full replacement: the provided array becomes the new value. Send an empty array to clear; omit to preserve.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsAgentToolParams"
+          }
+        },
+        "mcp_servers": {
+          "description": "Replacement MCP server list. Full replacement: the provided array becomes the new value. Send an empty array to clear; omit to preserve.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsMCPServerParams"
+          }
+        }
+      }
+    },
+    "BetaManagedAgentsURLMCPServerParams": {
+      "description": "URL-based MCP server connection.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name",
+        "url"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "url"
+          ]
+        },
+        "name": {
+          "description": "Unique name for this server, referenced by mcp_toolset configurations. 1-255 characters.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "url": {
+          "description": "Endpoint URL for the MCP server.",
+          "type": "string",
+          "maxLength": 2048
+        }
+      }
+    },
+    "BetaManagedAgentsUserLocation": {
+      "description": "Approximate user location for search result localization.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "description": "Location precision. Only \"approximate\" is supported.",
+          "type": "string",
+          "const": "approximate"
+        },
+        "city": {
+          "description": "City name.",
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "region": {
+          "description": "Region or state name.",
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "country": {
+          "description": "Two-letter ISO 3166-1 country code, uppercase.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "timezone": {
+          "description": "IANA timezone identifier, e.g. \"America/Los_Angeles\".",
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsWebFetchToolConfigParams": {
+      "description": "Configuration override for the web_fetch tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "web_fetch"
+        },
+        "name": {
+          "description": "Must be \"web_fetch\".",
+          "type": "string",
+          "const": "web_fetch"
+        },
+        "enabled": {
+          "description": "Whether this tool is enabled and available to Claude. Overrides the default_config setting.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "permission_policy": {
+          "description": "Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "allowed_domains": {
+          "description": "Only fetch URLs whose host is one of these domains or a subdomain of one. Each entry is a plain hostname like \"docs.example.com\" (no scheme, port, or path). At most 64 entries; an empty list is rejected (omit the field instead). Cannot be combined with blocked_domains.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "blocked_domains": {
+          "description": "Never fetch URLs whose host is one of these domains or a subdomain of one. Each entry is a plain hostname like \"ads.example.com\" (no scheme, port, or path). At most 64 entries; an empty list is rejected (omit the field instead). Cannot be combined with allowed_domains.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max_content_tokens": {
+          "description": "Maximum number of tokens of fetched text content to include in context per call. Does not apply to binary content such as PDFs.",
+          "anyOf": [
+            {
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsWebSearchToolConfigParams": {
+      "description": "Configuration override for the web_search tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "web_search"
+        },
+        "name": {
+          "description": "Must be \"web_search\".",
+          "type": "string",
+          "const": "web_search"
+        },
+        "enabled": {
+          "description": "Whether this tool is enabled and available to Claude. Overrides the default_config setting.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "permission_policy": {
+          "description": "Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "allowed_domains": {
+          "description": "Only return search results whose host is one of these domains or a subdomain of one. Each entry is a plain hostname like \"docs.example.com\" (no scheme or port; an optional path suffix is accepted). At most 64 entries; an empty list is rejected (omit the field instead). Cannot be combined with blocked_domains.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "blocked_domains": {
+          "description": "Never return search results whose host is one of these domains or a subdomain of one. Each entry is a plain hostname like \"ads.example.com\" (no scheme or port; an optional path suffix is accepted). At most 64 entries; an empty list is rejected (omit the field instead). Cannot be combined with allowed_domains.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "user_location": {
+          "description": "Approximate user location for search result localization.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsUserLocation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsWriteToolConfigParams": {
+      "description": "Configuration override for the write tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "write"
+        },
+        "name": {
+          "description": "Must be \"write\".",
+          "type": "string",
+          "const": "write"
+        },
+        "enabled": {
+          "description": "Whether this tool is enabled and available to Claude. Overrides the default_config setting.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "permission_policy": {
+          "description": "Permission policy for this tool. Controls whether tool calls are auto-approved or require confirmation.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaMonetaryAmount": {
+      "description": "A monetary amount in a specific currency.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currency",
+        "amount"
+      ],
+      "properties": {
+        "currency": {
+          "description": "Uppercase ISO-4217 currency code. `USD` is the only currency currently supported; the accepted set is closed and grows only when a new currency is priced.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaCurrency"
+            }
+          ]
+        },
+        "amount": {
+          "description": "Amount in minor units of the currency, as an integer decimal string with no leading zeros: \"2500\" is $25.00 and \"50\" is fifty cents. A string rather than a number so no float rounding is ever applied.",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

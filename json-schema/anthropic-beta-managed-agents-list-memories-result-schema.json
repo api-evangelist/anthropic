@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-managed-agents-list-memories-result-schema.json",
+  "title": "BetaManagedAgentsListMemoriesResult",
+  "description": "Response payload for [List memories](/en/api/beta/memory_stores/memories/list).",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-memory-stores-api-openapi.yml#/components/schemas/BetaManagedAgentsListMemoriesResult",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "description": "One page of results. Each item is either a `memory` object or, when `depth` was set, a `memory_prefix` rollup marker. Items are returned in a stable, server-defined order.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/BetaManagedAgentsMemoryListItem"
+      }
+    },
+    "next_page": {
+      "description": "Opaque cursor for the next page (a `page_...` value), or `null` if there are no more results. Pass as `page` on the next request.",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "BetaManagedAgentsMemory": {
+      "description": "A `memory` object: a single text document at a hierarchical path inside a memory store. The `content` field is populated when `view=full` and `null` when `view=basic`; the `content_size_bytes` and `content_sha256` fields are always populated so sync clients can diff without fetching content. Memories are addressed by their `mem_...` ID; the path is the create key and can be changed via update.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "memory_store_id",
+        "path",
+        "content_size_bytes",
+        "content_sha256",
+        "memory_version_id",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "memory"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this memory (a `mem_...` value). Stable across renames; use this ID, not the path, to read, update, or delete the memory.",
+          "type": "string"
+        },
+        "memory_store_id": {
+          "description": "ID of the memory store this memory belongs to (a `memstore_...` value).",
+          "type": "string"
+        },
+        "path": {
+          "description": "Hierarchical path of the memory within the store, e.g. `/projects/foo/notes.md`. Always starts with `/`. Paths are case-sensitive and unique within a store. Maximum 1,024 bytes.",
+          "type": "string"
+        },
+        "content": {
+          "description": "The memory's UTF-8 text content. Populated when `view=full`; `null` when `view=basic`. Maximum 100 kB (102,400 bytes).",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "content_size_bytes": {
+          "description": "Size of `content` in bytes (the UTF-8 plaintext length). Always populated, regardless of `view`.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "content_sha256": {
+          "description": "Lowercase hex SHA-256 digest of the UTF-8 `content` bytes (64 characters). The server applies no normalization, so clients can compute the same hash locally for staleness checks and as the value for a `content_sha256` precondition on update. Always populated, regardless of `view`.",
+          "type": "string"
+        },
+        "memory_version_id": {
+          "description": "ID of the `memory_version` representing this memory's current content (a `memver_...` value). This is the authoritative head pointer; `memory_version` objects do not carry an `is_latest` flag, so compare against this field instead. Enumerate the history via [List memory versions](/en/api/beta/memory_stores/memory_versions/list).",
+          "type": "string"
+        },
+        "created_at": {
+          "description": "When this memory was created, in RFC 3339 format.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "updated_at": {
+          "description": "When this memory was last modified, in RFC 3339 format. Use this as a cheap freshness signal; for who made the change, look up the head version's `created_by` via [List memory versions](/en/api/beta/memory_stores/memory_versions/list).",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsMemoryListItem": {
+      "description": "One item in a [List memories](/en/api/beta/memory_stores/memories/list) response: either a `memory` object or, when `depth` is set, a `memory_prefix` rollup marker.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsMemory"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsMemoryPrefix"
+        }
+      ]
+    },
+    "BetaManagedAgentsMemoryPrefix": {
+      "description": "A rolled-up directory marker returned by [List memories](/en/api/beta/memory_stores/memories/list) when `depth` is set. Indicates that one or more memories exist deeper than the requested depth under this prefix. This is a list-time rollup, not a stored resource; it has no ID and no lifecycle. Each prefix counts toward the page `limit` and interleaves with `memory` items in path order.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "path"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "memory_prefix"
+          ]
+        },
+        "path": {
+          "description": "The rolled-up path prefix, including a trailing `/` (e.g. `/projects/foo/`). Pass this value as `path_prefix` on a subsequent list call to drill into the directory.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaTimestamp": {
+      "description": "A timestamp in RFC 3339 format",
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

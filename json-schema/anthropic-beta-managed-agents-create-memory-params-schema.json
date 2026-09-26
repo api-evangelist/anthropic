@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-managed-agents-create-memory-params-schema.json",
+  "title": "BetaManagedAgentsCreateMemoryParams",
+  "description": "Request parameters for [Create a memory](/en/api/beta/memory_stores/memories/create). The path must be unoccupied: if a memory already exists at the path, or the path is an ancestor or descendant of an existing memory's path, the request returns `memory_path_conflict_error` (HTTP 409). Create never overwrites; to modify an existing memory, use [Update a memory](/en/api/beta/memory_stores/memories/update).",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-memory-stores-api-openapi.yml#/components/schemas/BetaManagedAgentsCreateMemoryParams",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "path",
+    "content"
+  ],
+  "properties": {
+    "path": {
+      "description": "Hierarchical path for the new memory, e.g. `/projects/foo/notes.md`. Must start with `/`, contain at least one non-empty segment, and be at most 1,024 bytes. Must not contain empty segments, `.` or `..` segments, control or format characters, and must be NFC-normalized. Paths are case-sensitive.",
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 1024
+    },
+    "content": {
+      "description": "UTF-8 text content for the new memory. Maximum 100 kB (102,400 bytes). Required; pass `\"\"` explicitly to create an empty memory.",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  }
+}

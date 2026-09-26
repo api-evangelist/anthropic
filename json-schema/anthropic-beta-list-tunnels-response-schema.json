@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-list-tunnels-response-schema.json",
+  "title": "BetaListTunnelsResponse",
+  "description": "A paginated list of tunnels.",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-tunnels-beta-true-api-openapi.yml#/components/schemas/BetaListTunnelsResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "data",
+    "next_page"
+  ],
+  "properties": {
+    "data": {
+      "description": "List of tunnels, ordered by created_at descending.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/BetaTunnel"
+      }
+    },
+    "next_page": {
+      "description": "Pagination cursor for the next page, or null if no more results.",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "BetaTimestamp": {
+      "description": "A timestamp in RFC 3339 format",
+      "type": "string",
+      "format": "date-time"
+    },
+    "BetaTunnel": {
+      "description": "An MCP tunnel.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "domain",
+        "display_name",
+        "created_at",
+        "archived_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "tunnel"
+        },
+        "id": {
+          "description": "Unique identifier for the tunnel, prefixed with `tnl_`.",
+          "type": "string"
+        },
+        "domain": {
+          "description": "Anthropic-assigned hostname for the tunnel. MCP server URLs whose host is a subdomain of this value are routed through the tunnel. Globally unique and never reused, even after the tunnel is archived.",
+          "type": "string"
+        },
+        "display_name": {
+          "description": "Human-readable name for the tunnel (1-255 characters). Null if unset.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "description": "RFC 3339 datetime string indicating when the tunnel was created.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "archived_at": {
+          "description": "RFC 3339 datetime string indicating when the tunnel was archived. Null if it is not archived.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

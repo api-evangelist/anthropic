@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-list-user-profiles-response-schema.json",
+  "title": "BetaListUserProfilesResponse",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-user-profiles-beta-true-api-openapi.yml#/components/schemas/BetaListUserProfilesResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "data",
+    "next_page"
+  ],
+  "properties": {
+    "data": {
+      "description": "User profiles on this page.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/BetaUserProfile"
+      }
+    },
+    "next_page": {
+      "description": "Cursor for the next page, or `null` when there are no more results.",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "BetaTimestamp": {
+      "description": "A timestamp in RFC 3339 format",
+      "type": "string",
+      "format": "date-time"
+    },
+    "BetaUserProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "trust_grants",
+        "created_at",
+        "metadata",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "description": "Unique identifier for this user profile, prefixed `uprof_`.",
+          "type": "string"
+        },
+        "type": {
+          "description": "Object type. Always `user_profile`.",
+          "type": "string",
+          "enum": [
+            "user_profile"
+          ]
+        },
+        "external_id": {
+          "description": "Platform's own identifier for this user. Not enforced unique.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "name": {
+          "description": "Real-world name of the entity this profile represents (company or individual). For a resold-to company (`access_type` `passthrough`, or `relationship` `resold` under the `user-profiles-2026-03-24` header) this is that company's name.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "relationship": {
+          "description": "How the entity relates to the platform. `external` (default), `resold`, or `internal`. Present under the `user-profiles-2026-03-24` beta header.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaUserProfileRelationship"
+            }
+          ],
+          "x-anthropic-beta-required": [
+            "user-profiles-2026-03-24"
+          ]
+        },
+        "access_type": {
+          "description": "How the platform uses the API for this entity: `application` (default) or `passthrough`. Present under the `user-profiles-2026-08-18` beta header.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaUserProfileAccessType"
+            }
+          ],
+          "x-anthropic-beta-required": [
+            "user-profiles-2026-08-18"
+          ]
+        },
+        "trust_grants": {
+          "description": "Trust grants for this profile, keyed by grant name. Key omitted when no grant is active or in flight.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/BetaUserProfileTrustGrant"
+          }
+        },
+        "created_at": {
+          "description": "When this user profile was created, in RFC 3339 format.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "metadata": {
+          "description": "Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 chars, values up to 512 chars.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "updated_at": {
+          "description": "When this user profile was last modified, in RFC 3339 format. Trust-grant status changes also bump this timestamp.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        }
+      }
+    },
+    "BetaUserProfileAccessType": {
+      "type": "string",
+      "description": "How the platform uses the API on behalf of the entity this profile represents. `application`: the platform sells a product that uses the API behind the scenes, and the profile represents an individual end-user of that product. `passthrough`: the platform resells raw inference, and the profile identifies the resold-to company.",
+      "enum": [
+        "application",
+        "passthrough"
+      ]
+    },
+    "BetaUserProfileRelationship": {
+      "type": "string",
+      "description": "How the entity behind a user profile relates to the platform that owns the API key. `external`: an individual end-user of the platform. `resold`: a company the platform resells Claude access to. `internal`: the platform's own usage.",
+      "enum": [
+        "external",
+        "resold",
+        "internal"
+      ]
+    },
+    "BetaUserProfileTrustGrant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "description": "Status of the trust grant.",
+          "type": "string",
+          "enum": [
+            "active",
+            "pending",
+            "rejected"
+          ]
+        }
+      }
+    }
+  }
+}

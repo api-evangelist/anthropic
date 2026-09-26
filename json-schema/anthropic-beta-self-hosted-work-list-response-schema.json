@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-self-hosted-work-list-response-schema.json",
+  "title": "SelfHostedWorkListResponse",
+  "description": "Response when listing work items with cursor-based pagination.",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-environments-api-openapi.yml#/components/schemas/BetaSelfHostedWorkListResponse",
+  "properties": {
+    "data": {
+      "items": {
+        "$ref": "#/$defs/BetaSelfHostedWork"
+      },
+      "type": "array",
+      "title": "Data",
+      "description": "List of work items",
+      "x-stainless-pagination-property": {
+        "purpose": "items"
+      }
+    },
+    "next_page": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Next Page",
+      "description": "Opaque cursor for fetching the next page of results",
+      "x-stainless-pagination-property": {
+        "purpose": "next_cursor_field"
+      }
+    }
+  },
+  "type": "object",
+  "required": [
+    "data",
+    "next_page"
+  ],
+  "$defs": {
+    "BetaSelfHostedWork": {
+      "properties": {
+        "acknowledged_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Acknowledged At",
+          "description": "RFC 3339 timestamp when the work item was acknowledged and assigned to a self-hosted sandbox"
+        },
+        "created_at": {
+          "type": "string",
+          "title": "Created At",
+          "description": "RFC 3339 timestamp when work was created"
+        },
+        "data": {
+          "$ref": "#/$defs/BetaSessionWorkData",
+          "description": "The actual work to be performed"
+        },
+        "environment_id": {
+          "type": "string",
+          "title": "Environment Id",
+          "description": "Environment identifier this work belongs to (e.g., `env_...`)"
+        },
+        "id": {
+          "type": "string",
+          "title": "Id",
+          "description": "Work identifier (e.g., 'work_...')"
+        },
+        "latest_heartbeat_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Latest Heartbeat At",
+          "description": "RFC 3339 timestamp of the most recent heartbeat"
+        },
+        "metadata": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object",
+          "title": "Metadata",
+          "description": "User-provided metadata key-value pairs associated with this work item"
+        },
+        "secret": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Secret",
+          "description": "Credential payload used by the environment worker to execute this work item. May be populated when polling for work; null on all other retrieval paths."
+        },
+        "started_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Started At",
+          "description": "RFC 3339 timestamp when work execution started"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "queued",
+            "starting",
+            "active",
+            "stopping",
+            "stopped"
+          ],
+          "title": "State",
+          "description": "Current state of the work item"
+        },
+        "stop_requested_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Stop Requested At",
+          "description": "RFC 3339 timestamp when stop was requested"
+        },
+        "stopped_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Stopped At",
+          "description": "RFC 3339 timestamp when work execution stopped"
+        },
+        "type": {
+          "type": "string",
+          "const": "work",
+          "title": "Type",
+          "description": "The type of object (always 'work')",
+          "default": "work"
+        }
+      },
+      "type": "object",
+      "required": [
+        "acknowledged_at",
+        "created_at",
+        "data",
+        "environment_id",
+        "id",
+        "latest_heartbeat_at",
+        "metadata",
+        "secret",
+        "started_at",
+        "state",
+        "stop_requested_at",
+        "stopped_at",
+        "type"
+      ],
+      "title": "SelfHostedWork",
+      "description": "Work resource representing a unit of work in a self-hosted environment.\n\nWork items are queued when sessions are created or when long-dormant sessions\nreceive new messages. The environment worker polls for work to execute in a\nself-hosted sandbox."
+    },
+    "BetaSessionWorkData": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "Id",
+          "description": "Session identifier (e.g., 'session_...')"
+        },
+        "type": {
+          "type": "string",
+          "const": "session",
+          "title": "Type",
+          "description": "Type of work data"
+        }
+      },
+      "type": "object",
+      "required": [
+        "id",
+        "type"
+      ],
+      "title": "SessionWorkData",
+      "description": "Work data for session work items.\n\nThis resource type is used when work represents a session that needs to be executed\nin a self-hosted environment."
+    }
+  }
+}

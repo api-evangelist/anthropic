@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-templatize-prompt-request-schema.json",
+  "title": "TemplatizePromptRequest",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-prompt-templatization-api-openapi.yml#/components/schemas/TemplatizePromptRequest",
+  "type": "object",
+  "required": [
+    "messages"
+  ],
+  "properties": {
+    "messages": {
+      "type": "array",
+      "description": "The prompt to templatize, structured as a list of message objects.\nEach message must contain only text-only content blocks and\nnot include tool calls, images, or prompt caching blocks.\nOnly contiguous user messages with text content are allowed.\nAssistant prefill is permitted.\n",
+      "items": {
+        "$ref": "#/$defs/PromptMessage"
+      }
+    },
+    "system": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The existing system prompt to templatize.\nNote that this differs from the Messages API; it is strictly\na string.\nIf provided, variables will be identified and replaced in\nthe system prompt as well.\n"
+    }
+  },
+  "$defs": {
+    "PromptMessage": {
+      "type": "object",
+      "required": [
+        "role",
+        "content"
+      ],
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": [
+            "user",
+            "assistant"
+          ],
+          "description": "The role of the message sender"
+        },
+        "content": {
+          "type": "array",
+          "description": "The content of the message",
+          "items": {
+            "$ref": "#/$defs/TextContentBlock"
+          }
+        }
+      }
+    },
+    "TextContentBlock": {
+      "type": "object",
+      "required": [
+        "type",
+        "text"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text"
+          ],
+          "description": "The type of content block"
+        },
+        "text": {
+          "type": "string",
+          "description": "The text content"
+        }
+      }
+    }
+  }
+}

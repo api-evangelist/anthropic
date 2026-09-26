@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-workspace-schema.json",
+  "title": "Workspace",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-workspaces-api-openapi.yml#/components/schemas/Workspace",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "name",
+    "created_at",
+    "archived_at",
+    "display_color"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique workspace identifier"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "workspace"
+      ],
+      "default": "workspace",
+      "description": "Object type identifier"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40,
+      "description": "Workspace name"
+    },
+    "display_color": {
+      "type": "string",
+      "description": "Hex color code for UI display"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 datetime when workspace was created"
+    },
+    "archived_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "RFC 3339 datetime when workspace was archived, or null if active"
+    }
+  }
+}

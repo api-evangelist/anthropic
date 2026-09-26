@@ -1,0 +1,593 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-managed-agents-list-deployment-runs-data-schema.json",
+  "title": "BetaManagedAgentsListDeploymentRunsData",
+  "description": "Paginated list of deployment runs. Sorted by created_at descending (most recent first).",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-deployment-runs-beta-true-api-openapi.yml#/components/schemas/BetaManagedAgentsListDeploymentRunsData",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "description": "List of deployment runs.",
+      "x-stainless-pagination-property": {
+        "purpose": "items"
+      },
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/BetaManagedAgentsDeploymentRun"
+      }
+    },
+    "next_page": {
+      "description": "Opaque cursor for the next page. Null when no more results.",
+      "x-stainless-pagination-property": {
+        "purpose": "next_cursor_field"
+      },
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "BetaManagedAgentsAgentArchivedRunError": {
+      "description": "The deployment's agent was archived.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent_archived_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsAgentReference": {
+      "description": "A resolved agent reference with a concrete version.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "version"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "BetaManagedAgentsDeploymentRun": {
+      "description": "A persistent, append-only record of a single deployment execution. Records session creation success or failure — no session lifecycle tracking.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "deployment_id",
+        "trigger_context",
+        "session_id",
+        "error",
+        "agent",
+        "created_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "deployment_run"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this run (`drun_...`).",
+          "type": "string"
+        },
+        "deployment_id": {
+          "description": "ID of the deployment that produced this run.",
+          "type": "string"
+        },
+        "trigger_context": {
+          "description": "What triggered this run and trigger-specific metadata.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsTriggerContext"
+            }
+          ]
+        },
+        "session_id": {
+          "description": "Populated on success. Null on creation failure. Exactly one of session_id or error is non-null.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error": {
+          "description": "Populated on creation failure. Null on success. Exactly one of session_id or error is non-null.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsRunError"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "agent": {
+          "description": "Snapshot of the agent at fire time. Always fully resolved — deployments pin agent + version.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsAgentReference"
+            }
+          ]
+        },
+        "created_at": {
+          "description": "Time this run record was persisted.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsEnvironmentArchivedRunError": {
+      "description": "The deployment's environment was archived.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "environment_archived_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsEnvironmentNotFoundRunError": {
+      "description": "The deployment's environment no longer exists.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "environment_not_found_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsFileNotFoundRunError": {
+      "description": "A file resource referenced by the deployment no longer exists.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "file_not_found_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsManualTriggerContext": {
+      "description": "The run was started manually by creating a session directly against the deployment.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "manual"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsMcpEgressBlockedRunError": {
+      "description": "An MCP server host used by the deployment's agent is blocked by the environment's network policy.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "mcp_egress_blocked_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsMemoryStoreArchivedRunError": {
+      "description": "A memory store referenced by the deployment is archived.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "memory_store_archived_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsOrganizationDisabledRunError": {
+      "description": "The deployment's organization is disabled.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "organization_disabled_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsRunError": {
+      "description": "Why the run failed to create a session. The type identifies the failure; message is human-readable detail.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsEnvironmentArchivedRunError"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsAgentArchivedRunError"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsEnvironmentNotFoundRunError"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsVaultNotFoundRunError"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsVaultArchivedRunError"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsFileNotFoundRunError"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsMemoryStoreArchivedRunError"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsSkillNotFoundRunError"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsSessionResourceNotFoundRunError"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsWorkspaceArchivedRunError"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsOrganizationDisabledRunError"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsSessionRateLimitedRunError"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsSessionCreationRejectedRunError"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsUnknownRunError"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsSelfHostedResourcesUnsupportedRunError"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsMcpEgressBlockedRunError"
+        }
+      ]
+    },
+    "BetaManagedAgentsScheduleTriggerContext": {
+      "description": "The run was fired by the deployment's cron schedule.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "scheduled_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "schedule"
+          ]
+        },
+        "scheduled_at": {
+          "description": "The UTC instant at which the cron expression matched in the configured timezone, before jitter is applied. At most one run is recorded per (deployment_id, scheduled_at) pair.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSelfHostedResourcesUnsupportedRunError": {
+      "description": "The deployment configures resources, but its environment is self-hosted and cannot mount them.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "self_hosted_resources_unsupported_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsSessionCreationRejectedRunError": {
+      "description": "The session create request was rejected with a non-retryable validation error.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session_creation_rejected_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsSessionRateLimitedRunError": {
+      "description": "Session creation was rejected due to rate limiting. The schedule keeps firing; subsequent runs may succeed.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session_rate_limited_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsSessionResourceNotFoundRunError": {
+      "description": "A referenced resource no longer exists and its kind was not reported.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session_resource_not_found_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsSkillNotFoundRunError": {
+      "description": "A skill referenced by the deployment's agent no longer exists.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "skill_not_found_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsTriggerContext": {
+      "description": "Describes what triggered a deployment run, with trigger-specific metadata.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsScheduleTriggerContext"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsManualTriggerContext"
+        }
+      ]
+    },
+    "BetaManagedAgentsUnknownRunError": {
+      "description": "An unknown or unexpected error caused the run to fail. A fallback variant; clients that do not recognize a new error type can match on message alone.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "unknown_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsVaultArchivedRunError": {
+      "description": "A vault referenced by the deployment is archived.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "vault_archived_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsVaultNotFoundRunError": {
+      "description": "A vault referenced by the deployment no longer exists.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "vault_not_found_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsWorkspaceArchivedRunError": {
+      "description": "The deployment's workspace was archived.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "workspace_archived_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaTimestamp": {
+      "description": "A timestamp in RFC 3339 format",
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

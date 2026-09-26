@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-completion-request-schema.json",
+  "title": "CompletionRequest",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-complete-api-openapi.yml#/components/schemas/CompletionRequest",
+  "additionalProperties": false,
+  "properties": {
+    "model": {
+      "$ref": "#/$defs/Model"
+    },
+    "prompt": {
+      "description": "The prompt that you want Claude to complete.\n\nFor proper response generation you will need to format your prompt using alternating `\\n\\nHuman:` and `\\n\\nAssistant:` conversational turns. For example:\n\n```\n\"\\n\\nHuman: {userQuestion}\\n\\nAssistant:\"\n```\n\nSee [prompt validation](https://platform.claude.com/docs/en/build-with-claude/working-with-messages) and our guide to [prompt design](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview) for more details.",
+      "minLength": 1,
+      "title": "Prompt",
+      "type": "string"
+    },
+    "max_tokens_to_sample": {
+      "description": "The maximum number of tokens to generate before stopping.\n\nNote that our models may stop _before_ reaching this maximum. This parameter only specifies the absolute maximum number of tokens to generate.",
+      "minimum": 1,
+      "title": "Max Tokens To Sample",
+      "type": "integer"
+    },
+    "stop_sequences": {
+      "description": "Sequences that will cause the model to stop generating.\n\nOur models stop on `\"\\n\\nHuman:\"`, and may include additional built-in stop sequences in the future. By providing the stop_sequences parameter, you may include additional strings that will cause the model to stop generating.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Stop Sequences",
+      "type": "array"
+    },
+    "temperature": {
+      "deprecated": true,
+      "description": "Amount of randomness injected into the response.\n\nDefaults to `1.0`. Ranges from `0.0` to `1.0`. Use `temperature` closer to `0.0` for analytical / multiple choice, and closer to `1.0` for creative and generative tasks.\n\nNote that even with `temperature` of `0.0`, the results will not be fully deterministic.",
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Temperature",
+      "type": "number",
+      "x-stainless-deprecation-message": "Deprecated. Models released after Claude Opus 4.6 do not support setting temperature. A value of 1.0 of will be accepted for backwards compatibility, all other values will be rejected with a 400 error.",
+      "x-stainless-skip": [
+        "python"
+      ]
+    },
+    "top_p": {
+      "deprecated": true,
+      "description": "Use nucleus sampling.\n\nIn nucleus sampling, we compute the cumulative distribution over all the options for each subsequent token in decreasing probability order and cut it off once it reaches a particular probability specified by `top_p`.\n\nRecommended for advanced use cases only.",
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Top P",
+      "type": "number",
+      "x-stainless-deprecation-message": "Deprecated. Models released after Claude Opus 4.6 do not support setting top_p. A value >= 0.99 will be accepted for backwards compatibility, all other values will be rejected with a 400 error.",
+      "x-stainless-skip": [
+        "python"
+      ]
+    },
+    "top_k": {
+      "deprecated": true,
+      "description": "Only sample from the top K options for each subsequent token.\n\nUsed to remove \"long tail\" low probability responses. [Learn more technical details here](https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277).\n\nRecommended for advanced use cases only.",
+      "minimum": 0,
+      "title": "Top K",
+      "type": "integer",
+      "x-stainless-deprecation-message": "Deprecated. Models released after Claude Opus 4.6 do not accept top_k; any value will be rejected with a 400 error.",
+      "x-stainless-skip": [
+        "python"
+      ]
+    },
+    "metadata": {
+      "$ref": "#/$defs/Metadata",
+      "description": "An object describing metadata about the request."
+    },
+    "stream": {
+      "description": "Whether to incrementally stream the response using server-sent events.\n\nSee [streaming](https://platform.claude.com/docs/en/build-with-claude/streaming) for details.",
+      "title": "Stream",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "max_tokens_to_sample",
+    "model",
+    "prompt"
+  ],
+  "type": "object",
+  "$defs": {
+    "Metadata": {
+      "additionalProperties": false,
+      "properties": {
+        "user_id": {
+          "anyOf": [
+            {
+              "maxLength": 512,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An external identifier for the user who is associated with the request.\n\nThis should be a uuid, hash value, or other opaque identifier. Anthropic may use this id to help detect abuse. Do not include any identifying information such as name, email address, or phone number.",
+          "title": "User Id"
+        }
+      },
+      "title": "Metadata",
+      "type": "object"
+    },
+    "Model": {
+      "title": "Model",
+      "description": "The model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview) for additional details and options.",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "const": "claude-sonnet-5",
+          "description": "High-performance model for coding and agents",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-fable-5",
+          "description": "Next generation of intelligence for the hardest knowledge work and coding problems",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-mythos-5",
+          "description": "Most capable model for cybersecurity and biology research",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-5",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-4-8",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-4-7",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-mythos-preview",
+          "description": "New class of intelligence, strongest in coding and cybersecurity",
+          "x-stainless-nominal": false,
+          "deprecated": true,
+          "x-stainless-deprecation-message": "Will reach end-of-life on June 30, 2026. Please migrate to claude-mythos-5. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+        },
+        {
+          "const": "claude-opus-4-6",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-sonnet-4-6",
+          "description": "Best combination of speed and intelligence",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-haiku-4-5",
+          "description": "Fastest model with near-frontier intelligence",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-haiku-4-5-20251001",
+          "description": "Fastest model with near-frontier intelligence",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-4-5",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-4-5-20251101",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-sonnet-4-5",
+          "description": "High-performance model for agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-sonnet-4-5-20250929",
+          "description": "High-performance model for agents and coding",
+          "x-stainless-nominal": false
+        }
+      ]
+    }
+  }
+}

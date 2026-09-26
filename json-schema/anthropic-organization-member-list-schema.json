@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-organization-member-list-schema.json",
+  "title": "OrganizationMemberList",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-organization-members-api-openapi.yml#/components/schemas/OrganizationMemberList",
+  "type": "object",
+  "required": [
+    "data",
+    "has_more",
+    "first_id",
+    "last_id"
+  ],
+  "properties": {
+    "data": {
+      "type": "array",
+      "description": "List of organization members",
+      "items": {
+        "$ref": "#/$defs/OrganizationMember"
+      }
+    },
+    "first_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "First ID in the data list for pagination"
+    },
+    "has_more": {
+      "type": "boolean",
+      "description": "Indicates if there are more results available"
+    },
+    "last_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Last ID in the data list for pagination"
+    }
+  },
+  "$defs": {
+    "OrganizationMember": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "email",
+        "name",
+        "role",
+        "added_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique user identifier"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "user"
+          ],
+          "default": "user",
+          "description": "Object type identifier"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User email address"
+        },
+        "name": {
+          "type": "string",
+          "description": "User display name"
+        },
+        "role": {
+          "$ref": "#/$defs/OrganizationRole"
+        },
+        "added_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "RFC 3339 datetime when user joined the organization"
+        }
+      }
+    },
+    "OrganizationRole": {
+      "type": "string",
+      "enum": [
+        "user",
+        "claude_code_user",
+        "developer",
+        "billing",
+        "admin"
+      ],
+      "description": "Role within the organization"
+    }
+  }
+}

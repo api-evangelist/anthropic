@@ -1,0 +1,248 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-api-key-schema.json",
+  "title": "ApiKey",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-organizations-api-openapi.yml#/components/schemas/BetaApiKey",
+  "properties": {
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At",
+      "description": "RFC 3339 datetime string indicating when the API Key was created."
+    },
+    "created_by": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BetaCreatedBy"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The ID and type of the actor that created the API key, or `null` when the\ncreator is not recorded (legacy, workload-identity-federated, or\nsystem-created keys)."
+    },
+    "expires_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Expires At",
+      "description": "RFC 3339 datetime string indicating when the API Key expires, or `null` if it never expires."
+    },
+    "id": {
+      "type": "string",
+      "title": "Id",
+      "description": "ID of the API key."
+    },
+    "name": {
+      "type": "string",
+      "title": "Name",
+      "description": "Name of the API key."
+    },
+    "partial_key_hint": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Partial Key Hint",
+      "description": "Partially redacted hint for the API key."
+    },
+    "principal": {
+      "anyOf": [
+        {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/BetaApiKeyUserActor"
+            },
+            {
+              "$ref": "#/$defs/BetaApiKeyServiceAccountActor"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Principal",
+      "description": "The principal the API key acts as (a User or a Service Account), or `null` if the API key is not bound to a principal."
+    },
+    "scope": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaApiKeyOrganizationScope"
+        },
+        {
+          "$ref": "#/$defs/BetaApiKeyWorkspaceScope"
+        }
+      ],
+      "title": "Scope",
+      "description": "Where the API key belongs: its Workspace (`{\"type\": \"workspace\", \"workspace_id\": \"wrkspc_...\"}`, with the Workspace's real ID even when it is the organization's default Workspace), or the organization (`{\"type\": \"organization\"}`) for a principal-bound API key that has no Workspace."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "archived",
+        "expired",
+        "inactive"
+      ],
+      "title": "Status",
+      "description": "Status of the API key."
+    },
+    "type": {
+      "type": "string",
+      "const": "api_key",
+      "title": "Type",
+      "description": "Object type.\n\nFor API Keys, this is always `\"api_key\"`.",
+      "default": "api_key"
+    },
+    "workspace_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Workspace Id",
+      "description": "Deprecated: use `scope` instead. ID of the Workspace associated with the API key, or `null` if the API key belongs to the default Workspace. Also `null` for a principal-bound API key that has no Workspace; `scope` tells the two apart.",
+      "deprecated": true,
+      "x-stainless-deprecation-message": "Use `scope` instead. `workspace_id` is `null` both for an API key in the default Workspace and for a principal-bound API key that has no Workspace."
+    }
+  },
+  "type": "object",
+  "required": [
+    "created_at",
+    "created_by",
+    "expires_at",
+    "id",
+    "name",
+    "partial_key_hint",
+    "principal",
+    "scope",
+    "status",
+    "type",
+    "workspace_id"
+  ],
+  "$defs": {
+    "BetaApiKeyOrganizationScope": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "organization",
+          "title": "Type",
+          "description": "Scope type. Always `\"organization\"`: the API key has no Workspace. Only a principal-bound API key can have this scope.",
+          "default": "organization"
+        }
+      },
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "title": "ApiKeyOrganizationScope"
+    },
+    "BetaApiKeyServiceAccountActor": {
+      "properties": {
+        "service_account_id": {
+          "type": "string",
+          "title": "Service Account Id",
+          "description": "ID of the Service Account the API key acts as."
+        },
+        "type": {
+          "type": "string",
+          "const": "service_account_actor",
+          "title": "Type",
+          "description": "Principal type. Always `\"service_account_actor\"` for a Service Account.",
+          "default": "service_account_actor"
+        }
+      },
+      "type": "object",
+      "required": [
+        "service_account_id",
+        "type"
+      ],
+      "title": "ApiKeyServiceAccountActor"
+    },
+    "BetaApiKeyUserActor": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "user_actor",
+          "title": "Type",
+          "description": "Principal type. Always `\"user_actor\"` for a User.",
+          "default": "user_actor"
+        },
+        "user_id": {
+          "type": "string",
+          "title": "User Id",
+          "description": "ID of the User the API key acts as."
+        }
+      },
+      "type": "object",
+      "required": [
+        "type",
+        "user_id"
+      ],
+      "title": "ApiKeyUserActor"
+    },
+    "BetaApiKeyWorkspaceScope": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "workspace",
+          "title": "Type",
+          "description": "Scope type. Always `\"workspace\"`: the API key belongs to one Workspace.",
+          "default": "workspace"
+        },
+        "workspace_id": {
+          "type": "string",
+          "title": "Workspace Id",
+          "description": "ID of the Workspace the API key belongs to. Unlike the deprecated top-level `workspace_id`, this is the Workspace's real ID even for the organization's default Workspace."
+        }
+      },
+      "type": "object",
+      "required": [
+        "type",
+        "workspace_id"
+      ],
+      "title": "ApiKeyWorkspaceScope"
+    },
+    "BetaCreatedBy": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "Id",
+          "description": "ID of the actor that created the object."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "service_account",
+            "user"
+          ],
+          "title": "Type",
+          "description": "Type of the actor that created the object."
+        }
+      },
+      "type": "object",
+      "required": [
+        "id",
+        "type"
+      ],
+      "title": "CreatedBy"
+    }
+  }
+}

@@ -1,0 +1,297 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-federation-rule-schema.json",
+  "title": "FederationRule",
+  "description": "Authorization rule binding an external OIDC identity to Anthropic.\n\nEvaluates the match conditions and mints an OAuth access token for the\nresolved target, scoped to a single workspace where the rule is enabled\n(chosen by the caller at exchange time when the rule is enabled for more\nthan one). For rules enabled via `workspace_ids` or\n`applies_to_all_workspaces`, the target service account must be a member\nof that workspace (it is implicitly a member of the default workspace);\nrules carrying only the legacy `workspace_id` binding do not enforce\nthis.",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-organizations-api-openapi.yml#/components/schemas/BetaFederationRule",
+  "properties": {
+    "applies_to_all_workspaces": {
+      "type": "boolean",
+      "title": "Applies To All Workspaces",
+      "description": "When true, this rule is enabled for every workspace in the org (including ones created after the rule). `workspace_ids` is ignored at exchange time."
+    },
+    "archived_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Archived At",
+      "description": "If set, this rule is archived and rejects token exchange."
+    },
+    "archived_by_actor_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Archived By Actor Id",
+      "description": "Tagged ID (`user_`/`svac_`) of the actor that archived this rule."
+    },
+    "attributes": {
+      "anyOf": [
+        {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Attributes",
+      "description": "CEL expressions extracting named values from claims. Not yet supported; always null."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At",
+      "description": "When this rule was created."
+    },
+    "created_by_actor_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Created By Actor Id",
+      "description": "Tagged ID (`user_`/`svac_`) of the actor that created this rule."
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Description",
+      "description": "Optional free-text description."
+    },
+    "id": {
+      "type": "string",
+      "title": "Id",
+      "description": "Tagged ID of the federation rule."
+    },
+    "issuer_id": {
+      "type": "string",
+      "title": "Issuer Id",
+      "description": "Tagged ID of the issuer whose tokens this rule accepts."
+    },
+    "issuer_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Issuer Name",
+      "description": "Issuer's display name at read time."
+    },
+    "match": {
+      "$ref": "#/$defs/BetaRuleMatch",
+      "description": "Conditions the verified JWT must satisfy for this rule to apply. All populated matcher fields must pass."
+    },
+    "name": {
+      "type": "string",
+      "title": "Name",
+      "description": "Admin-chosen slug identifier."
+    },
+    "oauth_scope": {
+      "type": "string",
+      "title": "Oauth Scope",
+      "description": "Space-separated OAuth scopes granted on the minted token."
+    },
+    "target": {
+      "$ref": "#/$defs/BetaServiceAccountTarget",
+      "description": "Identity that tokens minted via this rule act as. Currently always a `service_account` target."
+    },
+    "token_lifetime_seconds": {
+      "type": "integer",
+      "title": "Token Lifetime Seconds",
+      "description": "Lifetime in seconds of access tokens minted via this rule. Minted tokens are capped at `max(60, min(this value, 2 × remaining assertion validity))` seconds."
+    },
+    "type": {
+      "type": "string",
+      "const": "federation_rule",
+      "title": "Type",
+      "default": "federation_rule"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At",
+      "description": "When this rule was last updated."
+    },
+    "updated_by_actor_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Updated By Actor Id",
+      "description": "Tagged ID (`user_`/`svac_`) of the actor that last updated this rule."
+    },
+    "workspace_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Workspace Id",
+      "description": "Legacy single-workspace binding. Prefer `workspace_ids` and the `/federation_rules/{federation_rule_id}/workspaces` sub-resource for managing workspace enablement."
+    },
+    "workspace_ids": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Workspace Ids",
+      "description": "Tagged IDs of the workspaces this rule is enabled for. May be empty for older rules that only carry the legacy `workspace_id` binding. Ignored at exchange time when `applies_to_all_workspaces` is true (the list may still be non-empty)."
+    }
+  },
+  "type": "object",
+  "required": [
+    "applies_to_all_workspaces",
+    "archived_at",
+    "archived_by_actor_id",
+    "attributes",
+    "created_at",
+    "created_by_actor_id",
+    "description",
+    "id",
+    "issuer_id",
+    "issuer_name",
+    "match",
+    "name",
+    "oauth_scope",
+    "target",
+    "token_lifetime_seconds",
+    "type",
+    "updated_at",
+    "updated_by_actor_id",
+    "workspace_id",
+    "workspace_ids"
+  ],
+  "$defs": {
+    "BetaRuleMatch": {
+      "properties": {
+        "audience": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 1024
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Audience",
+          "description": "Exact match against the `aud` claim (any element if array). When omitted, the JWT's `aud` must still equal Anthropic's expected audience for the issuer; setting this field overrides that default."
+        },
+        "claims": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Claims",
+          "description": "Exact-match `{claim: value}` pairs against top-level claims. Only string-valued claims can be matched; use `condition` for non-string claims."
+        },
+        "condition": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 4096
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Condition",
+          "description": "CEL expression over claims for logic the structural fields can't express. Must evaluate to a boolean and may reference only the `claims` variable; a constant-true expression (such as `true`) is rejected with 400."
+        },
+        "subject_prefix": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 1024
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Subject Prefix",
+          "description": "Match the verified JWT `sub` claim. Exact match unless the value ends with `*`, in which case it is a prefix match. Example: `repo:my-org/my-repo:ref:refs/heads/main`."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "title": "RuleMatch",
+      "description": "Does the incoming JWT qualify?\n\nAll populated fields must pass; omitted fields are skipped. At least one\nof `subject_prefix` (other than a wildcard-only value like `*`), `claims`,\nor `condition` is required; `audience` alone is not sufficient."
+    },
+    "BetaServiceAccountTarget": {
+      "properties": {
+        "service_account_id": {
+          "type": "string",
+          "title": "Service Account Id",
+          "description": "Tagged ID of the service account to mint tokens for."
+        },
+        "service_account_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Service Account Name",
+          "description": "Service account's display name at read time. Ignored on writes."
+        },
+        "type": {
+          "type": "string",
+          "const": "service_account",
+          "title": "Type"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "service_account_id",
+        "type"
+      ],
+      "title": "ServiceAccountTarget",
+      "description": "Bind to a fixed service account by ID."
+    }
+  }
+}

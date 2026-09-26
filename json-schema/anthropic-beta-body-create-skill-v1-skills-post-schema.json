@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-body-create-skill-v1-skills-post-schema.json",
+  "title": "Body_create_skill_v1_skills_post",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-skills-beta-true-api-openapi.yml#/components/schemas/BetaBody_create_skill_v1_skills_post",
+  "properties": {
+    "files": {
+      "items": {
+        "type": "string",
+        "format": "binary"
+      },
+      "type": "array",
+      "title": "Files",
+      "description": "Files to upload for the skill.\n\nAll files must be in the same top-level directory and must include a SKILL.md file at the root of that directory."
+    },
+    "display_title": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Display Title",
+      "description": "Display title for the skill.\n\nThis is a human-readable label that is not included in the prompt sent to the model."
+    }
+  },
+  "type": "object",
+  "required": [
+    "files"
+  ]
+}

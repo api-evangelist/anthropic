@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-api-key-list-schema.json",
+  "title": "ApiKeyList",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-api-keys-api-openapi.yml#/components/schemas/ApiKeyList",
+  "type": "object",
+  "required": [
+    "data",
+    "has_more",
+    "first_id",
+    "last_id"
+  ],
+  "properties": {
+    "data": {
+      "type": "array",
+      "description": "List of API keys",
+      "items": {
+        "$ref": "#/$defs/ApiKey"
+      }
+    },
+    "first_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "First ID in the data list for pagination"
+    },
+    "has_more": {
+      "type": "boolean",
+      "description": "Indicates if there are more results available"
+    },
+    "last_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Last ID in the data list for pagination"
+    }
+  },
+  "$defs": {
+    "ApiKey": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "name",
+        "workspace_id",
+        "created_at",
+        "created_by",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique API key identifier"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "api_key"
+          ],
+          "default": "api_key",
+          "description": "Object type identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name for the API key"
+        },
+        "workspace_id": {
+          "type": "string",
+          "description": "ID of the workspace this key belongs to"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "RFC 3339 datetime when key was created"
+        },
+        "created_by": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "ID of the user who created the key"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "user"
+              ]
+            }
+          },
+          "description": "User who created the API key"
+        },
+        "status": {
+          "$ref": "#/$defs/ApiKeyStatus"
+        },
+        "last_used_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "RFC 3339 datetime when key was last used"
+        }
+      }
+    },
+    "ApiKeyStatus": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "archived"
+      ],
+      "description": "Current status of the API key"
+    }
+  }
+}

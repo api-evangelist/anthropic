@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-usage-report-schema.json",
+  "title": "UsageReport",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-usage-api-openapi.yml#/components/schemas/UsageReport",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "starting_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ending_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "workspace_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "api_key_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "model": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "service_tier": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "context_window": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "uncached_input_tokens": {
+                  "type": "integer"
+                },
+                "cache_read_input_tokens": {
+                  "type": "integer"
+                },
+                "cache_creation_5m_input_tokens": {
+                  "type": "integer"
+                },
+                "cache_creation_1h_input_tokens": {
+                  "type": "integer"
+                },
+                "output_tokens": {
+                  "type": "integer"
+                },
+                "server_tool_use": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "has_more": {
+      "type": "boolean"
+    },
+    "next_page": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

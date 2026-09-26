@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-generate-prompt-request-schema.json",
+  "title": "GeneratePromptRequest",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-prompt-generation-api-openapi.yml#/components/schemas/GeneratePromptRequest",
+  "type": "object",
+  "required": [
+    "task"
+  ],
+  "properties": {
+    "task": {
+      "type": "string",
+      "description": "Description of the prompt's purpose.\nThe `task` parameter tells Claude what the prompt should do\nor what kind of role or functionality you want to create.\nThis helps guide the prompt generation process toward your\nintended use case.\n"
+    },
+    "target_model": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "description": "The model this prompt will be used for. This optional\nparameter helps us understand which models our prompt tools\nare being used with, but it doesn't currently affect\nfunctionality.\n",
+      "minLength": 1,
+      "maxLength": 256
+    }
+  }
+}

@@ -1,3 +1,4 @@
+name: Anthropic API Rate Limits
 specification: API Commons Rate Limits
 specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
@@ -48,62 +49,74 @@ spendLimits:
     creditPurchase: N/A
     monthlyCap: no limit
 limits:
-  - tier: Tier 1
+  - name: Tier 1 – Claude Opus 4.x
+    tier: Tier 1
     model: Claude Opus 4.x
     rpm: 50
     itpm: 500000
     otpm: 80000
-  - tier: Tier 1
+  - name: Tier 1 – Claude Sonnet 4.x
+    tier: Tier 1
     model: Claude Sonnet 4.x
     rpm: 50
     itpm: 30000
     otpm: 8000
-  - tier: Tier 1
+  - name: Tier 1 – Claude Haiku 4.5
+    tier: Tier 1
     model: Claude Haiku 4.5
     rpm: 50
     itpm: 50000
     otpm: 10000
-  - tier: Tier 2
+  - name: Tier 2 – Claude Opus 4.x
+    tier: Tier 2
     model: Claude Opus 4.x
     rpm: 1000
     itpm: 2000000
     otpm: 200000
-  - tier: Tier 2
+  - name: Tier 2 – Claude Sonnet 4.x
+    tier: Tier 2
     model: Claude Sonnet 4.x
     rpm: 1000
     itpm: 450000
     otpm: 90000
-  - tier: Tier 2
+  - name: Tier 2 – Claude Haiku 4.5
+    tier: Tier 2
     model: Claude Haiku 4.5
     rpm: 1000
     itpm: 450000
     otpm: 90000
-  - tier: Tier 3
+  - name: Tier 3 – Claude Opus 4.x
+    tier: Tier 3
     model: Claude Opus 4.x
     rpm: 2000
     itpm: 5000000
     otpm: 400000
-  - tier: Tier 3
+  - name: Tier 3 – Claude Sonnet 4.x
+    tier: Tier 3
     model: Claude Sonnet 4.x
     rpm: 2000
     itpm: 800000
     otpm: 160000
-  - tier: Tier 3
+  - name: Tier 3 – Claude Haiku 4.5
+    tier: Tier 3
     model: Claude Haiku 4.5
     rpm: 2000
     itpm: 1000000
     otpm: 200000
-  - tier: Tier 4
+  - name: Tier 4 – Claude Opus 4.x
+    tier: Tier 4
     model: Claude Opus 4.x
     rpm: 4000
     itpm: 10000000
     otpm: 800000
-  - tier: Tier 4
+  - name: Tier 4 – Claude Sonnet 4.x
+    tier: Tier 4
     model: Claude Sonnet 4.x
     rpm: 4000
     itpm: 2000000
     otpm: 400000
-  - tier: Tier 4
+  - name: Tier 4 – Claude Haiku 4.5
+    tier: Tier 4
     model: Claude Haiku 4.5
     rpm: 4000
     itpm: 4000000

@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-federation-rule-update-params-schema.json",
+  "title": "FederationRuleUpdateParams",
+  "description": "Partial update. Set fields are applied; omitted fields are unchanged.\n\n`issuer_id` is immutable. `match` and `target` are replaced as whole\nobjects when set. Explicit `null` clears `description` and `attributes`;\nother fields can only be replaced, not cleared.",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-organizations-api-openapi.yml#/components/schemas/BetaFederationRuleUpdateParams",
+  "properties": {
+    "applies_to_all_workspaces": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Applies To All Workspaces",
+      "description": "When true, enables this rule for every workspace in the org (including workspaces created later). Setting `false` is rejected with 400 if no workspace would remain enabled; a rule with only a legacy `workspace_id` binding continues to mint."
+    },
+    "attributes": {
+      "anyOf": [
+        {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Attributes",
+      "description": "Replaces the CEL expressions `{name: expr}` extracting named values from claims. Send null to clear them. Not yet supported; any non-empty value is rejected with 400."
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 2000
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Description",
+      "description": "Replaces the description. Omit to leave unchanged; send `null` to clear (the field is stored as an empty string)."
+    },
+    "match": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BetaRuleMatch"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Replaces the entire match object. All populated matcher fields must pass."
+    },
+    "name": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Name",
+      "description": "Replaces the slug identifier (lowercase, digits, hyphens). Unique within the organization; a duplicate name returns 409."
+    },
+    "oauth_scope": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Oauth Scope",
+      "description": "Replaces the space-separated OAuth scopes granted on minted tokens. OAuth callers may only set `workspace:developer` or `workspace:inference`; other scopes (such as `org:admin`) require a Console session."
+    },
+    "target": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BetaServiceAccountTarget"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Replaces the entire target object. Currently always a `service_account` target."
+    },
+    "token_lifetime_seconds": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "maximum": 86400,
+          "minimum": 60
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Token Lifetime Seconds",
+      "description": "Replaces the lifetime in seconds for access tokens minted via this rule (60-86400). Minted tokens are capped at `max(60, min(this value, 2 × remaining assertion validity))` seconds."
+    },
+    "workspace_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Workspace Id",
+      "description": "Replaces the existing single workspace enablement (the previous one is removed). Rejected with 400 if the rule is enabled for more than one workspace; use the `/federation_rules/{federation_rule_id}/workspaces` sub-resource instead."
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "$defs": {
+    "BetaRuleMatch": {
+      "properties": {
+        "audience": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 1024
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Audience",
+          "description": "Exact match against the `aud` claim (any element if array). When omitted, the JWT's `aud` must still equal Anthropic's expected audience for the issuer; setting this field overrides that default."
+        },
+        "claims": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Claims",
+          "description": "Exact-match `{claim: value}` pairs against top-level claims. Only string-valued claims can be matched; use `condition` for non-string claims."
+        },
+        "condition": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 4096
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Condition",
+          "description": "CEL expression over claims for logic the structural fields can't express. Must evaluate to a boolean and may reference only the `claims` variable; a constant-true expression (such as `true`) is rejected with 400."
+        },
+        "subject_prefix": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 1024
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Subject Prefix",
+          "description": "Match the verified JWT `sub` claim. Exact match unless the value ends with `*`, in which case it is a prefix match. Example: `repo:my-org/my-repo:ref:refs/heads/main`."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "title": "RuleMatch",
+      "description": "Does the incoming JWT qualify?\n\nAll populated fields must pass; omitted fields are skipped. At least one\nof `subject_prefix` (other than a wildcard-only value like `*`), `claims`,\nor `condition` is required; `audience` alone is not sufficient."
+    },
+    "BetaServiceAccountTarget": {
+      "properties": {
+        "service_account_id": {
+          "type": "string",
+          "title": "Service Account Id",
+          "description": "Tagged ID of the service account to mint tokens for."
+        },
+        "service_account_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Service Account Name",
+          "description": "Service account's display name at read time. Ignored on writes."
+        },
+        "type": {
+          "type": "string",
+          "const": "service_account",
+          "title": "Type"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "service_account_id",
+        "type"
+      ],
+      "title": "ServiceAccountTarget",
+      "description": "Bind to a fixed service account by ID."
+    }
+  }
+}

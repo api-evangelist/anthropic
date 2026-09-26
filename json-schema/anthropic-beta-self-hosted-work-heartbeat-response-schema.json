@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-self-hosted-work-heartbeat-response-schema.json",
+  "title": "SelfHostedWorkHeartbeatResponse",
+  "description": "Response after recording a heartbeat for a work item.",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-environments-api-openapi.yml#/components/schemas/BetaSelfHostedWorkHeartbeatResponse",
+  "properties": {
+    "last_heartbeat": {
+      "type": "string",
+      "title": "Last Heartbeat",
+      "description": "RFC 3339 timestamp of the actual heartbeat from DB"
+    },
+    "lease_extended": {
+      "type": "boolean",
+      "title": "Lease Extended",
+      "description": "Whether the heartbeat succeeded in extending the lease"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "starting",
+        "active",
+        "stopping",
+        "stopped"
+      ],
+      "title": "State",
+      "description": "Current state of the work item (active/stopping/stopped)"
+    },
+    "ttl_seconds": {
+      "type": "integer",
+      "title": "Ttl Seconds",
+      "description": "Effective TTL applied to the lease"
+    },
+    "type": {
+      "type": "string",
+      "const": "work_heartbeat",
+      "title": "Type",
+      "description": "The type of response",
+      "default": "work_heartbeat"
+    }
+  },
+  "type": "object",
+  "required": [
+    "last_heartbeat",
+    "lease_extended",
+    "state",
+    "ttl_seconds",
+    "type"
+  ]
+}

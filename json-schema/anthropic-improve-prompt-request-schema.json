@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-improve-prompt-request-schema.json",
+  "title": "ImprovePromptRequest",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-prompt-improvement-api-openapi.yml#/components/schemas/ImprovePromptRequest",
+  "type": "object",
+  "required": [
+    "messages"
+  ],
+  "properties": {
+    "messages": {
+      "type": "array",
+      "description": "The prompt to improve, structured as a list of message objects.\nEach message must contain only text-only content blocks and\nnot include tool calls, images, or prompt caching blocks.\nOnly contiguous user messages with text content are allowed.\nAssistant prefill is permitted.\n",
+      "items": {
+        "$ref": "#/$defs/PromptMessage"
+      }
+    },
+    "feedback": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Feedback for improving the prompt.\nUse this parameter to share specific guidance on what\naspects of the prompt should be enhanced or modified.\nWhen not set, the API will improve the prompt using general\nprompt engineering best practices.\n"
+    },
+    "system": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The existing system prompt to incorporate, if any.\nNote that while system prompts typically appear as separate\nparameters in standard API calls, in the improve_prompt\nresponse, the system content will be incorporated directly\ninto the returned user message.\n"
+    },
+    "target_model": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "description": "The model this prompt will be used for. This optional\nparameter helps us understand which models our prompt tools\nare being used with, but it doesn't currently affect\nfunctionality.\n",
+      "minLength": 1,
+      "maxLength": 256
+    }
+  },
+  "$defs": {
+    "PromptMessage": {
+      "type": "object",
+      "required": [
+        "role",
+        "content"
+      ],
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": [
+            "user",
+            "assistant"
+          ],
+          "description": "The role of the message sender"
+        },
+        "content": {
+          "type": "array",
+          "description": "The content of the message",
+          "items": {
+            "$ref": "#/$defs/TextContentBlock"
+          }
+        }
+      }
+    },
+    "TextContentBlock": {
+      "type": "object",
+      "required": [
+        "type",
+        "text"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text"
+          ],
+          "description": "The type of content block"
+        },
+        "text": {
+          "type": "string",
+          "description": "The text content"
+        }
+      }
+    }
+  }
+}

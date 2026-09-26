@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-user-deleted-response-schema.json",
+  "title": "UserDeletedResponse",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-organization-members-api-openapi.yml#/components/schemas/UserDeletedResponse",
+  "type": "object",
+  "required": [
+    "id",
+    "type"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "ID of the deleted user"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "user_deleted"
+      ],
+      "default": "user_deleted",
+      "description": "Deletion confirmation type"
+    }
+  }
+}

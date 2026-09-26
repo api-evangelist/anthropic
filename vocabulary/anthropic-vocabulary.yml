@@ -1,0 +1,421 @@
+generated: '2026-09-23'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/anthropic-agents-api-openapi.yml
+- openapi/anthropic-agents-beta-true-api-openapi.yml
+- openapi/anthropic-anthropic-api-api-openapi.yml
+- openapi/anthropic-api-keys-api-openapi.yml
+- openapi/anthropic-complete-api-openapi.yml
+vocabulary:
+  name: Anthropic Domain Vocabulary
+  description: 'Terms declared by Anthropic''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-09-23'
+  terms:
+  - term: API Keys
+    definition: Monitor and manage API keys
+    tags:
+    - Resource Group
+    source: openapi/anthropic-api-keys-api-openapi.yml
+  - term: Cost
+    definition: Service-level cost reporting
+    tags:
+    - Resource Group
+    source: openapi/anthropic-cost-api-openapi.yml
+  - term: Events
+    definition: User messages and tool results sent to a session
+    tags:
+    - Resource Group
+    source: openapi/anthropic-events-api-openapi.yml
+  - term: Organization
+    definition: Retrieve organization information and settings
+    tags:
+    - Resource Group
+    source: openapi/anthropic-organization-api-openapi.yml
+  - term: Organization Invites
+    definition: Create and manage organization invitations
+    tags:
+    - Resource Group
+    source: openapi/anthropic-organization-invites-api-openapi.yml
+  - term: Organization Members
+    definition: Manage organization members and their roles
+    tags:
+    - Resource Group
+    source: openapi/anthropic-organization-members-api-openapi.yml
+  - term: Prompt Generation
+    definition: APIs for generating well-written prompts for specified tasks
+    tags:
+    - Resource Group
+    source: openapi/anthropic-prompt-generation-api-openapi.yml
+  - term: Prompt Improvement
+    definition: APIs for enhancing existing prompts with feedback
+    tags:
+    - Resource Group
+    source: openapi/anthropic-prompt-improvement-api-openapi.yml
+  - term: Prompt Templatization
+    definition: APIs for converting prompts into reusable templates with variables
+    tags:
+    - Resource Group
+    source: openapi/anthropic-prompt-templatization-api-openapi.yml
+  - term: Usage
+    definition: Token usage and consumption reporting
+    tags:
+    - Resource Group
+    source: openapi/anthropic-usage-api-openapi.yml
+  - term: Workspace Members
+    definition: Manage workspace membership and roles
+    tags:
+    - Resource Group
+    source: openapi/anthropic-workspace-members-api-openapi.yml
+  - term: Workspaces
+    definition: Create and manage workspaces within an organization
+    tags:
+    - Resource Group
+    source: openapi/anthropic-workspaces-api-openapi.yml
+  - term: BetaManagedAgentsAnthropicSkill
+    definition: A resolved Anthropic-managed skill.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsAnthropicSkill
+  - term: BetaManagedAgentsEffortLow
+    definition: Low effort. Favors latency over reasoning depth.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsEffortLow
+  - term: BetaManagedAgentsEffort
+    definition: How hard Claude works on each turn. Sets `output_config.effort` on every Messages call the session makes.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsEffort
+  - term: BetaManagedAgentsAgentParams
+    definition: Specification for an Agent. Provide a specific `version` or use the short-form `agent="agent_id"` for the most recent version
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsAgentParams
+  - term: PermissionError
+    definition: 'Object declared by the contract with fields: message, type.'
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaPermissionError
+  - term: RateLimitError
+    definition: 'Object declared by the contract with fields: message, type.'
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaRateLimitError
+  - term: BetaManagedAgentsAgentToolParams
+    definition: Union type for tool configurations in the tools array.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsAgentToolParams
+  - term: NotFoundError
+    definition: 'Object declared by the contract with fields: message, type.'
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaNotFoundError
+  - term: BetaManagedAgentsBashToolConfig
+    definition: Configuration for the bash tool.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsBashToolConfig
+  - term: BetaManagedAgentsWebFetchToolConfig
+    definition: Configuration for the web_fetch tool.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsWebFetchToolConfig
+  - term: BetaManagedAgentsWebFetchToolConfigParams
+    definition: Configuration override for the web_fetch tool.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsWebFetchToolConfigParams
+  - term: BetaManagedAgentsWriteToolConfig
+    definition: Configuration for the write tool.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsWriteToolConfig
+  - term: BetaManagedAgentsUpdateAgentParams
+    definition: Request parameters for updating an `agent`. Omit a field to preserve its current value.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsUpdateAgentParams
+  - term: BetaManagedAgentsSkill
+    definition: Resolved skill as returned in API responses.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsSkill
+  - term: BetaManagedAgentsMultiagent
+    definition: Resolved multiagent orchestration configuration as returned in API responses.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsMultiagent
+  - term: BetaManagedAgentsMCPServerParams
+    definition: Union type for MCP server connection definitions.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsMCPServerParams
+  - term: BetaManagedAgentsMCPToolConfigParams
+    definition: Configuration override for a specific MCP tool.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsMCPToolConfigParams
+  - term: BetaManagedAgentsAgentToolsetDefaultConfig
+    definition: Resolved default configuration for agent tools.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsAgentToolsetDefaultConfig
+  - term: BetaManagedAgentsMCPToolsetDefaultConfig
+    definition: Resolved default configuration for all tools from an MCP server.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsMCPToolsetDefaultConfig
+  - term: BetaManagedAgentsGrepToolConfig
+    definition: Configuration for the grep tool.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsGrepToolConfig
+  - term: BetaManagedAgentsAlwaysAskPolicy
+    definition: Tool calls require user confirmation before execution.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsAlwaysAskPolicy
+  - term: BetaManagedAgentsAdvisorParams
+    definition: 'Platform advisor roster entry: a model the session''s primary thread may consult mid-turn. At most one per roster; the entry
+      occupies the roster name `anthropic.advisor`.'
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsAdvisorParams
+  - term: BetaManagedAgentsSpeed
+    definition: Inference speed mode. `fast` provides significantly faster output token generation at premium pricing. Not all models support
+      `fast`; invalid combinations are rejected at create time.
+    tags:
+    - Enumeration
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsSpeed
+  - term: BetaManagedAgentsAgentToolConfigUnionParams
+    definition: Configuration override for a specific tool within a toolset.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsAgentToolConfigUnionParams
+  - term: BetaManagedAgentsEffortMedium
+    definition: Medium effort. Balances latency and reasoning depth.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsEffortMedium
+  - term: BetaManagedAgentsAgentToolset20260401Params
+    definition: Configuration for built-in agent tools. Use this to enable or disable groups of tools available to the agent.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsAgentToolset20260401Params
+  - term: BetaManagedAgentsPermissionPolicy
+    definition: Permission policy for tool execution.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsPermissionPolicy
+  - term: BetaManagedAgentsWebSearchToolConfig
+    definition: Configuration for the web_search tool.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsWebSearchToolConfig
+  - term: BetaManagedAgentsURLMCPServerParams
+    definition: URL-based MCP server connection.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsURLMCPServerParams
+  - term: BetaManagedAgentsAlwaysAllowPolicy
+    definition: Tool calls are automatically approved without user confirmation.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsAlwaysAllowPolicy
+  - term: BetaManagedAgentsReadToolConfig
+    definition: Configuration for the read tool.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsReadToolConfig
+  - term: BetaManagedAgentsMultiagentCoordinatorParams
+    definition: 'A coordinator topology: the session''s primary thread orchestrates work by spawning session threads, each running an agent drawn
+      from the `agents` roster.'
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsMultiagentCoordinatorParams
+  - term: BetaManagedAgentsMultiagentRosterEntryParams
+    definition: 'An entry in a multiagent roster: an agent ID string, a versioned agent reference, or `self`.'
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsMultiagentRosterEntryParams
+  - term: BetaManagedAgentsSkillParams
+    definition: Skill to load in the session container.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsSkillParams
+  - term: BetaManagedAgentsMultiagentCoordinator
+    definition: Resolved coordinator topology with a concrete agent roster.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsMultiagentCoordinator
+  - term: OverloadedError
+    definition: 'Object declared by the contract with fields: message, type.'
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaOverloadedError
+  - term: BetaManagedAgentsModelConfigParams
+    definition: An object that defines additional configuration control over model use
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsModelConfigParams
+  - term: BetaManagedAgentsMCPToolsetDefaultConfigParams
+    definition: Default configuration for all tools from an MCP server.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsMCPToolsetDefaultConfigParams
+  - term: BetaManagedAgentsMCPServerURLDefinition
+    definition: URL-based MCP server connection as returned in API responses.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsMCPServerURLDefinition
+  - term: InvalidRequestError
+    definition: 'Object declared by the contract with fields: message, type.'
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaInvalidRequestError
+  - term: BetaManagedAgentsMCPServer
+    definition: Union type for MCP server connection definitions returned in API responses.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsMCPServer
+  - term: BetaManagedAgentsWriteToolConfigParams
+    definition: Configuration override for the write tool.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsWriteToolConfigParams
+  - term: ErrorResponse
+    definition: 'Object declared by the contract with fields: error, request_id, type.'
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaErrorResponse
+  - term: BetaManagedAgentsMCPToolset
+    definition: 'Object declared by the contract with fields: type, mcp_server_name, default_config, configs.'
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsMCPToolset
+  - term: BetaManagedAgentsCustomToolParams
+    definition: A custom tool that is executed by the API client rather than the agent. When the agent calls this tool, an `agent.custom_tool_use`
+      event is emitted and the session goes idle, waiting for the client to provide the result via a `user.custom_tool_result` event.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsCustomToolParams
+  - term: BetaManagedAgentsAgentToolConfigUnion
+    definition: Configuration for a specific agent tool.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsAgentToolConfigUnion
+  - term: BetaManagedAgentsMCPToolsetParams
+    definition: Configuration for tools from an MCP server defined in `mcp_servers`.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsMCPToolsetParams
+  - term: BetaManagedAgentsAgent
+    definition: A Managed Agents `agent`.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsAgent
+  - term: BetaManagedAgentsModelConfig
+    definition: Model identifier and configuration.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsModelConfig
+  - term: BetaManagedAgentsAdvisor
+    definition: 'Platform advisor roster entry: a model the session''s primary thread may consult mid-turn.'
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsAdvisor
+  - term: BetaManagedAgentsCustomSkillParams
+    definition: A user-created custom skill.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsCustomSkillParams
+  - term: BetaManagedAgentsModel
+    definition: The model that will power your agent. See [models](https://docs.anthropic.com/en/docs/models-overview) for additional details
+      and options.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsModel
+  - term: BetaManagedAgentsEditToolConfig
+    definition: Configuration for the edit tool.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsEditToolConfig
+  - term: BetaManagedAgentsAgentToolset20260401
+    definition: 'Object declared by the contract with fields: type, default_config, configs.'
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsAgentToolset20260401
+  - term: BillingError
+    definition: 'Object declared by the contract with fields: message, type.'
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaBillingError
+  - term: BetaManagedAgentsReadToolConfigParams
+    definition: Configuration override for the read tool.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsReadToolConfigParams
+  - term: BetaManagedAgentsListAgentVersions
+    definition: Paginated list of agent versions.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsListAgentVersions
+  - term: BetaManagedAgentsAgentTool
+    definition: Union type for tool configurations returned in API responses.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsAgentTool
+  - term: BetaManagedAgentsMultiagentSelfParams
+    definition: Sentinel roster entry meaning "the agent that owns this configuration". Resolved server-side to a concrete agent reference.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsMultiagentSelfParams
+  - term: BetaTimestamp
+    definition: A timestamp in RFC 3339 format
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaTimestamp
+  - term: BetaManagedAgentsCustomTool
+    definition: A custom tool as returned in API responses.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsCustomTool
+  - term: BetaManagedAgentsEffortHigh
+    definition: High effort. Favors reasoning depth.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsEffortHigh
+  - term: BetaManagedAgentsAnthropicSkillParams
+    definition: An Anthropic-managed skill.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsAnthropicSkillParams
+  - term: BetaManagedAgentsGlobToolConfig
+    definition: Configuration for the glob tool.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsGlobToolConfig
+  - term: BetaManagedAgentsEffortLevel
+    definition: How hard Claude works on each turn. Higher levels favor reasoning depth over latency. Not all models accept every level; invalid
+      combinations are rejected at create time.
+    tags:
+    - Enumeration
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsEffortLevel
+  - term: BetaManagedAgentsCustomSkill
+    definition: A resolved user-created custom skill.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsCustomSkill
+  - term: BetaManagedAgentsMCPToolConfig
+    definition: Resolved configuration for a specific MCP tool.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsMCPToolConfig
+  - term: BetaManagedAgentsEffortMax
+    definition: Maximum effort. Favors reasoning depth over latency.
+    tags:
+    - Object
+    source: openapi/anthropic-agents-api-openapi.yml#/components/schemas/BetaManagedAgentsEffortMax

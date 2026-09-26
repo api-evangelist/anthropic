@@ -13,6 +13,7 @@ packages:
   version: 1.1.0
   published: '2026-08-26'
   registry_metadata: https://pypi.org/pypi/anthropic/json
+  ownership_audit: metadata names claude.com
 - language: javascript
   registry: npm
   name: '@anthropic-ai/sdk'
@@ -23,6 +24,7 @@ packages:
   version: 0.121.0
   published: '2026-08-26'
   registry_metadata: https://registry.npmjs.org/@anthropic-ai/sdk
+  ownership_audit: metadata names claude.com
 - language: java
   registry: maven-central
   name: com.anthropic:anthropic-java
@@ -49,30 +51,33 @@ packages:
   url: https://rubygems.org/gems/anthropic
   install: gem install anthropic
   repo: https://github.com/anthropics/anthropic-sdk-ruby
-  official: true
+  official: false
   version: 1.66.0
   published: '2026-08-26'
   registry_metadata: https://rubygems.org/api/v1/gems/anthropic.json
+  ownership_audit: 'registry metadata names neither the provider''s domain nor its GitHub org: official downgraded (harvest-packages.py --audit)'
 - language: csharp
   registry: nuget
   name: Anthropic
   url: https://www.nuget.org/packages/Anthropic
   install: dotnet add package Anthropic
   repo: https://github.com/anthropics/anthropic-sdk-csharp
-  official: true
+  official: false
   version: 12.43.0
   published: '2026-08-26'
   registry_metadata: https://api.nuget.org/v3/registration5-semver1/anthropic/index.json
+  ownership_audit: 'registry metadata names neither the provider''s domain nor its GitHub org: official downgraded (harvest-packages.py --audit)'
 - language: php
   registry: packagist
   name: anthropic-ai/sdk
   url: https://packagist.org/packages/anthropic-ai/sdk
   install: composer require anthropic-ai/sdk
   repo: https://github.com/anthropics/anthropic-sdk-php
-  official: true
+  official: false
   version: v0.44.0
   published: '2026-08-26'
   registry_metadata: https://repo.packagist.org/p2/anthropic-ai/sdk.json
+  ownership_audit: 'registry metadata names neither the provider''s domain nor its GitHub org: official downgraded (harvest-packages.py --audit)'
 - language: javascript
   registry: npm
   name: '@anthropic-ai/claude-agent-sdk'
@@ -84,6 +89,7 @@ packages:
   version: 0.3.247
   published: '2026-08-26'
   registry_metadata: https://registry.npmjs.org/@anthropic-ai/claude-agent-sdk
+  ownership_audit: metadata names anthropic.com
 - language: python
   registry: pypi
   name: claude-agent-sdk
@@ -95,6 +101,7 @@ packages:
   version: 0.2.145
   published: '2026-08-27'
   registry_metadata: https://pypi.org/pypi/claude-agent-sdk/json
+  ownership_audit: metadata names claude.com
 - language: javascript
   registry: npm
   name: '@anthropic-ai/claude-code'
@@ -106,22 +113,21 @@ packages:
   version: 2.1.247
   published: '2026-08-26'
   registry_metadata: https://registry.npmjs.org/@anthropic-ai/claude-code
+  ownership_audit: metadata names anthropic.com
 - language: swift
   registry: swift-package-manager
   name: anthropic-sdk-swift
   url: https://docs.anthropic.com/en/cli-sdks-libraries/libraries/apple-foundation-models
   install: Swift Package Manager (Apple Foundation Models LanguageModel adapter, beta)
   official: true
-  note: Beta Swift package exposing Claude as a server-side LanguageModel in Apple's Foundation Models
-    framework. Distributed through Swift Package Manager as part of the Apple Foundation Models adapter;
-    no queryable registry metadata endpoint, and Anthropic documents it only on the docs page (no pinned
-    version in the install instruction), so version and date are checked-and-unavailable, not unchecked.
+  note: Beta Swift package exposing Claude as a server-side LanguageModel in Apple's Foundation Models framework. Distributed through Swift Package
+    Manager as part of the Apple Foundation Models adapter; no queryable registry metadata endpoint, and Anthropic documents it only on the docs
+    page (no pinned version in the install instruction), so version and date are checked-and-unavailable, not unchecked.
   version: null
   published: null
 currency_checked: '2026-08-27'
-currency_note: Every registry answered unauthenticated on 2026-08-27. Nine of ten first-party SDKs published
-  a release on 2026-08-26 or 2026-08-27 — Anthropic releases the whole SDK fleet in lockstep from one
-  Stainless-generated spec, so no SDK here lags the API. The tenth (the Swift/Foundation Models adapter)
-  has no registry metadata endpoint to query.
+currency_note: Every registry answered unauthenticated on 2026-08-27. Nine of ten first-party SDKs published a release on 2026-08-26 or 2026-08-27
+  — Anthropic releases the whole SDK fleet in lockstep from one Stainless-generated spec, so no SDK here lags the API. The tenth (the Swift/Foundation
+  Models adapter) has no registry metadata endpoint to query.
 spec_provenance: 'The SDK repos name their source spec in .stats.yml: https://storage.googleapis.com/stainless-sdk-openapi-specs/anthropic/anthropic-446ddab751d9f0172400b17fc72736e9353d3b49780317f90c24aa98357fd39e.yml
   (199 configured endpoints as of 2026-08-27). Harvested to openapi/_original/anthropic-api-openapi.json.'

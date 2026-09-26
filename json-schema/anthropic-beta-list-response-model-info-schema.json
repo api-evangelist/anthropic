@@ -1,0 +1,354 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-list-response-model-info-schema.json",
+  "title": "ListResponse[ModelInfo]",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-models-beta-true-api-openapi.yml#/components/schemas/BetaListResponse_ModelInfo_",
+  "properties": {
+    "data": {
+      "items": {
+        "$ref": "#/$defs/BetaModelInfo"
+      },
+      "type": "array",
+      "title": "Data"
+    },
+    "first_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "First Id",
+      "description": "First ID in the `data` list. Can be used as the `before_id` for the previous page."
+    },
+    "has_more": {
+      "type": "boolean",
+      "title": "Has More",
+      "description": "Indicates if there are more results in the requested page direction."
+    },
+    "last_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Last Id",
+      "description": "Last ID in the `data` list. Can be used as the `after_id` for the next page."
+    }
+  },
+  "type": "object",
+  "required": [
+    "data",
+    "first_id",
+    "has_more",
+    "last_id"
+  ],
+  "$defs": {
+    "BetaCapabilitySupport": {
+      "properties": {
+        "supported": {
+          "type": "boolean",
+          "title": "Supported",
+          "description": "Whether this capability is supported by the model."
+        }
+      },
+      "type": "object",
+      "required": [
+        "supported"
+      ],
+      "title": "CapabilitySupport",
+      "description": "Indicates whether a capability is supported."
+    },
+    "BetaContextManagementCapability": {
+      "properties": {
+        "clear_thinking_20251015": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaCapabilitySupport"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Whether the clear_thinking_20251015 strategy is supported."
+        },
+        "clear_tool_uses_20250919": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaCapabilitySupport"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Whether the clear_tool_uses_20250919 strategy is supported."
+        },
+        "compact_20260112": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaCapabilitySupport"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Whether the compact_20260112 strategy is supported."
+        },
+        "supported": {
+          "type": "boolean",
+          "title": "Supported",
+          "description": "Whether this capability is supported by the model."
+        }
+      },
+      "type": "object",
+      "required": [
+        "clear_thinking_20251015",
+        "clear_tool_uses_20250919",
+        "compact_20260112",
+        "supported"
+      ],
+      "title": "ContextManagementCapability",
+      "description": "Context management capability details."
+    },
+    "BetaEffortCapability": {
+      "properties": {
+        "high": {
+          "$ref": "#/$defs/BetaCapabilitySupport",
+          "description": "Whether the model supports high effort level."
+        },
+        "low": {
+          "$ref": "#/$defs/BetaCapabilitySupport",
+          "description": "Whether the model supports low effort level."
+        },
+        "max": {
+          "$ref": "#/$defs/BetaCapabilitySupport",
+          "description": "Whether the model supports max effort level."
+        },
+        "medium": {
+          "$ref": "#/$defs/BetaCapabilitySupport",
+          "description": "Whether the model supports medium effort level."
+        },
+        "supported": {
+          "type": "boolean",
+          "title": "Supported",
+          "description": "Whether this capability is supported by the model."
+        },
+        "xhigh": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaCapabilitySupport"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Whether the model supports xhigh effort level."
+        }
+      },
+      "type": "object",
+      "required": [
+        "high",
+        "low",
+        "max",
+        "medium",
+        "supported",
+        "xhigh"
+      ],
+      "title": "EffortCapability",
+      "description": "Effort (reasoning_effort) capability details."
+    },
+    "BetaModelCapabilities": {
+      "properties": {
+        "batch": {
+          "$ref": "#/$defs/BetaCapabilitySupport",
+          "description": "Whether the model supports the Batch API."
+        },
+        "citations": {
+          "$ref": "#/$defs/BetaCapabilitySupport",
+          "description": "Whether the model supports citation generation."
+        },
+        "code_execution": {
+          "$ref": "#/$defs/BetaCapabilitySupport",
+          "description": "Whether the model supports code execution tools."
+        },
+        "context_management": {
+          "$ref": "#/$defs/BetaContextManagementCapability",
+          "description": "Context management support and available strategies."
+        },
+        "effort": {
+          "$ref": "#/$defs/BetaEffortCapability",
+          "description": "Effort (reasoning_effort) support and available levels."
+        },
+        "image_input": {
+          "$ref": "#/$defs/BetaCapabilitySupport",
+          "description": "Whether the model accepts image content blocks."
+        },
+        "pdf_input": {
+          "$ref": "#/$defs/BetaCapabilitySupport",
+          "description": "Whether the model accepts PDF content blocks."
+        },
+        "structured_outputs": {
+          "$ref": "#/$defs/BetaCapabilitySupport",
+          "description": "Whether the model supports structured output / JSON mode / strict tool schemas."
+        },
+        "thinking": {
+          "$ref": "#/$defs/BetaThinkingCapability",
+          "description": "Thinking capability and supported type configurations."
+        }
+      },
+      "type": "object",
+      "required": [
+        "batch",
+        "citations",
+        "code_execution",
+        "context_management",
+        "effort",
+        "image_input",
+        "pdf_input",
+        "structured_outputs",
+        "thinking"
+      ],
+      "title": "ModelCapabilities",
+      "description": "Model capability information."
+    },
+    "BetaModelInfo": {
+      "properties": {
+        "allowed_fallback_models": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Allowed Fallback Models",
+          "description": "Model IDs this model accepts as `fallbacks[i].model` on the Messages API. An empty list means the `fallbacks` parameter is not supported for this model as primary.",
+          "x-anthropic-beta-required": [
+            "server-side-fallback-2026-06-01",
+            "server-side-fallback-2026-07-01"
+          ]
+        },
+        "capabilities": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaModelCapabilities"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Object mapping capability names to their support details. Keys are always present for all known capabilities."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Created At",
+          "description": "RFC 3339 datetime string representing the time at which the model was released. May be set to an epoch value if the release date is unknown."
+        },
+        "display_name": {
+          "type": "string",
+          "title": "Display Name",
+          "description": "A human-readable name for the model."
+        },
+        "id": {
+          "type": "string",
+          "title": "Id",
+          "description": "Unique model identifier."
+        },
+        "max_input_tokens": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Max Input Tokens",
+          "description": "Maximum input context window size in tokens for this model."
+        },
+        "max_tokens": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Max Tokens",
+          "description": "Maximum value for the `max_tokens` parameter when using this model."
+        },
+        "type": {
+          "type": "string",
+          "const": "model",
+          "title": "Type",
+          "description": "Object type.\n\nFor Models, this is always `\"model\"`.",
+          "default": "model"
+        }
+      },
+      "type": "object",
+      "required": [
+        "allowed_fallback_models",
+        "capabilities",
+        "created_at",
+        "display_name",
+        "id",
+        "max_input_tokens",
+        "max_tokens",
+        "type"
+      ],
+      "title": "ModelInfo"
+    },
+    "BetaThinkingCapability": {
+      "properties": {
+        "supported": {
+          "type": "boolean",
+          "title": "Supported",
+          "description": "Whether this capability is supported by the model."
+        },
+        "types": {
+          "$ref": "#/$defs/BetaThinkingTypes"
+        }
+      },
+      "type": "object",
+      "required": [
+        "supported",
+        "types"
+      ],
+      "title": "ThinkingCapability",
+      "description": "Thinking capability details."
+    },
+    "BetaThinkingTypes": {
+      "properties": {
+        "adaptive": {
+          "$ref": "#/$defs/BetaCapabilitySupport",
+          "description": "Whether the model supports thinking with type 'adaptive' (auto)."
+        },
+        "enabled": {
+          "$ref": "#/$defs/BetaCapabilitySupport",
+          "description": "Whether the model supports thinking with type 'enabled'."
+        }
+      },
+      "type": "object",
+      "required": [
+        "adaptive",
+        "enabled"
+      ],
+      "title": "ThinkingTypes",
+      "description": "Supported thinking type configurations."
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-skill-schema.json",
+  "title": "Skill",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-skills-api-openapi.yml#/components/schemas/Skill",
+  "properties": {
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At",
+      "description": "ISO 8601 timestamp of when the skill was created."
+    },
+    "display_name": {
+      "type": "string",
+      "title": "Display Name",
+      "description": "Human-readable, single-line label for the Skill. Maximum 255 characters.\nAlways set: derived from the SKILL.md frontmatter `name` when omitted at\ncreation. Not unique."
+    },
+    "id": {
+      "type": "string",
+      "title": "Id",
+      "description": "Unique identifier for the skill.\n\nThe format and length of IDs may change over time."
+    },
+    "latest_version_id": {
+      "type": "string",
+      "title": "Latest Version Id",
+      "description": "ID of the newest Skill Version — what `latest` references resolve to. Always set: a Skill holds at least one version."
+    },
+    "source": {
+      "$ref": "#/$defs/SkillSource",
+      "description": "Where the Skill comes from.\n\nPossible values:\n* `\"custom\"`: authored by the platform user; private to their workspace\n* `\"anthropic\"`: published by Anthropic; shared and read-only\n* `\"anthropic_example\"`: Anthropic-published sample Skill\n* `\"plugin\"`: resolved from an installed plugin"
+    },
+    "type": {
+      "type": "string",
+      "const": "skill",
+      "title": "Type",
+      "description": "Object type.\n\nFor Skills, this is always `\"skill\"`.",
+      "default": "skill"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At",
+      "description": "ISO 8601 timestamp of when the skill was last updated."
+    }
+  },
+  "type": "object",
+  "required": [
+    "created_at",
+    "display_name",
+    "id",
+    "latest_version_id",
+    "source",
+    "type",
+    "updated_at"
+  ],
+  "$defs": {
+    "SkillSource": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "custom",
+            "anthropic",
+            "anthropic_example",
+            "plugin"
+          ],
+          "title": "Type",
+          "description": "Where the Skill comes from.\n\nPossible values:\n* `\"custom\"`: authored by the platform user; private to their workspace\n* `\"anthropic\"`: published by Anthropic; shared and read-only\n* `\"anthropic_example\"`: Anthropic-published sample Skill\n* `\"plugin\"`: resolved from an installed plugin"
+        }
+      },
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "title": "SkillSource"
+    }
+  }
+}

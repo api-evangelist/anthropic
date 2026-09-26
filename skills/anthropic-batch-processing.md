@@ -1,17 +1,17 @@
 ---
 name: anthropic-batch-processing
 description: Submit, poll, retrieve and cancel a Claude Message Batch on the Anthropic API — the 50%-discount asynchronous path for large Messages workloads.
-api: Anthropic Message Batches API
+api: Anthropic Messages API
 operations:
-  - createMessageBatch
-  - retrieveMessageBatch
-  - retrieveMessageBatchResults
-  - listMessageBatches
-  - cancelMessageBatch
-  - deleteMessageBatch
-generated: '2026-08-27'
+  - message_batches_post
+  - message_batches_retrieve
+  - message_batches_results
+  - message_batches_list
+  - message_batches_cancel
+  - message_batches_delete
+generated: '2026-09-23'
 method: generated
-source: openapi/anthropic-message-batches-api-openapi.yml, https://platform.claude.com/docs/en/build-with-claude/batch-processing
+source: openapi/anthropic-messages-api-openapi.yml, https://platform.claude.com/docs/en/build-with-claude/batch-processing
 ---
 
 # Process a Claude Message Batch
@@ -27,7 +27,7 @@ response. Batching costs 50% of standard token pricing.
 
 ## Steps
 
-1. **Submit the batch** — `createMessageBatch` (`POST /v1/messages/batches`).
+1. **Submit the batch** — `message_batches_post` (`POST /v1/messages/batches`).
    Each entry in `requests[]` carries a `custom_id` you choose and a `params`
    object shaped exactly like a Messages request. Every batched request must set
    `max_tokens` of at least `1`; `max_tokens: 0` (cache pre-warming) is rejected
@@ -35,7 +35,7 @@ response. Batching costs 50% of standard token pricing.
    The `custom_id` is the only correlation key you get back — make it stable and
    unique, because the API applies no idempotency key of its own.
 
-2. **Poll for completion** — `retrieveMessageBatch`
+2. **Poll for completion** — `message_batches_retrieve`
    (`GET /v1/messages/batches/{message_batch_id}`). Watch
    `processing_status` and `request_counts` (`processing`, `succeeded`,
    `errored`, `canceled`, `expired`). Most batches finish in under an hour.
@@ -43,7 +43,7 @@ response. Batching costs 50% of standard token pricing.
    whichever comes first**; a batch that has not finished within 24 hours
    expires and its unstarted requests are marked `expired` and are not billed.
 
-3. **Read the results** — `retrieveMessageBatchResults`
+3. **Read the results** — `message_batches_results`
    (`GET /v1/messages/batches/{message_batch_id}/results`). The response is
    JSONL, one line per request, keyed by your `custom_id`. Results are
    **available for 29 days after creation**; after that the batch object is
@@ -56,11 +56,11 @@ response. Batching costs 50% of standard token pricing.
 
 ## Reversal
 
-- `cancelMessageBatch` (`POST /v1/messages/batches/{message_batch_id}/cancel`)
+- `message_batches_cancel` (`POST /v1/messages/batches/{message_batch_id}/cancel`)
   may be called **any time before processing ends**. The batch moves to
   `canceling`; in-progress non-interruptible requests may still complete, so a
   cancel is not guaranteed to cancel anything. Check `request_counts.canceled`.
-- `deleteMessageBatch` (`DELETE /v1/messages/batches/{message_batch_id}`)
+- `message_batches_delete` (`DELETE /v1/messages/batches/{message_batch_id}`)
   removes the batch. This is not reversible.
 
 ## Errors

@@ -36,16 +36,18 @@ skills:
   file: anthropic-batch-processing.md
   method: generated
   official: false
-  api: Anthropic Message Batches API
-  operations: [createMessageBatch, retrieveMessageBatch, retrieveMessageBatchResults,
-    listMessageBatches, cancelMessageBatch, deleteMessageBatch]
+  api: Anthropic Messages API
+  operations: [message_batches_post, message_batches_retrieve, message_batches_results,
+    message_batches_list, message_batches_cancel, message_batches_delete]
 - name: anthropic-files-workflow
   file: anthropic-files-workflow.md
   method: generated
   official: false
   api: Anthropic Files API
-  operations: [createFile, listFiles, getFileMetadata, downloadFileContent, deleteFile,
-    createMessage]
+  operations: [upload_file_v1_files_post, list_files_v1_files_get,
+    get_file_metadata_v1_files__file_id__get,
+    download_file_v1_files__file_id__content_get,
+    delete_file_v1_files__file_id__delete, messages_post]
 - name: anthropic-admin-workspace-provisioning
   file: anthropic-admin-workspace-provisioning.md
   method: generated

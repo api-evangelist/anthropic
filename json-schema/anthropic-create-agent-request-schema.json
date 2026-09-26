@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-create-agent-request-schema.json",
+  "title": "CreateAgentRequest",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-agents-api-openapi.yml#/components/schemas/CreateAgentRequest",
+  "type": "object",
+  "required": [
+    "name",
+    "model"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "model": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "speed": {
+              "type": "string",
+              "enum": [
+                "standard",
+                "fast"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "system": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "mcp_servers": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "multiagent": {
+      "type": "object"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  }
+}

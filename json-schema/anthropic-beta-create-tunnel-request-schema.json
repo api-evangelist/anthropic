@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-create-tunnel-request-schema.json",
+  "title": "BetaCreateTunnelRequest",
+  "description": "Request parameters for creating a tunnel.",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-tunnels-beta-true-api-openapi.yml#/components/schemas/BetaCreateTunnelRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "display_name": {
+      "description": "Optional human-readable name for the tunnel (1-255 characters).",
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  }
+}

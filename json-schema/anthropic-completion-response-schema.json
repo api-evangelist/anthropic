@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-completion-response-schema.json",
+  "title": "CompletionResponse",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-complete-api-openapi.yml#/components/schemas/CompletionResponse",
+  "properties": {
+    "completion": {
+      "type": "string",
+      "title": "Completion",
+      "description": "The resulting completion up to and excluding the stop sequences."
+    },
+    "id": {
+      "type": "string",
+      "title": "Id",
+      "description": "Unique object identifier.\n\nThe format and length of IDs may change over time."
+    },
+    "model": {
+      "$ref": "#/$defs/Model"
+    },
+    "stop_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Stop Reason",
+      "description": "The reason that we stopped.\n\nThis may be one the following values:\n* `\"stop_sequence\"`: we reached a stop sequence — either provided by you via the `stop_sequences` parameter, or a stop sequence built into the model\n* `\"max_tokens\"`: we exceeded `max_tokens_to_sample` or the model's maximum"
+    },
+    "type": {
+      "type": "string",
+      "const": "completion",
+      "title": "Type",
+      "description": "Object type.\n\nFor Text Completions, this is always `\"completion\"`.",
+      "default": "completion"
+    }
+  },
+  "type": "object",
+  "required": [
+    "completion",
+    "id",
+    "model",
+    "stop_reason",
+    "type"
+  ],
+  "$defs": {
+    "Model": {
+      "title": "Model",
+      "description": "The model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview) for additional details and options.",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "const": "claude-sonnet-5",
+          "description": "High-performance model for coding and agents",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-fable-5",
+          "description": "Next generation of intelligence for the hardest knowledge work and coding problems",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-mythos-5",
+          "description": "Most capable model for cybersecurity and biology research",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-5",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-4-8",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-4-7",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-mythos-preview",
+          "description": "New class of intelligence, strongest in coding and cybersecurity",
+          "x-stainless-nominal": false,
+          "deprecated": true,
+          "x-stainless-deprecation-message": "Will reach end-of-life on June 30, 2026. Please migrate to claude-mythos-5. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+        },
+        {
+          "const": "claude-opus-4-6",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-sonnet-4-6",
+          "description": "Best combination of speed and intelligence",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-haiku-4-5",
+          "description": "Fastest model with near-frontier intelligence",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-haiku-4-5-20251001",
+          "description": "Fastest model with near-frontier intelligence",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-4-5",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-4-5-20251101",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-sonnet-4-5",
+          "description": "High-performance model for agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-sonnet-4-5-20250929",
+          "description": "High-performance model for agents and coding",
+          "x-stainless-nominal": false
+        }
+      ]
+    }
+  }
+}

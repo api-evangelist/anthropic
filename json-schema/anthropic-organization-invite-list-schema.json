@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-organization-invite-list-schema.json",
+  "title": "OrganizationInviteList",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-organization-invites-api-openapi.yml#/components/schemas/OrganizationInviteList",
+  "type": "object",
+  "required": [
+    "data",
+    "has_more",
+    "first_id",
+    "last_id"
+  ],
+  "properties": {
+    "data": {
+      "type": "array",
+      "description": "List of organization invites",
+      "items": {
+        "$ref": "#/$defs/OrganizationInvite"
+      }
+    },
+    "first_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "First ID in the data list for pagination"
+    },
+    "has_more": {
+      "type": "boolean",
+      "description": "Indicates if there are more results available"
+    },
+    "last_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Last ID in the data list for pagination"
+    }
+  },
+  "$defs": {
+    "InviteStatus": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "accepted",
+        "expired",
+        "deleted"
+      ],
+      "description": "Current status of the invite"
+    },
+    "OrganizationInvite": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "email",
+        "role",
+        "status",
+        "invited_at",
+        "expires_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique invite identifier"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "invite"
+          ],
+          "default": "invite",
+          "description": "Object type identifier"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Email address of the invitee"
+        },
+        "role": {
+          "$ref": "#/$defs/OrganizationRole"
+        },
+        "status": {
+          "$ref": "#/$defs/InviteStatus"
+        },
+        "invited_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "RFC 3339 datetime when invite was created"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "RFC 3339 datetime when invite expires"
+        }
+      }
+    },
+    "OrganizationRole": {
+      "type": "string",
+      "enum": [
+        "user",
+        "claude_code_user",
+        "developer",
+        "billing",
+        "admin"
+      ],
+      "description": "Role within the organization"
+    }
+  }
+}

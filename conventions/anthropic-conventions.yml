@@ -18,7 +18,12 @@ beta_opt_in:
   header: anthropic-beta
   style: comma-separated dated identifiers
 idempotency:
+  coverage: partial
+  scope:
+  - Message Batches (per-request custom_id provides at-most-once semantics within a batch)
   supported: false
+  header: null
+  mechanism: custom_id (Message Batches only)
   notes: No idempotency-key header on the Messages API. Message Batches provide at-most-once
     semantics via per-request custom_id.
 pagination:

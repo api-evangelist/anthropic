@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-file-metadata-schema-schema.json",
+  "title": "FileMetadataSchema",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-files-api-openapi.yml#/components/schemas/BetaFileMetadataSchema",
+  "properties": {
+    "created_at": {
+      "description": "RFC 3339 datetime string representing when the file was created.",
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "downloadable": {
+      "default": false,
+      "description": "Whether the file can be downloaded.",
+      "title": "Downloadable",
+      "type": "boolean"
+    },
+    "filename": {
+      "description": "Original filename of the uploaded file.",
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Filename",
+      "type": "string"
+    },
+    "id": {
+      "description": "Unique object identifier.\n\nThe format and length of IDs may change over time.",
+      "title": "Id",
+      "type": "string"
+    },
+    "mime_type": {
+      "description": "MIME type of the file.",
+      "maxLength": 255,
+      "minLength": 1,
+      "title": "Mime Type",
+      "type": "string"
+    },
+    "scope": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BetaFileScope"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "The scope of this file, indicating the context in which it was created (e.g., a session)."
+    },
+    "size_bytes": {
+      "description": "Size of the file in bytes.",
+      "minimum": 0,
+      "title": "Size Bytes",
+      "type": "integer"
+    },
+    "type": {
+      "const": "file",
+      "description": "Object type.\n\nFor files, this is always `\"file\"`.",
+      "title": "Type",
+      "type": "string"
+    }
+  },
+  "required": [
+    "created_at",
+    "filename",
+    "id",
+    "mime_type",
+    "size_bytes",
+    "type"
+  ],
+  "type": "object",
+  "$defs": {
+    "BetaFileScope": {
+      "properties": {
+        "id": {
+          "description": "The ID of the scoping resource (e.g., the session ID).",
+          "title": "Id",
+          "type": "string"
+        },
+        "type": {
+          "const": "session",
+          "description": "The type of scope (e.g., `\"session\"`).",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type"
+      ],
+      "title": "FileScope",
+      "type": "object"
+    }
+  }
+}

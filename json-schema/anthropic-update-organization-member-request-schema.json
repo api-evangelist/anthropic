@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-update-organization-member-request-schema.json",
+  "title": "UpdateOrganizationMemberRequest",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-organization-members-api-openapi.yml#/components/schemas/UpdateOrganizationMemberRequest",
+  "type": "object",
+  "required": [
+    "role"
+  ],
+  "properties": {
+    "role": {
+      "$ref": "#/$defs/OrganizationRole"
+    }
+  },
+  "$defs": {
+    "OrganizationRole": {
+      "type": "string",
+      "enum": [
+        "user",
+        "claude_code_user",
+        "developer",
+        "billing",
+        "admin"
+      ],
+      "description": "Role within the organization"
+    }
+  }
+}

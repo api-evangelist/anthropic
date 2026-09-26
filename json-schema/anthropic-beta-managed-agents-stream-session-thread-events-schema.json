@@ -1,0 +1,4257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-managed-agents-stream-session-thread-events-schema.json",
+  "title": "BetaManagedAgentsStreamSessionThreadEvents",
+  "description": "Server-sent event in a single thread's stream.",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-sessions-api-openapi.yml#/components/schemas/BetaManagedAgentsStreamSessionThreadEvents",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/BetaManagedAgentsUserMessageEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsUserInterruptEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsUserToolConfirmationEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsUserCustomToolResultEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsAgentCustomToolUseEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsAgentMessageEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsAgentThinkingEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsAgentMcpToolUseEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsAgentMcpToolResultEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsAgentToolUseEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsAgentToolResultEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsAgentThreadMessageReceivedEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsAgentThreadMessageSentEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsAgentThreadContextCompactedEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSessionErrorEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSessionStatusRescheduledEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSessionStatusRunningEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSessionStatusIdleEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSessionStatusTerminatedEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSessionThreadCreatedEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSpanOutcomeEvaluationStartEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSpanOutcomeEvaluationEndEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSpanModelRequestStartEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSpanModelRequestEndEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsUserDefineOutcomeEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSessionDeletedEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSessionThreadStatusRunningEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSessionThreadStatusIdleEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSessionThreadStatusTerminatedEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsUserToolResultEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSessionThreadStatusRescheduledEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSessionUpdatedEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsEventStartEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsEventDeltaEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSystemMessageEvent"
+    },
+    {
+      "$ref": "#/$defs/BetaManagedAgentsSessionUsageEvent"
+    }
+  ],
+  "$defs": {
+    "BetaCurrency": {
+      "type": "string",
+      "enum": [
+        "USD"
+      ]
+    },
+    "BetaManagedAgentsAdvisor": {
+      "description": "Platform advisor roster entry: a model the session's primary thread may consult mid-turn.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "model"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "advisor"
+          ]
+        },
+        "model": {
+          "description": "The advisor model id.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsAgentCustomToolUseEvent": {
+      "description": "Event emitted when the agent calls a custom tool. The session goes idle until the client sends a `user.custom_tool_result` event with the result.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "name",
+        "input",
+        "processed_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent.custom_tool_use"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the custom tool being called.",
+          "type": "string"
+        },
+        "input": {
+          "description": "Input parameters for the tool call.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsStruct"
+            }
+          ]
+        },
+        "processed_at": {
+          "description": "Timestamp when this tool use was processed.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "session_thread_id": {
+          "description": "When set, this event was cross-posted from a subagent's thread to surface its custom tool use on the primary thread's stream. Empty on the thread's own events. Echo this on a `user.custom_tool_result` event to route the result back.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsAgentEvaluatedPermission": {
+      "type": "string",
+      "description": "AgentEvaluatedPermission enum",
+      "enum": [
+        "allow",
+        "ask",
+        "deny"
+      ]
+    },
+    "BetaManagedAgentsAgentMcpToolResultEvent": {
+      "description": "Event representing the result of an MCP tool execution.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "mcp_tool_use_id",
+        "processed_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent.mcp_tool_result"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "mcp_tool_use_id": {
+          "description": "The id of the `agent.mcp_tool_use` event this result corresponds to.",
+          "type": "string"
+        },
+        "content": {
+          "description": "The result content returned by the tool.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsToolResultContentBlock"
+          }
+        },
+        "is_error": {
+          "description": "Whether the tool execution resulted in an error.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "processed_at": {
+          "description": "Timestamp when this event was processed.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsAgentMcpToolUseEvent": {
+      "description": "Event emitted when the agent invokes a tool provided by an MCP server.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "name",
+        "mcp_server_name",
+        "input",
+        "processed_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent.mcp_tool_use"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the MCP tool being used.",
+          "type": "string"
+        },
+        "mcp_server_name": {
+          "description": "Name of the MCP server providing the tool.",
+          "type": "string"
+        },
+        "input": {
+          "description": "Input parameters for the tool call.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsStruct"
+            }
+          ]
+        },
+        "processed_at": {
+          "description": "Timestamp when this event was processed.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "evaluated_permission": {
+          "description": "The evaluated permission policy for this tool invocation.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsAgentEvaluatedPermission"
+            }
+          ]
+        },
+        "session_thread_id": {
+          "description": "When set, this event was cross-posted from a subagent's thread to surface its permission request on the primary thread's stream. Empty on the thread's own events. Echo this on a `user.tool_confirmation` event to route the approval back.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsAgentMessageContentBlock": {
+      "description": "Content block in an agent message.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsTextBlock"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsRedactedBlock"
+        }
+      ]
+    },
+    "BetaManagedAgentsAgentMessageEvent": {
+      "description": "An agent response event in the session conversation.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "content",
+        "processed_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent.message"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "content": {
+          "description": "Array of text blocks comprising the agent response.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsAgentMessageContentBlock"
+          }
+        },
+        "processed_at": {
+          "description": "Timestamp when this response was generated.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsAgentThinkingEvent": {
+      "description": "Indicates the agent is making forward progress via extended thinking. A progress signal, not a content carrier.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent.thinking"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when this thinking was produced.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsAgentThreadContextCompactedEvent": {
+      "description": "Indicates that context compaction (summarization) occurred during the session.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent.thread_context_compacted"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when compaction was processed.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsAgentThreadMessageReceivedEvent": {
+      "description": "Delivery event written to the target thread's input stream when an agent-to-agent message arrives.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at",
+        "content",
+        "from_session_thread_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent.thread_message_received"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when the message was received.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "from_agent_name": {
+          "description": "Name of the callable agent this message came from. Absent when received from the primary agent.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "content": {
+          "description": "Message content blocks.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsUserContentBlock"
+          }
+        },
+        "from_session_thread_id": {
+          "description": "Public `sthr_` ID of the thread that sent the message.",
+          "type": "string",
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsAgentThreadMessageSentEvent": {
+      "description": "Observability event emitted to the sender's output stream when an agent-to-agent message is sent.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at",
+        "content",
+        "to_session_thread_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent.thread_message_sent"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when the message was sent.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "to_agent_name": {
+          "description": "Name of the callable agent this message was sent to. Absent when sent to the primary agent.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "content": {
+          "description": "Message content blocks.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsUserContentBlock"
+          }
+        },
+        "to_session_thread_id": {
+          "description": "Public `sthr_` ID of the thread the message was sent to.",
+          "type": "string",
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsAgentTool": {
+      "description": "Union type for tool configurations returned in API responses.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsAgentToolset20260401"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsMCPToolset"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsCustomTool"
+        }
+      ]
+    },
+    "BetaManagedAgentsAgentToolConfigUnion": {
+      "description": "Configuration for a specific agent tool.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsBashToolConfig"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsEditToolConfig"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsReadToolConfig"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsWriteToolConfig"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsGlobToolConfig"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsGrepToolConfig"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsWebFetchToolConfig"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsWebSearchToolConfig"
+        }
+      ]
+    },
+    "BetaManagedAgentsAgentToolResultEvent": {
+      "description": "Event representing the result of an agent tool execution.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "tool_use_id",
+        "processed_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent.tool_result"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "tool_use_id": {
+          "description": "The id of the `agent.tool_use` event this result corresponds to.",
+          "type": "string"
+        },
+        "content": {
+          "description": "The result content returned by the tool.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsToolResultContentBlock"
+          }
+        },
+        "is_error": {
+          "description": "Whether the tool execution resulted in an error.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "processed_at": {
+          "description": "Timestamp when this event was processed.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsAgentToolUseEvent": {
+      "description": "Event emitted when the agent invokes a built-in agent tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "name",
+        "input",
+        "processed_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent.tool_use"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the agent tool being used.",
+          "type": "string"
+        },
+        "input": {
+          "description": "Input parameters for the tool call.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsStruct"
+            }
+          ]
+        },
+        "processed_at": {
+          "description": "Timestamp when this event was processed.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "evaluated_permission": {
+          "description": "The evaluated permission policy for this tool invocation.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsAgentEvaluatedPermission"
+            }
+          ]
+        },
+        "session_thread_id": {
+          "description": "When set, this event was cross-posted from a subagent's thread to surface its permission request on the primary thread's stream. Empty on the thread's own events. Echo this on a `user.tool_confirmation` event to route the approval back.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsAgentToolset20260401": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "default_config",
+        "configs"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent_toolset_20260401"
+          ]
+        },
+        "default_config": {
+          "$ref": "#/$defs/BetaManagedAgentsAgentToolsetDefaultConfig"
+        },
+        "configs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsAgentToolConfigUnion"
+          }
+        }
+      }
+    },
+    "BetaManagedAgentsAgentToolsetDefaultConfig": {
+      "description": "Resolved default configuration for agent tools.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "permission_policy"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "permission_policy": {
+          "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+        }
+      }
+    },
+    "BetaManagedAgentsAlwaysAllowPolicy": {
+      "description": "Tool calls are automatically approved without user confirmation.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "always_allow"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsAlwaysAskPolicy": {
+      "description": "Tool calls require user confirmation before execution.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "always_ask"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsAnthropicSkill": {
+      "description": "A resolved Anthropic-managed skill.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "skill_id",
+        "version"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "anthropic"
+          ]
+        },
+        "skill_id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsBase64DocumentSource": {
+      "description": "Base64-encoded document data.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "media_type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "base64"
+          ]
+        },
+        "media_type": {
+          "description": "MIME type of the document (e.g., \"application/pdf\").",
+          "type": "string",
+          "minLength": 1
+        },
+        "data": {
+          "description": "Base64-encoded document data.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsBase64ImageSource": {
+      "description": "Base64-encoded image data.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "media_type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "base64"
+          ]
+        },
+        "media_type": {
+          "description": "MIME type of the image (e.g., \"image/png\", \"image/jpeg\", \"image/gif\", \"image/webp\").",
+          "type": "string",
+          "minLength": 1
+        },
+        "data": {
+          "description": "Base64-encoded image data.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsBashToolConfig": {
+      "description": "Configuration for the bash tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name",
+        "enabled",
+        "permission_policy"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "bash"
+        },
+        "name": {
+          "type": "string",
+          "const": "bash"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "permission_policy": {
+          "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+        }
+      }
+    },
+    "BetaManagedAgentsBillingError": {
+      "description": "The caller's organization or workspace cannot make model requests — out of credits or spend limit reached. Retrying with the same credentials will not succeed; the caller must resolve the billing state.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message",
+        "retry_status"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "billing_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        },
+        "retry_status": {
+          "description": "What the client should do next.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsRetryStatus"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsBudget": {
+      "description": "An enforced spend ceiling on a session. Discriminated on `type`; `limit` is the only kind currently supported.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsBudgetLimit"
+        }
+      ]
+    },
+    "BetaManagedAgentsBudgetLimit": {
+      "description": "A hard spend ceiling. The session stops issuing new model requests once the tracked list cost reaches `max_list_cost`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "max_list_cost"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "limit"
+          ]
+        },
+        "max_list_cost": {
+          "description": "Maximum list cost the session may accrue. List price is used regardless of any negotiated discount, so the cap fires at or before the actual charge.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaMonetaryAmount"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsCacheCreationUsage": {
+      "description": "Prompt-cache creation token usage broken down by cache lifetime.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ephemeral_1h_input_tokens": {
+          "description": "Tokens used to create 1-hour ephemeral cache entries.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "ephemeral_5m_input_tokens": {
+          "description": "Tokens used to create 5-minute ephemeral cache entries.",
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "BetaManagedAgentsCredentialHostUnreachableError": {
+      "description": "An `environment_variable` credential's `auth.networking.allowed_hosts` includes a host the environment's network policy does not permit.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message",
+        "retry_status",
+        "vault_id",
+        "credential_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "credential_host_unreachable_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        },
+        "retry_status": {
+          "description": "What the client should do next.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsRetryStatus"
+            }
+          ]
+        },
+        "vault_id": {
+          "description": "ID of the vault containing the affected credential.",
+          "type": "string"
+        },
+        "credential_id": {
+          "description": "ID of the affected credential.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsCustomSkill": {
+      "description": "A resolved user-created custom skill.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "skill_id",
+        "version"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "custom"
+          ]
+        },
+        "skill_id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsCustomTool": {
+      "description": "A custom tool as returned in API responses.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name",
+        "description",
+        "input_schema"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "custom"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "input_schema": {
+          "$ref": "#/$defs/BetaManagedAgentsCustomToolInputSchema"
+        }
+      }
+    },
+    "BetaManagedAgentsCustomToolInputSchema": {
+      "additionalProperties": true,
+      "description": "JSON Schema for custom tool input parameters.",
+      "properties": {
+        "properties": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Properties",
+          "x-stainless-skip": [
+            "terraform"
+          ]
+        },
+        "required": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Required"
+        },
+        "type": {
+          "const": "object",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "BetaManagedAgentsDocumentBlock": {
+      "description": "Document content, either specified directly as base64 data, as text, or as a reference via a URL.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "source"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "document"
+          ]
+        },
+        "source": {
+          "description": "The source of the document data.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsDocumentSource"
+            }
+          ]
+        },
+        "title": {
+          "description": "The title of the document.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "context": {
+          "description": "Additional context about the document for the model.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsDocumentSource": {
+      "description": "Union type for document source variants.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsBase64DocumentSource"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsPlainTextDocumentSource"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsURLDocumentSource"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsFileDocumentSource"
+        }
+      ]
+    },
+    "BetaManagedAgentsEditToolConfig": {
+      "description": "Configuration for the edit tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name",
+        "enabled",
+        "permission_policy"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "edit"
+        },
+        "name": {
+          "type": "string",
+          "const": "edit"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "permission_policy": {
+          "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+        }
+      }
+    },
+    "BetaManagedAgentsEffort": {
+      "description": "How hard Claude works on each turn. Sets `output_config.effort` on every Messages call the session makes.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsEffortLow"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsEffortMedium"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsEffortHigh"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsEffortXhigh"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsEffortMax"
+        }
+      ]
+    },
+    "BetaManagedAgentsEffortHigh": {
+      "description": "High effort. Favors reasoning depth.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "high"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsEffortLow": {
+      "description": "Low effort. Favors latency over reasoning depth.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "low"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsEffortMax": {
+      "description": "Maximum effort. Favors reasoning depth over latency.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "max"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsEffortMedium": {
+      "description": "Medium effort. Balances latency and reasoning depth.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "medium"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsEffortXhigh": {
+      "description": "Extra-high effort. Not all models accept this level.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "xhigh"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsEventDeltaEvent": {
+      "description": "An incremental update to an event that is still being streamed. Deltas are best-effort and may stop early; when the buffered event with id == event_id is produced it carries the complete content. A model request that ends early (an error or interrupt) produces no buffered event — its terminal span.model_request_end closes the preview. Only sent on stream connections that opt in via event_deltas; never appears in event history.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "event_id",
+        "delta"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "event_delta"
+          ]
+        },
+        "event_id": {
+          "description": "The id of the event being previewed. Matches event.id on the corresponding event_start and the buffered event that reconciles the preview.",
+          "type": "string"
+        },
+        "delta": {
+          "description": "One fragment of the previewed event. The delta type is named for the previewed event's field it streams into: agent.message events stream content_delta fragments, each a partial element of the content array.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsEventDeltaEvent_Delta"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsEventDeltaEvent_ContentDelta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "content"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "content_delta"
+          ]
+        },
+        "index": {
+          "description": "Which entry in the previewed event's content array this fragment lands in. Insert content as that entry when the index is new; append to the existing entry otherwise.",
+          "type": "integer",
+          "format": "uint32"
+        },
+        "content": {
+          "description": "A partial element of the content array at index, typed like the element itself — the same shape the buffered agent.message carries in content.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsTextBlock"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsEventDeltaEvent_Delta": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsEventDeltaEvent_ContentDelta"
+        }
+      ]
+    },
+    "BetaManagedAgentsEventStartEvent": {
+      "description": "Opens a preview of a buffered event. Carries the previewed event's type and id only. Followed by zero or more event_delta events with the same event id, normally concluded by the buffered event carrying that id. If the producing model request ends without that event (an error or interrupt mid-stream), its terminal span.model_request_end closes the preview. Only sent on stream connections that opt in via event_deltas; never appears in event history.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "event"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "event_start"
+          ]
+        },
+        "event": {
+          "description": "The previewed event's type and id. The event type determines which delta types the preview's event_delta events carry: agent.message events stream content_delta fragments; agent.thinking previews are start-only — no deltas follow, and the buffered agent.thinking with the same id concludes them.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsEventStartEvent_Event"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsEventStartEvent_AgentMessagePreview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent.message"
+          ]
+        },
+        "id": {
+          "description": "The id the buffered agent.message will carry if it is emitted. Matches the event_id on this preview's event_delta events.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsEventStartEvent_AgentThinkingPreview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent.thinking"
+          ]
+        },
+        "id": {
+          "description": "The id the buffered agent.thinking will carry if it is emitted. Start-only — no event_delta events follow.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsEventStartEvent_Event": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsEventStartEvent_AgentMessagePreview"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsEventStartEvent_AgentThinkingPreview"
+        }
+      ]
+    },
+    "BetaManagedAgentsFileDocumentSource": {
+      "description": "Document referenced by file ID.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "file_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "file"
+          ]
+        },
+        "file_id": {
+          "description": "ID of a previously uploaded file.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsFileImageSource": {
+      "description": "Image referenced by file ID.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "file_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "file"
+          ]
+        },
+        "file_id": {
+          "description": "ID of a previously uploaded file.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsFileRubric": {
+      "description": "Rubric referenced by a file uploaded via the Files API.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "file_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "file"
+          ]
+        },
+        "file_id": {
+          "description": "ID of the rubric file.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsGlobToolConfig": {
+      "description": "Configuration for the glob tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name",
+        "enabled",
+        "permission_policy"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "glob"
+        },
+        "name": {
+          "type": "string",
+          "const": "glob"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "permission_policy": {
+          "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+        }
+      }
+    },
+    "BetaManagedAgentsGrepToolConfig": {
+      "description": "Configuration for the grep tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name",
+        "enabled",
+        "permission_policy"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "grep"
+        },
+        "name": {
+          "type": "string",
+          "const": "grep"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "permission_policy": {
+          "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+        }
+      }
+    },
+    "BetaManagedAgentsImageBlock": {
+      "description": "Image content specified directly as base64 data or as a reference via a URL.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "source"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "image"
+          ]
+        },
+        "source": {
+          "description": "The source of the image data.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsImageSource"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsImageSource": {
+      "description": "Union type for image source variants.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsBase64ImageSource"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsURLImageSource"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsFileImageSource"
+        }
+      ]
+    },
+    "BetaManagedAgentsMCPServer": {
+      "description": "Union type for MCP server connection definitions returned in API responses.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsMCPServerURLDefinition"
+        }
+      ]
+    },
+    "BetaManagedAgentsMCPServerURLDefinition": {
+      "description": "URL-based MCP server connection as returned in API responses.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name",
+        "url"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "url"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsMCPToolConfig": {
+      "description": "Resolved configuration for a specific MCP tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "enabled",
+        "permission_policy"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "permission_policy": {
+          "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+        }
+      }
+    },
+    "BetaManagedAgentsMCPToolset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "mcp_server_name",
+        "default_config",
+        "configs"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "mcp_toolset"
+          ]
+        },
+        "mcp_server_name": {
+          "type": "string"
+        },
+        "default_config": {
+          "$ref": "#/$defs/BetaManagedAgentsMCPToolsetDefaultConfig"
+        },
+        "configs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsMCPToolConfig"
+          }
+        }
+      }
+    },
+    "BetaManagedAgentsMCPToolsetDefaultConfig": {
+      "description": "Resolved default configuration for all tools from an MCP server.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "permission_policy"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "permission_policy": {
+          "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+        }
+      }
+    },
+    "BetaManagedAgentsMcpAuthenticationFailedError": {
+      "description": "Authentication to an MCP server failed.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message",
+        "retry_status",
+        "mcp_server_name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "mcp_authentication_failed_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        },
+        "retry_status": {
+          "description": "What the client should do next.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsRetryStatus"
+            }
+          ]
+        },
+        "mcp_server_name": {
+          "description": "Name of the MCP server that failed authentication.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsMcpConnectionFailedError": {
+      "description": "Failed to connect to an MCP server.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message",
+        "retry_status",
+        "mcp_server_name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "mcp_connection_failed_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        },
+        "retry_status": {
+          "description": "What the client should do next.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsRetryStatus"
+            }
+          ]
+        },
+        "mcp_server_name": {
+          "description": "Name of the MCP server that failed to connect.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsModel": {
+      "title": "BetaManagedAgentsModel",
+      "description": "The model that will power your agent.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview) for additional details and options.",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "const": "claude-sonnet-5",
+          "description": "High-performance model for coding and agents",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-fable-5",
+          "description": "Next generation of intelligence for the hardest knowledge work and coding problems",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-5",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-4-8",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-4-7",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-4-6",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-sonnet-4-6",
+          "description": "Best combination of speed and intelligence",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-haiku-4-5",
+          "description": "Fastest model with near-frontier intelligence",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-haiku-4-5-20251001",
+          "description": "Fastest model with near-frontier intelligence",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-4-5",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-opus-4-5-20251101",
+          "description": "Powerful intelligence for long-running agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-sonnet-4-5",
+          "description": "High-performance model for agents and coding",
+          "x-stainless-nominal": false
+        },
+        {
+          "const": "claude-sonnet-4-5-20250929",
+          "description": "High-performance model for agents and coding",
+          "x-stainless-nominal": false
+        }
+      ]
+    },
+    "BetaManagedAgentsModelConfig": {
+      "description": "Model identifier and configuration.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/BetaManagedAgentsModel"
+        },
+        "speed": {
+          "description": "Inference speed mode. `fast` provides significantly faster output token generation at premium pricing. Defaults to `standard`. Not all models support `fast`; invalid combinations are rejected at create time.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSpeed"
+            }
+          ],
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01",
+            "fast-mode-2026-02-01"
+          ]
+        },
+        "effort": {
+          "description": "How hard Claude works on each inference call. One of `low`, `medium`, `high`, `xhigh`, `max`. Always present; resolved to the per-model default at save time when not supplied.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsEffort"
+            }
+          ],
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        },
+        "inference_geo": {
+          "description": "Geographic region for model inference. When unset, requests fall through to the workspace's default_inference_geo.",
+          "type": "string",
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsModelOverloadedError": {
+      "description": "The model is currently overloaded. Emitted after automatic retries are exhausted.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message",
+        "retry_status"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "model_overloaded_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        },
+        "retry_status": {
+          "description": "What the client should do next.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsRetryStatus"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsModelRateLimitedError": {
+      "description": "The model request was rate-limited.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message",
+        "retry_status"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "model_rate_limited_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        },
+        "retry_status": {
+          "description": "What the client should do next.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsRetryStatus"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsModelRequestFailedError": {
+      "description": "A model request failed for a reason other than overload or rate-limiting.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message",
+        "retry_status"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "model_request_failed_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        },
+        "retry_status": {
+          "description": "What the client should do next.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsRetryStatus"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsPermissionPolicy": {
+      "description": "Permission policy for tool execution.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsAlwaysAllowPolicy"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsAlwaysAskPolicy"
+        }
+      ]
+    },
+    "BetaManagedAgentsPlainTextDocumentSource": {
+      "description": "Plain text document content.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "media_type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text"
+          ]
+        },
+        "media_type": {
+          "description": "MIME type of the text content. Must be \"text/plain\".",
+          "type": "string",
+          "enum": [
+            "text/plain"
+          ]
+        },
+        "data": {
+          "description": "The plain text content.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsReadToolConfig": {
+      "description": "Configuration for the read tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name",
+        "enabled",
+        "permission_policy"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "read"
+        },
+        "name": {
+          "type": "string",
+          "const": "read"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "permission_policy": {
+          "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+        }
+      }
+    },
+    "BetaManagedAgentsRedactedBlock": {
+      "description": "Placeholder for content withheld by Anthropic model policy.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "redacted"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsRetryStatus": {
+      "description": "What the client should do next in response to this error.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsRetryStatusRetrying"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsRetryStatusExhausted"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsRetryStatusTerminal"
+        }
+      ]
+    },
+    "BetaManagedAgentsRetryStatusExhausted": {
+      "description": "This turn is dead; queued inputs are flushed and the session returns to idle. Client may send a new prompt.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "exhausted"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsRetryStatusRetrying": {
+      "description": "The server is retrying automatically. Client should wait; the same error type may fire again as retrying, then once as exhausted when the retry budget runs out.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "retrying"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsRetryStatusTerminal": {
+      "description": "The session encountered a terminal error and will transition to `terminated` state.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "terminal"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsRubric": {
+      "description": "Rubric for grading the quality of an outcome.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsFileRubric"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsTextRubric"
+        }
+      ]
+    },
+    "BetaManagedAgentsSearchResultBlock": {
+      "description": "A block containing a web search result.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "source",
+        "title",
+        "content",
+        "citations"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "search_result"
+          ]
+        },
+        "source": {
+          "description": "The URL source of the search result.",
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "description": "The title of the search result.",
+          "type": "string",
+          "minLength": 1
+        },
+        "content": {
+          "description": "Array of text content blocks from the search result.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsSearchResultContent"
+          }
+        },
+        "citations": {
+          "description": "Citation settings for this search result.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSearchResultCitations"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSearchResultCitations": {
+      "description": "Citation settings for a search result.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled"
+      ],
+      "properties": {
+        "enabled": {
+          "description": "Whether citations are enabled for this search result.",
+          "type": "boolean"
+        }
+      }
+    },
+    "BetaManagedAgentsSearchResultContent": {
+      "description": "Text content within a search result.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "text"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text"
+          ]
+        },
+        "text": {
+          "description": "The text content.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsServerToolUsage": {
+      "description": "Cumulative count of server-executed tool invocations, broken down by tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "web_search_requests": {
+          "description": "Number of server-executed web search requests.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "web_fetch_requests": {
+          "description": "Number of server-executed web fetch requests.",
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "BetaManagedAgentsSessionAgent": {
+      "description": "Resolved `agent` definition for a `session`. Snapshot of the `agent` at `session` creation time.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "version",
+        "name",
+        "description",
+        "model",
+        "system",
+        "tools",
+        "mcp_servers",
+        "skills",
+        "multiagent"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "model": {
+          "$ref": "#/$defs/BetaManagedAgentsModelConfig"
+        },
+        "system": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsAgentTool"
+          }
+        },
+        "mcp_servers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsMCPServer"
+          }
+        },
+        "skills": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsSkill"
+          }
+        },
+        "multiagent": {
+          "description": "Resolved multiagent orchestration configuration. Null when the agent is single-threaded.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSessionMultiagent"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSessionBudgetReached": {
+      "description": "The agent stopped because the session's tracked list cost reached its budget, or because its usage includes a model with no list price (which the budget cannot measure). Raise the budget to continue — or, if raising is rejected because a model has no list price, remove the budget.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "budget_reached"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSessionDeletedEvent": {
+      "description": "Emitted when a session has been deleted. Terminates any active event stream — no further events will be emitted for this session.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session.deleted"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when the session was deleted.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSessionEndTurn": {
+      "description": "The agent completed its turn naturally and is ready for the next user message.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "end_turn"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSessionErrorEvent": {
+      "description": "An error event indicating a problem occurred during session execution.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at",
+        "error"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session.error"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when the error occurred.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "error": {
+          "type": "object",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsUnknownError"
+            },
+            {
+              "$ref": "#/$defs/BetaManagedAgentsModelOverloadedError"
+            },
+            {
+              "$ref": "#/$defs/BetaManagedAgentsModelRateLimitedError"
+            },
+            {
+              "$ref": "#/$defs/BetaManagedAgentsModelRequestFailedError"
+            },
+            {
+              "$ref": "#/$defs/BetaManagedAgentsMcpConnectionFailedError"
+            },
+            {
+              "$ref": "#/$defs/BetaManagedAgentsMcpAuthenticationFailedError"
+            },
+            {
+              "$ref": "#/$defs/BetaManagedAgentsBillingError"
+            },
+            {
+              "$ref": "#/$defs/BetaManagedAgentsCredentialHostUnreachableError"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSessionMultiagent": {
+      "description": "Resolved multiagent orchestration configuration as returned on a `session`.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsSessionMultiagentCoordinator"
+        }
+      ]
+    },
+    "BetaManagedAgentsSessionMultiagentCoordinator": {
+      "description": "Resolved coordinator topology with full agent definitions for each roster member.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "agents"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "coordinator"
+          ]
+        },
+        "agents": {
+          "description": "Full `agent` definitions the coordinator may spawn as session threads.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsSessionRosterEntry"
+          }
+        }
+      }
+    },
+    "BetaManagedAgentsSessionRequiresAction": {
+      "description": "The agent is idle waiting on one or more blocking user-input events (tool confirmation, custom tool result, etc.). Resolving all of them transitions the session back to running.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "event_ids"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "requires_action"
+          ]
+        },
+        "event_ids": {
+          "description": "The ids of events the agent is blocked on. Resolving fewer than all re-emits `session.status_idle` with the remainder.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "BetaManagedAgentsSessionRetriesExhausted": {
+      "description": "The turn ended because repeated errors exhausted the retry budget or an error escalated to `retry_status: 'exhausted'`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "retries_exhausted"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSessionRosterEntry": {
+      "description": "A session-resolved multiagent roster entry.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsSessionThreadAgent"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsAdvisor"
+        }
+      ]
+    },
+    "BetaManagedAgentsSessionStatusIdleEvent": {
+      "description": "Indicates the agent has paused and is awaiting user input.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at",
+        "stop_reason"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session.status_idle"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp of status change.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "stop_reason": {
+          "type": "object",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSessionEndTurn"
+            },
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSessionRequiresAction"
+            },
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSessionRetriesExhausted"
+            },
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSessionBudgetReached"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSessionStatusRescheduledEvent": {
+      "description": "Indicates the session is recovering from an error state and is rescheduled for execution.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session.status_rescheduled"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp of status change.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSessionStatusRunningEvent": {
+      "description": "Indicates the session is actively running and the agent is working.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session.status_running"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp of status change.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSessionStatusTerminatedEvent": {
+      "description": "Indicates the session has terminated, either due to an error or completion.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session.status_terminated"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp of status change.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSessionThreadAgent": {
+      "description": "Resolved `agent` definition for a single `session_thread`. Snapshot of the agent at thread creation time. The multiagent roster is not repeated here; read it from `Session.agent`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "version",
+        "name",
+        "description",
+        "model",
+        "system",
+        "tools",
+        "mcp_servers",
+        "skills"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "model": {
+          "$ref": "#/$defs/BetaManagedAgentsModelConfig"
+        },
+        "system": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsAgentTool"
+          }
+        },
+        "mcp_servers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsMCPServer"
+          }
+        },
+        "skills": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsSkill"
+          }
+        }
+      }
+    },
+    "BetaManagedAgentsSessionThreadCreatedEvent": {
+      "description": "Emitted when a subagent is spawned as a new thread. Written to the parent thread's output stream so clients observing the session see child creation.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at",
+        "agent_name",
+        "session_thread_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session.thread_created"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when the thread was created.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "agent_name": {
+          "description": "Name of the callable agent the thread runs.",
+          "type": "string"
+        },
+        "session_thread_id": {
+          "description": "Public `sthr_` ID of the newly created thread.",
+          "type": "string",
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSessionThreadStatusIdleEvent": {
+      "description": "A session thread has yielded and is awaiting input. Emitted on the thread's own stream and cross-posted to the primary stream for child threads.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "session_thread_id",
+        "processed_at",
+        "agent_name",
+        "stop_reason"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session.thread_status_idle"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "session_thread_id": {
+          "description": "Public sthr_ ID of the thread that went idle.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp of the status transition.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "agent_name": {
+          "description": "Name of the agent the thread runs.",
+          "type": "string"
+        },
+        "stop_reason": {
+          "type": "object",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSessionEndTurn"
+            },
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSessionRequiresAction"
+            },
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSessionRetriesExhausted"
+            },
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSessionBudgetReached"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSessionThreadStatusRescheduledEvent": {
+      "description": "A session thread hit a transient error and is retrying automatically. Emitted on the thread's own stream and cross-posted to the primary stream for child threads.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "session_thread_id",
+        "processed_at",
+        "agent_name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session.thread_status_rescheduled"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "session_thread_id": {
+          "description": "Public sthr_ ID of the thread that is retrying.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp of the status transition.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "agent_name": {
+          "description": "Name of the agent the thread runs.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsSessionThreadStatusRunningEvent": {
+      "description": "A session thread has begun executing. Emitted on the thread's own stream and cross-posted to the primary stream for child threads.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "session_thread_id",
+        "processed_at",
+        "agent_name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session.thread_status_running"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "session_thread_id": {
+          "description": "Public sthr_ ID of the thread that started running.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp of the status transition.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "agent_name": {
+          "description": "Name of the agent the thread runs.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsSessionThreadStatusTerminatedEvent": {
+      "description": "A session thread has terminated and will accept no further input. Emitted on the thread's own stream and cross-posted to the primary stream for child threads.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "session_thread_id",
+        "processed_at",
+        "agent_name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session.thread_status_terminated"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "session_thread_id": {
+          "description": "Public sthr_ ID of the thread that terminated.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp of the status transition.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "agent_name": {
+          "description": "Name of the agent the thread runs.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsSessionUpdatedEvent": {
+      "description": "Emitted when an UpdateSession request changed at least one field. Carries only the fields that changed; absent fields were not part of the update. The new configuration applies from the next turn.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session.updated"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when the update was applied.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "title": {
+          "description": "The session's new title. Present only when the update changed it.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "metadata": {
+          "description": "The session's full metadata bag after the update. Present when the update set non-empty metadata; absent when metadata was unchanged or cleared to empty.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "agent": {
+          "description": "The session's effective agent configuration after the update. Present only when the update changed `agent` (tools or mcp_servers); when present it is the full materialised snapshot, not a diff.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSessionAgent"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "budget": {
+          "description": "The session's budget after the update: the new budget when set or replaced, or null when the update removed it. Present only when the update changed the budget.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsBudget"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSessionUsageEvent": {
+      "description": "Periodic snapshot of the session's cumulative usage and tracked list cost.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at",
+        "usage"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "session.usage"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when the snapshot was taken.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "usage": {
+          "description": "The session's cumulative usage at the snapshot time.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSessionUsageSnapshot"
+            }
+          ]
+        },
+        "budget": {
+          "description": "The session's configured budget at the snapshot time, or null when the session has no budget.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsBudget"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSessionUsageSnapshot": {
+      "description": "Point-in-time snapshot of a session's cumulative usage.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "input_tokens": {
+          "description": "Total input tokens consumed across all turns.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "output_tokens": {
+          "description": "Total output tokens generated across all turns.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "cache_read_input_tokens": {
+          "description": "Total tokens read from prompt cache.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "cache_creation": {
+          "description": "Tokens used to create prompt cache entries, broken down by cache TTL.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsCacheCreationUsage"
+            }
+          ]
+        },
+        "list_cost": {
+          "description": "Cumulative list cost of the session across all turns, priced at public list rates.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaMonetaryAmount"
+            }
+          ]
+        },
+        "server_tool_use": {
+          "description": "Cumulative server-executed tool usage across all turns.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsServerToolUsage"
+            }
+          ]
+        },
+        "active_seconds": {
+          "description": "Cumulative time in seconds during which the session had at least one thread in running status. Overlapping activity from concurrent threads is counted once. This is the duration the session's runtime cost is priced on.",
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "BetaManagedAgentsSkill": {
+      "description": "Resolved skill as returned in API responses.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsAnthropicSkill"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsCustomSkill"
+        }
+      ]
+    },
+    "BetaManagedAgentsSpanModelRequestEndEvent": {
+      "description": "Emitted when a model request completes.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at",
+        "is_error",
+        "model_usage",
+        "model_request_start_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "span.model_request_end"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when the model request completed.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "is_error": {
+          "description": "Whether the model request resulted in an error.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "model_usage": {
+          "description": "Token usage for this model request.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSpanModelUsage"
+            }
+          ]
+        },
+        "model_request_start_id": {
+          "description": "The id of the corresponding `span.model_request_start` event.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsSpanModelRequestStartEvent": {
+      "description": "Emitted when a model request is initiated by the agent.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "span.model_request_start"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when the model request started.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSpanModelUsage": {
+      "description": "Token usage for a single model request.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_tokens",
+        "output_tokens",
+        "cache_creation_input_tokens",
+        "cache_read_input_tokens"
+      ],
+      "properties": {
+        "input_tokens": {
+          "description": "Input tokens consumed by this request.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "output_tokens": {
+          "description": "Output tokens generated by this request.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "cache_creation_input_tokens": {
+          "description": "Tokens used to create prompt cache in this request.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "cache_read_input_tokens": {
+          "description": "Tokens read from prompt cache in this request.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "speed": {
+          "description": "Inference speed tier this request actually ran at. Mirrors `usage.speed` on /v1/messages. Only present when the fast-mode beta is active.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSpeed"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01",
+            "fast-mode-2026-02-01"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsSpanOutcomeEvaluationEndEvent": {
+      "description": "Emitted when an outcome evaluation cycle completes. Carries the verdict and aggregate token usage. A verdict of `needs_revision` means another evaluation cycle follows; `satisfied`, `max_iterations_reached`, `failed`, or `interrupted` are terminal — no further evaluation cycles follow.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at",
+        "outcome_evaluation_start_id",
+        "iteration",
+        "result",
+        "explanation",
+        "usage",
+        "outcome_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "span.outcome_evaluation_end"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when outcome evaluation ended.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "outcome_evaluation_start_id": {
+          "description": "The id of the corresponding `span.outcome_evaluation_start` event.",
+          "type": "string"
+        },
+        "iteration": {
+          "description": "0-indexed revision cycle, matching the corresponding `span.outcome_evaluation_start`.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "result": {
+          "description": "Evaluation verdict. 'satisfied': criteria met, session goes idle. 'needs_revision': criteria not met, another revision cycle follows. 'max_iterations_reached': evaluation budget exhausted with criteria still unmet — one final acknowledgment turn follows before the session goes idle, but no further evaluation runs. 'failed': grader determined the rubric does not apply to the deliverables. 'interrupted': user sent an interrupt while evaluation was in progress.",
+          "type": "string"
+        },
+        "explanation": {
+          "description": "Human-readable explanation of the verdict. For `needs_revision`, describes which criteria failed and why.",
+          "type": "string"
+        },
+        "usage": {
+          "description": "Aggregate token usage for this evaluation cycle. Sums across all grader model requests within the cycle.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsSpanModelUsage"
+            }
+          ]
+        },
+        "outcome_id": {
+          "description": "The `outc_` ID of the outcome being evaluated.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent": {
+      "description": "Periodic heartbeat emitted while an outcome evaluation cycle is in progress. Distinguishes 'evaluation is actively running' from 'evaluation is stuck' between the corresponding `span.outcome_evaluation_start` and `span.outcome_evaluation_end` events.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at",
+        "iteration",
+        "outcome_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "span.outcome_evaluation_ongoing"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when this heartbeat was emitted.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "iteration": {
+          "description": "0-indexed revision cycle, matching the corresponding `span.outcome_evaluation_start`.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "outcome_id": {
+          "description": "The `outc_` ID of the outcome being evaluated.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsSpanOutcomeEvaluationStartEvent": {
+      "description": "Emitted when an outcome evaluation cycle begins.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at",
+        "iteration",
+        "outcome_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "span.outcome_evaluation_start"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when outcome evaluation started.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "iteration": {
+          "description": "0-indexed revision cycle. 0 is the first evaluation; 1 is the re-evaluation after the first revision; etc.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "outcome_id": {
+          "description": "The `outc_` ID of the outcome being evaluated.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsSpeed": {
+      "type": "string",
+      "description": "Inference speed mode. `fast` provides significantly faster output token generation at premium pricing. Not all models support `fast`; invalid combinations are rejected at create time.",
+      "enum": [
+        "standard",
+        "fast"
+      ]
+    },
+    "BetaManagedAgentsStruct": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "BetaManagedAgentsSystemContentBlock": {
+      "description": "Content block in a mid-conversation system message. Text-only.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsTextBlock"
+        }
+      ]
+    },
+    "BetaManagedAgentsSystemMessageEvent": {
+      "description": "A mid-conversation system message event. Carries system-role content that is appended to the session as a `role: \"system\"` turn.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "content"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "system.message"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "content": {
+          "description": "System content blocks. Text-only.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsSystemContentBlock"
+          }
+        },
+        "processed_at": {
+          "description": "Timestamp when this system message was processed.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsTextBlock": {
+      "description": "Regular text content.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "text"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text"
+          ]
+        },
+        "text": {
+          "description": "The text content.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsTextRubric": {
+      "description": "Rubric content provided inline as text.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "content"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text"
+          ]
+        },
+        "content": {
+          "description": "Rubric content. Plain text or markdown — the grader treats it as freeform text.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsToolResultContentBlock": {
+      "description": "Content block in a tool result. Can be `text`, `image`, `document`, or `search_result`.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsTextBlock"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsImageBlock"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsDocumentBlock"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsSearchResultBlock"
+        }
+      ]
+    },
+    "BetaManagedAgentsURLDocumentSource": {
+      "description": "Document referenced by URL.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "url"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "url"
+          ]
+        },
+        "url": {
+          "description": "URL of the document to fetch.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsURLImageSource": {
+      "description": "Image referenced by URL.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "url"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "url"
+          ]
+        },
+        "url": {
+          "description": "URL of the image to fetch.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsUnknownError": {
+      "description": "An unknown or unexpected error occurred during session execution. A fallback variant; clients that don't recognize a new error code can match on `retry_status` and `message` alone.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message",
+        "retry_status"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "unknown_error"
+          ]
+        },
+        "message": {
+          "description": "Human-readable error description.",
+          "type": "string"
+        },
+        "retry_status": {
+          "description": "What the client should do next.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsRetryStatus"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsUserContentBlock": {
+      "description": "Content block in a user message. Can be `text`, `image`, or `document`.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsTextBlock"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsImageBlock"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsDocumentBlock"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsRedactedBlock"
+        }
+      ]
+    },
+    "BetaManagedAgentsUserCustomToolResultEvent": {
+      "description": "Event sent by the client providing the result of a custom tool execution.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "custom_tool_use_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "user.custom_tool_result"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "custom_tool_use_id": {
+          "description": "The id of the `agent.custom_tool_use` event this result corresponds to, which can be found in the last `session.status_idle` [event's](https://platform.claude.com/docs/en/api/beta/sessions/events/list#beta_managed_agents_session_requires_action.event_ids) `stop_reason.event_ids` field.",
+          "type": "string"
+        },
+        "content": {
+          "description": "The result content returned by the tool.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsToolResultContentBlock"
+          }
+        },
+        "is_error": {
+          "description": "Whether the tool execution resulted in an error.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "processed_at": {
+          "description": "Timestamp when this result was processed.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "session_thread_id": {
+          "description": "Routes this result to a subagent thread. Copy from the `agent.custom_tool_use` event's `session_thread_id`.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsUserDefineOutcomeEvent": {
+      "description": "Echo of a `user.define_outcome` input event. Carries the server-generated `outcome_id` that subsequent `span.outcome_evaluation_*` events reference.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "processed_at",
+        "outcome_id",
+        "description",
+        "max_iterations",
+        "rubric"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "user.define_outcome"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when the outcome was accepted.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "outcome_id": {
+          "description": "Server-generated `outc_` ID for this outcome. Referenced by `span.outcome_evaluation_*` events and the session's `outcome_evaluations` list.",
+          "type": "string"
+        },
+        "description": {
+          "description": "What the agent should produce. Copied from the input event.",
+          "type": "string"
+        },
+        "max_iterations": {
+          "description": "Evaluate-then-revise cycles before giving up. Default 3, max 20.",
+          "anyOf": [
+            {
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rubric": {
+          "description": "How to grade the outcome. File rubrics are currently resolved to their text content; clients should handle both variants.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsRubric"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsUserInterruptEvent": {
+      "description": "An interrupt event that pauses agent execution and returns control to the user.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "user.interrupt"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "processed_at": {
+          "description": "Timestamp when the interrupt was processed.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "session_thread_id": {
+          "description": "If absent, interrupts every non-archived thread in a multiagent session (or the primary alone in a single-agent session). If present, interrupts only the named thread.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsUserLocation": {
+      "description": "Approximate user location for search result localization.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "description": "Location precision. Only \"approximate\" is supported.",
+          "type": "string",
+          "const": "approximate"
+        },
+        "city": {
+          "description": "City name.",
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "region": {
+          "description": "Region or state name.",
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "country": {
+          "description": "Two-letter ISO 3166-1 country code, uppercase.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "timezone": {
+          "description": "IANA timezone identifier, e.g. \"America/Los_Angeles\".",
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsUserMessageEvent": {
+      "description": "A user message event in the session conversation.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "content"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "user.message"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "content": {
+          "description": "Array of content blocks comprising the user message.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsUserContentBlock"
+          }
+        },
+        "processed_at": {
+          "description": "Timestamp when the agent finished processing this message.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsUserToolConfirmationEvent": {
+      "description": "A tool confirmation event that approves or denies a pending tool execution.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "tool_use_id",
+        "result"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "user.tool_confirmation"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "tool_use_id": {
+          "description": "The id of the `agent.tool_use` or `agent.mcp_tool_use` event this result corresponds to, which can be found in the last `session.status_idle` [event's](https://platform.claude.com/docs/en/api/beta/sessions/events/list#beta_managed_agents_session_requires_action.event_ids) `stop_reason.event_ids` field.",
+          "type": "string"
+        },
+        "result": {
+          "description": "The confirmation result: 'allow' or 'deny'.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsUserToolConfirmationResult"
+            }
+          ]
+        },
+        "deny_message": {
+          "description": "Optional message providing context for a 'deny' decision. Only allowed when result is 'deny'.",
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "processed_at": {
+          "description": "Timestamp when the confirmation was processed.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "session_thread_id": {
+          "description": "When set, the confirmation routes to this subagent's thread rather than the primary. Echo this from the `session_thread_id` on the `agent.tool_use` or `agent.mcp_tool_use` event that prompted the approval.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsUserToolConfirmationResult": {
+      "type": "string",
+      "description": "UserToolConfirmationResult enum",
+      "enum": [
+        "allow",
+        "deny"
+      ]
+    },
+    "BetaManagedAgentsUserToolResultEvent": {
+      "description": "Event sent by the client providing the result of an agent-toolset tool execution. Only valid on `self_hosted` environments, where sandbox-routed tools are executed by the client rather than the server.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "tool_use_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "user.tool_result"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for this event.",
+          "type": "string"
+        },
+        "tool_use_id": {
+          "description": "The id of the `agent.tool_use` event this result corresponds to, which can be found in the last `session.status_idle` [event's](https://platform.claude.com/docs/en/api/beta/sessions/events/list#beta_managed_agents_session_requires_action.event_ids) `stop_reason.event_ids` field.",
+          "type": "string"
+        },
+        "content": {
+          "description": "The result content returned by the tool.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsToolResultContentBlock"
+          }
+        },
+        "is_error": {
+          "description": "Whether the tool execution resulted in an error.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "processed_at": {
+          "description": "Timestamp when this result was processed.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "session_thread_id": {
+          "description": "Routes this result to a subagent thread. Copy from the `agent.tool_use` event's `session_thread_id`.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsWebFetchToolConfig": {
+      "description": "Configuration for the web_fetch tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name",
+        "enabled",
+        "permission_policy"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "web_fetch"
+        },
+        "name": {
+          "type": "string",
+          "const": "web_fetch"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "permission_policy": {
+          "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+        },
+        "allowed_domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "blocked_domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max_content_tokens": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsWebSearchToolConfig": {
+      "description": "Configuration for the web_search tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name",
+        "enabled",
+        "permission_policy"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "web_search"
+        },
+        "name": {
+          "type": "string",
+          "const": "web_search"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "permission_policy": {
+          "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+        },
+        "allowed_domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "blocked_domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "user_location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsUserLocation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsWriteToolConfig": {
+      "description": "Configuration for the write tool.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name",
+        "enabled",
+        "permission_policy"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "write"
+        },
+        "name": {
+          "type": "string",
+          "const": "write"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "permission_policy": {
+          "$ref": "#/$defs/BetaManagedAgentsPermissionPolicy"
+        }
+      }
+    },
+    "BetaMonetaryAmount": {
+      "description": "A monetary amount in a specific currency.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currency",
+        "amount"
+      ],
+      "properties": {
+        "currency": {
+          "description": "Uppercase ISO-4217 currency code. `USD` is the only currency currently supported; the accepted set is closed and grows only when a new currency is priced.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaCurrency"
+            }
+          ]
+        },
+        "amount": {
+          "description": "Amount in minor units of the currency, as an integer decimal string with no leading zeros: \"2500\" is $25.00 and \"50\" is fifty cents. A string rather than a number so no float rounding is ever applied.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaTimestamp": {
+      "description": "A timestamp in RFC 3339 format",
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

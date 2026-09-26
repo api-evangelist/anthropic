@@ -1,0 +1,414 @@
+generated: '2026-09-23'
+method: searched
+source: >-
+  Artifacts already harvested this run (security/anthropic-trust-center.yml,
+  security/anthropic-vulnerability-disclosure.yml, lifecycle/anthropic-lifecycle.yml,
+  conformance/anthropic-conformance.yml) plus the provider's own published legal and
+  privacy documents at trust.anthropic.com/subprocessors, www.anthropic.com/transparency,
+  www.anthropic.com/transparency/system-trust-reporting, www.anthropic.com/legal/aup,
+  www.anthropic.com/legal/data-processing-addendum, www.anthropic.com/legal/commercial-terms,
+  and the Anthropic Privacy Center (privacy.claude.com/en) commercial-customer articles.
+checked: '2026-09-23'
+harvest_only: true
+harvest_only_note: >-
+  This file records WHAT Anthropic publishes on the horizontal regulatory layer
+  (AI, cyber, accessibility, privacy, product security). It does not decide which
+  regimes reach the company — that is the Kin Score regime map's job, not this
+  artifact's.
+summary: >-
+  Anthropic publishes an unusually complete horizontal posture: a public
+  Transparency Hub with dated Model Reports and semi-annual System Trust and
+  Reporting numbers (banned accounts, appeals, NCMEC / CSAM reporting, legal
+  requests), a Trust Center compliance matrix that maps six certifications (SOC 2
+  Type II, ISO 27001:2022, ISO/IEC 42001:2023, HIPAA/BAA, CSA STAR, FedRAMP High
+  for Claude for Government) across ten product surfaces, a named subprocessor
+  list (20+ entries with country and product scope), a Commercial DPA with EU
+  Standard Contractual Clauses auto-incorporated, US default data storage with
+  documented traffic-routing selection for Claude Developer Platform and
+  Enterprise plans, a 30-day default input/output retention window on the API
+  with an optional Zero Data Retention agreement for eligible APIs, a
+  no-training-on-commercial-inputs default, and a copyright / notice-and-action
+  channel. What is absent is an accessibility conformance report (no VPAT, no
+  WCAG statement), an SBOM in any format, a Global Privacy Control statement,
+  and a per-model long-term support commitment beyond the dated deprecation
+  policy already recorded in lifecycle/.
+signals:
+  subprocessors:
+    present: true
+    pointer_type: Subprocessors
+    url: https://trust.anthropic.com/subprocessors
+    alias_urls:
+    - https://www.anthropic.com/subprocessors
+    list_readable: true
+    list_readable_note: >-
+      The Trust Center is a Vanta-hosted SPA, but the subprocessor table renders
+      in the shell and was observed with named vendors, categories, countries
+      and product scope.
+    observed_entries:
+    - {vendor: Google Cloud Platform, category: Cloud infrastructure, location: Worldwide, scope: All Products}
+    - {vendor: Amazon Web Services, category: Cloud Infrastructure, location: Worldwide, scope: All Products}
+    - {vendor: Microsoft Azure, category: Cloud Infrastructure, location: Worldwide, scope: All Products}
+    - {vendor: Cloudflare, category: Traffic Routing (CDN), location: Worldwide (Local to Customer), scope: All Products}
+    - {vendor: Stripe, category: Billing, location: United States, scope: 'Claude Pro/Max, Claude Developer Platform, Claude for Work'}
+    - {vendor: WorkOS, category: 'Security, Single Sign-On', location: United States, scope: 'Claude for Work, Claude Developer Platform'}
+    - {vendor: Intercom, category: User support, location: United States, scope: All Products except Claude for Government}
+    - {vendor: Nutun, category: User support, location: South Africa, scope: All Products except Claude for Government}
+    - {vendor: Boldr, category: User support, location: Canada, scope: All Products except Claude for Government}
+    - {vendor: Twilio, category: 'Analytics, email/SMS communications', location: United States, scope: All Products except Claude for Government}
+    - {vendor: Iterable, category: Email communications, location: United States, scope: All Products except Claude for Government}
+    - {vendor: 'Functional Software (Sentry)', category: 'Error Handling, User Support', location: United States, scope: All products except Claude for Government}
+    - {vendor: Sift, category: Fraud and abuse detection, location: United States, scope: All products except Claude for Government}
+    - {vendor: Arkose Labs, category: Fraud and abuse detection, location: United States, scope: All products except Claude for Government}
+    - {vendor: Brave Search, category: Web Search, location: United States, scope: All products}
+    - {vendor: ElevenLabs, category: Text to speech, location: United States, scope: Claude for Work}
+    - {vendor: Palantir Federal Cloud Service (PFCS), category: FedRAMP Cloud, location: United States, scope: Claude for Government (C4G)}
+    - {vendor: TurboPuffer, category: Web Search, location: United States, scope: All Products except Claude for Government}
+    - {vendor: Persona, category: null, location: null, scope: null, note: 'Named in the list; observed count was 20 total entries.'}
+    entries_note: >-
+      Nineteen entries transcribed verbatim from the rendered page; page reports
+      "20 results" and pagination was not walked further. Persona is the 20th
+      entry visible in the tail of the observed slice.
+    obligations_published: true
+    obligations_note: >-
+      DPA is auto-incorporated into the Commercial Terms of Service and covers
+      subprocessor engagement obligations. See documents[].
+    probed:
+    - {url: 'https://trust.anthropic.com/subprocessors', status: 200}
+    - {url: 'https://www.anthropic.com/subprocessors', status: 200, note: 'Redirects to trust.anthropic.com/subprocessors.'}
+  data_residency:
+    present: true
+    pointer_type: DataResidency
+    url: https://privacy.claude.com/en/articles/7996890-where-are-your-servers-located-do-you-host-your-models-on-eu-servers
+    stated_region: >-
+      Default routing: US, Europe, Asia and Australia. Data is stored in the US.
+    stated_verbatim: >-
+      "By default, we may route customer traffic to select countries in the US,
+      Europe, Asia and Australia, unless otherwise agreed upon or at your
+      instructions. Note that data is stored in the US."
+    dated: '2026-06-15'
+    region_choice_available: true
+    region_choice_note: >-
+      Traffic-routing location is selectable for Claude Developer Platform users
+      and Enterprise Plan users on usage-based billing. The stored-data region
+      itself (US) is not user-selectable.
+    inference_geo_docs: https://platform.claude.com/docs/en/managed-agents/overview
+    inference_geo_note: >-
+      Managed Agents publishes an inference_geo pin (see changelog entry
+      2026-08-07) — the operational primitive that backs the routing selection
+      referenced above.
+    scope_note: >-
+      Article applies to commercial products (Claude Enterprise, Anthropic API).
+      Consumer products (Claude Free, Pro, Max) have a separate article.
+    probed: {url: 'https://privacy.claude.com/en/articles/7996890-where-are-your-servers-located-do-you-host-your-models-on-eu-servers', status: 200}
+  data_retention:
+    present: true
+    urls:
+    - https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data
+    - https://privacy.claude.com/en/articles/8956058-i-have-a-zero-data-retention-agreement-with-anthropic-what-products-does-it-apply-to
+    stated_period: >-
+      Anthropic API: inputs and outputs auto-deleted from the backend within 30
+      days of receipt or generation, except when a longer-retention service is
+      used (e.g. Files API), when contractually agreed otherwise (e.g. ZDR),
+      when needed to enforce the Usage Policy, or when required by law. Trust &
+      Safety-flagged content: inputs/outputs retained up to 2 years and
+      classifier scores up to 7 years.
+    stated_period_verbatim: >-
+      "For Anthropic API users, we automatically delete inputs and outputs on
+      our backend within 30 days of receipt or generation, except: When you use
+      a service with longer retention under your control (e.g. Files API);
+      When you and we have agreed otherwise (e.g. zero data retention
+      agreement); If we need to retain them for longer to enforce our Usage
+      Policy (UP); In compliance with the law."
+    dated: '2026-07-01'
+    covered_models_note: >-
+      Covered Models require limited data retention and review as part of
+      Anthropic's safety work; not eligible for ZDR.
+    zero_data_retention:
+      offered: true
+      audience: >-
+        Eligible Claude Platform (Claude API) organizations and Claude Code for
+        Enterprise plans — approved on a per-organization basis.
+      verbatim: >-
+        "Some Claude Platform (Claude API) and Claude Code for Enterprise
+        customers, subject to Anthropic's approval, may have arrangements under
+        which Anthropic does not store their inputs or outputs except where
+        needed to comply with law or combat misuse or harm. Under these
+        arrangements, Anthropic still retains User Safety classifier results in
+        order to enforce our Usage Policy."
+      source: https://privacy.claude.com/en/articles/8956058-i-have-a-zero-data-retention-agreement-with-anthropic-what-products-does-it-apply-to
+      note: >-
+        ZDR is an opt-in agreement approved per organization by Anthropic Sales,
+        not the default. Confirmation is visible under Settings > Privacy
+        Controls > Data retention period on the Claude Platform.
+    probed:
+    - {url: 'https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data', status: 200}
+    - {url: 'https://privacy.claude.com/en/articles/8956058-i-have-a-zero-data-retention-agreement-with-anthropic-what-products-does-it-apply-to', status: 200}
+  ai_transparency:
+    present: true
+    pointer_type: AITransparency
+    urls:
+    - https://www.anthropic.com/transparency
+    - https://www.anthropic.com/transparency/model-report
+    - https://www.anthropic.com/transparency/system-trust-reporting
+    - https://www.anthropic.com/transparency/voluntary-commitments
+    substance:
+    - >-
+      Dated Model Reports: per-model summaries covering description,
+      benchmarked capabilities, acceptable uses, release date, modalities,
+      architecture and training methodology, training data description, and
+      ASL / capability-tier classification. Latest observed: Claude Fable 5.1
+      (release date September 2026), deployed with "ASL-3 protections, treating
+      it as having CB-1 capabilities." Earlier models catalogued back through
+      Sonnet 3.7.
+    - >-
+      Semi-annual System Trust and Reporting page (last updated 2026-07-23)
+      publishing enforcement numbers — banned accounts, appeals, appeal
+      overturns, child-safety reporting to NCMEC broken out by hash-matching,
+      novel-classifier and CSAE, and government legal-request counts —
+      for the current half-year plus links to prior half-year reports back to
+      July–December 2024.
+    - >-
+      Voluntary Commitments hub cataloguing the frameworks Anthropic is signed
+      up to.
+    - >-
+      System Card / Model Card is where training-data disclosure lives; see the
+      training_data_summary signal.
+    substance_basis: >-
+      Dated, versioned model-safety reports with capability tiers and
+      quantitative enforcement reporting — well above a page that merely
+      mentions "responsible AI".
+    probed:
+    - {url: 'https://www.anthropic.com/transparency', status: 200}
+    - {url: 'https://www.anthropic.com/transparency/model-report', status: 200}
+    - {url: 'https://www.anthropic.com/transparency/system-trust-reporting', status: 200}
+    - {url: 'https://www.anthropic.com/transparency/voluntary-commitments', status: 200}
+  training_data_summary:
+    present: partial
+    pointer_type: TrainingDataSummary
+    urls:
+    - https://www.anthropic.com/transparency/model-report
+    what_is_published:
+    - >-
+      A one-paragraph training-data description in each Model Report, e.g. for
+      Claude Fable 5.1: "trained on a proprietary mix of publicly available
+      information from online sources, public and private datasets, user data,
+      and synthetic data generated by other models" with pre-training data
+      cleaning and filtering (including deduplication and classification).
+    - >-
+      A negative commitment for commercial customers: "By default, we will not
+      use your inputs or outputs from our commercial products (e.g. Claude for
+      Work, Anthropic API, Claude Gov, etc.) to train our models." Source:
+      https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training
+    - >-
+      A separate crawler-disclosure article on how site owners can block
+      Anthropic's web crawler.
+    what_is_absent:
+    - >-
+      An EU AI Act Article 53-style itemised public summary of training
+      content by source category, licensing status and scale.
+    - >-
+      A published training-cut-off date per model on the transparency hub
+      (release date is published; a hard training cut-off date is not).
+    verdict: >-
+      Recorded as PARTIAL. Anthropic publishes a Model-Report training-data
+      paragraph per model plus a strong commercial no-training-on-your-data
+      default, which is more than most peers, but not a formal
+      Article-53-style corpus summary. The negative commitment is a
+      data-handling commitment (recorded under data_retention), not a training
+      corpus summary.
+    probed: {url: 'https://www.anthropic.com/transparency/model-report', status: 200}
+  transparency_report:
+    present: true
+    pointer_type: TransparencyReport
+    url: https://www.anthropic.com/transparency/system-trust-reporting
+    dated: '2026-07-23'
+    cadence: semi-annual (H1 and H2 of each calendar year)
+    published_metrics:
+    - '11.4 million banned accounts (January – June 2026)'
+    - '398k appeals, 42k appeal overturns (January – June 2026)'
+    - 'Child safety reporting to NCMEC: 15,079 total, 12,614 hash-matching CSAM, 2,018 novel-classifier CSAM, 193 other CSAE (January – June 2026)'
+    - 'Legal-request handling policy plus counts'
+    prior_reports:
+    - 'July – December 2025'
+    - 'January – June 2025'
+    - 'July – December 2024'
+    probed: {url: 'https://www.anthropic.com/transparency/system-trust-reporting', status: 200}
+  data_subject_request:
+    present: true
+    pointer_type: DataSubjectRequest
+    urls:
+    - https://privacy.claude.com/en/articles/9267387-how-can-i-access-the-personal-information-that-anthropic-has-on-my-account
+    - https://privacy.anthropic.com/en/articles/9265372-who-owns-and-manages-the-data-of-my-team
+    mechanism: >-
+      In-product delete for commercial accounts (Team/Enterprise Primary Owners
+      can delete organisation data from Organization settings > Data and
+      privacy). For consumer accounts, delete conversations from the account
+      dashboard. Direct DSR contact is routed through the Privacy Center /
+      Trust Center.
+    controller_route: >-
+      Consumer users: self-service delete and account deletion from the app.
+    processor_route: >-
+      Commercial customers act as controllers; Anthropic acts as processor per
+      the DPA, forwarding DSRs to the customer.
+    probed:
+    - {url: 'https://privacy.claude.com/en/articles/9267387-how-can-i-access-the-personal-information-that-anthropic-has-on-my-account', status: 200}
+  exit_assistance:
+    present: true
+    pointer_type: ExitAssistance
+    url: https://privacy.claude.com/en/articles/13346720-export-your-organization-s-data
+    stated_sla: null
+    stated_period_verbatim: >-
+      "Primary Owners of Team and Enterprise plans can export organization data
+      from Organization settings > Data and privacy on the web app or Claude
+      Desktop... Once the export has been processed, you will receive a
+      download link via email... The download link will expire 24 hours after
+      delivery."
+    dated: '2026-06-12'
+    scope: >-
+      Team and Enterprise plan Primary Owners only. Individual members of
+      Team/Enterprise organisations have no self-serve export. Consumer users
+      (Free/Pro/Max) have a separate export flow.
+    caveat: >-
+      Deleted messages, files and projects — whether individually deleted or
+      removed by enterprise retention settings — are excluded from any export
+      initiated AFTER the deletion.
+    probed: {url: 'https://privacy.claude.com/en/articles/13346720-export-your-organization-s-data', status: 200}
+  notice_and_action:
+    present: partial
+    pointer_type: NoticeAndAction
+    url: https://privacy.claude.com/en/articles/7996901-i-think-a-user-is-infringing-my-copyright-or-other-intellectual-property-how-do-i-report-it
+    mechanism: >-
+      Copyright / IP-infringement notice — accepts DMCA-style claims via a form
+      or by mail to "Anthropic PBC, 548 Market Street PMB 90375, San Francisco,
+      CA 94104-5401, Attn: Legal / Copyright Agent" — plus a Usage Policy safety
+      report channel (usersafety@anthropic.com) documented in
+      https://www.anthropic.com/legal/aup.
+    consequence: >-
+      "Suspension or termination of the accounts of repeat copyright
+      infringers."
+    what_is_absent: >-
+      No DSA-aligned generic notice-and-action page for illegal content beyond
+      IP; no acknowledgement-window or statement of trusted-flagger process.
+    verdict: >-
+      Recorded as PARTIAL. There is a real notice-and-action channel (a DMCA
+      pipeline plus a safety-report address) but no unified illegal-content
+      notice-and-action page.
+    probed:
+    - {url: 'https://privacy.claude.com/en/articles/7996901-i-think-a-user-is-infringing-my-copyright-or-other-intellectual-property-how-do-i-report-it', status: 200}
+    - {url: 'https://www.anthropic.com/legal/aup', status: 200}
+  incident_notification:
+    present: partial
+    pointer_type: IncidentNotification
+    urls:
+    - https://www.anthropic.com/legal/data-processing-addendum
+    - https://status.anthropic.com/
+    stated_sla: null
+    stated_sla_note: >-
+      DPA is auto-incorporated into the Commercial Terms of Service and
+      includes an incident-notification clause per standard SCC construction,
+      but the exact window was not captured verbatim from a fetchable page
+      slice, so no SLA number is recorded here. Do not invent one.
+    status_page:
+      url: https://status.anthropic.com/
+      note: >-
+        Operational incident timeline is public on the status page (a real-time
+        signal, not the contractual notification window).
+    probed:
+    - {url: 'https://www.anthropic.com/legal/data-processing-addendum', status: 200}
+    - {url: 'https://status.anthropic.com/', status: 200}
+  age_assurance:
+    present: false
+    note: >-
+      Anthropic's Consumer Terms of Service and Privacy Policy establish
+      minimum age requirements but no age-assurance technology (age-gate,
+      third-party verification, tokenised age signals) is documented at a
+      public URL discoverable here.
+  global_privacy_control:
+    present: false
+    honored: null
+    honored_note: >-
+      DELIBERATELY NULL, not false. No published Sec-GPC / GPC statement was
+      located. Per the pipeline rule, `honored` is set only from a published
+      statement and never by sending a Sec-GPC header, so it stays unset.
+  accessibility_conformance:
+    present: false
+    probed:
+    - {url: 'https://www.anthropic.com/accessibility', status: 404}
+    - {url: 'https://www.anthropic.com/legal/accessibility', status: 404}
+    - {url: 'https://trust.anthropic.com/accessibility', status: 200, note: 'Trust Center SPA shell; the /accessibility path renders the standard Vanta trust page, no VPAT or WCAG conformance statement is served there.'}
+    note: >-
+      No VPAT (Voluntary Product Accessibility Template), no WCAG 2.x / EN
+      301 549 conformance statement, no accessibility page in the Trust
+      Center resources index.
+  sbom:
+    present: false
+    probed:
+    - {url: 'https://www.anthropic.com/security/sbom', status: 404}
+    note: >-
+      No SBOM in SPDX, CycloneDX or SWID format at any probed path, and none is
+      derived — a bill of materials asserts what is inside a build nobody here
+      has seen, so this signal is search-only by rule.
+  support_lifetime:
+    present: partial
+    pointer_type: SupportLifetime
+    url: https://platform.claude.com/docs/en/about-claude/model-deprecations
+    stated_period: >-
+      Model retirements are announced in the Claude Platform release notes with
+      a dated retirement, on the model-deprecations page. Retired models return
+      an error. No fixed minimum support window per model is committed.
+    verdict: >-
+      Recorded as PARTIAL. There is a per-model DEPRECATION policy with a
+      published retirement DATE (see lifecycle/anthropic-lifecycle.yml), but no
+      minimum-support-lifetime commitment per model or per API-version header.
+    cross_link: lifecycle/anthropic-lifecycle.yml
+  privacy_framework_terms:
+    present: true
+    regimes_named_by_provider:
+    - regime: GDPR
+      evidence: >-
+        DPA with EU Standard Contractual Clauses (auto-incorporated via
+        Commercial Terms). EU data-processing options documented in the
+        privacy center.
+    - regime: HIPAA
+      evidence: >-
+        HIPAA-ready configuration with a Business Associate Agreement (BAA)
+        available for eligible Claude Enterprise organisations that activate
+        HIPAA compliance in org settings; source
+        privacy.claude.com/en/articles/8114513.
+    - regime: CCPA
+      evidence: >-
+        Consumer Terms and Privacy Policy reference the California Consumer
+        Privacy Act; consumer accounts have self-service delete.
+    - regime: DSA (copyright / IP)
+      evidence: >-
+        Copyright notice-and-action pipeline (DMCA-shaped) at
+        privacy.claude.com/en/articles/7996901. Not a full DSA
+        notice-and-action mechanism — recorded under notice_and_action.
+    note: >-
+      Recorded as the provider's OWN naming of regimes in its contracts. It is
+      not a determination that any regime applies — that is the regime map's
+      decision.
+documents:
+- {name: Commercial Terms of Service, url: 'https://www.anthropic.com/legal/commercial-terms', status: 200}
+- {name: Data Processing Addendum (DPA), url: 'https://www.anthropic.com/legal/data-processing-addendum', status: 200}
+- {name: Usage Policy (AUP), url: 'https://www.anthropic.com/legal/aup', status: 200}
+- {name: Consumer Terms of Service, url: 'https://www.anthropic.com/legal/consumer-terms', status: 200}
+- {name: Transparency Hub, url: 'https://www.anthropic.com/transparency', status: 200}
+- {name: 'Transparency: Model Report', url: 'https://www.anthropic.com/transparency/model-report', status: 200}
+- {name: 'Transparency: System Trust and Reporting', url: 'https://www.anthropic.com/transparency/system-trust-reporting', status: 200}
+- {name: 'Transparency: Voluntary Commitments', url: 'https://www.anthropic.com/transparency/voluntary-commitments', status: 200}
+- {name: Trust Center, url: 'https://trust.anthropic.com/', status: 200}
+- {name: 'Trust Center: Subprocessors', url: 'https://trust.anthropic.com/subprocessors', status: 200}
+- {name: 'Trust Center: FAQ', url: 'https://trust.anthropic.com/faq', status: 200}
+- {name: Privacy Center (index), url: 'https://privacy.claude.com/en', status: 200}
+- {name: 'Privacy Center: Commercial Customers', url: 'https://privacy.claude.com/en/collections/10663361-commercial-customers', status: 200}
+- {name: Product security page, url: 'https://www.anthropic.com/product/security', status: 200}
+- {name: Responsible Disclosure Policy, url: 'https://www.anthropic.com/responsible-disclosure-policy', status: 200}
+- {name: Status page, url: 'https://status.anthropic.com/', status: 200}
+cross_links:
+  trust_center: security/anthropic-trust-center.yml
+  vulnerability_disclosure: security/anthropic-vulnerability-disclosure.yml
+  domain_security: security/anthropic-domain-security.yml
+  conformance: conformance/anthropic-conformance.yml
+  lifecycle: lifecycle/anthropic-lifecycle.yml
+  authentication: authentication/anthropic-authentication.yml

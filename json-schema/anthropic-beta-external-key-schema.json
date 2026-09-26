@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-external-key-schema.json",
+  "title": "ExternalKey",
+  "description": "CMEK external key config belonging to the caller's organization.\n\nConfigs are organization-scoped. Workspaces attach to a config; once any\nworkspace references it, the provider fields become effectively immutable\n(existing encrypted data needs the config for decrypt).",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-organizations-api-openapi.yml#/components/schemas/BetaExternalKey",
+  "properties": {
+    "attachment": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaAttachedAttachment"
+        },
+        {
+          "$ref": "#/$defs/BetaUnattachedAttachment"
+        }
+      ],
+      "title": "Attachment",
+      "description": "Whether any workspace uses this config to encrypt its data — counting live and archived workspaces (an archived workspace's data remains encrypted under the config), excluding deleted ones. Only an attached config is used by the encryption path; an `unattached` config is inert and can be deleted."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At"
+    },
+    "display_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Display Name",
+      "description": "Human-friendly display name. Null if none was set."
+    },
+    "geo": {
+      "type": "string",
+      "title": "Geo",
+      "description": "Data residency geo. Selects which regional validator handles this key's encrypt/decrypt roundtrips."
+    },
+    "id": {
+      "type": "string",
+      "title": "Id",
+      "description": "Identifier of the external key config. A tagged ID prefixed `ekey_`, or — for organizations on the Claude Platform on AWS — the AWS KMS key ARN."
+    },
+    "provider_config": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaAwsExternalKeyConfig"
+        },
+        {
+          "$ref": "#/$defs/BetaGcpExternalKeyConfig"
+        },
+        {
+          "$ref": "#/$defs/BetaAzureExternalKeyConfig"
+        }
+      ],
+      "title": "Provider Config",
+      "description": "KMS provider identity and auth coordinates."
+    },
+    "type": {
+      "type": "string",
+      "const": "external_key",
+      "title": "Type",
+      "default": "external_key"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
+    }
+  },
+  "type": "object",
+  "required": [
+    "attachment",
+    "created_at",
+    "display_name",
+    "geo",
+    "id",
+    "provider_config",
+    "type",
+    "updated_at"
+  ],
+  "$defs": {
+    "BetaAttachedAttachment": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "attached",
+          "title": "Type",
+          "default": "attached"
+        }
+      },
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "title": "AttachedAttachment"
+    },
+    "BetaAwsExternalKeyConfig": {
+      "properties": {
+        "kms_arn": {
+          "type": "string",
+          "maxLength": 2048,
+          "title": "Kms Arn",
+          "description": "Full ARN of the AWS KMS key."
+        },
+        "region": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Region",
+          "description": "AWS region. Derived from `kms_arn` if omitted."
+        },
+        "role_arn": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Role Arn",
+          "description": "IAM role ARN. Deprecated — Anthropic reaches the KMS key via a managed intermediate role; this field is ignored.",
+          "deprecated": true
+        },
+        "type": {
+          "type": "string",
+          "const": "aws",
+          "title": "Type"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "kms_arn",
+        "type"
+      ],
+      "title": "AwsExternalKeyConfig"
+    },
+    "BetaAzureExternalKeyConfig": {
+      "properties": {
+        "client_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Client Id",
+          "description": "Azure AD application (client) ID. Omit to use Anthropic's multitenant app. Provide only if using a single-tenant app registration in the customer's directory."
+        },
+        "key_name": {
+          "type": "string",
+          "title": "Key Name",
+          "description": "Name of the key within the vault."
+        },
+        "tenant_id": {
+          "type": "string",
+          "title": "Tenant Id",
+          "description": "Azure AD tenant ID."
+        },
+        "type": {
+          "type": "string",
+          "const": "azure",
+          "title": "Type"
+        },
+        "vault_uri": {
+          "type": "string",
+          "title": "Vault Uri",
+          "description": "Key Vault data-plane URI — `https://{vault-name}.vault.azure.net` or `https://{hsm-name}.managedhsm.azure.net`."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "key_name",
+        "tenant_id",
+        "type",
+        "vault_uri"
+      ],
+      "title": "AzureExternalKeyConfig"
+    },
+    "BetaGcpExternalKeyConfig": {
+      "properties": {
+        "key_name": {
+          "type": "string",
+          "title": "Key Name",
+          "description": "Full resource name of the Cloud KMS key."
+        },
+        "type": {
+          "type": "string",
+          "const": "gcp",
+          "title": "Type"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "key_name",
+        "type"
+      ],
+      "title": "GcpExternalKeyConfig"
+    },
+    "BetaUnattachedAttachment": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "unattached",
+          "title": "Type",
+          "default": "unattached"
+        }
+      },
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "title": "UnattachedAttachment"
+    }
+  }
+}

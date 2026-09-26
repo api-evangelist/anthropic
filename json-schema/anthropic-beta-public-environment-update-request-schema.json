@@ -1,0 +1,347 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-public-environment-update-request-schema.json",
+  "title": "PublicEnvironmentUpdateRequest",
+  "description": "Public API request to update an environment (without org/account fields).",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-environments-api-openapi.yml#/components/schemas/BetaPublicEnvironmentUpdateRequest",
+  "properties": {
+    "config": {
+      "anyOf": [
+        {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/BetaCloudConfigParams"
+            },
+            {
+              "$ref": "#/$defs/BetaSelfHostedConfigParams",
+              "x-anthropic-beta-required": [
+                "managed-agents-2026-04-01"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Config",
+      "description": "Updated environment configuration"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 1024
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Description",
+      "description": "Updated description of the environment. Omit to preserve; null clears to null; an empty string is stored as an empty string."
+    },
+    "metadata": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "type": "object",
+      "title": "Metadata",
+      "description": "User-provided metadata key-value pairs. Set a value to null or empty string to delete the key."
+    },
+    "name": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 256,
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Name",
+      "description": "Updated name for the environment"
+    },
+    "scope": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "organization",
+            "account"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Scope",
+      "description": "The visibility scope for this environment. 'organization' makes the environment visible to all accounts. 'account' restricts visibility to the owning account only.",
+      "x-anthropic-beta-required": [
+        "managed-agents-2026-04-01"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "$defs": {
+    "BetaCloudConfigParams": {
+      "properties": {
+        "networking": {
+          "anyOf": [
+            {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/BetaUnrestrictedNetwork"
+                },
+                {
+                  "$ref": "#/$defs/BetaLimitedNetworkParams",
+                  "x-anthropic-beta-required": [
+                    "managed-agents-2026-04-01"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Networking",
+          "description": "Network configuration policy. Omit on update to preserve the existing value."
+        },
+        "packages": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaPackagesParams"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Package manager configuration. Under `limited` networking, requires `networking.allow_package_managers` to be `true`. Omit on update to preserve the existing value.",
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "const": "cloud",
+          "title": "Type",
+          "description": "Environment type"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "title": "CloudConfigParams",
+      "description": "Request params for `cloud` environment configuration.\n\nFields default to null; on update, omitted fields preserve the\nexisting value."
+    },
+    "BetaLimitedNetworkParams": {
+      "properties": {
+        "allow_mcp_servers": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Allow Mcp Servers",
+          "description": "Permits outbound access to MCP server endpoints configured on the agent, beyond those listed in the `allowed_hosts` array. Defaults to `false`."
+        },
+        "allow_package_managers": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Allow Package Managers",
+          "description": "Permits outbound access to public package registries (PyPI, npm, etc.) beyond those listed in the `allowed_hosts` array. Defaults to `false` on creation. Must be `true` when `packages` are specified."
+        },
+        "allowed_hosts": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Allowed Hosts",
+          "description": "Specifies domains the container can reach."
+        },
+        "type": {
+          "type": "string",
+          "const": "limited",
+          "title": "Type",
+          "description": "Network policy type"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "title": "LimitedNetworkParams",
+      "description": "Limited network request params.\n\nFields default to null; on update, omitted fields preserve the\nexisting value."
+    },
+    "BetaPackagesParams": {
+      "properties": {
+        "apt": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Apt",
+          "description": "Ubuntu/Debian packages to install"
+        },
+        "cargo": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cargo",
+          "description": "Rust packages to install"
+        },
+        "gem": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Gem",
+          "description": "Ruby packages to install"
+        },
+        "go": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Go",
+          "description": "Go packages to install"
+        },
+        "npm": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Npm",
+          "description": "Node.js packages to install"
+        },
+        "pip": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Pip",
+          "description": "Python packages to install"
+        },
+        "type": {
+          "type": "string",
+          "const": "packages",
+          "title": "Type",
+          "description": "Package configuration type",
+          "default": "packages"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "title": "PackagesParams",
+      "description": "Specify packages (and optionally their versions) available in this environment.\n\nWhen versioning, use the version semantics relevant for the package manager, e.g. for `pip` use `package==1.0.0`. You are responsible for validating the package and version exist. Unversioned installs the latest.\n\nUnder `limited` networking, requires `networking.allow_package_managers` to be `true`."
+    },
+    "BetaSelfHostedConfigParams": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "self_hosted",
+          "title": "Type",
+          "description": "Environment type"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "title": "SelfHostedConfigParams",
+      "description": "Request params for `self_hosted` environment configuration."
+    },
+    "BetaUnrestrictedNetwork": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "unrestricted",
+          "title": "Type",
+          "description": "Network policy type"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "title": "UnrestrictedNetwork",
+      "description": "Unrestricted network access."
+    }
+  }
+}

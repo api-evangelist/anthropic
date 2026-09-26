@@ -1,0 +1,969 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-managed-agents-create-deployment-params-schema.json",
+  "title": "BetaManagedAgentsCreateDeploymentParams",
+  "description": "Request parameters for creating a `deployment`.",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-deployments-beta-true-api-openapi.yml#/components/schemas/BetaManagedAgentsCreateDeploymentParams",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "agent",
+    "environment_id",
+    "initial_events"
+  ],
+  "properties": {
+    "name": {
+      "description": "Human-readable name for the deployment.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "description": {
+      "description": "Description of what the deployment does.",
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 2048
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "agent": {
+      "description": "Agent to deploy. Accepts the `agent` ID string, which pins the latest version, or an `agent` object with both id and version specified. The agent must exist and not be archived.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsAgentUnionParams"
+        }
+      ]
+    },
+    "environment_id": {
+      "description": "ID of the `environment` defining the container configuration for sessions created from this deployment.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "vault_ids": {
+      "description": "Vault IDs for stored credentials the agent can use during sessions created from this deployment. Maximum 50.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "initial_events": {
+      "description": "Events to send to each session immediately after creation. At least 1, maximum 50.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/BetaManagedAgentsDeploymentInitialEventParams"
+      }
+    },
+    "resources": {
+      "description": "Resources (e.g. repositories, files) to mount into each session's container. Maximum 500.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/BetaManagedAgentsSessionResourceParams"
+      }
+    },
+    "metadata": {
+      "description": "Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 chars, values up to 512 chars.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "schedule": {
+      "description": "Optional recurring cron schedule. When present, the deployment fires automatically. Both expression and timezone are required when schedule is set.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsScheduleParams"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "budget": {
+      "description": "Enforced spend ceiling stamped onto each session created from this deployment, copied at session-creation time. Omit to leave sessions uncapped. The deployment agent's model must have a public list price, or the request is rejected; a multiagent roster is re-validated in full when each fire copies the cap, which fails closed the same way.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsBudget"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-anthropic-beta-required": [
+        "managed-agents-2026-04-01"
+      ]
+    }
+  },
+  "$defs": {
+    "BetaCurrency": {
+      "type": "string",
+      "enum": [
+        "USD"
+      ]
+    },
+    "BetaManagedAgentsAgentParams": {
+      "description": "Specification for an Agent. Provide a specific `version` or use the short-form `agent=\"agent_id\"` for the most recent version",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "agent"
+          ]
+        },
+        "id": {
+          "description": "The `agent` ID.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "version": {
+          "description": "The specific `agent` version to use. Omit to use the latest version. Must be at least 1 if specified.",
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "BetaManagedAgentsAgentUnionParams": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsAgentParams"
+            }
+          ]
+        }
+      ]
+    },
+    "BetaManagedAgentsBase64DocumentSource": {
+      "description": "Base64-encoded document data.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "media_type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "base64"
+          ]
+        },
+        "media_type": {
+          "description": "MIME type of the document (e.g., \"application/pdf\").",
+          "type": "string",
+          "minLength": 1
+        },
+        "data": {
+          "description": "Base64-encoded document data.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsBase64ImageSource": {
+      "description": "Base64-encoded image data.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "media_type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "base64"
+          ]
+        },
+        "media_type": {
+          "description": "MIME type of the image (e.g., \"image/png\", \"image/jpeg\", \"image/gif\", \"image/webp\").",
+          "type": "string",
+          "minLength": 1
+        },
+        "data": {
+          "description": "Base64-encoded image data.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsBranchCheckout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "branch"
+          ]
+        },
+        "name": {
+          "description": "Branch name to check out.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        }
+      }
+    },
+    "BetaManagedAgentsBudget": {
+      "description": "An enforced spend ceiling on a session. Discriminated on `type`; `limit` is the only kind currently supported.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsBudgetLimit"
+        }
+      ]
+    },
+    "BetaManagedAgentsBudgetLimit": {
+      "description": "A hard spend ceiling. The session stops issuing new model requests once the tracked list cost reaches `max_list_cost`.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "max_list_cost"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "limit"
+          ]
+        },
+        "max_list_cost": {
+          "description": "Maximum list cost the session may accrue. List price is used regardless of any negotiated discount, so the cap fires at or before the actual charge.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaMonetaryAmount"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsCommitCheckout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "sha"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "commit"
+          ]
+        },
+        "sha": {
+          "description": "Full commit SHA to check out.",
+          "type": "string",
+          "minLength": 7,
+          "maxLength": 64
+        }
+      }
+    },
+    "BetaManagedAgentsCronScheduleParams": {
+      "description": "5-field POSIX cron schedule. Literal wall-clock matching in the configured timezone.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "expression",
+        "timezone"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "cron"
+          ]
+        },
+        "expression": {
+          "description": "5-field POSIX cron expression: minute hour day-of-month month day-of-week (e.g., \"0 9 * * 1-5\" for weekdays at 9am). Day-of-week is 0-7 where 0 and 7 both mean Sunday. Extended cron syntax - seconds or year fields, and the special characters L, W, #, and ? - is not supported, nor are predefined shortcuts (@daily).",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "timezone": {
+          "description": "Required. IANA timezone identifier (e.g., \"America/Los_Angeles\", \"UTC\"). Validated against the IANA timezone database.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsDeploymentInitialEventParams": {
+      "description": "An event sent to a session immediately after it is created. Supports `user.message`, `user.define_outcome`, and `system.message`.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsUserMessageEventParams"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsUserDefineOutcomeEventParams"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsSystemMessageEventParams"
+        }
+      ]
+    },
+    "BetaManagedAgentsDocumentBlock": {
+      "description": "Document content, either specified directly as base64 data, as text, or as a reference via a URL.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "source"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "document"
+          ]
+        },
+        "source": {
+          "description": "The source of the document data.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsDocumentSource"
+            }
+          ]
+        },
+        "title": {
+          "description": "The title of the document.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "context": {
+          "description": "Additional context about the document for the model.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsDocumentSource": {
+      "description": "Union type for document source variants.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsBase64DocumentSource"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsPlainTextDocumentSource"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsURLDocumentSource"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsFileDocumentSource"
+        }
+      ]
+    },
+    "BetaManagedAgentsFileDocumentSource": {
+      "description": "Document referenced by file ID.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "file_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "file"
+          ]
+        },
+        "file_id": {
+          "description": "ID of a previously uploaded file.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsFileImageSource": {
+      "description": "Image referenced by file ID.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "file_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "file"
+          ]
+        },
+        "file_id": {
+          "description": "ID of a previously uploaded file.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsFileResourceParams": {
+      "description": "Mount a file uploaded via the Files API into the session.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "file_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "file"
+          ]
+        },
+        "file_id": {
+          "description": "ID of a previously uploaded file.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "mount_path": {
+          "description": "Mount path in the container. Defaults to `/mnt/session/uploads/<file_id>`.",
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsFileRubricParams": {
+      "description": "Rubric referenced by a file uploaded via the Files API.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "file_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "file"
+          ]
+        },
+        "file_id": {
+          "description": "ID of the rubric file.",
+          "type": "string"
+        }
+      }
+    },
+    "BetaManagedAgentsGitHubRepositoryResourceParams": {
+      "description": "Mount a GitHub repository into the session's container.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "url",
+        "authorization_token"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "github_repository"
+          ]
+        },
+        "url": {
+          "description": "Github URL of the repository",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "authorization_token": {
+          "description": "GitHub authorization token used to clone the repository.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "mount_path": {
+          "description": "Mount path in the container. Defaults to `/workspace/<repo-name>`.",
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "checkout": {
+          "description": "Branch or commit to check out. Defaults to the repository's default branch.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsRepositoryCheckout"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsImageBlock": {
+      "description": "Image content specified directly as base64 data or as a reference via a URL.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "source"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "image"
+          ]
+        },
+        "source": {
+          "description": "The source of the image data.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsImageSource"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsImageSource": {
+      "description": "Union type for image source variants.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsBase64ImageSource"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsURLImageSource"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsFileImageSource"
+        }
+      ]
+    },
+    "BetaManagedAgentsMemoryStoreResourceParam": {
+      "description": "Parameters for attaching a memory store to an agent session.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "memory_store_id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "memory_store"
+          ]
+        },
+        "memory_store_id": {
+          "description": "The memory store ID (memstore_...). Must belong to the caller's organization and workspace.",
+          "type": "string"
+        },
+        "access": {
+          "description": "Access mode for the mounted store. Defaults to read_write. read_only mounts the store as a read-only filesystem.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsMountMode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "instructions": {
+          "description": "Per-attachment guidance for the agent on how to use this store. Rendered into the memory section of the system prompt. Max 4096 chars.",
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 4096
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-anthropic-beta-required": [
+            "agent-memory-2026-07-22",
+            "managed-agents-2026-04-01"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsMountMode": {
+      "type": "string",
+      "description": "Access mode for an attached memory store.",
+      "enum": [
+        "read_write",
+        "read_only"
+      ]
+    },
+    "BetaManagedAgentsPlainTextDocumentSource": {
+      "description": "Plain text document content.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "media_type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text"
+          ]
+        },
+        "media_type": {
+          "description": "MIME type of the text content. Must be \"text/plain\".",
+          "type": "string",
+          "enum": [
+            "text/plain"
+          ]
+        },
+        "data": {
+          "description": "The plain text content.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsRedactedBlock": {
+      "description": "Placeholder for content withheld by Anthropic model policy.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "redacted"
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsRepositoryCheckout": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsBranchCheckout"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsCommitCheckout"
+        }
+      ]
+    },
+    "BetaManagedAgentsRubricParams": {
+      "description": "Rubric for grading the quality of an outcome.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsFileRubricParams"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsTextRubricParams"
+        }
+      ]
+    },
+    "BetaManagedAgentsScheduleParams": {
+      "description": "A recurring schedule. Discriminated union — only cron is supported currently.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsCronScheduleParams"
+        }
+      ]
+    },
+    "BetaManagedAgentsSessionResourceParams": {
+      "description": "Union of resources that can be mounted into a session.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsGitHubRepositoryResourceParams"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsFileResourceParams"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsMemoryStoreResourceParam"
+        }
+      ]
+    },
+    "BetaManagedAgentsSystemContentBlock": {
+      "description": "Content block in a mid-conversation system message. Text-only.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsTextBlock"
+        }
+      ]
+    },
+    "BetaManagedAgentsSystemMessageEventParams": {
+      "description": "Privileged context for the accompanying turn and all subsequent turns, appended to the session's system context as a `role: \"system\"` turn rather than replacing the top-level system prompt. At most one per request: it must be the final event and immediately follow the `user.message`, `user.tool_result`, or `user.custom_tool_result` it accompanies. Only supported on models that accept mid-conversation system messages.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "content"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "system.message"
+          ]
+        },
+        "content": {
+          "description": "System content blocks to append. Text-only.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsSystemContentBlock"
+          }
+        }
+      }
+    },
+    "BetaManagedAgentsTextBlock": {
+      "description": "Regular text content.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "text"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text"
+          ]
+        },
+        "text": {
+          "description": "The text content.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsTextRubricParams": {
+      "description": "Rubric content provided inline as text.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "content"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text"
+          ]
+        },
+        "content": {
+          "description": "Rubric content. Plain text or markdown — the grader treats it as freeform text. Maximum 262144 characters.",
+          "type": "string",
+          "maxLength": 262144
+        }
+      }
+    },
+    "BetaManagedAgentsURLDocumentSource": {
+      "description": "Document referenced by URL.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "url"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "url"
+          ]
+        },
+        "url": {
+          "description": "URL of the document to fetch.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsURLImageSource": {
+      "description": "Image referenced by URL.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "url"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "url"
+          ]
+        },
+        "url": {
+          "description": "URL of the image to fetch.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "BetaManagedAgentsUserContentBlock": {
+      "description": "Content block in a user message. Can be `text`, `image`, or `document`.",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaManagedAgentsTextBlock"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsImageBlock"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsDocumentBlock"
+        },
+        {
+          "$ref": "#/$defs/BetaManagedAgentsRedactedBlock"
+        }
+      ]
+    },
+    "BetaManagedAgentsUserDefineOutcomeEventParams": {
+      "description": "Parameters for defining an outcome the agent should work toward. The agent begins work on receipt.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "description",
+        "rubric"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "user.define_outcome"
+          ]
+        },
+        "description": {
+          "description": "What the agent should produce. This is the task specification.",
+          "type": "string"
+        },
+        "rubric": {
+          "description": "How to grade the outcome. Text or file reference.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaManagedAgentsRubricParams"
+            }
+          ]
+        },
+        "max_iterations": {
+          "description": "Eval→revision cycles before giving up. Default 3, max 20.",
+          "anyOf": [
+            {
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaManagedAgentsUserMessageEventParams": {
+      "description": "Parameters for sending a user message to the session.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "content"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "user.message"
+          ]
+        },
+        "content": {
+          "description": "Array of content blocks for the user message.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BetaManagedAgentsUserContentBlock"
+          }
+        }
+      }
+    },
+    "BetaMonetaryAmount": {
+      "description": "A monetary amount in a specific currency.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currency",
+        "amount"
+      ],
+      "properties": {
+        "currency": {
+          "description": "Uppercase ISO-4217 currency code. `USD` is the only currency currently supported; the accepted set is closed and grows only when a new currency is priced.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaCurrency"
+            }
+          ]
+        },
+        "amount": {
+          "description": "Amount in minor units of the currency, as an integer decimal string with no leading zeros: \"2500\" is $25.00 and \"50\" is fifty cents. A string rather than a number so no float rounding is ever applied.",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-rotate-tunnel-token-request-body-schema.json",
+  "title": "BetaRotateTunnelTokenRequestBody",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-tunnels-api-openapi.yml#/components/schemas/BetaRotateTunnelTokenRequestBody",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "reason": {
+      "description": "Optional free-text reason for the rotation, recorded for audit.",
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 1024
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-workspace-member-deleted-response-schema.json",
+  "title": "WorkspaceMemberDeletedResponse",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-workspace-members-api-openapi.yml#/components/schemas/WorkspaceMemberDeletedResponse",
+  "type": "object",
+  "required": [
+    "type",
+    "user_id",
+    "workspace_id"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "workspace_member_deleted"
+      ],
+      "default": "workspace_member_deleted",
+      "description": "Deletion confirmation type"
+    },
+    "user_id": {
+      "type": "string",
+      "description": "ID of the removed user"
+    },
+    "workspace_id": {
+      "type": "string",
+      "description": "ID of the workspace"
+    }
+  }
+}

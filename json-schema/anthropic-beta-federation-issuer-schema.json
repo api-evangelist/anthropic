@@ -1,0 +1,310 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-federation-issuer-schema.json",
+  "title": "FederationIssuer",
+  "description": "Registered external OIDC identity provider.\n\nRecords an external IdP the organization trusts for the RFC 7523\njwt-bearer grant. The `issuer_url` must match the JWT `iss` claim exactly.",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-organizations-api-openapi.yml#/components/schemas/BetaFederationIssuer",
+  "properties": {
+    "archived_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Archived At",
+      "description": "If set, all rules referencing this issuer reject token exchange."
+    },
+    "archived_by_actor_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Archived By Actor Id",
+      "description": "Tagged ID (`user_`/`svac_`) of the actor that archived this issuer."
+    },
+    "check_jti": {
+      "type": "boolean",
+      "title": "Check Jti",
+      "description": "Whether the jwt-bearer exchange enforces JTI single-use (replay protection) for tokens from this issuer. Applies only to assertions carrying a `jti` claim; tokens without one are accepted without single-use enforcement."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At",
+      "description": "When this issuer was created."
+    },
+    "created_by_actor_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Created By Actor Id",
+      "description": "Tagged ID (`user_`/`svac_`) of the actor that created this issuer."
+    },
+    "id": {
+      "type": "string",
+      "title": "Id",
+      "description": "Tagged ID of the federation issuer."
+    },
+    "issuer_url": {
+      "type": "string",
+      "title": "Issuer Url",
+      "description": "The `iss` claim value. Incoming JWTs must match exactly."
+    },
+    "jwks": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaJwksDiscovery"
+        },
+        {
+          "$ref": "#/$defs/BetaJwksExplicitUrl"
+        },
+        {
+          "$ref": "#/$defs/BetaJwksInline"
+        }
+      ],
+      "title": "Jwks",
+      "description": "How signing keys are obtained for signature verification."
+    },
+    "jwks_polling_disabled_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Jwks Polling Disabled At",
+      "description": "If set, Anthropic's JWKS poller has paused polling for this issuer after repeated fetch failures. Re-enable by sending `jwks_polling_disabled: false` via the issuer update endpoint (POST) once the upstream JWKS endpoint is fixed. An OAuth caller cannot send this when the issuer backs a rule with any scope other than `workspace:developer` or `workspace:inference`; use a Console session."
+    },
+    "max_jwt_lifetime_seconds": {
+      "type": "integer",
+      "title": "Max Jwt Lifetime Seconds",
+      "description": "Maximum allowed iat→exp spread for assertions from this issuer (1-176400 seconds, i.e. up to 49h). Assertions must carry both `iat` and `exp`; a missing `iat` is rejected."
+    },
+    "name": {
+      "type": "string",
+      "title": "Name",
+      "description": "Admin-chosen slug identifier."
+    },
+    "poll_status": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BetaIssuerPollStatus"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Live state of Anthropic's JWKS polling for this issuer. Populated on both single-issuer retrieval and list responses, including archived issuers. Typically null for inline-key issuers (no polling), or when poll status is temporarily unavailable or polling has not started yet."
+    },
+    "type": {
+      "type": "string",
+      "const": "federation_issuer",
+      "title": "Type",
+      "default": "federation_issuer"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At",
+      "description": "When this issuer was last updated."
+    },
+    "updated_by_actor_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Updated By Actor Id",
+      "description": "Tagged ID (`user_`/`svac_`) of the actor that last updated this issuer."
+    }
+  },
+  "type": "object",
+  "required": [
+    "archived_at",
+    "archived_by_actor_id",
+    "check_jti",
+    "created_at",
+    "created_by_actor_id",
+    "id",
+    "issuer_url",
+    "jwks",
+    "jwks_polling_disabled_at",
+    "max_jwt_lifetime_seconds",
+    "name",
+    "poll_status",
+    "type",
+    "updated_at",
+    "updated_by_actor_id"
+  ],
+  "$defs": {
+    "BetaIssuerPollStatus": {
+      "properties": {
+        "consecutive_failures": {
+          "type": "integer",
+          "title": "Consecutive Failures",
+          "description": "Consecutive fetch failures since the last success."
+        },
+        "last_fetched_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Last Fetched At",
+          "description": "When the last successful fetch completed."
+        },
+        "next_poll_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Next Poll At",
+          "description": "When the next fetch is scheduled. Null if paused."
+        }
+      },
+      "type": "object",
+      "required": [
+        "consecutive_failures",
+        "last_fetched_at",
+        "next_poll_at"
+      ],
+      "title": "IssuerPollStatus",
+      "description": "Status of automatic JWKS polling for a federation issuer.\n\nAnthropic periodically fetches the issuer's signing keys in the\nbackground. These fields summarize the most recent fetches so the\nhealth of the JWKS endpoint can be monitored."
+    },
+    "BetaJwksDiscovery": {
+      "properties": {
+        "ca_cert_pem": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 8192
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Ca Cert Pem",
+          "description": "Optional custom CA (PEM) for TLS verification of the JWKS fetch."
+        },
+        "discovery_base": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Discovery Base",
+          "description": "Set when the discovery URL differs from `issuer_url`."
+        },
+        "type": {
+          "type": "string",
+          "const": "discovery",
+          "title": "Type"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "title": "JwksDiscovery",
+      "description": "JWKS via the issuer's OIDC discovery document."
+    },
+    "BetaJwksExplicitUrl": {
+      "properties": {
+        "ca_cert_pem": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 8192
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Ca Cert Pem",
+          "description": "Optional custom CA (PEM) for TLS verification of the JWKS fetch."
+        },
+        "type": {
+          "type": "string",
+          "const": "explicit_url",
+          "title": "Type"
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Url",
+          "description": "JWKS endpoint."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "type",
+        "url"
+      ],
+      "title": "JwksExplicitUrl",
+      "description": "JWKS fetched from a fixed endpoint."
+    },
+    "BetaJwksInline": {
+      "properties": {
+        "keys": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "type": "array",
+          "minItems": 1,
+          "title": "Keys",
+          "description": "Inline JWK objects."
+        },
+        "type": {
+          "type": "string",
+          "const": "inline",
+          "title": "Type"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "keys",
+        "type"
+      ],
+      "title": "JwksInline",
+      "description": "JWKS supplied directly; no network fetch."
+    }
+  }
+}

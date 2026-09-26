@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-list-skills-response-schema.json",
+  "title": "ListSkillsResponse",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-skills-beta-true-api-openapi.yml#/components/schemas/BetaListSkillsResponse",
+  "properties": {
+    "data": {
+      "description": "List of skills.",
+      "items": {
+        "$ref": "#/$defs/BetaGetSkillResponse"
+      },
+      "title": "Data",
+      "type": "array",
+      "x-stainless-pagination-property": {
+        "purpose": "items"
+      }
+    },
+    "has_more": {
+      "description": "Whether there are more results available.\n\nIf `true`, there are additional results that can be fetched using the `next_page` token.",
+      "title": "Has More",
+      "type": "boolean"
+    },
+    "next_page": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Token for fetching the next page of results.\n\nIf `null`, there are no more results available. Pass this value to the `page` parameter in the next request to get the next page.",
+      "title": "Next Page",
+      "x-stainless-pagination-property": {
+        "purpose": "next_cursor_field"
+      }
+    }
+  },
+  "required": [
+    "data",
+    "has_more",
+    "next_page"
+  ],
+  "type": "object",
+  "$defs": {
+    "BetaGetSkillResponse": {
+      "properties": {
+        "created_at": {
+          "description": "ISO 8601 timestamp of when the skill was created.",
+          "title": "Created At",
+          "type": "string"
+        },
+        "display_title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Display title for the skill.\n\nThis is a human-readable label that is not included in the prompt sent to the model.",
+          "title": "Display Title"
+        },
+        "id": {
+          "description": "Unique identifier for the skill.\n\nThe format and length of IDs may change over time.",
+          "title": "Id",
+          "type": "string"
+        },
+        "latest_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The latest version identifier for the skill.\n\nThis represents the most recent version of the skill that has been created.",
+          "title": "Latest Version"
+        },
+        "source": {
+          "description": "Source of the skill.\n\nThis may be one of the following values:\n* `\"custom\"`: the skill was created by a user\n* `\"anthropic\"`: the skill was created by Anthropic",
+          "title": "Source",
+          "type": "string"
+        },
+        "type": {
+          "default": "skill",
+          "description": "Object type.\n\nFor Skills, this is always `\"skill\"`.",
+          "title": "Type",
+          "type": "string"
+        },
+        "updated_at": {
+          "description": "ISO 8601 timestamp of when the skill was last updated.",
+          "title": "Updated At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "created_at",
+        "display_title",
+        "id",
+        "latest_version",
+        "source",
+        "type",
+        "updated_at"
+      ],
+      "title": "GetSkillResponse",
+      "type": "object"
+    }
+  }
+}

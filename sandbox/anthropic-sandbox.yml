@@ -2,6 +2,13 @@ generated: '2026-08-27'
 method: searched
 source: https://platform.claude.com/playground, https://platform.claude.com/docs/en/release-notes/overview
 docs: https://support.claude.com/en/articles/8606378-how-do-i-use-playground
+description: >-
+  Anthropic publishes an interactive CONSOLE PLAYGROUND, not a test-mode API.
+  This distinction matters for anyone budgeting an integration: there is no
+  sandbox key, no test-vs-live key prefix, no free simulated traffic and no
+  fixture/trigger tooling. Every call you make while developing is a real,
+  billed inference call against production. A payments-style test mode has no
+  equivalent here.
 notes: >-
   Anthropic publishes an interactive CONSOLE PLAYGROUND, not a test-mode API.
   This distinction matters for anyone budgeting an integration: there is no

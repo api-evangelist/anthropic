@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-create-organization-invite-request-schema.json",
+  "title": "CreateOrganizationInviteRequest",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-organization-invites-api-openapi.yml#/components/schemas/CreateOrganizationInviteRequest",
+  "type": "object",
+  "required": [
+    "email",
+    "role"
+  ],
+  "properties": {
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Email address to send the invite to"
+    },
+    "role": {
+      "$ref": "#/$defs/OrganizationRole"
+    }
+  },
+  "$defs": {
+    "OrganizationRole": {
+      "type": "string",
+      "enum": [
+        "user",
+        "claude_code_user",
+        "developer",
+        "billing",
+        "admin"
+      ],
+      "description": "Role within the organization"
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-managed-agents-create-memory-store-response-schema.json",
+  "title": "BetaManagedAgentsCreateMemoryStoreResponse",
+  "description": "Response from creating a `memory_store`. Returns the created store.",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-memory-stores-beta-true-api-openapi.yml#/components/schemas/BetaManagedAgentsCreateMemoryStoreResponse",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/BetaManagedAgentsMemoryStore"
+    }
+  ],
+  "$defs": {
+    "BetaManagedAgentsMemoryStore": {
+      "description": "A `memory_store`: a named container for agent memories, scoped to a workspace. Attach a store to a session via `resources[]` to mount it as a directory the agent can read and write.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "name",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "memory_store"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for the memory store (a `memstore_...` tagged ID). Use this when attaching the store to a session, or in the `{memory_store_id}` path parameter of subsequent calls.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Human-readable name for the store. 1–255 characters. The store's mount-path slug under `/mnt/memory/` is derived from this name.",
+          "type": "string"
+        },
+        "description": {
+          "description": "Free-text description of what the store contains, up to 1024 characters. Included in the agent's system prompt when the store is attached, so word it to be useful to the agent. Empty string when unset.",
+          "type": "string"
+        },
+        "created_at": {
+          "description": "Timestamp when the store was created.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "updated_at": {
+          "description": "Timestamp when the store's `name`, `description`, or `metadata` was last modified. Memory writes inside the store do not advance this.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            }
+          ]
+        },
+        "metadata": {
+          "description": "Arbitrary key-value tags for your own bookkeeping (such as the end user a store belongs to). Up to 16 pairs; keys 1–64 characters; values up to 512 characters. Returned on retrieve/list but not filterable.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "archived_at": {
+          "description": "Timestamp when the store was archived, or `null` if active. Set once and never cleared; archiving is one-way. Archived stores are read-only and cannot be attached to new sessions.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaTimestamp": {
+      "description": "A timestamp in RFC 3339 format",
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

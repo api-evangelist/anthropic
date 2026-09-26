@@ -1,6 +1,18 @@
 generated: '2026-06-20'
 method: searched
 source: https://platform.claude.com/docs/en/api/client-sdks, https://docs.anthropic.com/en/cli-sdks-libraries/cli/quickstart
+install:
+  claude: npm install -g @anthropic-ai/claude-code
+  ant: See https://docs.anthropic.com/en/cli-sdks-libraries/cli/quickstart
+commands:
+- cli: ant
+  group: messages
+  examples:
+  - 'ant messages create --model claude-sonnet-5 --max-tokens 1024 --message ''{role: user, content: "Hello, Claude"}'''
+  - ant messages create --stream --format jsonl
+- cli: claude
+  group: claude-code
+  docs: https://code.claude.com/docs/en/overview
 clis:
 - name: ant
   description: Official Claude API command-line tool for shell scripting and interactive

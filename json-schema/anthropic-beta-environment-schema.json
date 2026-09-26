@@ -1,0 +1,293 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-environment-schema.json",
+  "title": "Environment",
+  "description": "Unified Environment resource for both cloud and self-hosted environments.",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-environments-api-openapi.yml#/components/schemas/BetaEnvironment",
+  "properties": {
+    "archived_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Archived At",
+      "description": "RFC 3339 timestamp when environment was archived, or null if not archived"
+    },
+    "config": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BetaCloudConfig"
+        },
+        {
+          "$ref": "#/$defs/BetaSelfHostedConfig",
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        }
+      ],
+      "title": "Config",
+      "description": "Environment configuration (either Anthropic Cloud or self-hosted)"
+    },
+    "created_at": {
+      "type": "string",
+      "title": "Created At",
+      "description": "RFC 3339 timestamp when environment was created"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Description",
+      "description": "User-provided description for the environment; null when unset"
+    },
+    "id": {
+      "type": "string",
+      "title": "Id",
+      "description": "Environment identifier (e.g., 'env_...')"
+    },
+    "metadata": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object",
+      "title": "Metadata",
+      "description": "User-provided metadata key-value pairs"
+    },
+    "name": {
+      "type": "string",
+      "title": "Name",
+      "description": "Human-readable name for the environment"
+    },
+    "scope": {
+      "type": "string",
+      "enum": [
+        "organization",
+        "account"
+      ],
+      "title": "Scope",
+      "description": "The visibility scope for this environment. 'organization' means visible to all accounts. 'account' means visible only to the owning account.",
+      "x-anthropic-beta-required": [
+        "managed-agents-2026-04-01"
+      ]
+    },
+    "type": {
+      "type": "string",
+      "const": "environment",
+      "title": "Type",
+      "description": "The type of object (always 'environment')",
+      "default": "environment"
+    },
+    "updated_at": {
+      "type": "string",
+      "title": "Updated At",
+      "description": "RFC 3339 timestamp when environment was last updated"
+    }
+  },
+  "type": "object",
+  "required": [
+    "archived_at",
+    "config",
+    "created_at",
+    "description",
+    "id",
+    "metadata",
+    "name",
+    "type",
+    "updated_at"
+  ],
+  "$defs": {
+    "BetaCloudConfig": {
+      "properties": {
+        "networking": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/BetaUnrestrictedNetwork"
+            },
+            {
+              "$ref": "#/$defs/BetaLimitedNetwork",
+              "x-anthropic-beta-required": [
+                "managed-agents-2026-04-01"
+              ]
+            }
+          ],
+          "title": "Networking",
+          "description": "Network configuration policy."
+        },
+        "packages": {
+          "$ref": "#/$defs/BetaPackages",
+          "description": "Package manager configuration.",
+          "x-anthropic-beta-required": [
+            "managed-agents-2026-04-01"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "const": "cloud",
+          "title": "Type",
+          "description": "Environment type"
+        }
+      },
+      "type": "object",
+      "required": [
+        "networking",
+        "packages",
+        "type"
+      ],
+      "title": "CloudConfig",
+      "description": "`cloud` environment configuration."
+    },
+    "BetaLimitedNetwork": {
+      "properties": {
+        "allow_mcp_servers": {
+          "type": "boolean",
+          "title": "Allow Mcp Servers",
+          "description": "Permits outbound access to MCP server endpoints configured on the agent, beyond those listed in the `allowed_hosts` array."
+        },
+        "allow_package_managers": {
+          "type": "boolean",
+          "title": "Allow Package Managers",
+          "description": "Permits outbound access to public package registries (PyPI, npm, etc.) beyond those listed in the `allowed_hosts` array."
+        },
+        "allowed_hosts": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Allowed Hosts",
+          "description": "Specifies domains the container can reach."
+        },
+        "type": {
+          "type": "string",
+          "const": "limited",
+          "title": "Type",
+          "description": "Network policy type"
+        }
+      },
+      "type": "object",
+      "required": [
+        "allow_mcp_servers",
+        "allow_package_managers",
+        "allowed_hosts",
+        "type"
+      ],
+      "title": "LimitedNetwork",
+      "description": "Limited network access."
+    },
+    "BetaPackages": {
+      "properties": {
+        "apt": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Apt",
+          "description": "Ubuntu/Debian packages to install"
+        },
+        "cargo": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Cargo",
+          "description": "Rust packages to install"
+        },
+        "gem": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Gem",
+          "description": "Ruby packages to install"
+        },
+        "go": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Go",
+          "description": "Go packages to install"
+        },
+        "npm": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Npm",
+          "description": "Node.js packages to install"
+        },
+        "pip": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Pip",
+          "description": "Python packages to install"
+        },
+        "type": {
+          "type": "string",
+          "const": "packages",
+          "title": "Type",
+          "description": "Package configuration type",
+          "default": "packages"
+        }
+      },
+      "type": "object",
+      "required": [
+        "apt",
+        "cargo",
+        "gem",
+        "go",
+        "npm",
+        "pip"
+      ],
+      "title": "Packages",
+      "description": "Packages (and their versions) available in this environment."
+    },
+    "BetaSelfHostedConfig": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "self_hosted",
+          "title": "Type",
+          "description": "Environment type"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "title": "SelfHostedConfig",
+      "description": "Configuration for self-hosted environments."
+    },
+    "BetaUnrestrictedNetwork": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "unrestricted",
+          "title": "Type",
+          "description": "Network policy type"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "title": "UnrestrictedNetwork",
+      "description": "Unrestricted network access."
+    }
+  }
+}

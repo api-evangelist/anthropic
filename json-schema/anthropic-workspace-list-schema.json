@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-workspace-list-schema.json",
+  "title": "WorkspaceList",
+  "x-generated": "2026-09-23",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-workspaces-api-openapi.yml#/components/schemas/WorkspaceList",
+  "type": "object",
+  "required": [
+    "data",
+    "has_more",
+    "first_id",
+    "last_id"
+  ],
+  "properties": {
+    "data": {
+      "type": "array",
+      "description": "List of workspaces",
+      "items": {
+        "$ref": "#/$defs/Workspace"
+      }
+    },
+    "first_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "First ID in the data list for pagination"
+    },
+    "has_more": {
+      "type": "boolean",
+      "description": "Indicates if there are more results available"
+    },
+    "last_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Last ID in the data list for pagination"
+    }
+  },
+  "$defs": {
+    "Workspace": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "name",
+        "created_at",
+        "archived_at",
+        "display_color"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique workspace identifier"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "workspace"
+          ],
+          "default": "workspace",
+          "description": "Object type identifier"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "description": "Workspace name"
+        },
+        "display_color": {
+          "type": "string",
+          "description": "Hex color code for UI display"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "RFC 3339 datetime when workspace was created"
+        },
+        "archived_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "RFC 3339 datetime when workspace was archived, or null if active"
+        }
+      }
+    }
+  }
+}
