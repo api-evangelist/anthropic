@@ -1552,69 +1552,324 @@ paths:
       - managed-agents-2026-04-01
       tags:
       - Vaults
+  /v1/vaults?beta=true:
+    post:
+      operationId: BetaCreateVault
+      summary: Create Vault
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BetaManagedAgentsCreateVaultRequest'
+      responses:
+        '200':
+          description: Successful response (OK)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaManagedAgentsVault'
+        '400':
+          description: Invalid argument - The client specified an invalid argument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '401':
+          description: Unauthenticated - The request does not have valid authentication credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '403':
+          description: Permission denied - The caller does not have permission to execute the specified operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '404':
+          description: Not found - Some requested entity was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '408':
+          description: Deadline exceeded - The deadline expired before the operation could complete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '409':
+          description: Aborted - The operation was aborted due to concurrency issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '412':
+          description: Failed precondition - Operation was rejected because the system is not in required state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '413':
+          description: Out of range - Operation was attempted past the valid range
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '429':
+          description: Resource exhausted - Some resource has been exhausted (rate limiting)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '431':
+          description: Request header fields too large - Request metadata was too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '499':
+          description: Cancelled - The operation was cancelled by the client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '500':
+          description: Internal - Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '501':
+          description: Unimplemented - The operation is not implemented or supported
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '503':
+          description: Unavailable - The service is currently unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '504':
+          description: Deadline exceeded - Upstream service did not respond in time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      x-anthropic-beta-required:
+      - managed-agents-2026-04-01
+      parameters:
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+      tags:
+      - Vaults
+    get:
+      operationId: BetaListVaults
+      summary: List Vaults
+      parameters:
+      - name: x-api-key
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: anthropic-version
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: anthropic-beta
+        in: header
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+          x-stainless-override-schema:
+            x-stainless-param: betas
+            x-stainless-extend-default: true
+            type: array
+            description: Optional header to specify the beta version(s) you want to use.
+            items:
+              $ref: '#/components/schemas/AnthropicBeta'
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        description: Maximum number of vaults to return per page. Defaults to 20, maximum 100.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Opaque pagination token from a previous `list_vaults` response.
+      - name: include_archived
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: Whether to include archived vaults in the results.
+      responses:
+        '200':
+          description: Successful response (OK)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaManagedAgentsListVaultsResponse'
+        '400':
+          description: Invalid argument - The client specified an invalid argument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '401':
+          description: Unauthenticated - The request does not have valid authentication credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '403':
+          description: Permission denied - The caller does not have permission to execute the specified operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '404':
+          description: Not found - Some requested entity was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '408':
+          description: Deadline exceeded - The deadline expired before the operation could complete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '409':
+          description: Aborted - The operation was aborted due to concurrency issue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '412':
+          description: Failed precondition - Operation was rejected because the system is not in required state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '413':
+          description: Out of range - Operation was attempted past the valid range
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '429':
+          description: Resource exhausted - Some resource has been exhausted (rate limiting)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '431':
+          description: Request header fields too large - Request metadata was too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '499':
+          description: Cancelled - The operation was cancelled by the client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '500':
+          description: Internal - Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '501':
+          description: Unimplemented - The operation is not implemented or supported
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '503':
+          description: Unavailable - The service is currently unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+        '504':
+          description: Deadline exceeded - Upstream service did not respond in time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BetaErrorResponse'
+      x-anthropic-beta-required:
+      - managed-agents-2026-04-01
+      tags:
+      - Vaults
 components:
   schemas:
-    BetaManagedAgentsTokenEndpointAuthBasicParam:
-      description: Token endpoint uses HTTP Basic authentication with client credentials.
+    BetaManagedAgentsCredentialAuth:
+      description: Authentication details for a credential.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          mcp_oauth: '#/components/schemas/BetaManagedAgentsMcpOauthAuthResponse'
+          static_bearer: '#/components/schemas/BetaManagedAgentsStaticBearerAuthResponse'
+          environment_variable: '#/components/schemas/BetaManagedAgentsEnvironmentVariableAuthResponse'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsMcpOauthAuthResponse'
+      - $ref: '#/components/schemas/BetaManagedAgentsStaticBearerAuthResponse'
+      - $ref: '#/components/schemas/BetaManagedAgentsEnvironmentVariableAuthResponse'
+      example:
+        type: static_bearer
+        mcp_server_url: https://example-server.modelcontextprotocol.io/sse
+    BetaManagedAgentsCredentialNetworkingParams:
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          unrestricted: '#/components/schemas/BetaManagedAgentsUnrestrictedCredentialNetworkingParams'
+          limited: '#/components/schemas/BetaManagedAgentsLimitedCredentialNetworkingParams'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsUnrestrictedCredentialNetworkingParams'
+      - $ref: '#/components/schemas/BetaManagedAgentsLimitedCredentialNetworkingParams'
+    BetaManagedAgentsUnrestrictedCredentialNetworkingParams:
+      description: Substitute the secret on any host the session's Environment network policy permits egress to. The Environment's network policy is the only boundary on where the secret can reach.
       type: object
       additionalProperties: false
       required:
       - type
-      - client_secret
       properties:
         type:
           type: string
           enum:
-          - client_secret_basic
-        client_secret:
-          description: OAuth client secret.
-          type: string
-          minLength: 1
-          maxLength: 512
-    BetaManagedAgentsMcpOauthRefreshUpdateParams:
-      description: Parameters for updating OAuth refresh token configuration.
-      type: object
-      additionalProperties: false
-      properties:
-        refresh_token:
-          description: Updated OAuth refresh token.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 4096
-          - type: 'null'
-        scope:
-          description: Updated OAuth scope for the refresh request.
-          anyOf:
-          - type: string
-            maxLength: 8192
-          - type: 'null'
-        token_endpoint_auth:
-          type: object
-          discriminator:
-            propertyName: type
-            mapping:
-              client_secret_basic: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthBasicUpdateParam'
-              client_secret_post: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthPostUpdateParam'
-          oneOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthBasicUpdateParam'
-          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthPostUpdateParam'
-    BetaManagedAgentsMcpProbe:
-      description: The failing step of an MCP validation probe.
-      type: object
-      additionalProperties: false
-      required:
-      - method
-      - http_response
-      properties:
-        method:
-          description: The MCP method that failed (for example `initialize` or `tools/list`).
-          type: string
-        http_response:
-          description: The captured HTTP error response. Null when no HTTP response was received (timeout, DNS, TLS).
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsRefreshHttpResponse'
-          - type: 'null'
+          - unrestricted
     AnthropicBeta:
       anyOf:
       - type: string
@@ -1662,621 +1917,6 @@ components:
         - thinking-display-updates-2026-08-18
         - ce-user-management-2026-07-13
         x-stainless-nominal: false
-    BetaBillingError:
-      properties:
-        message:
-          default: Billing error
-          title: Message
-          type: string
-        type:
-          const: billing_error
-          default: billing_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: BillingError
-      type: object
-    BetaManagedAgentsStaticBearerAuthResponse:
-      description: Static bearer token credential details for an MCP server.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - mcp_server_url
-      properties:
-        type:
-          type: string
-          enum:
-          - static_bearer
-          examples:
-          - static_bearer
-        mcp_server_url:
-          description: URL of the MCP server this credential authenticates against.
-          type: string
-          examples:
-          - https://example-server.modelcontextprotocol.io/sse
-      example:
-        type: static_bearer
-        mcp_server_url: https://example-server.modelcontextprotocol.io/sse
-    BetaManagedAgentsUnrestrictedCredentialNetworkingParams:
-      description: Substitute the secret on any host the session's Environment network policy permits egress to. The Environment's network policy is the only boundary on where the secret can reach.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - unrestricted
-    BetaTimestamp:
-      description: A timestamp in RFC 3339 format
-      type: string
-      format: date-time
-    BetaManagedAgentsRefreshObject:
-      description: Outcome of a refresh-token exchange attempted during credential validation.
-      type: object
-      additionalProperties: false
-      required:
-      - status
-      - http_response
-      properties:
-        status:
-          description: Outcome of the refresh attempt.
-          allOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsCredentialRefreshStatus'
-        http_response:
-          description: The captured HTTP error response from the token endpoint. Populated only when `status` is `failed`.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsRefreshHttpResponse'
-          - type: 'null'
-    BetaManagedAgentsDeletedVault:
-      description: Confirmation of a deleted vault.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - id
-      properties:
-        type:
-          type: string
-          enum:
-          - vault_deleted
-          examples:
-          - vault_deleted
-        id:
-          description: Unique identifier of the deleted vault.
-          type: string
-          examples:
-          - vlt_011CZkZDLs7fYzm1hXNPeRjv
-      example:
-        type: vault_deleted
-        id: vlt_011CZkZDLs7fYzm1hXNPeRjv
-    BetaPermissionError:
-      properties:
-        message:
-          default: Permission denied
-          title: Message
-          type: string
-        type:
-          const: permission_error
-          default: permission_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: PermissionError
-      type: object
-    BetaManagedAgentsCredentialAuth:
-      description: Authentication details for a credential.
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          mcp_oauth: '#/components/schemas/BetaManagedAgentsMcpOauthAuthResponse'
-          static_bearer: '#/components/schemas/BetaManagedAgentsStaticBearerAuthResponse'
-          environment_variable: '#/components/schemas/BetaManagedAgentsEnvironmentVariableAuthResponse'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsMcpOauthAuthResponse'
-      - $ref: '#/components/schemas/BetaManagedAgentsStaticBearerAuthResponse'
-      - $ref: '#/components/schemas/BetaManagedAgentsEnvironmentVariableAuthResponse'
-      example:
-        type: static_bearer
-        mcp_server_url: https://example-server.modelcontextprotocol.io/sse
-    BetaRateLimitError:
-      properties:
-        message:
-          default: Rate limited
-          title: Message
-          type: string
-        type:
-          const: rate_limit_error
-          default: rate_limit_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: RateLimitError
-      type: object
-    BetaManagedAgentsDeletedCredential:
-      description: Confirmation of a deleted credential.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - id
-      properties:
-        type:
-          type: string
-          enum:
-          - vault_credential_deleted
-          examples:
-          - vault_credential_deleted
-        id:
-          description: Unique identifier of the deleted credential.
-          type: string
-          examples:
-          - vcrd_011CZkZEMt8gZan2iYOQfSkw
-      example:
-        type: vault_credential_deleted
-        id: vcrd_011CZkZEMt8gZan2iYOQfSkw
-    BetaManagedAgentsMcpOauthRefreshResponse:
-      description: OAuth refresh token configuration returned in credential responses.
-      type: object
-      additionalProperties: false
-      required:
-      - token_endpoint
-      - client_id
-      - token_endpoint_auth
-      properties:
-        token_endpoint:
-          description: Token endpoint URL used to refresh the access token.
-          type: string
-        client_id:
-          description: OAuth client ID.
-          type: string
-        resource:
-          description: OAuth resource indicator.
-          anyOf:
-          - type: string
-          - type: 'null'
-        scope:
-          description: OAuth scope for the refresh request.
-          anyOf:
-          - type: string
-          - type: 'null'
-        token_endpoint_auth:
-          type: object
-          discriminator:
-            propertyName: type
-            mapping:
-              none: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthNoneResponse'
-              client_secret_basic: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthBasicResponse'
-              client_secret_post: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthPostResponse'
-          oneOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthNoneResponse'
-          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthBasicResponse'
-          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthPostResponse'
-    BetaNotFoundError:
-      properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
-        type:
-          const: not_found_error
-          default: not_found_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: NotFoundError
-      type: object
-    BetaManagedAgentsMcpOauthCreateParams:
-      description: Parameters for creating an MCP OAuth credential.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - mcp_server_url
-      - access_token
-      properties:
-        type:
-          type: string
-          enum:
-          - mcp_oauth
-        mcp_server_url:
-          description: URL of the MCP server this credential authenticates against.
-          type: string
-          minLength: 1
-          maxLength: 2047
-        access_token:
-          description: OAuth access token.
-          type: string
-          minLength: 1
-          maxLength: 8192
-        expires_at:
-          anyOf:
-          - $ref: '#/components/schemas/BetaTimestamp'
-          - type: 'null'
-        refresh:
-          description: Refresh token configuration, if the credential supports token refresh.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsMcpOauthRefreshParams'
-          - type: 'null'
-    BetaManagedAgentsTokenEndpointAuthBasicUpdateParam:
-      description: Updated HTTP Basic authentication parameters for the token endpoint.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - client_secret_basic
-        client_secret:
-          description: Updated OAuth client secret.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 512
-          - type: 'null'
-    BetaInvalidRequestError:
-      properties:
-        message:
-          default: Invalid request
-          title: Message
-          type: string
-        type:
-          const: invalid_request_error
-          default: invalid_request_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: InvalidRequestError
-      type: object
-    BetaManagedAgentsUnrestrictedCredentialNetworkingResponse:
-      description: The secret is substituted on any host the session's Environment network policy permits egress to.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - unrestricted
-    BetaManagedAgentsRefreshHttpResponse:
-      description: An HTTP response captured during a credential validation probe.
-      type: object
-      additionalProperties: false
-      required:
-      - status_code
-      - content_type
-      - body
-      - body_truncated
-      properties:
-        status_code:
-          description: HTTP status code.
-          type: integer
-          format: int32
-        content_type:
-          description: Value of the `Content-Type` response header.
-          type: string
-        body:
-          description: Response body. May be truncated and has sensitive values scrubbed.
-          type: string
-        body_truncated:
-          description: Whether `body` was truncated.
-          type: boolean
-    BetaAuthenticationError:
-      properties:
-        message:
-          default: Authentication error
-          title: Message
-          type: string
-        type:
-          const: authentication_error
-          default: authentication_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: AuthenticationError
-      type: object
-    BetaManagedAgentsUpdateVaultRequestBody:
-      type: object
-      additionalProperties: false
-      properties:
-        display_name:
-          description: Updated human-readable name for the vault. 1-255 characters.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 255
-          - type: 'null'
-          examples:
-          - Example vault
-        metadata:
-          description: Metadata patch. Set a key to a string to upsert it, or to null to delete it. Omitted keys are preserved.
-          anyOf:
-          - type: object
-            additionalProperties:
-              anyOf:
-              - type: string
-              - type: 'null'
-          - type: 'null'
-          examples:
-          - environment: production
-      example:
-        display_name: Example vault
-        metadata:
-          environment: production
-    BetaManagedAgentsEnvironmentVariableUpdateParams:
-      description: Parameters for updating an environment variable credential. `secret_name` is immutable.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - environment_variable
-        secret_value:
-          description: Updated secret value.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 4096
-          - type: 'null'
-        networking:
-          description: Updated networking scope. Full replacement.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsCredentialNetworkingParams'
-          - type: 'null'
-        injection_location:
-          description: Updated injection location.
-          allOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsInjectionLocationUpdateParams'
-          x-anthropic-beta-required:
-          - managed-agents-2026-04-01
-    BetaManagedAgentsEnvironmentVariableAuthResponse:
-      description: Environment variable credential details. The secret value is never returned.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - secret_name
-      - networking
-      - injection_location
-      properties:
-        type:
-          type: string
-          enum:
-          - environment_variable
-        secret_name:
-          description: Name of the environment variable.
-          type: string
-        networking:
-          description: Outbound hosts the secret value is substituted on.
-          allOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsCredentialNetworkingResponse'
-        injection_location:
-          description: Where in the outbound request the secret value is substituted.
-          allOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsInjectionLocationResponse'
-          x-anthropic-beta-required:
-          - managed-agents-2026-04-01
-    BetaManagedAgentsVault:
-      description: A vault that stores credentials for use by agents during sessions.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - id
-      - display_name
-      - metadata
-      - created_at
-      - updated_at
-      - archived_at
-      properties:
-        type:
-          type: string
-          enum:
-          - vault
-          examples:
-          - vault
-        id:
-          description: Unique identifier for the vault.
-          type: string
-          examples:
-          - vlt_011CZkZDLs7fYzm1hXNPeRjv
-        display_name:
-          description: Human-readable name for the vault.
-          type: string
-          examples:
-          - Example vault
-        metadata:
-          description: Arbitrary key-value metadata attached to the vault.
-          type: object
-          additionalProperties:
-            type: string
-          examples:
-          - environment: production
-        created_at:
-          $ref: '#/components/schemas/BetaTimestamp'
-          examples:
-          - '2026-03-15T10:00:00Z'
-        updated_at:
-          $ref: '#/components/schemas/BetaTimestamp'
-          examples:
-          - '2026-03-15T10:00:00Z'
-        archived_at:
-          description: When the vault was archived. Null if not archived.
-          anyOf:
-          - $ref: '#/components/schemas/BetaTimestamp'
-          - type: 'null'
-          examples:
-          - null
-      example:
-        type: vault
-        id: vlt_011CZkZDLs7fYzm1hXNPeRjv
-        display_name: Example vault
-        metadata:
-          environment: production
-        created_at: '2026-03-15T10:00:00Z'
-        updated_at: '2026-03-15T10:00:00Z'
-        archived_at: null
-    BetaManagedAgentsTokenEndpointAuthBasicResponse:
-      description: Token endpoint uses HTTP Basic authentication with client credentials.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - client_secret_basic
-    BetaErrorResponse:
-      properties:
-        error:
-          discriminator:
-            mapping:
-              api_error: '#/components/schemas/BetaAPIError'
-              authentication_error: '#/components/schemas/BetaAuthenticationError'
-              billing_error: '#/components/schemas/BetaBillingError'
-              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
-              not_found_error: '#/components/schemas/BetaNotFoundError'
-              overloaded_error: '#/components/schemas/BetaOverloadedError'
-              permission_error: '#/components/schemas/BetaPermissionError'
-              rate_limit_error: '#/components/schemas/BetaRateLimitError'
-              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
-            propertyName: type
-          oneOf:
-          - $ref: '#/components/schemas/BetaInvalidRequestError'
-          - $ref: '#/components/schemas/BetaAuthenticationError'
-          - $ref: '#/components/schemas/BetaBillingError'
-          - $ref: '#/components/schemas/BetaPermissionError'
-          - $ref: '#/components/schemas/BetaNotFoundError'
-          - $ref: '#/components/schemas/BetaRateLimitError'
-          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
-          - $ref: '#/components/schemas/BetaAPIError'
-          - $ref: '#/components/schemas/BetaOverloadedError'
-          title: Error
-        request_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          title: Request Id
-        type:
-          const: error
-          default: error
-          title: Type
-          type: string
-      required:
-      - error
-      - request_id
-      - type
-      title: ErrorResponse
-      type: object
-    BetaManagedAgentsTokenEndpointAuthPostUpdateParam:
-      description: Updated POST body authentication parameters for the token endpoint.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - client_secret_post
-        client_secret:
-          description: Updated OAuth client secret.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 512
-          - type: 'null'
-    BetaManagedAgentsTokenEndpointAuthPostResponse:
-      description: Token endpoint uses POST body authentication with client credentials.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - client_secret_post
-    BetaManagedAgentsTokenEndpointAuthNoneParam:
-      description: Token endpoint requires no client authentication.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - none
-    BetaManagedAgentsCredentialUpdateAuth:
-      description: Updated authentication details for a credential.
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          mcp_oauth: '#/components/schemas/BetaManagedAgentsMcpOauthUpdateParams'
-          static_bearer: '#/components/schemas/BetaManagedAgentsStaticBearerUpdateParams'
-          environment_variable: '#/components/schemas/BetaManagedAgentsEnvironmentVariableUpdateParams'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsMcpOauthUpdateParams'
-      - $ref: '#/components/schemas/BetaManagedAgentsStaticBearerUpdateParams'
-      - $ref: '#/components/schemas/BetaManagedAgentsEnvironmentVariableUpdateParams'
-    BetaManagedAgentsCredentialCreateAuth:
-      description: Authentication details for creating a credential.
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          mcp_oauth: '#/components/schemas/BetaManagedAgentsMcpOauthCreateParams'
-          static_bearer: '#/components/schemas/BetaManagedAgentsStaticBearerCreateParams'
-          environment_variable: '#/components/schemas/BetaManagedAgentsEnvironmentVariableCreateParams'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsMcpOauthCreateParams'
-      - $ref: '#/components/schemas/BetaManagedAgentsStaticBearerCreateParams'
-      - $ref: '#/components/schemas/BetaManagedAgentsEnvironmentVariableCreateParams'
-      example:
-        type: static_bearer
-        token: bearer_exampletoken
-        mcp_server_url: https://example-server.modelcontextprotocol.io/sse
-    BetaGatewayTimeoutError:
-      properties:
-        message:
-          default: Request timeout
-          title: Message
-          type: string
-        type:
-          const: timeout_error
-          default: timeout_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: GatewayTimeoutError
-      type: object
     BetaManagedAgentsCredential:
       description: A credential stored in a vault. Sensitive fields are never returned in responses.
       type: object
@@ -2356,34 +1996,28 @@ components:
         auth:
           type: static_bearer
           mcp_server_url: https://example-server.modelcontextprotocol.io/sse
-    BetaManagedAgentsTokenEndpointAuthNoneResponse:
-      description: Token endpoint requires no client authentication.
+    BetaManagedAgentsDeletedVault:
+      description: Confirmation of a deleted vault.
       type: object
       additionalProperties: false
       required:
       - type
+      - id
       properties:
         type:
           type: string
           enum:
-          - none
-    BetaManagedAgentsLimitedCredentialNetworkingResponse:
-      description: The secret is substituted only on requests to the listed hosts.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - allowed_hosts
-      properties:
-        type:
+          - vault_deleted
+          examples:
+          - vault_deleted
+        id:
+          description: Unique identifier of the deleted vault.
           type: string
-          enum:
-          - limited
-        allowed_hosts:
-          description: Hostnames on which the secret will be substituted. An entry matches the request host exactly; a `*.`-prefixed entry matches any subdomain of the named domain but not the domain itself.
-          type: array
-          items:
-            type: string
+          examples:
+          - vlt_011CZkZDLs7fYzm1hXNPeRjv
+      example:
+        type: vault_deleted
+        id: vlt_011CZkZDLs7fYzm1hXNPeRjv
     BetaManagedAgentsListCredentialsResponse:
       description: Response containing a paginated list of credentials.
       type: object
@@ -2429,16 +2063,436 @@ components:
             type: static_bearer
             mcp_server_url: https://example-server.modelcontextprotocol.io/sse
         next_page: page_MjAyNS0wNS0xNFQwMDowMDowMFo=
-    BetaManagedAgentsCredentialNetworkingParams:
+    BetaErrorResponse:
+      properties:
+        error:
+          discriminator:
+            mapping:
+              api_error: '#/components/schemas/BetaAPIError'
+              authentication_error: '#/components/schemas/BetaAuthenticationError'
+              billing_error: '#/components/schemas/BetaBillingError'
+              invalid_request_error: '#/components/schemas/BetaInvalidRequestError'
+              not_found_error: '#/components/schemas/BetaNotFoundError'
+              overloaded_error: '#/components/schemas/BetaOverloadedError'
+              permission_error: '#/components/schemas/BetaPermissionError'
+              rate_limit_error: '#/components/schemas/BetaRateLimitError'
+              timeout_error: '#/components/schemas/BetaGatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/BetaInvalidRequestError'
+          - $ref: '#/components/schemas/BetaAuthenticationError'
+          - $ref: '#/components/schemas/BetaBillingError'
+          - $ref: '#/components/schemas/BetaPermissionError'
+          - $ref: '#/components/schemas/BetaNotFoundError'
+          - $ref: '#/components/schemas/BetaRateLimitError'
+          - $ref: '#/components/schemas/BetaGatewayTimeoutError'
+          - $ref: '#/components/schemas/BetaAPIError'
+          - $ref: '#/components/schemas/BetaOverloadedError'
+          title: Error
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Request Id
+        type:
+          const: error
+          default: error
+          title: Type
+          type: string
+      required:
+      - error
+      - request_id
+      - type
+      title: ErrorResponse
       type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          unrestricted: '#/components/schemas/BetaManagedAgentsUnrestrictedCredentialNetworkingParams'
-          limited: '#/components/schemas/BetaManagedAgentsLimitedCredentialNetworkingParams'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsUnrestrictedCredentialNetworkingParams'
-      - $ref: '#/components/schemas/BetaManagedAgentsLimitedCredentialNetworkingParams'
+    BetaManagedAgentsTokenEndpointAuthPostUpdateParam:
+      description: Updated POST body authentication parameters for the token endpoint.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - client_secret_post
+        client_secret:
+          description: Updated OAuth client secret.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 512
+          - type: 'null'
+    BetaManagedAgentsInjectionLocationUpdateParams:
+      description: Updated injection location.
+      type: object
+      additionalProperties: false
+      properties:
+        header:
+          description: Substitute when the placeholder appears in a request header value.
+          type: boolean
+        body:
+          description: Substitute when the placeholder appears in the request body.
+          type: boolean
+    BetaOverloadedError:
+      properties:
+        message:
+          default: Overloaded
+          title: Message
+          type: string
+        type:
+          const: overloaded_error
+          default: overloaded_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: OverloadedError
+      type: object
+    BetaAPIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
+          type: string
+        type:
+          const: api_error
+          default: api_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
+    BetaManagedAgentsUpdateCredentialRequestBody:
+      type: object
+      additionalProperties: false
+      properties:
+        display_name:
+          description: Updated human-readable name for the credential. 1-255 characters.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 255
+          - type: 'null'
+          examples:
+          - Example credential
+        metadata:
+          description: Metadata patch. Set a key to a string to upsert it, or to null to delete it. Omitted keys are preserved.
+          anyOf:
+          - type: object
+            additionalProperties:
+              anyOf:
+              - type: string
+              - type: 'null'
+          - type: 'null'
+          examples:
+          - environment: production
+        auth:
+          description: Updated authentication configuration. The `type` is immutable; the variant sent must match the stored credential's type.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsCredentialUpdateAuth'
+      example:
+        display_name: Example credential
+        metadata:
+          environment: production
+    BetaManagedAgentsTokenEndpointAuthPostParam:
+      description: Token endpoint uses POST body authentication with client credentials.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - client_secret
+      properties:
+        type:
+          type: string
+          enum:
+          - client_secret_post
+        client_secret:
+          description: OAuth client secret.
+          type: string
+          minLength: 1
+          maxLength: 512
+    BetaManagedAgentsMcpOauthRefreshParams:
+      description: OAuth refresh token parameters for creating a credential with refresh support.
+      type: object
+      additionalProperties: false
+      required:
+      - refresh_token
+      - token_endpoint
+      - client_id
+      - token_endpoint_auth
+      properties:
+        refresh_token:
+          description: OAuth refresh token.
+          type: string
+          minLength: 1
+          maxLength: 4096
+        token_endpoint:
+          description: Token endpoint URL used to refresh the access token.
+          type: string
+          minLength: 1
+          maxLength: 2047
+        client_id:
+          description: OAuth client ID.
+          type: string
+          minLength: 1
+          maxLength: 1024
+        scope:
+          description: OAuth scope for the refresh request.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 8192
+          - type: 'null'
+        resource:
+          description: OAuth resource indicator.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 2047
+          - type: 'null'
+        token_endpoint_auth:
+          type: object
+          discriminator:
+            propertyName: type
+            mapping:
+              none: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthNoneParam'
+              client_secret_basic: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthBasicParam'
+              client_secret_post: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthPostParam'
+          oneOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthNoneParam'
+          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthBasicParam'
+          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthPostParam'
+    BetaRateLimitError:
+      properties:
+        message:
+          default: Rate limited
+          title: Message
+          type: string
+        type:
+          const: rate_limit_error
+          default: rate_limit_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: RateLimitError
+      type: object
+    BetaManagedAgentsUnrestrictedCredentialNetworkingResponse:
+      description: The secret is substituted on any host the session's Environment network policy permits egress to.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - unrestricted
+    BetaManagedAgentsInjectionLocationResponse:
+      description: Where in the outbound request the secret value is substituted.
+      type: object
+      additionalProperties: false
+      required:
+      - header
+      - body
+      properties:
+        header:
+          description: Whether the placeholder is substituted in request header values.
+          type: boolean
+        body:
+          description: Whether the placeholder is substituted in the request body.
+          type: boolean
+    BetaManagedAgentsTokenEndpointAuthPostResponse:
+      description: Token endpoint uses POST body authentication with client credentials.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - client_secret_post
+    BetaManagedAgentsMcpOauthUpdateParams:
+      description: Parameters for updating an MCP OAuth credential. The `mcp_server_url` is immutable.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - mcp_oauth
+        access_token:
+          description: Updated OAuth access token.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 8192
+          - type: 'null'
+        expires_at:
+          anyOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+          - type: 'null'
+        refresh:
+          description: Updated refresh token configuration.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsMcpOauthRefreshUpdateParams'
+          - type: 'null'
+    BetaManagedAgentsTokenEndpointAuthBasicResponse:
+      description: Token endpoint uses HTTP Basic authentication with client credentials.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - client_secret_basic
+    BetaManagedAgentsTokenEndpointAuthBasicParam:
+      description: Token endpoint uses HTTP Basic authentication with client credentials.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - client_secret
+      properties:
+        type:
+          type: string
+          enum:
+          - client_secret_basic
+        client_secret:
+          description: OAuth client secret.
+          type: string
+          minLength: 1
+          maxLength: 512
+    BetaAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    BetaManagedAgentsMcpOauthRefreshResponse:
+      description: OAuth refresh token configuration returned in credential responses.
+      type: object
+      additionalProperties: false
+      required:
+      - token_endpoint
+      - client_id
+      - token_endpoint_auth
+      properties:
+        token_endpoint:
+          description: Token endpoint URL used to refresh the access token.
+          type: string
+        client_id:
+          description: OAuth client ID.
+          type: string
+        resource:
+          description: OAuth resource indicator.
+          anyOf:
+          - type: string
+          - type: 'null'
+        scope:
+          description: OAuth scope for the refresh request.
+          anyOf:
+          - type: string
+          - type: 'null'
+        token_endpoint_auth:
+          type: object
+          discriminator:
+            propertyName: type
+            mapping:
+              none: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthNoneResponse'
+              client_secret_basic: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthBasicResponse'
+              client_secret_post: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthPostResponse'
+          oneOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthNoneResponse'
+          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthBasicResponse'
+          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthPostResponse'
+    BetaManagedAgentsEnvironmentVariableUpdateParams:
+      description: Parameters for updating an environment variable credential. `secret_name` is immutable.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - environment_variable
+        secret_value:
+          description: Updated secret value.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 4096
+          - type: 'null'
+        networking:
+          description: Updated networking scope. Full replacement.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsCredentialNetworkingParams'
+          - type: 'null'
+        injection_location:
+          description: Updated injection location.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsInjectionLocationUpdateParams'
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+    BetaManagedAgentsListVaultsResponse:
+      description: Response containing a paginated list of vaults.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          description: List of vaults.
+          type: array
+          items:
+            $ref: '#/components/schemas/BetaManagedAgentsVault'
+          examples:
+          - - type: vault
+              id: vlt_011CZkZDLs7fYzm1hXNPeRjv
+              display_name: Example vault
+              metadata:
+                environment: production
+              created_at: '2026-03-15T10:00:00Z'
+              updated_at: '2026-03-15T10:00:00Z'
+              archived_at: null
+        next_page:
+          description: Pagination token for the next page, or null if no more results.
+          anyOf:
+          - type: string
+          - type: 'null'
+          examples:
+          - page_MjAyNS0wNS0xNFQwMDowMDowMFo=
+      example:
+        data:
+        - type: vault
+          id: vlt_011CZkZDLs7fYzm1hXNPeRjv
+          display_name: Example vault
+          metadata:
+            environment: production
+          created_at: '2026-03-15T10:00:00Z'
+          updated_at: '2026-03-15T10:00:00Z'
+          archived_at: null
+        next_page: page_MjAyNS0wNS0xNFQwMDowMDowMFo=
     BetaManagedAgentsCredentialValidation:
       description: Result of live-probing a credential against its configured MCP server.
       type: object
@@ -2509,191 +2563,6 @@ components:
         has_refresh_token: true
         mcp_probe: null
         refresh: null
-    BetaManagedAgentsLimitedCredentialNetworkingParams:
-      description: Substitute the secret only on requests to the listed hosts.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - allowed_hosts
-      properties:
-        type:
-          type: string
-          enum:
-          - limited
-        allowed_hosts:
-          description: Hostnames on which the secret will be substituted. Each entry is a bare hostname (`api.example.com`), an IPv4 address (`192.0.2.1`), or a `*.`-prefixed wildcard (`*.example.com`). URLs, ports, paths, and IPv6 addresses are not accepted. At most 16 entries.
-          type: array
-          items:
-            type: string
-    BetaManagedAgentsUpdateCredentialRequestBody:
-      type: object
-      additionalProperties: false
-      properties:
-        display_name:
-          description: Updated human-readable name for the credential. 1-255 characters.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 255
-          - type: 'null'
-          examples:
-          - Example credential
-        metadata:
-          description: Metadata patch. Set a key to a string to upsert it, or to null to delete it. Omitted keys are preserved.
-          anyOf:
-          - type: object
-            additionalProperties:
-              anyOf:
-              - type: string
-              - type: 'null'
-          - type: 'null'
-          examples:
-          - environment: production
-        auth:
-          description: Updated authentication configuration. The `type` is immutable; the variant sent must match the stored credential's type.
-          allOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsCredentialUpdateAuth'
-      example:
-        display_name: Example credential
-        metadata:
-          environment: production
-    BetaManagedAgentsCredentialValidationStatus:
-      type: string
-      description: Overall verdict of a credential validation probe.
-      enum:
-      - valid
-      - invalid
-      - unknown
-    BetaManagedAgentsTokenEndpointAuthPostParam:
-      description: Token endpoint uses POST body authentication with client credentials.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - client_secret
-      properties:
-        type:
-          type: string
-          enum:
-          - client_secret_post
-        client_secret:
-          description: OAuth client secret.
-          type: string
-          minLength: 1
-          maxLength: 512
-    BetaOverloadedError:
-      properties:
-        message:
-          default: Overloaded
-          title: Message
-          type: string
-        type:
-          const: overloaded_error
-          default: overloaded_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: OverloadedError
-      type: object
-    BetaManagedAgentsInjectionLocationUpdateParams:
-      description: Updated injection location.
-      type: object
-      additionalProperties: false
-      properties:
-        header:
-          description: Substitute when the placeholder appears in a request header value.
-          type: boolean
-        body:
-          description: Substitute when the placeholder appears in the request body.
-          type: boolean
-    BetaManagedAgentsMcpOauthUpdateParams:
-      description: Parameters for updating an MCP OAuth credential. The `mcp_server_url` is immutable.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - mcp_oauth
-        access_token:
-          description: Updated OAuth access token.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 8192
-          - type: 'null'
-        expires_at:
-          anyOf:
-          - $ref: '#/components/schemas/BetaTimestamp'
-          - type: 'null'
-        refresh:
-          description: Updated refresh token configuration.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsMcpOauthRefreshUpdateParams'
-          - type: 'null'
-    BetaManagedAgentsStaticBearerUpdateParams:
-      description: Parameters for updating a static bearer token credential. The `mcp_server_url` is immutable.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - static_bearer
-        token:
-          description: Updated static bearer token value.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 8192
-          - type: 'null'
-    BetaManagedAgentsInjectionLocationResponse:
-      description: Where in the outbound request the secret value is substituted.
-      type: object
-      additionalProperties: false
-      required:
-      - header
-      - body
-      properties:
-        header:
-          description: Whether the placeholder is substituted in request header values.
-          type: boolean
-        body:
-          description: Whether the placeholder is substituted in the request body.
-          type: boolean
-    BetaManagedAgentsCredentialNetworkingResponse:
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          unrestricted: '#/components/schemas/BetaManagedAgentsUnrestrictedCredentialNetworkingResponse'
-          limited: '#/components/schemas/BetaManagedAgentsLimitedCredentialNetworkingResponse'
-      oneOf:
-      - $ref: '#/components/schemas/BetaManagedAgentsUnrestrictedCredentialNetworkingResponse'
-      - $ref: '#/components/schemas/BetaManagedAgentsLimitedCredentialNetworkingResponse'
-    BetaAPIError:
-      properties:
-        message:
-          default: Internal server error
-          title: Message
-          type: string
-        type:
-          const: api_error
-          default: api_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: APIError
-      type: object
     BetaManagedAgentsInjectionLocationParams:
       description: Where in the outbound request the secret value may be substituted.
       type: object
@@ -2705,6 +2574,85 @@ components:
         body:
           description: Substitute when the placeholder appears in the request body.
           type: boolean
+    BetaManagedAgentsCreateVaultRequest:
+      description: Request parameters for creating a vault.
+      type: object
+      additionalProperties: false
+      required:
+      - display_name
+      properties:
+        display_name:
+          description: Human-readable name for the vault. 1-255 characters.
+          type: string
+          minLength: 1
+          maxLength: 255
+          examples:
+          - Example vault
+        metadata:
+          description: Arbitrary key-value metadata to attach to the vault. Maximum 16 pairs, keys up to 64 chars, values up to 512 chars.
+          type: object
+          additionalProperties:
+            type: string
+          examples:
+          - environment: production
+      example:
+        display_name: Example vault
+        metadata:
+          environment: production
+    BetaPermissionError:
+      properties:
+        message:
+          default: Permission denied
+          title: Message
+          type: string
+        type:
+          const: permission_error
+          default: permission_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: PermissionError
+      type: object
+    BetaInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    BetaManagedAgentsStaticBearerAuthResponse:
+      description: Static bearer token credential details for an MCP server.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - mcp_server_url
+      properties:
+        type:
+          type: string
+          enum:
+          - static_bearer
+          examples:
+          - static_bearer
+        mcp_server_url:
+          description: URL of the MCP server this credential authenticates against.
+          type: string
+          examples:
+          - https://example-server.modelcontextprotocol.io/sse
+      example:
+        type: static_bearer
+        mcp_server_url: https://example-server.modelcontextprotocol.io/sse
     BetaManagedAgentsStaticBearerCreateParams:
       description: Parameters for creating a static bearer token credential.
       type: object
@@ -2738,89 +2686,6 @@ components:
         type: static_bearer
         token: bearer_exampletoken
         mcp_server_url: https://example-server.modelcontextprotocol.io/sse
-    BetaManagedAgentsCredentialRefreshStatus:
-      type: string
-      description: Outcome of a refresh-token exchange attempted during credential validation.
-      enum:
-      - succeeded
-      - failed
-      - connect_error
-      - no_refresh_token
-    BetaManagedAgentsMcpOauthAuthResponse:
-      description: OAuth credential details for an MCP server.
-      type: object
-      additionalProperties: false
-      required:
-      - type
-      - mcp_server_url
-      properties:
-        type:
-          type: string
-          enum:
-          - mcp_oauth
-        mcp_server_url:
-          description: URL of the MCP server this credential authenticates against.
-          type: string
-        expires_at:
-          anyOf:
-          - $ref: '#/components/schemas/BetaTimestamp'
-          - type: 'null'
-        refresh:
-          description: Refresh token configuration, if the credential supports token refresh.
-          anyOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsMcpOauthRefreshResponse'
-          - type: 'null'
-    BetaManagedAgentsMcpOauthRefreshParams:
-      description: OAuth refresh token parameters for creating a credential with refresh support.
-      type: object
-      additionalProperties: false
-      required:
-      - refresh_token
-      - token_endpoint
-      - client_id
-      - token_endpoint_auth
-      properties:
-        refresh_token:
-          description: OAuth refresh token.
-          type: string
-          minLength: 1
-          maxLength: 4096
-        token_endpoint:
-          description: Token endpoint URL used to refresh the access token.
-          type: string
-          minLength: 1
-          maxLength: 2047
-        client_id:
-          description: OAuth client ID.
-          type: string
-          minLength: 1
-          maxLength: 1024
-        scope:
-          description: OAuth scope for the refresh request.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 8192
-          - type: 'null'
-        resource:
-          description: OAuth resource indicator.
-          anyOf:
-          - type: string
-            minLength: 1
-            maxLength: 2047
-          - type: 'null'
-        token_endpoint_auth:
-          type: object
-          discriminator:
-            propertyName: type
-            mapping:
-              none: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthNoneParam'
-              client_secret_basic: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthBasicParam'
-              client_secret_post: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthPostParam'
-          oneOf:
-          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthNoneParam'
-          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthBasicParam'
-          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthPostParam'
     BetaManagedAgentsCreateCredentialRequestBody:
       type: object
       additionalProperties: false
@@ -2858,6 +2723,22 @@ components:
         display_name: Example credential
         metadata:
           environment: production
+    BetaManagedAgentsMcpProbe:
+      description: The failing step of an MCP validation probe.
+      type: object
+      additionalProperties: false
+      required:
+      - method
+      - http_response
+      properties:
+        method:
+          description: The MCP method that failed (for example `initialize` or `tools/list`).
+          type: string
+        http_response:
+          description: The captured HTTP error response. Null when no HTTP response was received (timeout, DNS, TLS).
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsRefreshHttpResponse'
+          - type: 'null'
     BetaManagedAgentsEnvironmentVariableCreateParams:
       description: Parameters for creating an environment variable credential.
       type: object
@@ -2892,3 +2773,463 @@ components:
           - $ref: '#/components/schemas/BetaManagedAgentsInjectionLocationParams'
           x-anthropic-beta-required:
           - managed-agents-2026-04-01
+    BetaTimestamp:
+      description: A timestamp in RFC 3339 format
+      type: string
+      format: date-time
+    BetaManagedAgentsLimitedCredentialNetworkingParams:
+      description: Substitute the secret only on requests to the listed hosts.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - allowed_hosts
+      properties:
+        type:
+          type: string
+          enum:
+          - limited
+        allowed_hosts:
+          description: Hostnames on which the secret will be substituted. Each entry is a bare hostname (`api.example.com`), an IPv4 address (`192.0.2.1`), or a `*.`-prefixed wildcard (`*.example.com`). URLs, ports, paths, and IPv6 addresses are not accepted. At most 16 entries.
+          type: array
+          items:
+            type: string
+    BetaManagedAgentsCredentialRefreshStatus:
+      type: string
+      description: Outcome of a refresh-token exchange attempted during credential validation.
+      enum:
+      - succeeded
+      - failed
+      - connect_error
+      - no_refresh_token
+    BetaNotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    BetaManagedAgentsRefreshHttpResponse:
+      description: An HTTP response captured during a credential validation probe.
+      type: object
+      additionalProperties: false
+      required:
+      - status_code
+      - content_type
+      - body
+      - body_truncated
+      properties:
+        status_code:
+          description: HTTP status code.
+          type: integer
+          format: int32
+        content_type:
+          description: Value of the `Content-Type` response header.
+          type: string
+        body:
+          description: Response body. May be truncated and has sensitive values scrubbed.
+          type: string
+        body_truncated:
+          description: Whether `body` was truncated.
+          type: boolean
+    BetaManagedAgentsCredentialNetworkingResponse:
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          unrestricted: '#/components/schemas/BetaManagedAgentsUnrestrictedCredentialNetworkingResponse'
+          limited: '#/components/schemas/BetaManagedAgentsLimitedCredentialNetworkingResponse'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsUnrestrictedCredentialNetworkingResponse'
+      - $ref: '#/components/schemas/BetaManagedAgentsLimitedCredentialNetworkingResponse'
+    BetaManagedAgentsTokenEndpointAuthBasicUpdateParam:
+      description: Updated HTTP Basic authentication parameters for the token endpoint.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - client_secret_basic
+        client_secret:
+          description: Updated OAuth client secret.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 512
+          - type: 'null'
+    BetaManagedAgentsTokenEndpointAuthNoneParam:
+      description: Token endpoint requires no client authentication.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - none
+    BetaManagedAgentsEnvironmentVariableAuthResponse:
+      description: Environment variable credential details. The secret value is never returned.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - secret_name
+      - networking
+      - injection_location
+      properties:
+        type:
+          type: string
+          enum:
+          - environment_variable
+        secret_name:
+          description: Name of the environment variable.
+          type: string
+        networking:
+          description: Outbound hosts the secret value is substituted on.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsCredentialNetworkingResponse'
+        injection_location:
+          description: Where in the outbound request the secret value is substituted.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsInjectionLocationResponse'
+          x-anthropic-beta-required:
+          - managed-agents-2026-04-01
+    BetaManagedAgentsCredentialUpdateAuth:
+      description: Updated authentication details for a credential.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          mcp_oauth: '#/components/schemas/BetaManagedAgentsMcpOauthUpdateParams'
+          static_bearer: '#/components/schemas/BetaManagedAgentsStaticBearerUpdateParams'
+          environment_variable: '#/components/schemas/BetaManagedAgentsEnvironmentVariableUpdateParams'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsMcpOauthUpdateParams'
+      - $ref: '#/components/schemas/BetaManagedAgentsStaticBearerUpdateParams'
+      - $ref: '#/components/schemas/BetaManagedAgentsEnvironmentVariableUpdateParams'
+    BetaManagedAgentsLimitedCredentialNetworkingResponse:
+      description: The secret is substituted only on requests to the listed hosts.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - allowed_hosts
+      properties:
+        type:
+          type: string
+          enum:
+          - limited
+        allowed_hosts:
+          description: Hostnames on which the secret will be substituted. An entry matches the request host exactly; a `*.`-prefixed entry matches any subdomain of the named domain but not the domain itself.
+          type: array
+          items:
+            type: string
+    BetaManagedAgentsCredentialValidationStatus:
+      type: string
+      description: Overall verdict of a credential validation probe.
+      enum:
+      - valid
+      - invalid
+      - unknown
+    BetaManagedAgentsTokenEndpointAuthNoneResponse:
+      description: Token endpoint requires no client authentication.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - none
+    BetaManagedAgentsUpdateVaultRequestBody:
+      type: object
+      additionalProperties: false
+      properties:
+        display_name:
+          description: Updated human-readable name for the vault. 1-255 characters.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 255
+          - type: 'null'
+          examples:
+          - Example vault
+        metadata:
+          description: Metadata patch. Set a key to a string to upsert it, or to null to delete it. Omitted keys are preserved.
+          anyOf:
+          - type: object
+            additionalProperties:
+              anyOf:
+              - type: string
+              - type: 'null'
+          - type: 'null'
+          examples:
+          - environment: production
+      example:
+        display_name: Example vault
+        metadata:
+          environment: production
+    BetaBillingError:
+      properties:
+        message:
+          default: Billing error
+          title: Message
+          type: string
+        type:
+          const: billing_error
+          default: billing_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: BillingError
+      type: object
+    BetaManagedAgentsVault:
+      description: A vault that stores credentials for use by agents during sessions.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - id
+      - display_name
+      - metadata
+      - created_at
+      - updated_at
+      - archived_at
+      properties:
+        type:
+          type: string
+          enum:
+          - vault
+          examples:
+          - vault
+        id:
+          description: Unique identifier for the vault.
+          type: string
+          examples:
+          - vlt_011CZkZDLs7fYzm1hXNPeRjv
+        display_name:
+          description: Human-readable name for the vault.
+          type: string
+          examples:
+          - Example vault
+        metadata:
+          description: Arbitrary key-value metadata attached to the vault.
+          type: object
+          additionalProperties:
+            type: string
+          examples:
+          - environment: production
+        created_at:
+          $ref: '#/components/schemas/BetaTimestamp'
+          examples:
+          - '2026-03-15T10:00:00Z'
+        updated_at:
+          $ref: '#/components/schemas/BetaTimestamp'
+          examples:
+          - '2026-03-15T10:00:00Z'
+        archived_at:
+          description: When the vault was archived. Null if not archived.
+          anyOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+          - type: 'null'
+          examples:
+          - null
+      example:
+        type: vault
+        id: vlt_011CZkZDLs7fYzm1hXNPeRjv
+        display_name: Example vault
+        metadata:
+          environment: production
+        created_at: '2026-03-15T10:00:00Z'
+        updated_at: '2026-03-15T10:00:00Z'
+        archived_at: null
+    BetaManagedAgentsMcpOauthAuthResponse:
+      description: OAuth credential details for an MCP server.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - mcp_server_url
+      properties:
+        type:
+          type: string
+          enum:
+          - mcp_oauth
+        mcp_server_url:
+          description: URL of the MCP server this credential authenticates against.
+          type: string
+        expires_at:
+          anyOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+          - type: 'null'
+        refresh:
+          description: Refresh token configuration, if the credential supports token refresh.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsMcpOauthRefreshResponse'
+          - type: 'null'
+    BetaManagedAgentsRefreshObject:
+      description: Outcome of a refresh-token exchange attempted during credential validation.
+      type: object
+      additionalProperties: false
+      required:
+      - status
+      - http_response
+      properties:
+        status:
+          description: Outcome of the refresh attempt.
+          allOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsCredentialRefreshStatus'
+        http_response:
+          description: The captured HTTP error response from the token endpoint. Populated only when `status` is `failed`.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsRefreshHttpResponse'
+          - type: 'null'
+    BetaManagedAgentsMcpOauthRefreshUpdateParams:
+      description: Parameters for updating OAuth refresh token configuration.
+      type: object
+      additionalProperties: false
+      properties:
+        refresh_token:
+          description: Updated OAuth refresh token.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 4096
+          - type: 'null'
+        scope:
+          description: Updated OAuth scope for the refresh request.
+          anyOf:
+          - type: string
+            maxLength: 8192
+          - type: 'null'
+        token_endpoint_auth:
+          type: object
+          discriminator:
+            propertyName: type
+            mapping:
+              client_secret_basic: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthBasicUpdateParam'
+              client_secret_post: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthPostUpdateParam'
+          oneOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthBasicUpdateParam'
+          - $ref: '#/components/schemas/BetaManagedAgentsTokenEndpointAuthPostUpdateParam'
+    BetaGatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
+      type: object
+    BetaManagedAgentsCredentialCreateAuth:
+      description: Authentication details for creating a credential.
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          mcp_oauth: '#/components/schemas/BetaManagedAgentsMcpOauthCreateParams'
+          static_bearer: '#/components/schemas/BetaManagedAgentsStaticBearerCreateParams'
+          environment_variable: '#/components/schemas/BetaManagedAgentsEnvironmentVariableCreateParams'
+      oneOf:
+      - $ref: '#/components/schemas/BetaManagedAgentsMcpOauthCreateParams'
+      - $ref: '#/components/schemas/BetaManagedAgentsStaticBearerCreateParams'
+      - $ref: '#/components/schemas/BetaManagedAgentsEnvironmentVariableCreateParams'
+      example:
+        type: static_bearer
+        token: bearer_exampletoken
+        mcp_server_url: https://example-server.modelcontextprotocol.io/sse
+    BetaManagedAgentsStaticBearerUpdateParams:
+      description: Parameters for updating a static bearer token credential. The `mcp_server_url` is immutable.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - static_bearer
+        token:
+          description: Updated static bearer token value.
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 8192
+          - type: 'null'
+    BetaManagedAgentsDeletedCredential:
+      description: Confirmation of a deleted credential.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - id
+      properties:
+        type:
+          type: string
+          enum:
+          - vault_credential_deleted
+          examples:
+          - vault_credential_deleted
+        id:
+          description: Unique identifier of the deleted credential.
+          type: string
+          examples:
+          - vcrd_011CZkZEMt8gZan2iYOQfSkw
+      example:
+        type: vault_credential_deleted
+        id: vcrd_011CZkZEMt8gZan2iYOQfSkw
+    BetaManagedAgentsMcpOauthCreateParams:
+      description: Parameters for creating an MCP OAuth credential.
+      type: object
+      additionalProperties: false
+      required:
+      - type
+      - mcp_server_url
+      - access_token
+      properties:
+        type:
+          type: string
+          enum:
+          - mcp_oauth
+        mcp_server_url:
+          description: URL of the MCP server this credential authenticates against.
+          type: string
+          minLength: 1
+          maxLength: 2047
+        access_token:
+          description: OAuth access token.
+          type: string
+          minLength: 1
+          maxLength: 8192
+        expires_at:
+          anyOf:
+          - $ref: '#/components/schemas/BetaTimestamp'
+          - type: 'null'
+        refresh:
+          description: Refresh token configuration, if the credential supports token refresh.
+          anyOf:
+          - $ref: '#/components/schemas/BetaManagedAgentsMcpOauthRefreshParams'
+          - type: 'null'

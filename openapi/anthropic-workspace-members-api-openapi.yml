@@ -166,7 +166,91 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"WorkspaceMemberDeletedResponseExample\"\n}\n"
 components:
+  examples:
+    WorkspaceMemberExample:
+      summary: Workspace Member Response
+      value:
+        type: workspace_member
+        user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+        workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        workspace_role: workspace_developer
+    AddWorkspaceMemberRequestExample:
+      summary: Add Workspace Member Request
+      value:
+        user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+        workspace_role: workspace_developer
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The request was invalid or malformed.
+    WorkspaceMemberListExample:
+      summary: Workspace Member List Response
+      value:
+        data:
+        - type: workspace_member
+          user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+          workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+          workspace_role: workspace_developer
+        - type: workspace_member
+          user_id: user_02XDa2GlnYNn5hoozlNLVu4R
+          workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+          workspace_role: workspace_user
+        first_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+        has_more: false
+        last_id: user_02XDa2GlnYNn5hoozlNLVu4R
+    WorkspaceMemberDeletedResponseExample:
+      summary: Workspace Member Deleted Response
+      value:
+        type: workspace_member_deleted
+        user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+        workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+    UpdateWorkspaceMemberRequestExample:
+      summary: Update Workspace Member Request
+      value:
+        workspace_role: workspace_admin
   schemas:
+    WorkspaceRole:
+      type: string
+      enum:
+      - workspace_user
+      - workspace_developer
+      - workspace_admin
+      - workspace_billing
+      description: Role within the workspace
+    AddWorkspaceMemberRequest:
+      type: object
+      required:
+      - user_id
+      - workspace_role
+      properties:
+        user_id:
+          type: string
+          description: ID of the user to add
+        workspace_role:
+          $ref: '#/components/schemas/WorkspaceRole'
+    WorkspaceMember:
+      type: object
+      required:
+      - type
+      - user_id
+      - workspace_id
+      - workspace_role
+      properties:
+        type:
+          type: string
+          enum:
+          - workspace_member
+          default: workspace_member
+          description: Object type identifier
+        user_id:
+          type: string
+          description: Unique user identifier
+        workspace_id:
+          type: string
+          description: Unique workspace identifier
+        workspace_role:
+          $ref: '#/components/schemas/WorkspaceRole'
     Error:
       type: object
       required:
@@ -198,13 +282,6 @@ components:
         workspace_id:
           type: string
           description: ID of the workspace
-    UpdateWorkspaceMemberRequest:
-      type: object
-      required:
-      - workspace_role
-      properties:
-        workspace_role:
-          $ref: '#/components/schemas/WorkspaceRole'
     WorkspaceMemberList:
       type: object
       required:
@@ -229,72 +306,21 @@ components:
           type: string
           nullable: true
           description: Last ID in the data list for pagination
-    WorkspaceRole:
-      type: string
-      enum:
-      - workspace_user
-      - workspace_developer
-      - workspace_admin
-      - workspace_billing
-      description: Role within the workspace
-    WorkspaceMember:
+    UpdateWorkspaceMemberRequest:
       type: object
       required:
-      - type
-      - user_id
-      - workspace_id
       - workspace_role
       properties:
-        type:
-          type: string
-          enum:
-          - workspace_member
-          default: workspace_member
-          description: Object type identifier
-        user_id:
-          type: string
-          description: Unique user identifier
-        workspace_id:
-          type: string
-          description: Unique workspace identifier
-        workspace_role:
-          $ref: '#/components/schemas/WorkspaceRole'
-    AddWorkspaceMemberRequest:
-      type: object
-      required:
-      - user_id
-      - workspace_role
-      properties:
-        user_id:
-          type: string
-          description: ID of the user to add
         workspace_role:
           $ref: '#/components/schemas/WorkspaceRole'
   parameters:
-    WorkspaceId:
-      name: workspace_id
-      in: path
-      required: true
-      description: Unique identifier for the workspace
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
       schema:
         type: string
-      example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-    UserId:
-      name: user_id
-      in: path
-      required: true
-      description: Unique identifier for the user
-      schema:
-        type: string
-      example: user_01WCz1FkmYMm4gnmykNKUu3Q
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
-      required: true
-      description: The version of the Anthropic API to use
-      schema:
-        type: string
-        example: '2023-06-01'
     Limit:
       name: limit
       in: query
@@ -305,13 +331,30 @@ components:
         default: 20
         minimum: 1
         maximum: 1000
-    AfterId:
-      name: after_id
-      in: query
-      required: false
-      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
       schema:
         type: string
+        example: '2023-06-01'
+    UserId:
+      name: user_id
+      in: path
+      required: true
+      description: Unique identifier for the user
+      schema:
+        type: string
+      example: user_01WCz1FkmYMm4gnmykNKUu3Q
+    WorkspaceId:
+      name: workspace_id
+      in: path
+      required: true
+      description: Unique identifier for the workspace
+      schema:
+        type: string
+      example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
     BeforeId:
       name: before_id
       in: query
@@ -329,49 +372,6 @@ components:
           examples:
             ErrorExample:
               $ref: '#/components/examples/ErrorExample'
-  examples:
-    WorkspaceMemberExample:
-      summary: Workspace Member Response
-      value:
-        type: workspace_member
-        user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
-        workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-        workspace_role: workspace_developer
-    AddWorkspaceMemberRequestExample:
-      summary: Add Workspace Member Request
-      value:
-        user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
-        workspace_role: workspace_developer
-    UpdateWorkspaceMemberRequestExample:
-      summary: Update Workspace Member Request
-      value:
-        workspace_role: workspace_admin
-    WorkspaceMemberListExample:
-      summary: Workspace Member List Response
-      value:
-        data:
-        - type: workspace_member
-          user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
-          workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-          workspace_role: workspace_developer
-        - type: workspace_member
-          user_id: user_02XDa2GlnYNn5hoozlNLVu4R
-          workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-          workspace_role: workspace_user
-        first_id: user_01WCz1FkmYMm4gnmykNKUu3Q
-        has_more: false
-        last_id: user_02XDa2GlnYNn5hoozlNLVu4R
-    ErrorExample:
-      summary: Error Response
-      value:
-        type: invalid_request_error
-        message: The request was invalid or malformed.
-    WorkspaceMemberDeletedResponseExample:
-      summary: Workspace Member Deleted Response
-      value:
-        type: workspace_member_deleted
-        user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
-        workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
   securitySchemes:
     AdminApiKeyAuth:
       type: apiKey

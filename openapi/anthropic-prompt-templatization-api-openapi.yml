@@ -130,41 +130,96 @@ paths:
                 ServerErrorExample:
                   $ref: '#/components/examples/ErrorServerExample'
 components:
+  examples:
+    ErrorRateLimitExample:
+      summary: Rate limit error
+      value:
+        type: rate_limit_error
+        message: Rate limit exceeded. Please retry after some time.
+    ErrorServerExample:
+      summary: Server error
+      value:
+        type: api_error
+        message: An internal server error occurred
+    TemplatizePromptRequestTranslationExample:
+      summary: Translation with system prompt
+      value:
+        messages:
+        - role: user
+          content:
+          - type: text
+            text: Translate hello to German
+        system: You are a professional English to German translator
+    ErrorBadRequestExample:
+      summary: Bad request error
+      value:
+        type: invalid_request_error
+        message: Invalid request format
+    TemplatizePromptRequestDefaultExample:
+      summary: Simple translation prompt
+      value:
+        messages:
+        - role: user
+          content:
+          - type: text
+            text: Translate hello to German
+    ErrorUnauthorizedExample:
+      summary: Unauthorized error
+      value:
+        type: authentication_error
+        message: Invalid or missing API key
+    TemplatizePromptResponseExample:
+      summary: Templatized translation prompt
+      value:
+        messages:
+        - role: user
+          content:
+          - type: text
+            text: Translate {{WORD_TO_TRANSLATE}} to {{TARGET_LANGUAGE}}
+        system: You are a professional English to {{TARGET_LANGUAGE}} translator
+        usage:
+          input_tokens: 15
+          output_tokens: 25
+        variable_values:
+          WORD_TO_TRANSLATE: hello
+          TARGET_LANGUAGE: German
+    ErrorForbiddenExample:
+      summary: Forbidden error
+      value:
+        type: permission_error
+        message: Access denied or not in closed research preview
   schemas:
-    TemplatizePromptRequest:
+    TextContentBlock:
       type: object
       required:
-      - messages
+      - type
+      - text
       properties:
-        messages:
-          type: array
-          description: 'The prompt to templatize, structured as a list of message objects.
-
-            Each message must contain only text-only content blocks and
-
-            not include tool calls, images, or prompt caching blocks.
-
-            Only contiguous user messages with text content are allowed.
-
-            Assistant prefill is permitted.
-
-            '
-          items:
-            $ref: '#/components/schemas/PromptMessage'
-        system:
+        type:
           type: string
-          nullable: true
-          description: 'The existing system prompt to templatize.
-
-            Note that this differs from the Messages API; it is strictly
-
-            a string.
-
-            If provided, variables will be identified and replaced in
-
-            the system prompt as well.
-
-            '
+          enum:
+          - text
+          description: The type of content block
+        text:
+          type: string
+          description: The text content
+    PromptMessage:
+      type: object
+      required:
+      - role
+      - content
+      properties:
+        role:
+          type: string
+          enum:
+          - user
+          - assistant
+          description: The role of the message sender
+        content:
+          type: array
+          description: The content of the message
+          items:
+            $ref: '#/components/schemas/TextContentBlock'
     TemplatizePromptResponse:
       type: object
       required:
@@ -216,23 +271,18 @@ components:
             '
           additionalProperties:
             type: string
-    PromptMessage:
+    ErrorResponse:
       type: object
       required:
-      - role
-      - content
+      - type
+      - message
       properties:
-        role:
+        type:
           type: string
-          enum:
-          - user
-          - assistant
-          description: The role of the message sender
-        content:
-          type: array
-          description: The content of the message
-          items:
-            $ref: '#/components/schemas/TextContentBlock'
+          description: The type of error
+        message:
+          type: string
+          description: A human-readable error message
     UsageInfo:
       type: object
       description: Usage information
@@ -248,106 +298,41 @@ components:
           type: integer
           description: Number of output tokens generated
           minimum: 0
-    ErrorResponse:
+    TemplatizePromptRequest:
       type: object
       required:
-      - type
-      - message
+      - messages
       properties:
-        type:
-          type: string
-          description: The type of error
-        message:
-          type: string
-          description: A human-readable error message
-    TextContentBlock:
-      type: object
-      required:
-      - type
-      - text
-      properties:
-        type:
-          type: string
-          enum:
-          - text
-          description: The type of content block
-        text:
-          type: string
-          description: The text content
-  examples:
-    ErrorUnauthorizedExample:
-      summary: Unauthorized error
-      value:
-        type: authentication_error
-        message: Invalid or missing API key
-    ErrorForbiddenExample:
-      summary: Forbidden error
-      value:
-        type: permission_error
-        message: Access denied or not in closed research preview
-    TemplatizePromptRequestDefaultExample:
-      summary: Simple translation prompt
-      value:
         messages:
-        - role: user
-          content:
-          - type: text
-            text: Translate hello to German
-    ErrorServerExample:
-      summary: Server error
-      value:
-        type: api_error
-        message: An internal server error occurred
-    TemplatizePromptRequestTranslationExample:
-      summary: Translation with system prompt
-      value:
-        messages:
-        - role: user
-          content:
-          - type: text
-            text: Translate hello to German
-        system: You are a professional English to German translator
-    ErrorRateLimitExample:
-      summary: Rate limit error
-      value:
-        type: rate_limit_error
-        message: Rate limit exceeded. Please retry after some time.
-    TemplatizePromptResponseExample:
-      summary: Templatized translation prompt
-      value:
-        messages:
-        - role: user
-          content:
-          - type: text
-            text: Translate {{WORD_TO_TRANSLATE}} to {{TARGET_LANGUAGE}}
-        system: You are a professional English to {{TARGET_LANGUAGE}} translator
-        usage:
-          input_tokens: 15
-          output_tokens: 25
-        variable_values:
-          WORD_TO_TRANSLATE: hello
-          TARGET_LANGUAGE: German
-    ErrorBadRequestExample:
-      summary: Bad request error
-      value:
-        type: invalid_request_error
-        message: Invalid request format
+          type: array
+          description: 'The prompt to templatize, structured as a list of message objects.
+
+            Each message must contain only text-only content blocks and
+
+            not include tool calls, images, or prompt caching blocks.
+
+            Only contiguous user messages with text content are allowed.
+
+            Assistant prefill is permitted.
+
+            '
+          items:
+            $ref: '#/components/schemas/PromptMessage'
+        system:
+          type: string
+          nullable: true
+          description: 'The existing system prompt to templatize.
+
+            Note that this differs from the Messages API; it is strictly
+
+            a string.
+
+            If provided, variables will be identified and replaced in
+
+            the system prompt as well.
+
+            '
   parameters:
-    ContentTypeHeader:
-      name: Content-Type
-      in: header
-      required: true
-      description: The content type.
-      schema:
-        type: string
-        default: application/json
-    ApiKeyHeader:
-      name: x-api-key
-      in: header
-      required: true
-      description: A valid API token.
-      schema:
-        type: string
     AnthropicBetaHeader:
       name: anthropic-beta
       in: header
@@ -367,14 +352,14 @@ components:
         - prompt-tools-2025-04-02
       style: simple
       explode: false
-    AnthropicVersionHeader:
-      name: anthropic-version
+    ContentTypeHeader:
+      name: Content-Type
       in: header
       required: true
-      description: Which version of the Anthropic API to use.
+      description: The content type.
       schema:
         type: string
-        default: '2023-06-01'
+        default: application/json
     BrowserAccessHeader:
       name: anthropic-dangerous-direct-browser-access
       in: header
@@ -383,6 +368,21 @@ components:
       schema:
         type: string
         default: 'true'
+    AnthropicVersionHeader:
+      name: anthropic-version
+      in: header
+      required: true
+      description: Which version of the Anthropic API to use.
+      schema:
+        type: string
+        default: '2023-06-01'
+    ApiKeyHeader:
+      name: x-api-key
+      in: header
+      required: true
+      description: A valid API token.
+      schema:
+        type: string
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
