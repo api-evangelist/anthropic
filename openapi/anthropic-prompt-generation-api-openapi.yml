@@ -122,36 +122,63 @@ paths:
                 ServerErrorExample:
                   $ref: '#/components/examples/ErrorServerExample'
 components:
+  parameters:
+    BrowserAccessHeader:
+      name: anthropic-dangerous-direct-browser-access
+      in: header
+      required: false
+      description: Enable CORS.
+      schema:
+        type: string
+        default: 'true'
+    AnthropicVersionHeader:
+      name: anthropic-version
+      in: header
+      required: true
+      description: Which version of the Anthropic API to use.
+      schema:
+        type: string
+        default: '2023-06-01'
+    ApiKeyHeader:
+      name: x-api-key
+      in: header
+      required: true
+      description: A valid API token.
+      schema:
+        type: string
+    ContentTypeHeader:
+      name: Content-Type
+      in: header
+      required: true
+      description: The content type.
+      schema:
+        type: string
+        default: application/json
+    AnthropicBetaHeader:
+      name: anthropic-beta
+      in: header
+      description: 'Optional header to specify the beta version(s) you want to use.
+
+        To use multiple betas, use a comma separated list like `beta1,beta2`
+
+        or specify the header multiple times for each beta.
+
+        '
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+        example:
+        - prompt-tools-2025-04-02
+      style: simple
+      explode: false
   examples:
-    ErrorRateLimitExample:
-      summary: Rate limit error
-      value:
-        type: rate_limit_error
-        message: Rate limit exceeded. Please retry after some time.
     ErrorServerExample:
       summary: Server error
       value:
         type: api_error
         message: An internal server error occurred
-    ErrorBadRequestExample:
-      summary: Bad request error
-      value:
-        type: invalid_request_error
-        message: Invalid request format
-    GeneratePromptRequestChefExample:
-      summary: Chef for meal prep service
-      value:
-        task: a chef for a meal prep planning service
-        target_model: claude-3-7-sonnet-20250219
-    ErrorUnauthorizedExample:
-      summary: Unauthorized error
-      value:
-        type: authentication_error
-        message: Invalid or missing API key
-    GeneratePromptRequestDefaultExample:
-      summary: Basic task only
-      value:
-        task: a helpful writing assistant for creative fiction
     GeneratePromptResponseChefExample:
       summary: Chef prompt response
       value:
@@ -168,11 +195,35 @@ components:
         usage:
           input_tokens: 25
           output_tokens: 150
+    ErrorBadRequestExample:
+      summary: Bad request error
+      value:
+        type: invalid_request_error
+        message: Invalid request format
     ErrorForbiddenExample:
       summary: Forbidden error
       value:
         type: permission_error
         message: Access denied or not in closed research preview
+    GeneratePromptRequestDefaultExample:
+      summary: Basic task only
+      value:
+        task: a helpful writing assistant for creative fiction
+    ErrorRateLimitExample:
+      summary: Rate limit error
+      value:
+        type: rate_limit_error
+        message: Rate limit exceeded. Please retry after some time.
+    ErrorUnauthorizedExample:
+      summary: Unauthorized error
+      value:
+        type: authentication_error
+        message: Invalid or missing API key
+    GeneratePromptRequestChefExample:
+      summary: Chef for meal prep service
+      value:
+        task: a chef for a meal prep planning service
+        target_model: claude-3-7-sonnet-20250219
   schemas:
     TextContentBlock:
       type: object
@@ -188,6 +239,35 @@ components:
         text:
           type: string
           description: The text content
+    PromptMessage:
+      type: object
+      required:
+      - role
+      - content
+      properties:
+        role:
+          type: string
+          enum:
+          - user
+          - assistant
+          description: The role of the message sender
+        content:
+          type: array
+          description: The content of the message
+          items:
+            $ref: '#/components/schemas/TextContentBlock'
+    ErrorResponse:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: The type of error
+        message:
+          type: string
+          description: A human-readable error message
     GeneratePromptRequest:
       type: object
       required:
@@ -221,23 +301,6 @@ components:
             '
           minLength: 1
           maxLength: 256
-    PromptMessage:
-      type: object
-      required:
-      - role
-      - content
-      properties:
-        role:
-          type: string
-          enum:
-          - user
-          - assistant
-          description: The role of the message sender
-        content:
-          type: array
-          description: The content of the message
-          items:
-            $ref: '#/components/schemas/TextContentBlock'
     GeneratePromptResponse:
       type: object
       required:
@@ -272,18 +335,6 @@ components:
             '
         usage:
           $ref: '#/components/schemas/UsageInfo'
-    ErrorResponse:
-      type: object
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          description: The type of error
-        message:
-          type: string
-          description: A human-readable error message
     UsageInfo:
       type: object
       description: Usage information
@@ -299,57 +350,6 @@ components:
           type: integer
           description: Number of output tokens generated
           minimum: 0
-  parameters:
-    AnthropicBetaHeader:
-      name: anthropic-beta
-      in: header
-      description: 'Optional header to specify the beta version(s) you want to use.
-
-        To use multiple betas, use a comma separated list like `beta1,beta2`
-
-        or specify the header multiple times for each beta.
-
-        '
-      required: false
-      schema:
-        type: array
-        items:
-          type: string
-        example:
-        - prompt-tools-2025-04-02
-      style: simple
-      explode: false
-    ContentTypeHeader:
-      name: Content-Type
-      in: header
-      required: true
-      description: The content type.
-      schema:
-        type: string
-        default: application/json
-    BrowserAccessHeader:
-      name: anthropic-dangerous-direct-browser-access
-      in: header
-      required: false
-      description: Enable CORS.
-      schema:
-        type: string
-        default: 'true'
-    AnthropicVersionHeader:
-      name: anthropic-version
-      in: header
-      required: true
-      description: Which version of the Anthropic API to use.
-      schema:
-        type: string
-        default: '2023-06-01'
-    ApiKeyHeader:
-      name: x-api-key
-      in: header
-      required: true
-      description: A valid API token.
-      schema:
-        type: string
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

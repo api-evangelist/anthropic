@@ -58,12 +58,13 @@ paths:
                 type: string
 components:
   parameters:
-    SessionIdPath:
-      name: session_id
-      in: path
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
       required: true
       schema:
         type: string
+        default: '2023-06-01'
     AnthropicBeta:
       name: anthropic-beta
       in: header
@@ -72,13 +73,12 @@ components:
       schema:
         type: string
         default: managed-agents-2026-04-01
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
+    SessionIdPath:
+      name: session_id
+      in: path
       required: true
       schema:
         type: string
-        default: '2023-06-01'
   schemas:
     EventBatch:
       type: object

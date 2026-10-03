@@ -142,11 +142,6 @@ components:
       value:
         id: user_01WCz1FkmYMm4gnmykNKUu3Q
         type: user_deleted
-    ErrorExample:
-      summary: Error Response
-      value:
-        type: invalid_request_error
-        message: The request was invalid or malformed.
     OrganizationMemberListExample:
       summary: Organization Member List Response
       value:
@@ -166,6 +161,15 @@ components:
         first_id: user_01WCz1FkmYMm4gnmykNKUu3Q
         has_more: false
         last_id: user_02XDa2GlnYNn5hoozlNLVu4R
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The request was invalid or malformed.
+    UpdateOrganizationMemberRequestExample:
+      summary: Update Organization Member Request
+      value:
+        role: developer
     OrganizationMemberExample:
       summary: Organization Member Response
       value:
@@ -175,11 +179,115 @@ components:
         name: Jane Doe
         role: developer
         added_at: '2024-10-30T23:58:27.427722Z'
-    UpdateOrganizationMemberRequestExample:
-      summary: Update Organization Member Request
-      value:
-        role: developer
+  parameters:
+    UserId:
+      name: user_id
+      in: path
+      required: true
+      description: Unique identifier for the user
+      schema:
+        type: string
+      example: user_01WCz1FkmYMm4gnmykNKUu3Q
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
+      schema:
+        type: string
+        example: '2023-06-01'
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 1000
+    BeforeId:
+      name: before_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
+      schema:
+        type: string
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
+      schema:
+        type: string
   schemas:
+    UserDeletedResponse:
+      type: object
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: ID of the deleted user
+        type:
+          type: string
+          enum:
+          - user_deleted
+          default: user_deleted
+          description: Deletion confirmation type
+    OrganizationMemberList:
+      type: object
+      required:
+      - data
+      - has_more
+      - first_id
+      - last_id
+      properties:
+        data:
+          type: array
+          description: List of organization members
+          items:
+            $ref: '#/components/schemas/OrganizationMember'
+        first_id:
+          type: string
+          nullable: true
+          description: First ID in the data list for pagination
+        has_more:
+          type: boolean
+          description: Indicates if there are more results available
+        last_id:
+          type: string
+          nullable: true
+          description: Last ID in the data list for pagination
+    UpdateOrganizationMemberRequest:
+      type: object
+      required:
+      - role
+      properties:
+        role:
+          $ref: '#/components/schemas/OrganizationRole'
+    Error:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type identifier
+        message:
+          type: string
+          description: Human-readable error message
+    OrganizationRole:
+      type: string
+      enum:
+      - user
+      - claude_code_user
+      - developer
+      - billing
+      - admin
+      description: Role within the organization
     OrganizationMember:
       type: object
       required:
@@ -212,73 +320,6 @@ components:
           type: string
           format: date-time
           description: RFC 3339 datetime when user joined the organization
-    UpdateOrganizationMemberRequest:
-      type: object
-      required:
-      - role
-      properties:
-        role:
-          $ref: '#/components/schemas/OrganizationRole'
-    Error:
-      type: object
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          description: Error type identifier
-        message:
-          type: string
-          description: Human-readable error message
-    OrganizationMemberList:
-      type: object
-      required:
-      - data
-      - has_more
-      - first_id
-      - last_id
-      properties:
-        data:
-          type: array
-          description: List of organization members
-          items:
-            $ref: '#/components/schemas/OrganizationMember'
-        first_id:
-          type: string
-          nullable: true
-          description: First ID in the data list for pagination
-        has_more:
-          type: boolean
-          description: Indicates if there are more results available
-        last_id:
-          type: string
-          nullable: true
-          description: Last ID in the data list for pagination
-    OrganizationRole:
-      type: string
-      enum:
-      - user
-      - claude_code_user
-      - developer
-      - billing
-      - admin
-      description: Role within the organization
-    UserDeletedResponse:
-      type: object
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: ID of the deleted user
-        type:
-          type: string
-          enum:
-          - user_deleted
-          default: user_deleted
-          description: Deletion confirmation type
   responses:
     ErrorResponse:
       description: Error Response
@@ -289,47 +330,6 @@ components:
           examples:
             ErrorExample:
               $ref: '#/components/examples/ErrorExample'
-  parameters:
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
-      required: true
-      description: The version of the Anthropic API to use
-      schema:
-        type: string
-        example: '2023-06-01'
-    BeforeId:
-      name: before_id
-      in: query
-      required: false
-      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
-      schema:
-        type: string
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.
-      schema:
-        type: integer
-        default: 20
-        minimum: 1
-        maximum: 1000
-    AfterId:
-      name: after_id
-      in: query
-      required: false
-      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
-      schema:
-        type: string
-    UserId:
-      name: user_id
-      in: path
-      required: true
-      description: Unique identifier for the user
-      schema:
-        type: string
-      example: user_01WCz1FkmYMm4gnmykNKUu3Q
   securitySchemes:
     AdminApiKeyAuth:
       type: apiKey

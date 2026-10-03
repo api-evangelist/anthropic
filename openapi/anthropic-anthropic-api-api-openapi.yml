@@ -669,9 +669,9 @@ webhooks:
       - Anthropic API
 components:
   schemas:
-    BetaWebhookDeploymentUnpausedEventData:
+    BetaWebhookVaultCreatedEventData:
       type: object
-      title: BetaWebhookDeploymentUnpausedEventData
+      title: BetaWebhookVaultCreatedEventData
       required:
       - type
       - id
@@ -680,10 +680,10 @@ components:
       properties:
         type:
           type: string
-          const: deployment.unpaused
+          const: vault.created
         id:
           type: string
-          description: ID of the deployment that triggered the event.
+          description: ID of the vault that triggered the event.
         organization_id:
           type: string
         workspace_id:
@@ -711,6 +711,105 @@ components:
         vault_id:
           type: string
           description: ID of the vault that owns this credential.
+    BetaWebhookSessionDeletedEventData:
+      type: object
+      title: BetaWebhookSessionDeletedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.deleted
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookEnvironmentCreatedEventData:
+      type: object
+      title: BetaWebhookEnvironmentCreatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: environment.created
+        id:
+          type: string
+          description: ID of the environment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionArchivedEventData:
+      type: object
+      title: BetaWebhookSessionArchivedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.archived
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionRequiresActionEventData:
+      type: object
+      title: BetaWebhookSessionRequiresActionEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.requires_action
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionThreadIdledEventData:
+      type: object
+      title: BetaWebhookSessionThreadIdledEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      - session_thread_id
+      properties:
+        type:
+          type: string
+          const: session.thread_idled
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+        session_thread_id:
+          type: string
+          description: ID of the session thread this event refers to.
     BetaWebhookEventData:
       title: BetaWebhookEventData
       oneOf:
@@ -805,9 +904,9 @@ components:
           memory_store.archived: '#/components/schemas/BetaWebhookMemoryStoreArchivedEventData'
           memory_store.deleted: '#/components/schemas/BetaWebhookMemoryStoreDeletedEventData'
           session.budget_reached: '#/components/schemas/BetaWebhookSessionBudgetReachedEventData'
-    BetaWebhookSessionArchivedEventData:
+    BetaWebhookMemoryStoreArchivedEventData:
       type: object
-      title: BetaWebhookSessionArchivedEventData
+      title: BetaWebhookMemoryStoreArchivedEventData
       required:
       - type
       - id
@@ -816,58 +915,7 @@ components:
       properties:
         type:
           type: string
-          const: session.archived
-        id:
-          type: string
-          description: ID of the session that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookSessionOutcomeEvaluationEndedEventData:
-      type: object
-      title: BetaWebhookSessionOutcomeEvaluationEndedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: session.outcome_evaluation_ended
-          examples:
-          - session.outcome_evaluation_ended
-        id:
-          type: string
-          description: ID of the session that triggered the event.
-          examples:
-          - sesn_011CZkZAtmR3yMPDzynEDxu7
-        organization_id:
-          type: string
-          examples:
-          - org_011CZkZZAe0sMna4vkBdtrfx
-        workspace_id:
-          type: string
-          examples:
-          - wrkspc_011CZkZaBF1tNoB5wlCeusgy
-      example:
-        type: session.outcome_evaluation_ended
-        id: sesn_011CZkZAtmR3yMPDzynEDxu7
-        organization_id: org_011CZkZZAe0sMna4vkBdtrfx
-        workspace_id: wrkspc_011CZkZaBF1tNoB5wlCeusgy
-    BetaWebhookMemoryStoreDeletedEventData:
-      type: object
-      title: BetaWebhookMemoryStoreDeletedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: memory_store.deleted
+          const: memory_store.archived
         id:
           type: string
           description: ID of the memory store that triggered the event.
@@ -875,9 +923,9 @@ components:
           type: string
         workspace_id:
           type: string
-    BetaWebhookDeploymentRunSucceededEventData:
+    BetaWebhookEnvironmentArchivedEventData:
       type: object
-      title: BetaWebhookDeploymentRunSucceededEventData
+      title: BetaWebhookEnvironmentArchivedEventData
       required:
       - type
       - id
@@ -886,26 +934,7 @@ components:
       properties:
         type:
           type: string
-          const: deployment_run.succeeded
-        id:
-          type: string
-          description: ID of the deployment run that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookEnvironmentDeletedEventData:
-      type: object
-      title: BetaWebhookEnvironmentDeletedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: environment.deleted
+          const: environment.archived
         id:
           type: string
           description: ID of the environment that triggered the event.
@@ -932,6 +961,82 @@ components:
           type: string
         workspace_id:
           type: string
+    BetaWebhookEnvironmentUpdatedEventData:
+      type: object
+      title: BetaWebhookEnvironmentUpdatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: environment.updated
+        id:
+          type: string
+          description: ID of the environment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionPendingEventData:
+      type: object
+      title: BetaWebhookSessionPendingEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.pending
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookDeploymentRunSucceededEventData:
+      type: object
+      title: BetaWebhookDeploymentRunSucceededEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: deployment_run.succeeded
+        id:
+          type: string
+          description: ID of the deployment run that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookDeploymentUpdatedEventData:
+      type: object
+      title: BetaWebhookDeploymentUpdatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: deployment.updated
+        id:
+          type: string
+          description: ID of the deployment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
     BetaWebhookSessionStatusRunStartedEventData:
       type: object
       title: BetaWebhookSessionStatusRunStartedEventData
@@ -947,6 +1052,162 @@ components:
         id:
           type: string
           description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookDeploymentPausedEventData:
+      type: object
+      title: BetaWebhookDeploymentPausedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: deployment.paused
+        id:
+          type: string
+          description: ID of the deployment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookMemoryStoreCreatedEventData:
+      type: object
+      title: BetaWebhookMemoryStoreCreatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: memory_store.created
+        id:
+          type: string
+          description: ID of the memory store that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionCreatedEventData:
+      type: object
+      title: BetaWebhookSessionCreatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.created
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionUpdatedEventData:
+      type: object
+      title: BetaWebhookSessionUpdatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.updated
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookDeploymentArchivedEventData:
+      type: object
+      title: BetaWebhookDeploymentArchivedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: deployment.archived
+        id:
+          type: string
+          description: ID of the deployment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookVaultCredentialArchivedEventData:
+      type: object
+      title: BetaWebhookVaultCredentialArchivedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      - vault_id
+      properties:
+        type:
+          type: string
+          const: vault_credential.archived
+        id:
+          type: string
+          description: ID of the vault credential that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+        vault_id:
+          type: string
+          description: ID of the vault that owns this credential.
+    BetaWebhookVaultDeletedEventData:
+      type: object
+      title: BetaWebhookVaultDeletedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: vault.deleted
+        id:
+          type: string
+          description: ID of the vault that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookDeploymentCreatedEventData:
+      type: object
+      title: BetaWebhookDeploymentCreatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: deployment.created
+        id:
+          type: string
+          description: ID of the deployment that triggered the event.
         organization_id:
           type: string
         workspace_id:
@@ -1016,394 +1277,6 @@ components:
           id: sesn_011CZkZAtmR3yMPDzynEDxu7
           organization_id: org_011CZkZZAe0sMna4vkBdtrfx
           workspace_id: wrkspc_011CZkZaBF1tNoB5wlCeusgy
-    BetaWebhookEnvironmentCreatedEventData:
-      type: object
-      title: BetaWebhookEnvironmentCreatedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: environment.created
-        id:
-          type: string
-          description: ID of the environment that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookDeploymentUpdatedEventData:
-      type: object
-      title: BetaWebhookDeploymentUpdatedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: deployment.updated
-        id:
-          type: string
-          description: ID of the deployment that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookVaultCredentialRefreshFailedEventData:
-      type: object
-      title: BetaWebhookVaultCredentialRefreshFailedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      - vault_id
-      properties:
-        type:
-          type: string
-          const: vault_credential.refresh_failed
-        id:
-          type: string
-          description: ID of the vault credential that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-        vault_id:
-          type: string
-          description: ID of the vault that owns this credential.
-    BetaWebhookVaultArchivedEventData:
-      type: object
-      title: BetaWebhookVaultArchivedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: vault.archived
-        id:
-          type: string
-          description: ID of the vault that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookVaultDeletedEventData:
-      type: object
-      title: BetaWebhookVaultDeletedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: vault.deleted
-        id:
-          type: string
-          description: ID of the vault that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookDeploymentRunStartedEventData:
-      type: object
-      title: BetaWebhookDeploymentRunStartedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: deployment_run.started
-        id:
-          type: string
-          description: ID of the deployment run that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookMemoryStoreArchivedEventData:
-      type: object
-      title: BetaWebhookMemoryStoreArchivedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: memory_store.archived
-        id:
-          type: string
-          description: ID of the memory store that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookDeploymentRunFailedEventData:
-      type: object
-      title: BetaWebhookDeploymentRunFailedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: deployment_run.failed
-        id:
-          type: string
-          description: ID of the deployment run that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookAgentCreatedEventData:
-      type: object
-      title: BetaWebhookAgentCreatedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: agent.created
-        id:
-          type: string
-          description: ID of the agent that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookVaultCredentialArchivedEventData:
-      type: object
-      title: BetaWebhookVaultCredentialArchivedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      - vault_id
-      properties:
-        type:
-          type: string
-          const: vault_credential.archived
-        id:
-          type: string
-          description: ID of the vault credential that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-        vault_id:
-          type: string
-          description: ID of the vault that owns this credential.
-    BetaWebhookAgentUpdatedEventData:
-      type: object
-      title: BetaWebhookAgentUpdatedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: agent.updated
-        id:
-          type: string
-          description: ID of the agent that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookSessionStatusRescheduledEventData:
-      type: object
-      title: BetaWebhookSessionStatusRescheduledEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: session.status_rescheduled
-        id:
-          type: string
-          description: ID of the session that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookSessionBudgetReachedEventData:
-      type: object
-      title: BetaWebhookSessionBudgetReachedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: session.budget_reached
-        id:
-          type: string
-          description: ID of the session that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookSessionStatusTerminatedEventData:
-      type: object
-      title: BetaWebhookSessionStatusTerminatedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: session.status_terminated
-        id:
-          type: string
-          description: ID of the session that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookVaultCreatedEventData:
-      type: object
-      title: BetaWebhookVaultCreatedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: vault.created
-        id:
-          type: string
-          description: ID of the vault that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookDeploymentCreatedEventData:
-      type: object
-      title: BetaWebhookDeploymentCreatedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: deployment.created
-        id:
-          type: string
-          description: ID of the deployment that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookDeploymentPausedEventData:
-      type: object
-      title: BetaWebhookDeploymentPausedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: deployment.paused
-        id:
-          type: string
-          description: ID of the deployment that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookMemoryStoreCreatedEventData:
-      type: object
-      title: BetaWebhookMemoryStoreCreatedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: memory_store.created
-        id:
-          type: string
-          description: ID of the memory store that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookSessionIdledEventData:
-      type: object
-      title: BetaWebhookSessionIdledEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: session.idled
-        id:
-          type: string
-          description: ID of the session that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookSessionDeletedEventData:
-      type: object
-      title: BetaWebhookSessionDeletedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: session.deleted
-        id:
-          type: string
-          description: ID of the session that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
     BetaWebhookSessionThreadCreatedEventData:
       type: object
       title: BetaWebhookSessionThreadCreatedEventData
@@ -1427,6 +1300,82 @@ components:
         session_thread_id:
           type: string
           description: ID of the session thread this event refers to.
+    BetaWebhookSessionRunningEventData:
+      type: object
+      title: BetaWebhookSessionRunningEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.running
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookMemoryStoreDeletedEventData:
+      type: object
+      title: BetaWebhookMemoryStoreDeletedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: memory_store.deleted
+        id:
+          type: string
+          description: ID of the memory store that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookVaultArchivedEventData:
+      type: object
+      title: BetaWebhookVaultArchivedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: vault.archived
+        id:
+          type: string
+          description: ID of the vault that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookDeploymentRunFailedEventData:
+      type: object
+      title: BetaWebhookDeploymentRunFailedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: deployment_run.failed
+        id:
+          type: string
+          description: ID of the deployment run that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
     BetaWebhookAgentArchivedEventData:
       type: object
       title: BetaWebhookAgentArchivedEventData
@@ -1446,9 +1395,9 @@ components:
           type: string
         workspace_id:
           type: string
-    BetaWebhookDeploymentArchivedEventData:
+    BetaWebhookDeploymentRunStartedEventData:
       type: object
-      title: BetaWebhookDeploymentArchivedEventData
+      title: BetaWebhookDeploymentRunStartedEventData
       required:
       - type
       - id
@@ -1457,71 +1406,10 @@ components:
       properties:
         type:
           type: string
-          const: deployment.archived
+          const: deployment_run.started
         id:
           type: string
-          description: ID of the deployment that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookEnvironmentUpdatedEventData:
-      type: object
-      title: BetaWebhookEnvironmentUpdatedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: environment.updated
-        id:
-          type: string
-          description: ID of the environment that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookSessionThreadTerminatedEventData:
-      type: object
-      title: BetaWebhookSessionThreadTerminatedEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      - session_thread_id
-      properties:
-        type:
-          type: string
-          const: session.thread_terminated
-        id:
-          type: string
-          description: ID of the session that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-        session_thread_id:
-          type: string
-          description: ID of the session thread this event refers to.
-    BetaWebhookSessionPendingEventData:
-      type: object
-      title: BetaWebhookSessionPendingEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: session.pending
-        id:
-          type: string
-          description: ID of the session that triggered the event.
+          description: ID of the deployment run that triggered the event.
         organization_id:
           type: string
         workspace_id:
@@ -1558,9 +1446,9 @@ components:
         id: sesn_011CZkZAtmR3yMPDzynEDxu7
         organization_id: org_011CZkZZAe0sMna4vkBdtrfx
         workspace_id: wrkspc_011CZkZaBF1tNoB5wlCeusgy
-    BetaWebhookEnvironmentArchivedEventData:
+    BetaWebhookEnvironmentDeletedEventData:
       type: object
-      title: BetaWebhookEnvironmentArchivedEventData
+      title: BetaWebhookEnvironmentDeletedEventData
       required:
       - type
       - id
@@ -1569,10 +1457,84 @@ components:
       properties:
         type:
           type: string
-          const: environment.archived
+          const: environment.deleted
         id:
           type: string
           description: ID of the environment that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookVaultCredentialRefreshFailedEventData:
+      type: object
+      title: BetaWebhookVaultCredentialRefreshFailedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      - vault_id
+      properties:
+        type:
+          type: string
+          const: vault_credential.refresh_failed
+        id:
+          type: string
+          description: ID of the vault credential that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+        vault_id:
+          type: string
+          description: ID of the vault that owns this credential.
+    BetaWebhookSessionOutcomeEvaluationEndedEventData:
+      type: object
+      title: BetaWebhookSessionOutcomeEvaluationEndedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.outcome_evaluation_ended
+          examples:
+          - session.outcome_evaluation_ended
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+          examples:
+          - sesn_011CZkZAtmR3yMPDzynEDxu7
+        organization_id:
+          type: string
+          examples:
+          - org_011CZkZZAe0sMna4vkBdtrfx
+        workspace_id:
+          type: string
+          examples:
+          - wrkspc_011CZkZaBF1tNoB5wlCeusgy
+      example:
+        type: session.outcome_evaluation_ended
+        id: sesn_011CZkZAtmR3yMPDzynEDxu7
+        organization_id: org_011CZkZZAe0sMna4vkBdtrfx
+        workspace_id: wrkspc_011CZkZaBF1tNoB5wlCeusgy
+    BetaWebhookAgentUpdatedEventData:
+      type: object
+      title: BetaWebhookAgentUpdatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: agent.updated
+        id:
+          type: string
+          description: ID of the agent that triggered the event.
         organization_id:
           type: string
         workspace_id:
@@ -1596,9 +1558,9 @@ components:
           type: string
         workspace_id:
           type: string
-    BetaWebhookSessionUpdatedEventData:
+    BetaWebhookDeploymentUnpausedEventData:
       type: object
-      title: BetaWebhookSessionUpdatedEventData
+      title: BetaWebhookDeploymentUnpausedEventData
       required:
       - type
       - id
@@ -1607,17 +1569,17 @@ components:
       properties:
         type:
           type: string
-          const: session.updated
+          const: deployment.unpaused
         id:
           type: string
-          description: ID of the session that triggered the event.
+          description: ID of the deployment that triggered the event.
         organization_id:
           type: string
         workspace_id:
           type: string
-    BetaWebhookSessionCreatedEventData:
+    BetaWebhookSessionStatusRescheduledEventData:
       type: object
-      title: BetaWebhookSessionCreatedEventData
+      title: BetaWebhookSessionStatusRescheduledEventData
       required:
       - type
       - id
@@ -1626,7 +1588,7 @@ components:
       properties:
         type:
           type: string
-          const: session.created
+          const: session.status_rescheduled
         id:
           type: string
           description: ID of the session that triggered the event.
@@ -1634,9 +1596,9 @@ components:
           type: string
         workspace_id:
           type: string
-    BetaWebhookSessionRequiresActionEventData:
+    BetaWebhookSessionStatusTerminatedEventData:
       type: object
-      title: BetaWebhookSessionRequiresActionEventData
+      title: BetaWebhookSessionStatusTerminatedEventData
       required:
       - type
       - id
@@ -1645,7 +1607,7 @@ components:
       properties:
         type:
           type: string
-          const: session.requires_action
+          const: session.status_terminated
         id:
           type: string
           description: ID of the session that triggered the event.
@@ -1653,28 +1615,9 @@ components:
           type: string
         workspace_id:
           type: string
-    BetaWebhookSessionRunningEventData:
+    BetaWebhookSessionThreadTerminatedEventData:
       type: object
-      title: BetaWebhookSessionRunningEventData
-      required:
-      - type
-      - id
-      - organization_id
-      - workspace_id
-      properties:
-        type:
-          type: string
-          const: session.running
-        id:
-          type: string
-          description: ID of the session that triggered the event.
-        organization_id:
-          type: string
-        workspace_id:
-          type: string
-    BetaWebhookSessionThreadIdledEventData:
-      type: object
-      title: BetaWebhookSessionThreadIdledEventData
+      title: BetaWebhookSessionThreadTerminatedEventData
       required:
       - type
       - id
@@ -1684,7 +1627,7 @@ components:
       properties:
         type:
           type: string
-          const: session.thread_idled
+          const: session.thread_terminated
         id:
           type: string
           description: ID of the session that triggered the event.
@@ -1695,3 +1638,60 @@ components:
         session_thread_id:
           type: string
           description: ID of the session thread this event refers to.
+    BetaWebhookSessionIdledEventData:
+      type: object
+      title: BetaWebhookSessionIdledEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.idled
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookAgentCreatedEventData:
+      type: object
+      title: BetaWebhookAgentCreatedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: agent.created
+        id:
+          type: string
+          description: ID of the agent that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+    BetaWebhookSessionBudgetReachedEventData:
+      type: object
+      title: BetaWebhookSessionBudgetReachedEventData
+      required:
+      - type
+      - id
+      - organization_id
+      - workspace_id
+      properties:
+        type:
+          type: string
+          const: session.budget_reached
+        id:
+          type: string
+          description: ID of the session that triggered the event.
+        organization_id:
+          type: string
+        workspace_id:
+          type: string

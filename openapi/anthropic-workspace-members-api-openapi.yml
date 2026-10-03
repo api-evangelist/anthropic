@@ -167,18 +167,12 @@ paths:
         dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"WorkspaceMemberDeletedResponseExample\"\n}\n"
 components:
   examples:
-    WorkspaceMemberExample:
-      summary: Workspace Member Response
+    WorkspaceMemberDeletedResponseExample:
+      summary: Workspace Member Deleted Response
       value:
-        type: workspace_member
+        type: workspace_member_deleted
         user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
         workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-        workspace_role: workspace_developer
-    AddWorkspaceMemberRequestExample:
-      summary: Add Workspace Member Request
-      value:
-        user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
-        workspace_role: workspace_developer
     ErrorExample:
       summary: Error Response
       value:
@@ -199,36 +193,23 @@ components:
         first_id: user_01WCz1FkmYMm4gnmykNKUu3Q
         has_more: false
         last_id: user_02XDa2GlnYNn5hoozlNLVu4R
-    WorkspaceMemberDeletedResponseExample:
-      summary: Workspace Member Deleted Response
+    AddWorkspaceMemberRequestExample:
+      summary: Add Workspace Member Request
       value:
-        type: workspace_member_deleted
         user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
-        workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        workspace_role: workspace_developer
     UpdateWorkspaceMemberRequestExample:
       summary: Update Workspace Member Request
       value:
         workspace_role: workspace_admin
+    WorkspaceMemberExample:
+      summary: Workspace Member Response
+      value:
+        type: workspace_member
+        user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+        workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        workspace_role: workspace_developer
   schemas:
-    WorkspaceRole:
-      type: string
-      enum:
-      - workspace_user
-      - workspace_developer
-      - workspace_admin
-      - workspace_billing
-      description: Role within the workspace
-    AddWorkspaceMemberRequest:
-      type: object
-      required:
-      - user_id
-      - workspace_role
-      properties:
-        user_id:
-          type: string
-          description: ID of the user to add
-        workspace_role:
-          $ref: '#/components/schemas/WorkspaceRole'
     WorkspaceMember:
       type: object
       required:
@@ -251,18 +232,6 @@ components:
           description: Unique workspace identifier
         workspace_role:
           $ref: '#/components/schemas/WorkspaceRole'
-    Error:
-      type: object
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          description: Error type identifier
-        message:
-          type: string
-          description: Human-readable error message
     WorkspaceMemberDeletedResponse:
       type: object
       required:
@@ -282,6 +251,36 @@ components:
         workspace_id:
           type: string
           description: ID of the workspace
+    Error:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type identifier
+        message:
+          type: string
+          description: Human-readable error message
+    AddWorkspaceMemberRequest:
+      type: object
+      required:
+      - user_id
+      - workspace_role
+      properties:
+        user_id:
+          type: string
+          description: ID of the user to add
+        workspace_role:
+          $ref: '#/components/schemas/WorkspaceRole'
+    UpdateWorkspaceMemberRequest:
+      type: object
+      required:
+      - workspace_role
+      properties:
+        workspace_role:
+          $ref: '#/components/schemas/WorkspaceRole'
     WorkspaceMemberList:
       type: object
       required:
@@ -306,47 +305,15 @@ components:
           type: string
           nullable: true
           description: Last ID in the data list for pagination
-    UpdateWorkspaceMemberRequest:
-      type: object
-      required:
-      - workspace_role
-      properties:
-        workspace_role:
-          $ref: '#/components/schemas/WorkspaceRole'
+    WorkspaceRole:
+      type: string
+      enum:
+      - workspace_user
+      - workspace_developer
+      - workspace_admin
+      - workspace_billing
+      description: Role within the workspace
   parameters:
-    AfterId:
-      name: after_id
-      in: query
-      required: false
-      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
-      schema:
-        type: string
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.
-      schema:
-        type: integer
-        default: 20
-        minimum: 1
-        maximum: 1000
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
-      required: true
-      description: The version of the Anthropic API to use
-      schema:
-        type: string
-        example: '2023-06-01'
-    UserId:
-      name: user_id
-      in: path
-      required: true
-      description: Unique identifier for the user
-      schema:
-        type: string
-      example: user_01WCz1FkmYMm4gnmykNKUu3Q
     WorkspaceId:
       name: workspace_id
       in: path
@@ -362,6 +329,39 @@ components:
       description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
       schema:
         type: string
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
+      schema:
+        type: string
+        example: '2023-06-01'
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
+      schema:
+        type: string
+    UserId:
+      name: user_id
+      in: path
+      required: true
+      description: Unique identifier for the user
+      schema:
+        type: string
+      example: user_01WCz1FkmYMm4gnmykNKUu3Q
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 1000
   responses:
     ErrorResponse:
       description: Error Response

@@ -128,13 +128,38 @@ paths:
         dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"ApiKeyExample\"\n}\n"
 components:
   schemas:
-    ApiKeyStatus:
-      type: string
-      enum:
-      - active
-      - inactive
-      - archived
-      description: Current status of the API key
+    ApiKeyList:
+      type: object
+      required:
+      - data
+      - has_more
+      - first_id
+      - last_id
+      properties:
+        data:
+          type: array
+          description: List of API keys
+          items:
+            $ref: '#/components/schemas/ApiKey'
+        first_id:
+          type: string
+          nullable: true
+          description: First ID in the data list for pagination
+        has_more:
+          type: boolean
+          description: Indicates if there are more results available
+        last_id:
+          type: string
+          nullable: true
+          description: Last ID in the data list for pagination
+    UpdateApiKeyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Updated display name for the API key
+        status:
+          $ref: '#/components/schemas/ApiKeyStatus'
     Error:
       type: object
       required:
@@ -195,39 +220,83 @@ components:
           format: date-time
           nullable: true
           description: RFC 3339 datetime when key was last used
-    UpdateApiKeyRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Updated display name for the API key
-        status:
-          $ref: '#/components/schemas/ApiKeyStatus'
-    ApiKeyList:
-      type: object
-      required:
-      - data
-      - has_more
-      - first_id
-      - last_id
-      properties:
-        data:
-          type: array
-          description: List of API keys
-          items:
-            $ref: '#/components/schemas/ApiKey'
-        first_id:
-          type: string
-          nullable: true
-          description: First ID in the data list for pagination
-        has_more:
-          type: boolean
-          description: Indicates if there are more results available
-        last_id:
-          type: string
-          nullable: true
-          description: Last ID in the data list for pagination
+    ApiKeyStatus:
+      type: string
+      enum:
+      - active
+      - inactive
+      - archived
+      description: Current status of the API key
+  parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
+      schema:
+        type: string
+        example: '2023-06-01'
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 1000
+    BeforeId:
+      name: before_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
+      schema:
+        type: string
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
+      schema:
+        type: string
+    ApiKeyId:
+      name: api_key_id
+      in: path
+      required: true
+      description: Unique identifier for the API key
+      schema:
+        type: string
+      example: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+  responses:
+    ErrorResponse:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
   examples:
+    ApiKeyExample:
+      summary: Api Key Response
+      value:
+        id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+        type: api_key
+        name: Production API Key
+        workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        created_at: '2024-10-30T23:58:27.427722Z'
+        created_by:
+          id: user_01WCz1FkmYMm4gnmykNKUu3Q
+          type: user
+        status: active
+        last_used_at: '2024-11-15T10:30:00.000000Z'
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The request was invalid or malformed.
     ApiKeyListExample:
       summary: Api Key List Response
       value:
@@ -245,80 +314,11 @@ components:
         first_id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
         has_more: false
         last_id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
-    ApiKeyExample:
-      summary: Api Key Response
-      value:
-        id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
-        type: api_key
-        name: Production API Key
-        workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-        created_at: '2024-10-30T23:58:27.427722Z'
-        created_by:
-          id: user_01WCz1FkmYMm4gnmykNKUu3Q
-          type: user
-        status: active
-        last_used_at: '2024-11-15T10:30:00.000000Z'
     UpdateApiKeyRequestExample:
       summary: Update Api Key Request
       value:
         name: Production API Key - Renamed
         status: active
-    ErrorExample:
-      summary: Error Response
-      value:
-        type: invalid_request_error
-        message: The request was invalid or malformed.
-  parameters:
-    ApiKeyId:
-      name: api_key_id
-      in: path
-      required: true
-      description: Unique identifier for the API key
-      schema:
-        type: string
-      example: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
-    AfterId:
-      name: after_id
-      in: query
-      required: false
-      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
-      schema:
-        type: string
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
-      required: true
-      description: The version of the Anthropic API to use
-      schema:
-        type: string
-        example: '2023-06-01'
-    BeforeId:
-      name: before_id
-      in: query
-      required: false
-      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
-      schema:
-        type: string
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Number of items to return per page. Defaults to 20. Ranges from 1 to 1000.
-      schema:
-        type: integer
-        default: 20
-        minimum: 1
-        maximum: 1000
-  responses:
-    ErrorResponse:
-      description: Error Response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            ErrorExample:
-              $ref: '#/components/examples/ErrorExample'
   securitySchemes:
     AdminApiKeyAuth:
       type: apiKey

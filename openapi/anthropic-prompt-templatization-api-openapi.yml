@@ -131,16 +131,29 @@ paths:
                   $ref: '#/components/examples/ErrorServerExample'
 components:
   examples:
-    ErrorRateLimitExample:
-      summary: Rate limit error
+    TemplatizePromptRequestDefaultExample:
+      summary: Simple translation prompt
       value:
-        type: rate_limit_error
-        message: Rate limit exceeded. Please retry after some time.
+        messages:
+        - role: user
+          content:
+          - type: text
+            text: Translate hello to German
     ErrorServerExample:
       summary: Server error
       value:
         type: api_error
         message: An internal server error occurred
+    ErrorBadRequestExample:
+      summary: Bad request error
+      value:
+        type: invalid_request_error
+        message: Invalid request format
+    ErrorForbiddenExample:
+      summary: Forbidden error
+      value:
+        type: permission_error
+        message: Access denied or not in closed research preview
     TemplatizePromptRequestTranslationExample:
       summary: Translation with system prompt
       value:
@@ -150,19 +163,11 @@ components:
           - type: text
             text: Translate hello to German
         system: You are a professional English to German translator
-    ErrorBadRequestExample:
-      summary: Bad request error
+    ErrorRateLimitExample:
+      summary: Rate limit error
       value:
-        type: invalid_request_error
-        message: Invalid request format
-    TemplatizePromptRequestDefaultExample:
-      summary: Simple translation prompt
-      value:
-        messages:
-        - role: user
-          content:
-          - type: text
-            text: Translate hello to German
+        type: rate_limit_error
+        message: Rate limit exceeded. Please retry after some time.
     ErrorUnauthorizedExample:
       summary: Unauthorized error
       value:
@@ -183,12 +188,92 @@ components:
         variable_values:
           WORD_TO_TRANSLATE: hello
           TARGET_LANGUAGE: German
-    ErrorForbiddenExample:
-      summary: Forbidden error
-      value:
-        type: permission_error
-        message: Access denied or not in closed research preview
+  parameters:
+    BrowserAccessHeader:
+      name: anthropic-dangerous-direct-browser-access
+      in: header
+      required: false
+      description: Enable CORS.
+      schema:
+        type: string
+        default: 'true'
+    AnthropicVersionHeader:
+      name: anthropic-version
+      in: header
+      required: true
+      description: Which version of the Anthropic API to use.
+      schema:
+        type: string
+        default: '2023-06-01'
+    ApiKeyHeader:
+      name: x-api-key
+      in: header
+      required: true
+      description: A valid API token.
+      schema:
+        type: string
+    ContentTypeHeader:
+      name: Content-Type
+      in: header
+      required: true
+      description: The content type.
+      schema:
+        type: string
+        default: application/json
+    AnthropicBetaHeader:
+      name: anthropic-beta
+      in: header
+      description: 'Optional header to specify the beta version(s) you want to use.
+
+        To use multiple betas, use a comma separated list like `beta1,beta2`
+
+        or specify the header multiple times for each beta.
+
+        '
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+        example:
+        - prompt-tools-2025-04-02
+      style: simple
+      explode: false
   schemas:
+    TemplatizePromptRequest:
+      type: object
+      required:
+      - messages
+      properties:
+        messages:
+          type: array
+          description: 'The prompt to templatize, structured as a list of message objects.
+
+            Each message must contain only text-only content blocks and
+
+            not include tool calls, images, or prompt caching blocks.
+
+            Only contiguous user messages with text content are allowed.
+
+            Assistant prefill is permitted.
+
+            '
+          items:
+            $ref: '#/components/schemas/PromptMessage'
+        system:
+          type: string
+          nullable: true
+          description: 'The existing system prompt to templatize.
+
+            Note that this differs from the Messages API; it is strictly
+
+            a string.
+
+            If provided, variables will be identified and replaced in
+
+            the system prompt as well.
+
+            '
     TextContentBlock:
       type: object
       required:
@@ -298,91 +383,6 @@ components:
           type: integer
           description: Number of output tokens generated
           minimum: 0
-    TemplatizePromptRequest:
-      type: object
-      required:
-      - messages
-      properties:
-        messages:
-          type: array
-          description: 'The prompt to templatize, structured as a list of message objects.
-
-            Each message must contain only text-only content blocks and
-
-            not include tool calls, images, or prompt caching blocks.
-
-            Only contiguous user messages with text content are allowed.
-
-            Assistant prefill is permitted.
-
-            '
-          items:
-            $ref: '#/components/schemas/PromptMessage'
-        system:
-          type: string
-          nullable: true
-          description: 'The existing system prompt to templatize.
-
-            Note that this differs from the Messages API; it is strictly
-
-            a string.
-
-            If provided, variables will be identified and replaced in
-
-            the system prompt as well.
-
-            '
-  parameters:
-    AnthropicBetaHeader:
-      name: anthropic-beta
-      in: header
-      description: 'Optional header to specify the beta version(s) you want to use.
-
-        To use multiple betas, use a comma separated list like `beta1,beta2`
-
-        or specify the header multiple times for each beta.
-
-        '
-      required: false
-      schema:
-        type: array
-        items:
-          type: string
-        example:
-        - prompt-tools-2025-04-02
-      style: simple
-      explode: false
-    ContentTypeHeader:
-      name: Content-Type
-      in: header
-      required: true
-      description: The content type.
-      schema:
-        type: string
-        default: application/json
-    BrowserAccessHeader:
-      name: anthropic-dangerous-direct-browser-access
-      in: header
-      required: false
-      description: Enable CORS.
-      schema:
-        type: string
-        default: 'true'
-    AnthropicVersionHeader:
-      name: anthropic-version
-      in: header
-      required: true
-      description: Which version of the Anthropic API to use.
-      schema:
-        type: string
-        default: '2023-06-01'
-    ApiKeyHeader:
-      name: x-api-key
-      in: header
-      required: true
-      description: A valid API token.
-      schema:
-        type: string
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -45,22 +45,6 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
 components:
   parameters:
-    EndingAt:
-      name: ending_at
-      in: query
-      required: false
-      description: RFC3339 exclusive upper bound for the report window.
-      schema:
-        type: string
-        format: date-time
-    StartingAt:
-      name: starting_at
-      in: query
-      required: true
-      description: RFC3339 inclusive lower bound for the report window.
-      schema:
-        type: string
-        format: date-time
     Bucket:
       name: bucket_width
       in: query
@@ -88,21 +72,22 @@ components:
         minimum: 1
         maximum: 1000
         default: 20
-    WorkspaceIds:
-      name: workspace_ids
+    EndingAt:
+      name: ending_at
       in: query
       required: false
-      explode: true
-      schema:
-        type: array
-        items:
-          type: string
-    Page:
-      name: page
-      in: query
-      required: false
+      description: RFC3339 exclusive upper bound for the report window.
       schema:
         type: string
+        format: date-time
+    StartingAt:
+      name: starting_at
+      in: query
+      required: true
+      description: RFC3339 inclusive lower bound for the report window.
+      schema:
+        type: string
+        format: date-time
     GroupBy:
       name: group_by
       in: query
@@ -119,19 +104,22 @@ components:
           - model
           - service_tier
           - context_window
-  schemas:
-    Error:
-      type: object
-      properties:
-        type:
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: string
+    WorkspaceIds:
+      name: workspace_ids
+      in: query
+      required: false
+      explode: true
+      schema:
+        type: array
+        items:
           type: string
-        error:
-          type: object
-          properties:
-            type:
-              type: string
-            message:
-              type: string
+  schemas:
     CostReport:
       type: object
       properties:
@@ -180,6 +168,18 @@ components:
         next_page:
           type: string
           nullable: true
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+            message:
+              type: string
   responses:
     ErrorResponse:
       description: Error response.

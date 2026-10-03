@@ -38,9 +38,7 @@
     "anthropic-cost-api-openapi.yml",
     "anthropic-usage-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 14 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [
     "anthropic-api-openapi.json: info.version missing"
@@ -328,33 +326,23 @@
     "tag 'Agents' spans 2 source specs (anthropic-api-openapi.json, anthropic-managed-agents-api-openapi.yml): per-path servers applied",
     "tag 'Environments' spans 2 source specs (anthropic-api-openapi.json, anthropic-managed-agents-api-openapi.yml): per-path servers applied",
     "tag 'Sessions' spans 2 source specs (anthropic-api-openapi.json, anthropic-managed-agents-api-openapi.yml): per-path servers applied",
-    "superseded outputs removed: anthropic-agents-beta-true-api-openapi.yml, anthropic-deployment-runs-beta-true-api-openapi.yml, anthropic-deployments-beta-true-api-openapi.yml, anthropic-dreams-beta-true-api-openapi.yml, anthropic-environments-beta-true-api-openapi.yml \u2026",
-    "apis.yml register: written (+0 apis, 29 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "anthropic-agents-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "anthropic-agents-beta-true-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-anthropic-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-api-keys-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-complete-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-cost-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-deployment-runs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "anthropic-deployment-runs-beta-true-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-deployments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "anthropic-deployments-beta-true-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-dreams-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "anthropic-dreams-beta-true-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-environments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "anthropic-environments-beta-true-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-files-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "anthropic-files-beta-true-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-memory-stores-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "anthropic-memory-stores-beta-true-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-messages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "anthropic-messages-beta-true-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-models-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "anthropic-models-beta-true-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-organization-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-organization-invites-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-organization-members-api-openapi.yml: previously refined output, superseded by openapi/_original/",
@@ -363,16 +351,11 @@
     "anthropic-prompt-improvement-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-prompt-templatization-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-sessions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "anthropic-sessions-beta-true-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-skills-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "anthropic-skills-beta-true-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-tunnels-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "anthropic-tunnels-beta-true-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-usage-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-user-profiles-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "anthropic-user-profiles-beta-true-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-vaults-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "anthropic-vaults-beta-true-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-workspace-members-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "anthropic-workspaces-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]

@@ -130,33 +130,63 @@ paths:
                 ServerErrorExample:
                   $ref: '#/components/examples/ErrorServerExample'
 components:
+  parameters:
+    BrowserAccessHeader:
+      name: anthropic-dangerous-direct-browser-access
+      in: header
+      required: false
+      description: Enable CORS.
+      schema:
+        type: string
+        default: 'true'
+    AnthropicVersionHeader:
+      name: anthropic-version
+      in: header
+      required: true
+      description: Which version of the Anthropic API to use.
+      schema:
+        type: string
+        default: '2023-06-01'
+    ApiKeyHeader:
+      name: x-api-key
+      in: header
+      required: true
+      description: A valid API token.
+      schema:
+        type: string
+    ContentTypeHeader:
+      name: Content-Type
+      in: header
+      required: true
+      description: The content type.
+      schema:
+        type: string
+        default: application/json
+    AnthropicBetaHeader:
+      name: anthropic-beta
+      in: header
+      description: 'Optional header to specify the beta version(s) you want to use.
+
+        To use multiple betas, use a comma separated list like `beta1,beta2`
+
+        or specify the header multiple times for each beta.
+
+        '
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+        example:
+        - prompt-tools-2025-04-02
+      style: simple
+      explode: false
   examples:
-    ErrorRateLimitExample:
-      summary: Rate limit error
-      value:
-        type: rate_limit_error
-        message: Rate limit exceeded. Please retry after some time.
     ErrorServerExample:
       summary: Server error
       value:
         type: api_error
         message: An internal server error occurred
-    ImprovePromptResponseExample:
-      summary: Improved recipe prompt response
-      value:
-        messages:
-        - role: user
-          content:
-          - type: text
-            text: You are a professional meal prep chef. Create a detailed recipe for {{food}} including preparation time, cooking time, and step-by-step instructions with specific temperatures and timing for each step.
-        - role: assistant
-          content:
-          - type: text
-            text: Here's a detailed recipe for
-        system: ''
-        usage:
-          input_tokens: 45
-          output_tokens: 180
     ImprovePromptRequestDefaultExample:
       summary: Simple recipe prompt improvement
       value:
@@ -171,11 +201,6 @@ components:
       value:
         type: invalid_request_error
         message: Invalid request format
-    ErrorUnauthorizedExample:
-      summary: Unauthorized error
-      value:
-        type: authentication_error
-        message: Invalid or missing API key
     ImprovePromptRequestRecipeExample:
       summary: Recipe prompt with example interaction
       value:
@@ -193,11 +218,37 @@ components:
         system: You are a professional meal prep chef
         feedback: Make it more detailed and include cooking times
         target_model: claude-3-7-sonnet-20250219
+    ImprovePromptResponseExample:
+      summary: Improved recipe prompt response
+      value:
+        messages:
+        - role: user
+          content:
+          - type: text
+            text: You are a professional meal prep chef. Create a detailed recipe for {{food}} including preparation time, cooking time, and step-by-step instructions with specific temperatures and timing for each step.
+        - role: assistant
+          content:
+          - type: text
+            text: Here's a detailed recipe for
+        system: ''
+        usage:
+          input_tokens: 45
+          output_tokens: 180
     ErrorForbiddenExample:
       summary: Forbidden error
       value:
         type: permission_error
         message: Access denied or not in closed research preview
+    ErrorRateLimitExample:
+      summary: Rate limit error
+      value:
+        type: rate_limit_error
+        message: Rate limit exceeded. Please retry after some time.
+    ErrorUnauthorizedExample:
+      summary: Unauthorized error
+      value:
+        type: authentication_error
+        message: Invalid or missing API key
   schemas:
     TextContentBlock:
       type: object
@@ -347,57 +398,6 @@ components:
             '
         usage:
           $ref: '#/components/schemas/UsageInfo'
-  parameters:
-    AnthropicBetaHeader:
-      name: anthropic-beta
-      in: header
-      description: 'Optional header to specify the beta version(s) you want to use.
-
-        To use multiple betas, use a comma separated list like `beta1,beta2`
-
-        or specify the header multiple times for each beta.
-
-        '
-      required: false
-      schema:
-        type: array
-        items:
-          type: string
-        example:
-        - prompt-tools-2025-04-02
-      style: simple
-      explode: false
-    ContentTypeHeader:
-      name: Content-Type
-      in: header
-      required: true
-      description: The content type.
-      schema:
-        type: string
-        default: application/json
-    BrowserAccessHeader:
-      name: anthropic-dangerous-direct-browser-access
-      in: header
-      required: false
-      description: Enable CORS.
-      schema:
-        type: string
-        default: 'true'
-    AnthropicVersionHeader:
-      name: anthropic-version
-      in: header
-      required: true
-      description: Which version of the Anthropic API to use.
-      schema:
-        type: string
-        default: '2023-06-01'
-    ApiKeyHeader:
-      name: x-api-key
-      in: header
-      required: true
-      description: A valid API token.
-      schema:
-        type: string
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
