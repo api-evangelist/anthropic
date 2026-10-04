@@ -44,6 +44,27 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"OrganizationExample\"\n}\n"
 components:
+  examples:
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The request was invalid or malformed.
+    OrganizationExample:
+      summary: Organization Response
+      value:
+        id: 12345678-1234-5678-1234-567812345678
+        type: organization
+        name: Acme Corporation
+  parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use
+      schema:
+        type: string
+        example: '2023-06-01'
   schemas:
     Error:
       type: object
@@ -76,15 +97,6 @@ components:
         name:
           type: string
           description: Organization name
-  parameters:
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
-      required: true
-      description: The version of the Anthropic API to use
-      schema:
-        type: string
-        example: '2023-06-01'
   responses:
     ErrorResponse:
       description: Error Response
@@ -95,18 +107,6 @@ components:
           examples:
             ErrorExample:
               $ref: '#/components/examples/ErrorExample'
-  examples:
-    ErrorExample:
-      summary: Error Response
-      value:
-        type: invalid_request_error
-        message: The request was invalid or malformed.
-    OrganizationExample:
-      summary: Organization Response
-      value:
-        id: 12345678-1234-5678-1234-567812345678
-        type: organization
-        name: Acme Corporation
   securitySchemes:
     AdminApiKeyAuth:
       type: apiKey

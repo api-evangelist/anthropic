@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-managed-agents-list-vaults-response-schema.json",
+  "title": "BetaManagedAgentsListVaultsResponse",
+  "description": "Response containing a paginated list of vaults.",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-vaults-beta-true-api-openapi.yml#/components/schemas/BetaManagedAgentsListVaultsResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "description": "List of vaults.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/BetaManagedAgentsVault"
+      }
+    },
+    "next_page": {
+      "description": "Pagination token for the next page, or null if no more results.",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "BetaManagedAgentsVault": {
+      "description": "A vault that stores credentials for use by agents during sessions.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "display_name",
+        "metadata",
+        "created_at",
+        "updated_at",
+        "archived_at"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "vault"
+          ]
+        },
+        "id": {
+          "description": "Unique identifier for the vault.",
+          "type": "string"
+        },
+        "display_name": {
+          "description": "Human-readable name for the vault.",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Arbitrary key-value metadata attached to the vault.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "created_at": {
+          "$ref": "#/$defs/BetaTimestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/BetaTimestamp"
+        },
+        "archived_at": {
+          "description": "When the vault was archived. Null if not archived.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BetaTimestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "BetaTimestamp": {
+      "description": "A timestamp in RFC 3339 format",
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

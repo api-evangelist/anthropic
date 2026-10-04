@@ -130,92 +130,7 @@ paths:
                 ServerErrorExample:
                   $ref: '#/components/examples/ErrorServerExample'
 components:
-  examples:
-    ErrorUnauthorizedExample:
-      summary: Unauthorized error
-      value:
-        type: authentication_error
-        message: Invalid or missing API key
-    ErrorForbiddenExample:
-      summary: Forbidden error
-      value:
-        type: permission_error
-        message: Access denied or not in closed research preview
-    ImprovePromptResponseExample:
-      summary: Improved recipe prompt response
-      value:
-        messages:
-        - role: user
-          content:
-          - type: text
-            text: You are a professional meal prep chef. Create a detailed recipe for {{food}} including preparation time, cooking time, and step-by-step instructions with specific temperatures and timing for each step.
-        - role: assistant
-          content:
-          - type: text
-            text: Here's a detailed recipe for
-        system: ''
-        usage:
-          input_tokens: 45
-          output_tokens: 180
-    ErrorServerExample:
-      summary: Server error
-      value:
-        type: api_error
-        message: An internal server error occurred
-    ErrorRateLimitExample:
-      summary: Rate limit error
-      value:
-        type: rate_limit_error
-        message: Rate limit exceeded. Please retry after some time.
-    ImprovePromptRequestRecipeExample:
-      summary: Recipe prompt with example interaction
-      value:
-        messages:
-        - role: user
-          content:
-          - type: text
-            text: 'Concise for {{food}}.
-
-
-              example
-
-
-              mandu: Put the mandu in the air fryer at 380F for 7 minutes.'
-        system: You are a professional meal prep chef
-        feedback: Make it more detailed and include cooking times
-        target_model: claude-3-7-sonnet-20250219
-    ImprovePromptRequestDefaultExample:
-      summary: Simple recipe prompt improvement
-      value:
-        messages:
-        - role: user
-          content:
-          - type: text
-            text: Concise recipe for {{food}}
-        feedback: Make the recipes shorter
-    ErrorBadRequestExample:
-      summary: Bad request error
-      value:
-        type: invalid_request_error
-        message: Invalid request format
   schemas:
-    PromptMessage:
-      type: object
-      required:
-      - role
-      - content
-      properties:
-        role:
-          type: string
-          enum:
-          - user
-          - assistant
-          description: The role of the message sender
-        content:
-          type: array
-          description: The content of the message
-          items:
-            $ref: '#/components/schemas/TextContentBlock'
     UsageInfo:
       type: object
       description: Usage information
@@ -258,18 +173,6 @@ components:
             '
         usage:
           $ref: '#/components/schemas/UsageInfo'
-    ErrorResponse:
-      type: object
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          description: The type of error
-        message:
-          type: string
-          description: A human-readable error message
     ImprovePromptRequest:
       type: object
       required:
@@ -333,6 +236,23 @@ components:
             '
           minLength: 1
           maxLength: 256
+    PromptMessage:
+      type: object
+      required:
+      - role
+      - content
+      properties:
+        role:
+          type: string
+          enum:
+          - user
+          - assistant
+          description: The role of the message sender
+        content:
+          type: array
+          description: The content of the message
+          items:
+            $ref: '#/components/schemas/TextContentBlock'
     TextContentBlock:
       type: object
       required:
@@ -347,6 +267,18 @@ components:
         text:
           type: string
           description: The text content
+    ErrorResponse:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: The type of error
+        message:
+          type: string
+          description: A human-readable error message
   parameters:
     ContentTypeHeader:
       name: Content-Type
@@ -356,13 +288,22 @@ components:
       schema:
         type: string
         default: application/json
-    ApiKeyHeader:
-      name: x-api-key
+    AnthropicVersionHeader:
+      name: anthropic-version
       in: header
       required: true
-      description: A valid API token.
+      description: Which version of the Anthropic API to use.
       schema:
         type: string
+        default: '2023-06-01'
+    BrowserAccessHeader:
+      name: anthropic-dangerous-direct-browser-access
+      in: header
+      required: false
+      description: Enable CORS.
+      schema:
+        type: string
+        default: 'true'
     AnthropicBetaHeader:
       name: anthropic-beta
       in: header
@@ -382,22 +323,81 @@ components:
         - prompt-tools-2025-04-02
       style: simple
       explode: false
-    AnthropicVersionHeader:
-      name: anthropic-version
+    ApiKeyHeader:
+      name: x-api-key
       in: header
       required: true
-      description: Which version of the Anthropic API to use.
+      description: A valid API token.
       schema:
         type: string
-        default: '2023-06-01'
-    BrowserAccessHeader:
-      name: anthropic-dangerous-direct-browser-access
-      in: header
-      required: false
-      description: Enable CORS.
-      schema:
-        type: string
-        default: 'true'
+  examples:
+    ErrorServerExample:
+      summary: Server error
+      value:
+        type: api_error
+        message: An internal server error occurred
+    ErrorRateLimitExample:
+      summary: Rate limit error
+      value:
+        type: rate_limit_error
+        message: Rate limit exceeded. Please retry after some time.
+    ImprovePromptRequestRecipeExample:
+      summary: Recipe prompt with example interaction
+      value:
+        messages:
+        - role: user
+          content:
+          - type: text
+            text: 'Concise for {{food}}.
+
+
+              example
+
+
+              mandu: Put the mandu in the air fryer at 380F for 7 minutes.'
+        system: You are a professional meal prep chef
+        feedback: Make it more detailed and include cooking times
+        target_model: claude-3-7-sonnet-20250219
+    ErrorBadRequestExample:
+      summary: Bad request error
+      value:
+        type: invalid_request_error
+        message: Invalid request format
+    ErrorUnauthorizedExample:
+      summary: Unauthorized error
+      value:
+        type: authentication_error
+        message: Invalid or missing API key
+    ErrorForbiddenExample:
+      summary: Forbidden error
+      value:
+        type: permission_error
+        message: Access denied or not in closed research preview
+    ImprovePromptRequestDefaultExample:
+      summary: Simple recipe prompt improvement
+      value:
+        messages:
+        - role: user
+          content:
+          - type: text
+            text: Concise recipe for {{food}}
+        feedback: Make the recipes shorter
+    ImprovePromptResponseExample:
+      summary: Improved recipe prompt response
+      value:
+        messages:
+        - role: user
+          content:
+          - type: text
+            text: You are a professional meal prep chef. Create a detailed recipe for {{food}} including preparation time, cooking time, and step-by-step instructions with specific temperatures and timing for each step.
+        - role: assistant
+          content:
+          - type: text
+            text: Here's a detailed recipe for
+        system: ''
+        usage:
+          input_tokens: 45
+          output_tokens: 180
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

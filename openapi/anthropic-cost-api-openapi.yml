@@ -44,19 +44,82 @@ paths:
         4XX:
           $ref: '#/components/responses/ErrorResponse'
 components:
-  schemas:
-    Error:
-      type: object
-      properties:
-        type:
+  parameters:
+    StartingAt:
+      name: starting_at
+      in: query
+      required: true
+      description: RFC3339 inclusive lower bound for the report window.
+      schema:
+        type: string
+        format: date-time
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 20
+    WorkspaceIds:
+      name: workspace_ids
+      in: query
+      required: false
+      explode: true
+      schema:
+        type: array
+        items:
           type: string
-        error:
-          type: object
-          properties:
-            type:
-              type: string
-            message:
-              type: string
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: '2023-06-01'
+    Bucket:
+      name: bucket_width
+      in: query
+      required: false
+      description: Aggregation bucket size.
+      schema:
+        type: string
+        enum:
+        - 1h
+        - 1d
+        default: 1d
+    EndingAt:
+      name: ending_at
+      in: query
+      required: false
+      description: RFC3339 exclusive upper bound for the report window.
+      schema:
+        type: string
+        format: date-time
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: string
+    GroupBy:
+      name: group_by
+      in: query
+      required: false
+      description: Dimensions to group the report by.
+      explode: true
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+          - workspace_id
+          - api_key_id
+          - model
+          - service_tier
+          - context_window
+  schemas:
     CostReport:
       type: object
       properties:
@@ -105,81 +168,18 @@ components:
         next_page:
           type: string
           nullable: true
-  parameters:
-    Page:
-      name: page
-      in: query
-      required: false
-      schema:
-        type: string
-    WorkspaceIds:
-      name: workspace_ids
-      in: query
-      required: false
-      explode: true
-      schema:
-        type: array
-        items:
+    Error:
+      type: object
+      properties:
+        type:
           type: string
-    EndingAt:
-      name: ending_at
-      in: query
-      required: false
-      description: RFC3339 exclusive upper bound for the report window.
-      schema:
-        type: string
-        format: date-time
-    Limit:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 1000
-        default: 20
-    GroupBy:
-      name: group_by
-      in: query
-      required: false
-      description: Dimensions to group the report by.
-      explode: true
-      schema:
-        type: array
-        items:
-          type: string
-          enum:
-          - workspace_id
-          - api_key_id
-          - model
-          - service_tier
-          - context_window
-    StartingAt:
-      name: starting_at
-      in: query
-      required: true
-      description: RFC3339 inclusive lower bound for the report window.
-      schema:
-        type: string
-        format: date-time
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
-      required: true
-      schema:
-        type: string
-        default: '2023-06-01'
-    Bucket:
-      name: bucket_width
-      in: query
-      required: false
-      description: Aggregation bucket size.
-      schema:
-        type: string
-        enum:
-        - 1h
-        - 1d
-        default: 1d
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+            message:
+              type: string
   responses:
     ErrorResponse:
       description: Error response.

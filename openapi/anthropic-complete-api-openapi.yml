@@ -81,6 +81,71 @@ paths:
       - Complete
 components:
   schemas:
+    AuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
+      type: object
+    Metadata:
+      additionalProperties: false
+      properties:
+        user_id:
+          anyOf:
+          - maxLength: 512
+            type: string
+          - type: 'null'
+          description: 'An external identifier for the user who is associated with the request.
+
+
+            This should be a uuid, hash value, or other opaque identifier. Anthropic may use this id to help detect abuse. Do not include any identifying information such as name, email address, or phone number.'
+          examples:
+          - 13803d75-b4b5-4c3e-b2a2-6f21399b021b
+          title: User Id
+      title: Metadata
+      type: object
+    BillingError:
+      properties:
+        message:
+          default: Billing error
+          title: Message
+          type: string
+        type:
+          const: billing_error
+          default: billing_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: BillingError
+      type: object
+    GatewayTimeoutError:
+      properties:
+        message:
+          default: Request timeout
+          title: Message
+          type: string
+        type:
+          const: timeout_error
+          default: timeout_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: GatewayTimeoutError
+      type: object
     AnthropicBeta:
       anyOf:
       - type: string
@@ -128,70 +193,6 @@ components:
         - thinking-display-updates-2026-08-18
         - ce-user-management-2026-07-13
         x-stainless-nominal: false
-    APIError:
-      properties:
-        message:
-          default: Internal server error
-          title: Message
-          type: string
-        type:
-          const: api_error
-          default: api_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: APIError
-      type: object
-    NotFoundError:
-      properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
-        type:
-          const: not_found_error
-          default: not_found_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: NotFoundError
-      type: object
-    InvalidRequestError:
-      properties:
-        message:
-          default: Invalid request
-          title: Message
-          type: string
-        type:
-          const: invalid_request_error
-          default: invalid_request_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: InvalidRequestError
-      type: object
-    AuthenticationError:
-      properties:
-        message:
-          default: Authentication error
-          title: Message
-          type: string
-        type:
-          const: authentication_error
-          default: authentication_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: AuthenticationError
-      type: object
     ErrorResponse:
       properties:
         error:
@@ -290,53 +291,21 @@ components:
       - const: claude-sonnet-4-5-20250929
         description: High-performance model for agents and coding
         x-stainless-nominal: false
-    PermissionError:
+    InvalidRequestError:
       properties:
         message:
-          default: Permission denied
+          default: Invalid request
           title: Message
           type: string
         type:
-          const: permission_error
-          default: permission_error
+          const: invalid_request_error
+          default: invalid_request_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: PermissionError
-      type: object
-    OverloadedError:
-      properties:
-        message:
-          default: Overloaded
-          title: Message
-          type: string
-        type:
-          const: overloaded_error
-          default: overloaded_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: OverloadedError
-      type: object
-    GatewayTimeoutError:
-      properties:
-        message:
-          default: Request timeout
-          title: Message
-          type: string
-        type:
-          const: timeout_error
-          default: timeout_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: GatewayTimeoutError
+      title: InvalidRequestError
       type: object
     CompletionRequest:
       additionalProperties: false
@@ -467,21 +436,21 @@ components:
       - prompt
       title: CompletionRequest
       type: object
-    BillingError:
+    RateLimitError:
       properties:
         message:
-          default: Billing error
+          default: Rate limited
           title: Message
           type: string
         type:
-          const: billing_error
-          default: billing_error
+          const: rate_limit_error
+          default: rate_limit_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: BillingError
+      title: RateLimitError
       type: object
     CompletionResponse:
       properties:
@@ -538,36 +507,67 @@ components:
         model: claude-2.1
         stop_reason: stop_sequence
         type: completion
-    RateLimitError:
+    OverloadedError:
       properties:
         message:
-          default: Rate limited
+          default: Overloaded
           title: Message
           type: string
         type:
-          const: rate_limit_error
-          default: rate_limit_error
+          const: overloaded_error
+          default: overloaded_error
           title: Type
           type: string
       required:
       - message
       - type
-      title: RateLimitError
+      title: OverloadedError
       type: object
-    Metadata:
-      additionalProperties: false
+    APIError:
       properties:
-        user_id:
-          anyOf:
-          - maxLength: 512
-            type: string
-          - type: 'null'
-          description: 'An external identifier for the user who is associated with the request.
-
-
-            This should be a uuid, hash value, or other opaque identifier. Anthropic may use this id to help detect abuse. Do not include any identifying information such as name, email address, or phone number.'
-          examples:
-          - 13803d75-b4b5-4c3e-b2a2-6f21399b021b
-          title: User Id
-      title: Metadata
+        message:
+          default: Internal server error
+          title: Message
+          type: string
+        type:
+          const: api_error
+          default: api_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
+    NotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    PermissionError:
+      properties:
+        message:
+          default: Permission denied
+          title: Message
+          type: string
+        type:
+          const: permission_error
+          default: permission_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: PermissionError
       type: object

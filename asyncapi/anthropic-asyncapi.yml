@@ -346,8 +346,7 @@ components:
             - $ref: '#/components/schemas/InputJsonDelta'
             - $ref: '#/components/schemas/ThinkingDelta'
             - $ref: '#/components/schemas/SignatureDelta'
-          discriminator:
-            propertyName: type
+          discriminator: type
     ContentBlockStopEvent:
       type: object
       required:
@@ -534,8 +533,7 @@ components:
         - $ref: '#/components/schemas/ServerToolUseBlock'
         - $ref: '#/components/schemas/ThinkingBlock'
         - $ref: '#/components/schemas/WebSearchToolResultBlock'
-      discriminator:
-        propertyName: type
+      discriminator: type
     TextBlock:
       type: object
       required:

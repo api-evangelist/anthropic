@@ -169,19 +169,68 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"ArchivedWorkspaceExample\"\n}\n"
 components:
+  examples:
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The request was invalid or malformed.
+    WorkspaceExample:
+      summary: Workspace Response
+      value:
+        id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        type: workspace
+        name: Engineering Team
+        display_color: '#6C5BB9'
+        created_at: '2024-10-30T23:58:27.427722Z'
+        archived_at: null
+    WorkspaceListExample:
+      summary: Workspace List Response
+      value:
+        data:
+        - id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+          type: workspace
+          name: Engineering Team
+          display_color: '#6C5BB9'
+          created_at: '2024-10-30T23:58:27.427722Z'
+          archived_at: null
+        - id: wrkspc_02KxRvs8sQMB6BHy4ILGgGVK
+          type: workspace
+          name: Marketing Team
+          display_color: '#4A90D9'
+          created_at: '2024-09-15T14:20:00.000000Z'
+          archived_at: null
+        first_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        has_more: false
+        last_id: wrkspc_02KxRvs8sQMB6BHy4ILGgGVK
+    ArchivedWorkspaceExample:
+      summary: Archived Workspace Response
+      value:
+        id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        type: workspace
+        name: Engineering Team
+        display_color: '#6C5BB9'
+        created_at: '2024-10-30T23:58:27.427722Z'
+        archived_at: '2024-11-01T23:59:27.427722Z'
+    UpdateWorkspaceRequestExample:
+      summary: Update Workspace Request
+      value:
+        name: Engineering Team - Updated
+    CreateWorkspaceRequestExample:
+      summary: Create Workspace Request
+      value:
+        name: Engineering Team
   schemas:
-    Error:
+    UpdateWorkspaceRequest:
       type: object
       required:
-      - type
-      - message
+      - name
       properties:
-        type:
+        name:
           type: string
-          description: Error type identifier
-        message:
-          type: string
-          description: Human-readable error message
+          minLength: 1
+          maxLength: 40
+          description: Updated name for the workspace
     Workspace:
       type: object
       required:
@@ -218,7 +267,7 @@ components:
           format: date-time
           nullable: true
           description: RFC 3339 datetime when workspace was archived, or null if active
-    UpdateWorkspaceRequest:
+    CreateWorkspaceRequest:
       type: object
       required:
       - name
@@ -227,7 +276,7 @@ components:
           type: string
           minLength: 1
           maxLength: 40
-          description: Updated name for the workspace
+          description: Name for the new workspace
     WorkspaceList:
       type: object
       required:
@@ -252,16 +301,18 @@ components:
           type: string
           nullable: true
           description: Last ID in the data list for pagination
-    CreateWorkspaceRequest:
+    Error:
       type: object
       required:
-      - name
+      - type
+      - message
       properties:
-        name:
+        type:
           type: string
-          minLength: 1
-          maxLength: 40
-          description: Name for the new workspace
+          description: Error type identifier
+        message:
+          type: string
+          description: Human-readable error message
   parameters:
     WorkspaceId:
       name: workspace_id
@@ -271,6 +322,13 @@ components:
       schema:
         type: string
       example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+    BeforeId:
+      name: before_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
+      schema:
+        type: string
     Limit:
       name: limit
       in: query
@@ -281,20 +339,6 @@ components:
         default: 20
         minimum: 1
         maximum: 1000
-    AfterId:
-      name: after_id
-      in: query
-      required: false
-      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
-      schema:
-        type: string
-    BeforeId:
-      name: before_id
-      in: query
-      required: false
-      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
-      schema:
-        type: string
     AnthropicVersion:
       name: anthropic-version
       in: header
@@ -303,57 +347,13 @@ components:
       schema:
         type: string
         example: '2023-06-01'
-  examples:
-    WorkspaceExample:
-      summary: Workspace Response
-      value:
-        id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-        type: workspace
-        name: Engineering Team
-        display_color: '#6C5BB9'
-        created_at: '2024-10-30T23:58:27.427722Z'
-        archived_at: null
-    CreateWorkspaceRequestExample:
-      summary: Create Workspace Request
-      value:
-        name: Engineering Team
-    ErrorExample:
-      summary: Error Response
-      value:
-        type: invalid_request_error
-        message: The request was invalid or malformed.
-    ArchivedWorkspaceExample:
-      summary: Archived Workspace Response
-      value:
-        id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-        type: workspace
-        name: Engineering Team
-        display_color: '#6C5BB9'
-        created_at: '2024-10-30T23:58:27.427722Z'
-        archived_at: '2024-11-01T23:59:27.427722Z'
-    WorkspaceListExample:
-      summary: Workspace List Response
-      value:
-        data:
-        - id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-          type: workspace
-          name: Engineering Team
-          display_color: '#6C5BB9'
-          created_at: '2024-10-30T23:58:27.427722Z'
-          archived_at: null
-        - id: wrkspc_02KxRvs8sQMB6BHy4ILGgGVK
-          type: workspace
-          name: Marketing Team
-          display_color: '#4A90D9'
-          created_at: '2024-09-15T14:20:00.000000Z'
-          archived_at: null
-        first_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
-        has_more: false
-        last_id: wrkspc_02KxRvs8sQMB6BHy4ILGgGVK
-    UpdateWorkspaceRequestExample:
-      summary: Update Workspace Request
-      value:
-        name: Engineering Team - Updated
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
+      schema:
+        type: string
   responses:
     ErrorResponse:
       description: Error Response

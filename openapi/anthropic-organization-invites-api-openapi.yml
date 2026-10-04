@@ -128,64 +128,47 @@ paths:
         dispatcher: FALLBACK
         dispatcherRules: "{\n  \"dispatcher\": \"FALLBACK\",\n  \"fallback\": \"InviteDeletedResponseExample\"\n}\n"
 components:
-  schemas:
-    Error:
-      type: object
-      required:
-      - type
-      - message
-      properties:
-        type:
-          type: string
-          description: Error type identifier
-        message:
-          type: string
-          description: Human-readable error message
-    OrganizationInviteList:
-      type: object
-      required:
-      - data
-      - has_more
-      - first_id
-      - last_id
-      properties:
+  examples:
+    ErrorExample:
+      summary: Error Response
+      value:
+        type: invalid_request_error
+        message: The request was invalid or malformed.
+    CreateOrganizationInviteRequestExample:
+      summary: Create Organization Invite Request
+      value:
+        email: newuser@example.com
+        role: user
+    OrganizationInviteExample:
+      summary: Organization Invite Response
+      value:
+        id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+        type: invite
+        email: newuser@example.com
+        role: user
+        status: pending
+        invited_at: '2024-10-30T23:58:27.427722Z'
+        expires_at: '2024-11-20T23:58:27.427722Z'
+    OrganizationInviteListExample:
+      summary: Organization Invite List Response
+      value:
         data:
-          type: array
-          description: List of organization invites
-          items:
-            $ref: '#/components/schemas/OrganizationInvite'
-        first_id:
-          type: string
-          nullable: true
-          description: First ID in the data list for pagination
-        has_more:
-          type: boolean
-          description: Indicates if there are more results available
-        last_id:
-          type: string
-          nullable: true
-          description: Last ID in the data list for pagination
-    CreateOrganizationInviteRequest:
-      type: object
-      required:
-      - email
-      - role
-      properties:
-        email:
-          type: string
-          format: email
-          description: Email address to send the invite to
-        role:
-          $ref: '#/components/schemas/OrganizationRole'
-    OrganizationRole:
-      type: string
-      enum:
-      - user
-      - claude_code_user
-      - developer
-      - billing
-      - admin
-      description: Role within the organization
+        - id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+          type: invite
+          email: newuser@example.com
+          role: user
+          status: pending
+          invited_at: '2024-10-30T23:58:27.427722Z'
+          expires_at: '2024-11-20T23:58:27.427722Z'
+        first_id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+        has_more: false
+        last_id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+    InviteDeletedResponseExample:
+      summary: Invite Deleted Response
+      value:
+        id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+        type: invite_deleted
+  schemas:
     OrganizationInvite:
       type: object
       required:
@@ -222,14 +205,30 @@ components:
           type: string
           format: date-time
           description: RFC 3339 datetime when invite expires
-    InviteStatus:
-      type: string
-      enum:
-      - pending
-      - accepted
-      - expired
-      - deleted
-      description: Current status of the invite
+    OrganizationInviteList:
+      type: object
+      required:
+      - data
+      - has_more
+      - first_id
+      - last_id
+      properties:
+        data:
+          type: array
+          description: List of organization invites
+          items:
+            $ref: '#/components/schemas/OrganizationInvite'
+        first_id:
+          type: string
+          nullable: true
+          description: First ID in the data list for pagination
+        has_more:
+          type: boolean
+          description: Indicates if there are more results available
+        last_id:
+          type: string
+          nullable: true
+          description: Last ID in the data list for pagination
     InviteDeletedResponse:
       type: object
       required:
@@ -245,57 +244,56 @@ components:
           - invite_deleted
           default: invite_deleted
           description: Deletion confirmation type
-  examples:
-    InviteDeletedResponseExample:
-      summary: Invite Deleted Response
-      value:
-        id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
-        type: invite_deleted
-    OrganizationInviteExample:
-      summary: Organization Invite Response
-      value:
-        id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
-        type: invite
-        email: newuser@example.com
-        role: user
-        status: pending
-        invited_at: '2024-10-30T23:58:27.427722Z'
-        expires_at: '2024-11-20T23:58:27.427722Z'
-    CreateOrganizationInviteRequestExample:
-      summary: Create Organization Invite Request
-      value:
-        email: newuser@example.com
-        role: user
-    ErrorExample:
-      summary: Error Response
-      value:
-        type: invalid_request_error
-        message: The request was invalid or malformed.
-    OrganizationInviteListExample:
-      summary: Organization Invite List Response
-      value:
-        data:
-        - id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
-          type: invite
-          email: newuser@example.com
-          role: user
-          status: pending
-          invited_at: '2024-10-30T23:58:27.427722Z'
-          expires_at: '2024-11-20T23:58:27.427722Z'
-        first_id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
-        has_more: false
-        last_id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
-  responses:
-    ErrorResponse:
-      description: Error Response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            ErrorExample:
-              $ref: '#/components/examples/ErrorExample'
+    InviteStatus:
+      type: string
+      enum:
+      - pending
+      - accepted
+      - expired
+      - deleted
+      description: Current status of the invite
+    Error:
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type identifier
+        message:
+          type: string
+          description: Human-readable error message
+    CreateOrganizationInviteRequest:
+      type: object
+      required:
+      - email
+      - role
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email address to send the invite to
+        role:
+          $ref: '#/components/schemas/OrganizationRole'
+    OrganizationRole:
+      type: string
+      enum:
+      - user
+      - claude_code_user
+      - developer
+      - billing
+      - admin
+      description: Role within the organization
   parameters:
+    InviteId:
+      name: invite_id
+      in: path
+      required: true
+      description: Unique identifier for the invite
+      schema:
+        type: string
+      example: invite_015gWxCN9Hfg2QhZwTK7Mdeu
     Limit:
       name: limit
       in: query
@@ -306,13 +304,6 @@ components:
         default: 20
         minimum: 1
         maximum: 1000
-    AfterId:
-      name: after_id
-      in: query
-      required: false
-      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
-      schema:
-        type: string
     BeforeId:
       name: before_id
       in: query
@@ -328,14 +319,23 @@ components:
       schema:
         type: string
         example: '2023-06-01'
-    InviteId:
-      name: invite_id
-      in: path
-      required: true
-      description: Unique identifier for the invite
+    AfterId:
+      name: after_id
+      in: query
+      required: false
+      description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
       schema:
         type: string
-      example: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+  responses:
+    ErrorResponse:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
   securitySchemes:
     AdminApiKeyAuth:
       type: apiKey

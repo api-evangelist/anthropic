@@ -1,7 +1,5 @@
 aid: anthropic
-
 url: https://raw.githubusercontent.com/api-evangelist/anthropic/refs/heads/main/apis.yml
-
 tags:
 - LLM
 - Anthropic
@@ -11,19 +9,14 @@ tags:
 - Machine-Learning
 - MCP
 - Agents
-
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/anthropic.png
-
 maintainers:
 - FN: Kin Lane
   email: info@apievangelist.com
   X: apievangelist
   url: https://apievangelist.com
-
 name: Anthropic
-
 kind: contract
-
 deliveryModel:
   model: saas
   open_source: false
@@ -36,7 +29,6 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
-
 accessModel:
   pricing: paid
   onboarding: unknown
@@ -52,15 +44,10 @@ accessModel:
   - sandbox
   generated: '2026-09-03'
   method: derived
-
 access: 3rd-Party
-
 created: '2025-08-14T00:00:00.000Z'
-
 modified: '2026-09-23'
-
 position: Consuming
-
 description: 'Anthropic is an AI safety company and the creator of the Claude family of large language models (Opus, Sonnet, Haiku, and the Fable/Mythos
   frontier line). The Claude Developer Platform exposes them through a single REST API at api.anthropic.com: the Messages API for text, vision,
   tool use, thinking, streaming and structured outputs; Message Batches for asynchronous work at half price; Files, Token Counting, Models, and
@@ -68,9 +55,7 @@ description: 'Anthropic is an AI safety company and the creator of the Claude fa
   Admin API for organizations, workspaces, members, invites and API keys. Authentication is x-api-key with a required anthropic-version date header
   and dated anthropic-beta opt-ins. Anthropic also authors two of the open standards the agent ecosystem runs on — the Model Context Protocol
   and the Agent Skills specification — and ships Claude Code, the terminal agentic coding tool, which doubles as a first-party stdio MCP server.'
-
 specificationVersion: '0.23'
-
 common:
 - type: Idempotency
   url: conventions/anthropic-conventions.yml
@@ -745,7 +730,6 @@ common:
 - type: Roadmap
   url: https://www.anthropic.com/responsible-scaling-policy/roadmap
   name: Responsible Scaling Policy Roadmap
-
 apis:
 - aid: anthropic:anthropic-messages-api
   name: Anthropic Messages API
@@ -774,9 +758,11 @@ apis:
     type: JSONLD
   - url: graphql/anthropic-graphql.md
     type: GraphQL
-  description: Send a structured list of input messages with text and/or image content, and the model will generate the next message in the conversation.
-    The Messages API supports text, images, tool use, extended thinking, streaming, structured outputs, prompt caching, compaction, and the new
-    advisor tool for pairing executor and higher-intelligence advisor models.
+  description: >-
+    Send a structured list of input messages with text and/or image content, and the model will generate
+    the next message in the conversation. The Messages API supports text, images, tool use, extended thinking,
+    streaming, structured outputs, prompt caching, compaction, and the new advisor tool for pairing executor
+    and higher-intelligence advisor models.
   baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-models-api
   name: Anthropic Models API
@@ -799,8 +785,10 @@ apis:
     url: json-schema/anthropic-model-info-schema.json
   - type: JSONSchema
     url: json-schema/anthropic-list-response-model-info-schema.json
-  description: List and inspect Claude models including Opus 4.7, Sonnet 4.6, and Haiku 4.5. The response includes max_input_tokens, max_tokens,
-    and a capabilities object for every model so clients can discover model properties programmatically.
+  description: >-
+    List and inspect Claude models including Opus 4.7, Sonnet 4.6, and Haiku 4.5. The response includes
+    max_input_tokens, max_tokens, and a capabilities object for every model so clients can discover model
+    properties programmatically.
   baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-files-api
   name: Anthropic Files API
@@ -827,8 +815,10 @@ apis:
     url: json-schema/anthropic-beta-file-delete-response-schema.json
   - type: JSONSchema
     url: json-schema/anthropic-file-delete-response-schema.json
-  description: The Files API lets you upload and manage files for reuse across Messages, Batches, code execution, and Managed Agents without re-uploading
-    content. 500 MB request limit; supports PDFs, images, Office documents, and plain text.
+  description: >-
+    The Files API lets you upload and manage files for reuse across Messages, Batches, code execution,
+    and Managed Agents without re-uploading content. 500 MB request limit; supports PDFs, images, Office
+    documents, and plain text.
   baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-skills-api
   name: Anthropic Skills API
@@ -859,9 +849,10 @@ apis:
     url: json-schema/anthropic-skill-version-schema.json
   - type: JSONSchema
     url: json-schema/anthropic-beta-list-skill-versions-response-schema.json
-  description: Create and manage custom Agent Skills. Skills are filesystem-based directories of instructions, scripts, and resources that Claude
-    loads on demand via progressive disclosure. Workspace-wide sharing. The Skills API is currently in beta and requires the skills-2025-10-02
-    beta header.
+  description: >-
+    Create and manage custom Agent Skills. Skills are filesystem-based directories of instructions, scripts,
+    and resources that Claude loads on demand via progressive disclosure. Workspace-wide sharing. The
+    Skills API is currently in beta and requires the skills-2025-10-02 beta header.
   baseURL: https://api.anthropic.com/v1
 - aid: anthropic:anthropic-agents-api
   name: Anthropic Agents API
@@ -1323,42 +1314,6 @@ apis:
   - type: JSONSchema
     url: json-schema/anthropic-workspace-list-schema.json
   baseURL: https://api.anthropic.com/v1
-- aid: anthropic:anthropic-agents-beta-true-api
-  name: Anthropic Agents?beta=true API
-  description: The Agents?beta=true API from Anthropic — 1 operation(s) for agents?beta=true.
-  humanURL: https://docs.anthropic.com/en/api/messages
-  baseURL: https://api.anthropic.com/v1
-  tags:
-  - Agents?beta=true
-  properties:
-  - type: OpenAPI
-    url: openapi/anthropic-agents-beta-true-api-openapi.yml
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/creating-message-batches
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/messages-count-tokens
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/claude-code-analytics-api
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/prompt-tools-generate
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/usage-cost-api
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/overview
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/sessions
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/environments
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-managed-agents-agent-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-managed-agents-create-agent-params-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-managed-agents-list-agents-schema.json
 - aid: anthropic:anthropic-anthropic-api-api
   name: Anthropic API
   description: The Anthropic API API from Anthropic — 0 operation(s) for anthropic api.
@@ -1455,38 +1410,6 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/environments
   - type: JSONSchema
     url: json-schema/anthropic-beta-managed-agents-deployment-run-schema.json
-- aid: anthropic:anthropic-deployment-runs-beta-true-api
-  name: Anthropic Deployment Runs?beta=true API
-  description: The Deployment Runs?beta=true API from Anthropic — 1 operation(s) for deployment runs?beta=true.
-  humanURL: https://docs.anthropic.com/en/api/messages
-  baseURL: https://api.anthropic.com/v1
-  tags:
-  - Deployment Runs?beta=true
-  properties:
-  - type: OpenAPI
-    url: openapi/anthropic-deployment-runs-beta-true-api-openapi.yml
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/creating-message-batches
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/messages-count-tokens
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/claude-code-analytics-api
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/prompt-tools-generate
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/usage-cost-api
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/overview
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/sessions
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/environments
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-managed-agents-list-deployment-runs-data-schema.json
 - aid: anthropic:anthropic-deployments-api
   name: Anthropic Deployments API
   description: The Deployments API from Anthropic — 5 operation(s) for deployments.
@@ -1525,42 +1448,6 @@ apis:
     url: json-schema/anthropic-beta-managed-agents-update-deployment-params-schema.json
   - type: JSONSchema
     url: json-schema/anthropic-beta-managed-agents-deployment-run-schema.json
-- aid: anthropic:anthropic-deployments-beta-true-api
-  name: Anthropic Deployments?beta=true API
-  description: The Deployments?beta=true API from Anthropic — 1 operation(s) for deployments?beta=true.
-  humanURL: https://docs.anthropic.com/en/api/messages
-  baseURL: https://api.anthropic.com/v1
-  tags:
-  - Deployments?beta=true
-  properties:
-  - type: OpenAPI
-    url: openapi/anthropic-deployments-beta-true-api-openapi.yml
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/creating-message-batches
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/messages-count-tokens
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/claude-code-analytics-api
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/prompt-tools-generate
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/usage-cost-api
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/overview
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/sessions
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/environments
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-managed-agents-deployment-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-managed-agents-create-deployment-params-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-managed-agents-list-deployments-data-schema.json
 - aid: anthropic:anthropic-dreams-api
   name: Anthropic Dreams API
   description: The Dreams API from Anthropic — 3 operation(s) for dreams.
@@ -1593,112 +1480,6 @@ apis:
     url: https://platform.claude.com/docs/en/managed-agents/environments
   - type: JSONSchema
     url: json-schema/anthropic-beta-dream-schema.json
-- aid: anthropic:anthropic-dreams-beta-true-api
-  name: Anthropic Dreams?beta=true API
-  description: The Dreams?beta=true API from Anthropic — 1 operation(s) for dreams?beta=true.
-  humanURL: https://docs.anthropic.com/en/api/messages
-  baseURL: https://api.anthropic.com/v1
-  tags:
-  - Dreams?beta=true
-  properties:
-  - type: OpenAPI
-    url: openapi/anthropic-dreams-beta-true-api-openapi.yml
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/creating-message-batches
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/messages-count-tokens
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/claude-code-analytics-api
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/prompt-tools-generate
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/usage-cost-api
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/overview
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/sessions
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/environments
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-dream-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-create-dream-request-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-list-dreams-response-schema.json
-- aid: anthropic:anthropic-environments-beta-true-api
-  name: Anthropic Environments?beta=true API
-  description: The Environments?beta=true API from Anthropic — 1 operation(s) for environments?beta=true.
-  humanURL: https://docs.anthropic.com/en/api/messages
-  baseURL: https://api.anthropic.com/v1
-  tags:
-  - Environments?beta=true
-  properties:
-  - type: OpenAPI
-    url: openapi/anthropic-environments-beta-true-api-openapi.yml
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/creating-message-batches
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/messages-count-tokens
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/claude-code-analytics-api
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/prompt-tools-generate
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/usage-cost-api
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/overview
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/sessions
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/environments
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-environment-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-public-environment-create-request-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-environment-list-response-schema.json
-- aid: anthropic:anthropic-files-beta-true-api
-  name: Anthropic Files?beta=true API
-  description: The Files?beta=true API from Anthropic — 1 operation(s) for files?beta=true.
-  humanURL: https://docs.anthropic.com/en/api/messages
-  baseURL: https://api.anthropic.com/v1
-  tags:
-  - Files?beta=true
-  properties:
-  - type: OpenAPI
-    url: openapi/anthropic-files-beta-true-api-openapi.yml
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/creating-message-batches
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/messages-count-tokens
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/claude-code-analytics-api
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/prompt-tools-generate
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/usage-cost-api
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/overview
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/sessions
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/environments
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-file-metadata-schema-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-file-list-response-schema.json
 - aid: anthropic:anthropic-memory-stores-api
   name: Anthropic Memory Stores API
   description: The Memory Stores API from Anthropic — 7 operation(s) for memory stores.
@@ -1741,108 +1522,6 @@ apis:
     url: json-schema/anthropic-beta-managed-agents-update-memory-store-request-body-schema.json
   - type: JSONSchema
     url: json-schema/anthropic-beta-managed-agents-list-memories-result-schema.json
-- aid: anthropic:anthropic-memory-stores-beta-true-api
-  name: Anthropic Memory Stores?beta=true API
-  description: The Memory Stores?beta=true API from Anthropic — 1 operation(s) for memory stores?beta=true.
-  humanURL: https://docs.anthropic.com/en/api/messages
-  baseURL: https://api.anthropic.com/v1
-  tags:
-  - Memory Stores?beta=true
-  properties:
-  - type: OpenAPI
-    url: openapi/anthropic-memory-stores-beta-true-api-openapi.yml
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/creating-message-batches
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/messages-count-tokens
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/claude-code-analytics-api
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/prompt-tools-generate
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/usage-cost-api
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/overview
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/sessions
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/environments
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-managed-agents-create-memory-store-request-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-managed-agents-list-memory-stores-response-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-managed-agents-create-memory-store-response-schema.json
-- aid: anthropic:anthropic-messages-beta-true-api
-  name: Anthropic Messages?beta=true API
-  description: The Messages?beta=true API from Anthropic — 1 operation(s) for messages?beta=true.
-  humanURL: https://docs.anthropic.com/en/api/messages
-  baseURL: https://api.anthropic.com/v1
-  tags:
-  - Messages?beta=true
-  properties:
-  - type: OpenAPI
-    url: openapi/anthropic-messages-beta-true-api-openapi.yml
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/creating-message-batches
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/messages-count-tokens
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/claude-code-analytics-api
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/prompt-tools-generate
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/usage-cost-api
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/overview
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/sessions
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/environments
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-create-message-params-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-message-schema.json
-- aid: anthropic:anthropic-models-beta-true-api
-  name: Anthropic Models?beta=true API
-  description: The Models?beta=true API from Anthropic — 1 operation(s) for models?beta=true.
-  humanURL: https://docs.anthropic.com/en/api/messages
-  baseURL: https://api.anthropic.com/v1
-  tags:
-  - Models?beta=true
-  properties:
-  - type: OpenAPI
-    url: openapi/anthropic-models-beta-true-api-openapi.yml
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/creating-message-batches
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/messages-count-tokens
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/claude-code-analytics-api
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/prompt-tools-generate
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/usage-cost-api
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/overview
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/sessions
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/environments
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-list-response-model-info-schema.json
 - aid: anthropic:anthropic-organizations-api
   name: Anthropic Organizations API
   description: The Organizations API from Anthropic — 43 operation(s) for organizations.
@@ -1887,78 +1566,6 @@ apis:
     url: json-schema/anthropic-beta-workspace-schema.json
   - type: JSONSchema
     url: json-schema/anthropic-beta-external-key-schema.json
-- aid: anthropic:anthropic-sessions-beta-true-api
-  name: Anthropic Sessions?beta=true API
-  description: The Sessions?beta=true API from Anthropic — 1 operation(s) for sessions?beta=true.
-  humanURL: https://docs.anthropic.com/en/api/messages
-  baseURL: https://api.anthropic.com/v1
-  tags:
-  - Sessions?beta=true
-  properties:
-  - type: OpenAPI
-    url: openapi/anthropic-sessions-beta-true-api-openapi.yml
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/creating-message-batches
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/messages-count-tokens
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/claude-code-analytics-api
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/prompt-tools-generate
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/usage-cost-api
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/overview
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/sessions
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/environments
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-managed-agents-session-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-managed-agents-create-session-params-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-managed-agents-list-sessions-schema.json
-- aid: anthropic:anthropic-skills-beta-true-api
-  name: Anthropic Skills?beta=true API
-  description: The Skills?beta=true API from Anthropic — 1 operation(s) for skills?beta=true.
-  humanURL: https://docs.anthropic.com/en/api/messages
-  baseURL: https://api.anthropic.com/v1
-  tags:
-  - Skills?beta=true
-  properties:
-  - type: OpenAPI
-    url: openapi/anthropic-skills-beta-true-api-openapi.yml
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/creating-message-batches
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/messages-count-tokens
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/claude-code-analytics-api
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/prompt-tools-generate
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/usage-cost-api
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/overview
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/sessions
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/environments
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-create-skill-response-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-list-skills-response-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-body-create-skill-v1-skills-post-schema.json
 - aid: anthropic:anthropic-tunnels-api
   name: Anthropic Tunnels API
   description: The Tunnels API from Anthropic — 7 operation(s) for tunnels.
@@ -2001,42 +1608,6 @@ apis:
     url: json-schema/anthropic-beta-create-tunnel-certificate-request-body-schema.json
   - type: JSONSchema
     url: json-schema/anthropic-beta-rotate-tunnel-token-request-body-schema.json
-- aid: anthropic:anthropic-tunnels-beta-true-api
-  name: Anthropic Tunnels?beta=true API
-  description: The Tunnels?beta=true API from Anthropic — 1 operation(s) for tunnels?beta=true.
-  humanURL: https://docs.anthropic.com/en/api/messages
-  baseURL: https://api.anthropic.com/v1
-  tags:
-  - Tunnels?beta=true
-  properties:
-  - type: OpenAPI
-    url: openapi/anthropic-tunnels-beta-true-api-openapi.yml
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/creating-message-batches
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/messages-count-tokens
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/claude-code-analytics-api
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/prompt-tools-generate
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/usage-cost-api
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/overview
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/sessions
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/environments
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-tunnel-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-list-tunnels-response-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-create-tunnel-request-schema.json
 - aid: anthropic:anthropic-user-profiles-api
   name: Anthropic User Profiles API
   description: The User Profiles API from Anthropic — 2 operation(s) for user profiles.
@@ -2073,42 +1644,6 @@ apis:
     url: json-schema/anthropic-beta-update-user-profile-request-body-schema.json
   - type: JSONSchema
     url: json-schema/anthropic-beta-enrollment-url-schema.json
-- aid: anthropic:anthropic-user-profiles-beta-true-api
-  name: Anthropic User Profiles?beta=true API
-  description: The User Profiles?beta=true API from Anthropic — 1 operation(s) for user profiles?beta=true.
-  humanURL: https://docs.anthropic.com/en/api/messages
-  baseURL: https://api.anthropic.com/v1
-  tags:
-  - User Profiles?beta=true
-  properties:
-  - type: OpenAPI
-    url: openapi/anthropic-user-profiles-beta-true-api-openapi.yml
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/creating-message-batches
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/messages-count-tokens
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/claude-code-analytics-api
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/prompt-tools-generate
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/usage-cost-api
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/overview
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/sessions
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/environments
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-user-profile-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-create-user-profile-request-schema.json
-  - type: JSONSchema
-    url: json-schema/anthropic-beta-list-user-profiles-response-schema.json
 - aid: anthropic:anthropic-vaults-api
   name: Anthropic Vaults API
   description: The Vaults API from Anthropic — 6 operation(s) for vaults.
@@ -2149,37 +1684,6 @@ apis:
     url: json-schema/anthropic-beta-managed-agents-vault-schema.json
   - type: JSONSchema
     url: json-schema/anthropic-beta-managed-agents-list-credentials-response-schema.json
-- aid: anthropic:anthropic-vaults-beta-true-api
-  name: Anthropic Vaults?beta=true API
-  description: The Vaults?beta=true API from Anthropic — 1 operation(s) for vaults?beta=true.
-  humanURL: https://docs.anthropic.com/en/api/messages
-  baseURL: https://api.anthropic.com/v1
-  tags:
-  - Vaults?beta=true
-  properties:
-  - type: OpenAPI
-    url: openapi/anthropic-vaults-beta-true-api-openapi.yml
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/creating-message-batches
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/messages-count-tokens
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/claude-code-analytics-api
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/admin-api/users/get-user
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/prompt-tools-generate
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/usage-cost-api
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/overview
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/agent-setup
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/sessions
-  - type: Documentation
-    url: https://platform.claude.com/docs/en/managed-agents/environments
-
 tags_raw:
 - Large Language Models
 - Anthropic
@@ -2192,9 +1696,17 @@ tags_raw:
 - MCP
 - Agents
 - LLM
-
+x-coverage:
+  state: unreadable
+  reason: js-rendered-docs
+  detail: Docs at https://docs.anthropic.com/en/api return a JavaScript shell with no OpenAPI JSON
+  evidence:
+  - url: https://docs.anthropic.com/en/api/openapi.json
+    status: 200
+  checked: '2026-10-04'
 x-enrichment:
-  date: '2026-08-27'
-  status: enriched
-  artifacts_added: 12
-  pass: local-v1
+  date: '2026-10-04'
+  status: minimal
+  artifacts_added: 2
+  pass: modular-v1
+  engine: identity=local,contract=local,surfaces=local,docs=local,regulatory=local

@@ -58,6 +58,13 @@ paths:
                 type: string
 components:
   parameters:
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: '2023-06-01'
     AnthropicBeta:
       name: anthropic-beta
       in: header
@@ -72,13 +79,6 @@ components:
       required: true
       schema:
         type: string
-    AnthropicVersion:
-      name: anthropic-version
-      in: header
-      required: true
-      schema:
-        type: string
-        default: '2023-06-01'
   schemas:
     EventBatch:
       type: object

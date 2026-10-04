@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/anthropic/main/json-schema/anthropic-beta-managed-agents-create-vault-request-schema.json",
+  "title": "BetaManagedAgentsCreateVaultRequest",
+  "description": "Request parameters for creating a vault.",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/anthropic-vaults-beta-true-api-openapi.yml#/components/schemas/BetaManagedAgentsCreateVaultRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "display_name"
+  ],
+  "properties": {
+    "display_name": {
+      "description": "Human-readable name for the vault. 1-255 characters.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "metadata": {
+      "description": "Arbitrary key-value metadata to attach to the vault. Maximum 16 pairs, keys up to 64 chars, values up to 512 chars.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  }
+}
