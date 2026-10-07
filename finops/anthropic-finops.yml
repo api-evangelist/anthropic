@@ -102,13 +102,10 @@ discountModels:
 unitEconomics:
   - name: Cost per 1M input tokens (Sonnet)
     metric: billed_cost / (input_tokens / 1_000_000)
-    target: $3.00
   - name: Cache hit rate
     metric: cache_read_input_tokens / total_input_tokens
-    target: '>50%'
   - name: Effective input rate with caching
     metric: (uncached_input * $3 + cached_input * $0.30) / total_input
-    target: <$1.50/MTok
 principles:
   - name: Visibility
     description: Use the Usage & Cost Admin API to surface per-workspace spend to teams in near real-time.
