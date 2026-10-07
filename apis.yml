@@ -60,6 +60,8 @@ description: 'Anthropic is an AI safety company and the creator of the Claude fa
   terminal agentic coding tool, which doubles as a first-party stdio MCP server.'
 specificationVersion: '0.23'
 common:
+- type: Pricing
+  url: https://claude.com/pricing
 - type: Idempotency
   url: conventions/anthropic-conventions.yml
 - type: Spectral
