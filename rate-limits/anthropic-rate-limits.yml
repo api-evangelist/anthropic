@@ -1,155 +1,72 @@
-name: Anthropic API Rate Limits
-specification: API Commons Rate Limits
-specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
-provider: Anthropic
-providerId: anthropic
-created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-22'
-reconciled: true
-tags:
-  - AI
-  - Rate Limiting
-  - Quotas
-description: Reconciled rate limits for the Anthropic Messages, Batches, and Managed Agents APIs. Token-bucket
-  algorithm; only uncached input tokens count toward ITPM on most models.
+# Rate limits transcribed from the provider's own documentation — see provenance. Quoted, not derived.
+generated: '2026-10-07'
+method: searched
+source: https://platform.claude.com/docs/en/api/rate-limits
 sources:
-  - https://www.anthropic.com/pricing
-  - https://platform.claude.com/docs/en/docs/about-claude/pricing
-  - https://platform.claude.com/docs/en/api/rate-limits
-headers:
-  limit: anthropic-ratelimit-requests-limit
-  remaining: anthropic-ratelimit-requests-remaining
-  reset: anthropic-ratelimit-requests-reset
-  retryAfter: retry-after
-  tokensLimit: anthropic-ratelimit-tokens-limit
-  inputTokensLimit: anthropic-ratelimit-input-tokens-limit
-  outputTokensLimit: anthropic-ratelimit-output-tokens-limit
-responseCodes:
-  throttled: 429
-  quotaExceeded: 429
-algorithm: token-bucket
-spendLimits:
-  - tier: Tier 1
-    creditPurchase: $5
-    monthlyCap: $500
-  - tier: Tier 2
-    creditPurchase: $40
-    monthlyCap: $500
-  - tier: Tier 3
-    creditPurchase: $200
-    monthlyCap: $1,000
-  - tier: Tier 4
-    creditPurchase: $400
-    monthlyCap: $200,000
-  - tier: Monthly Invoicing
-    creditPurchase: N/A
-    monthlyCap: no limit
+- https://platform.claude.com/docs/en/api/rate-limits
+provenance:
+  tool: all/0-working/economics/harvest_ratelimits.py
+  run: 20261007T122905
+  grounding: every limit_text was found verbatim in the fetched page text
+published: true
+note: Page also contains per-tier/per-model RPM, ITPM, OTPM tables (e.g. Start tier 1,000 RPM / 2,000,000
+  ITPM / 400,000 OTPM) and Message Batches limits, presented as tables without quotable sentence-form
+  limit text; scope is the organization. User-set spend limits exceeded return HTTP 400 invalid_request_error.
+limit_count: 6
 limits:
-  - name: Tier 1 – Claude Opus 4.x
-    tier: Tier 1
-    model: Claude Opus 4.x
-    rpm: 50
-    itpm: 500000
-    otpm: 80000
-  - name: Tier 1 – Claude Sonnet 4.x
-    tier: Tier 1
-    model: Claude Sonnet 4.x
-    rpm: 50
-    itpm: 30000
-    otpm: 8000
-  - name: Tier 1 – Claude Haiku 4.5
-    tier: Tier 1
-    model: Claude Haiku 4.5
-    rpm: 50
-    itpm: 50000
-    otpm: 10000
-  - name: Tier 2 – Claude Opus 4.x
-    tier: Tier 2
-    model: Claude Opus 4.x
-    rpm: 1000
-    itpm: 2000000
-    otpm: 200000
-  - name: Tier 2 – Claude Sonnet 4.x
-    tier: Tier 2
-    model: Claude Sonnet 4.x
-    rpm: 1000
-    itpm: 450000
-    otpm: 90000
-  - name: Tier 2 – Claude Haiku 4.5
-    tier: Tier 2
-    model: Claude Haiku 4.5
-    rpm: 1000
-    itpm: 450000
-    otpm: 90000
-  - name: Tier 3 – Claude Opus 4.x
-    tier: Tier 3
-    model: Claude Opus 4.x
-    rpm: 2000
-    itpm: 5000000
-    otpm: 400000
-  - name: Tier 3 – Claude Sonnet 4.x
-    tier: Tier 3
-    model: Claude Sonnet 4.x
-    rpm: 2000
-    itpm: 800000
-    otpm: 160000
-  - name: Tier 3 – Claude Haiku 4.5
-    tier: Tier 3
-    model: Claude Haiku 4.5
-    rpm: 2000
-    itpm: 1000000
-    otpm: 200000
-  - name: Tier 4 – Claude Opus 4.x
-    tier: Tier 4
-    model: Claude Opus 4.x
-    rpm: 4000
-    itpm: 10000000
-    otpm: 800000
-  - name: Tier 4 – Claude Sonnet 4.x
-    tier: Tier 4
-    model: Claude Sonnet 4.x
-    rpm: 4000
-    itpm: 2000000
-    otpm: 400000
-  - name: Tier 4 – Claude Haiku 4.5
-    tier: Tier 4
-    model: Claude Haiku 4.5
-    rpm: 4000
-    itpm: 4000000
-    otpm: 800000
-batchApiLimits:
-  - tier: Tier 1
-    rpm: 50
-    queueMax: 100000
-    perBatchMax: 100000
-  - tier: Tier 2
-    rpm: 1000
-    queueMax: 200000
-    perBatchMax: 100000
-  - tier: Tier 3
-    rpm: 2000
-    queueMax: 300000
-    perBatchMax: 100000
-  - tier: Tier 4
-    rpm: 4000
-    queueMax: 500000
-    perBatchMax: 100000
-managedAgentLimits:
-  - endpoint: Create endpoints (agents, sessions, environments)
-    limit: 300
-    window: minute
-  - endpoint: Read endpoints (retrieve, list, stream)
-    limit: 600
-    window: minute
-policies:
-  - name: Cache-aware ITPM
-    description: On most models, cache_read_input_tokens do NOT count toward ITPM, making prompt caching
-      an effective way to increase throughput.
-  - name: Auto tier advancement
-    description: Tiers advance automatically based on cumulative credit purchase thresholds.
-  - name: Acceleration limits
-    description: Sharp usage spikes can trigger 429s independent of tier limits — ramp gradually.
+- name: Managed Agents create endpoints
+  limit_text: 300 requests per minute
+  limit: 300
+  window: minute
+  scope: account
+  endpoint: Create endpoints (for example, agents, sessions, and environments)
+- name: Managed Agents read endpoints
+  limit_text: 1,200 requests per minute
+  limit: 1200
+  window: minute
+  scope: account
+  endpoint: Read endpoints (for example, retrieve, list, and stream)
+- name: Start tier monthly spend cap
+  limit_text: Start $500 USD
+  limit: 500
+  window: month
+  scope: account
+  plan: Start
+- name: Build tier monthly spend cap
+  limit_text: Build $1,000 USD
+  limit: 1000
+  window: month
+  scope: account
+  plan: Build
+- name: Scale tier monthly spend cap
+  limit_text: Scale $200,000 USD
+  limit: 200000
+  window: month
+  scope: account
+  plan: Scale
+- name: Example short-interval enforcement
+  limit_text: 60 requests per minute (RPM) might be enforced as 1 request per second
+  scope: account
+  kind: burst
+headers:
+- retry-after
+- anthropic-ratelimit-requests-limit
+- anthropic-ratelimit-requests-remaining
+- anthropic-ratelimit-requests-reset
+- anthropic-ratelimit-tokens-limit
+- anthropic-ratelimit-tokens-remaining
+- anthropic-ratelimit-tokens-reset
+- anthropic-ratelimit-input-tokens-limit
+- anthropic-ratelimit-input-tokens-remaining
+- anthropic-ratelimit-input-tokens-reset
+- anthropic-ratelimit-output-tokens-limit
+- anthropic-ratelimit-output-tokens-remaining
+- anthropic-ratelimit-output-tokens-reset
+- anthropic-priority-input-tokens-limit
+- anthropic-priority-input-tokens-remaining
+- anthropic-priority-input-tokens-reset
+- anthropic-priority-output-tokens-limit
+- anthropic-priority-output-tokens-remaining
+- anthropic-priority-output-tokens-reset
+- anthropic-workspace-id
+exceeded_status: 429
