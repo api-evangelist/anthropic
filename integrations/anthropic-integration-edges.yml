@@ -1,0 +1,50 @@
+generated: '2026-10-12'
+method: searched
+source:
+- https://n8n.io/integrations/anthropic/
+checked:
+- https://composio.dev/toolkits/anthropic
+- https://monid.ai/tools/anthropic
+- https://n8n.io/integrations/anthropic/
+- https://zapier.com/apps/anthropic/integrations
+summary: null
+marketplace_apps:
+- marketplace: n8n
+  channel: open-source-node
+  app: anthropic
+  url: https://n8n.io/integrations/anthropic/
+  identity: title
+  pair_pages: 0
+  pairs: []
+edges:
+- partner_name: algolia
+  partner: algolia
+  partner_match: domain
+  type: contract
+  channel: partner-built
+  relationship: processor-connection
+  direction: partner-built
+  evidence: https://github.com/api-evangelist/algolia/blob/main/openapi/algolia-agent-studio-api-openapi.yml
+  contract_reference:
+    repo: algolia
+    spec_file: algolia-agent-studio-api-openapi.yml
+    value: anthropic
+    property: components.schemas.ProviderName
+    detected_by: detect-payment-method-edges.py
+    detected: '2026-10-12'
+- partner_name: zavu
+  partner: zavu
+  partner_match: domain
+  type: contract
+  channel: partner-built
+  relationship: processor-connection
+  direction: partner-built
+  evidence: https://github.com/api-evangelist/zavu/blob/main/openapi/zavu-agents-api-openapi.yml
+  contract_reference:
+    repo: zavu
+    spec_file: zavu-agents-api-openapi.yml
+    value: anthropic
+    property: schemas.AgentProvider
+    detected_by: detect-payment-method-edges.py
+    detected: '2026-10-12'
+templates: []
