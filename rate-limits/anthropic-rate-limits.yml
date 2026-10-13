@@ -2,6 +2,7 @@
 generated: '2026-10-07'
 method: searched
 source: https://platform.claude.com/docs/en/api/rate-limits
+name: Anthropic API Rate Limits
 sources:
 - https://platform.claude.com/docs/en/api/rate-limits
 provenance:

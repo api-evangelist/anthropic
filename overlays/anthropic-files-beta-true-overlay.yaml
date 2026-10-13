@@ -2,7 +2,7 @@ overlay: 1.0.0
 info:
   title: API Evangelist enhancements for Anthropic Files?beta=true API
   version: 1.0.0
-extends: openapi/anthropic-files-beta-true-api-openapi.yml
+extends: openapi/anthropic-files-api-openapi.yml
 actions:
 - target: $.info
   update:

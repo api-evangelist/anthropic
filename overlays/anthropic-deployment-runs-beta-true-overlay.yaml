@@ -2,7 +2,7 @@ overlay: 1.0.0
 info:
   title: API Evangelist enhancements for Anthropic Deployment Runs?beta=true API
   version: 1.0.0
-extends: openapi/anthropic-deployment-runs-beta-true-api-openapi.yml
+extends: openapi/anthropic-deployment-runs-api-openapi.yml
 actions:
 - target: $.info
   update:

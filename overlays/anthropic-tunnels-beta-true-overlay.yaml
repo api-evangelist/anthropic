@@ -2,7 +2,7 @@ overlay: 1.0.0
 info:
   title: API Evangelist enhancements for Anthropic Tunnels?beta=true API
   version: 1.0.0
-extends: openapi/anthropic-tunnels-beta-true-api-openapi.yml
+extends: openapi/anthropic-tunnels-api-openapi.yml
 actions:
 - target: $.info
   update:

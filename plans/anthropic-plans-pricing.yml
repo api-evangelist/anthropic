@@ -2,6 +2,7 @@
 generated: '2026-10-07'
 method: searched
 source: https://claude.com/pricing
+name: Anthropic API Plans
 sources:
 - https://claude.com/pricing
 provenance:
