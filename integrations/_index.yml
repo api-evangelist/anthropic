@@ -94,3 +94,39 @@
   relationship: system-coverage
   status: not-a-workflow
   arazzo: null
+- slug: anthropic-github-marketplace-actions
+  label: GitHub Marketplace (actions)
+  partner: github-actions
+  partner_name: GitHub Marketplace (actions)
+  type: marketplace
+  marketplace: github-actions
+  channel: partner-built
+  evidence: https://github.com/marketplace/actions/claude-code-action-official
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: anthropic-jetbrains-marketplace
+  label: JetBrains Marketplace
+  partner: jetbrains
+  partner_name: JetBrains Marketplace
+  type: marketplace
+  marketplace: jetbrains
+  channel: partner-built
+  evidence: https://plugins.jetbrains.com/vendor/anthropic
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: anthropic-visual-studio-code-marketplace
+  label: Visual Studio Code Marketplace
+  partner: vs-code-marketplace
+  partner_name: Visual Studio Code Marketplace
+  type: marketplace
+  marketplace: vscode
+  channel: partner-built
+  evidence: https://marketplace.visualstudio.com/publishers/anthropic
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null

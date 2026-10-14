@@ -8,9 +8,12 @@ checked:
 - https://developers.cloudflare.com/ai-gateway/usage/providers/
 - https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json
 - https://github.com/Portkey-AI/gateway/tree/main/src/providers
+- https://github.com/marketplace?type=actions
+- https://marketplace.visualstudio.com/vscode
 - https://monid.ai/tools/anthropic
 - https://n8n.io/integrations/anthropic/
 - https://openrouter.ai/api/v1/models
+- https://plugins.jetbrains.com/
 - https://zapier.com/apps/anthropic/integrations
 summary: null
 marketplace_apps:
@@ -157,4 +160,57 @@ edges:
   matched_by: verified-token-table
   detected_by: sweep-model-routing.py
   first_seen: '2026-10-13'
+- partner_name: GitHub Marketplace (actions)
+  partner: github-actions
+  partner_match: aggregator
+  type: marketplace
+  marketplace: github-actions
+  channel: partner-built
+  relationship: platform-app
+  direction: third-party
+  evidence: https://github.com/marketplace/actions/claude-code-action-official
+  listing_count: 2
+  apps:
+  - Claude Code Action Official
+  - Claude Code Base Action
+  publisher_name: Anthropic
+  badges:
+  - Verified creator
+  detected_by: sweep-devtools.py
+  detected: '2026-10-14'
+- partner_name: JetBrains Marketplace
+  partner: jetbrains
+  partner_match: aggregator
+  type: marketplace
+  marketplace: jetbrains
+  channel: partner-built
+  relationship: platform-app
+  direction: third-party
+  evidence: https://plugins.jetbrains.com/vendor/anthropic
+  listing_count: 1
+  apps:
+  - Claude Code [Beta]
+  publisher_name: Anthropic PBC
+  badges:
+  - Verified vendor
+  detected_by: sweep-devtools.py
+  detected: '2026-10-14'
+- partner_name: Visual Studio Code Marketplace
+  partner: vs-code-marketplace
+  partner_match: aggregator
+  type: marketplace
+  marketplace: vscode
+  channel: partner-built
+  relationship: platform-app
+  direction: third-party
+  evidence: https://marketplace.visualstudio.com/publishers/anthropic
+  listing_count: 1
+  apps:
+  - Claude Code for VS Code
+  publisher_name: Anthropic
+  badges:
+  - Verified publisher
+  - Verified domain
+  detected_by: sweep-devtools.py
+  detected: '2026-10-14'
 templates: []
