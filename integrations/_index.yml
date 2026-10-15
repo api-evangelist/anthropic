@@ -153,7 +153,7 @@
     app_slug: anthropic-claude
     beta: false
     builder: unknown (not in the directory record)
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: anthropic-pipedream
   label: Pipedream
@@ -179,7 +179,7 @@
     actions: true
     sources: false
     builder: Pipedream repo (component)
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: anthropic-uk-g-cloud-15-digital-marketplace
   label: UK G-Cloud 15 (Digital Marketplace)
