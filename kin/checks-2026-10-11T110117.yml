@@ -2,22 +2,18 @@
 kin_checks:
   slug: anthropic
   schema_version: 0.23.0
-  scored_at: '2026-10-03'
-  run_ts: 2026-10-03T024842
+  scored_at: '2026-10-11'
+  run_ts: 2026-10-11T110117
   note: Actionable checks (missed + partial) in `checks`, plus the ids that did not
     apply in `na`. Everything else in rubric/scoring-0.23.0.yml was earned; counts
     below let you verify that.
   counts:
     total: 153
-    earned: 53
-    partial: 35
-    missed: 40
+    earned: 57
+    partial: 37
+    missed: 34
     na: 25
   checks:
-  - id: newsroom_present
-    status: missed
-  - id: leadership_present
-    status: missed
   - id: well_known_published
     status: missed
   - id: apis_json_self_hosted
@@ -36,11 +32,7 @@ kin_checks:
     status: missed
   - id: domain_standard_conformance
     status: missed
-  - id: vocabulary_published
-    status: missed
   - id: overlay_published
-    status: missed
-  - id: roadmap_present
     status: missed
   - id: reg_oauth_scopes
     status: missed
@@ -80,13 +72,9 @@ kin_checks:
     status: missed
   - id: mcp_server
     status: missed
-  - id: idempotency
-    status: missed
   - id: well_known_catalog
     status: missed
   - id: consent_identity
-    status: missed
-  - id: agent_card
     status: missed
   - id: dry_run_mode
     status: missed
@@ -205,6 +193,9 @@ kin_checks:
   - id: balanced_severities
     status: partial
     earned: 0.75
+  - id: vocabulary_published
+    status: partial
+    earned: 4.5
   - id: rate_limits_documented
     status: partial
     earned: 2.0
@@ -232,6 +223,10 @@ kin_checks:
     status: partial
     earned: 3.5
     detail: 'grade: bearer'
+  - id: idempotency
+    status: partial
+    earned: 4.5
+    detail: 'grade: documented'
   - id: openapi_examples
     status: partial
     earned: 3.5
