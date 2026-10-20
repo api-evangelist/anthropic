@@ -75,137 +75,6 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
-- slug: anthropic-openrouter
-  label: OpenRouter
-  partner: openrouter
-  partner_name: OpenRouter
-  type: coverage
-  channel: partner-built
-  evidence: https://openrouter.ai/api/v1/models
-  source: edge
-  relationship: system-coverage
-  status: not-a-workflow
-  arazzo: null
-- slug: anthropic-litellm
-  label: LiteLLM
-  partner: litellm
-  partner_name: LiteLLM
-  type: coverage
-  channel: partner-built
-  evidence: https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json
-  source: edge
-  relationship: system-coverage
-  status: not-a-workflow
-  arazzo: null
-- slug: anthropic-llm-gateway
-  label: LLM Gateway
-  partner: llmgateway-io
-  partner_name: LLM Gateway
-  type: coverage
-  channel: partner-built
-  evidence: https://api.llmgateway.io/v1/models
-  source: edge
-  relationship: system-coverage
-  status: not-a-workflow
-  arazzo: null
-- slug: anthropic-portkey
-  label: Portkey
-  partner: portkey
-  partner_name: Portkey
-  type: coverage
-  channel: partner-built
-  evidence: https://github.com/Portkey-AI/gateway/tree/main/src/providers/anthropic
-  source: edge
-  relationship: system-coverage
-  status: not-a-workflow
-  arazzo: null
-- slug: anthropic-cloudflare-ai-gateway
-  label: Cloudflare AI Gateway
-  partner: cloudflare-ai-gateway
-  partner_name: Cloudflare AI Gateway
-  type: coverage
-  channel: partner-built
-  evidence: https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/ai-gateway/usage/providers/anthropic.mdx
-  source: edge
-  relationship: system-coverage
-  status: not-a-workflow
-  arazzo: null
-- slug: anthropic-zapier
-  label: Zapier
-  partner: zapier
-  partner_name: Zapier
-  type: marketplace
-  marketplace: zapier-directory
-  channel: ipaas-listing
-  evidence: https://zapier.com/apps/anthropic-claude/integrations
-  source: edge
-  relationship: ipaas-bridge
-  contract_reference:
-    register: Zapier app directory (zapier.com/api/v4/apps)
-    spec_file: null
-    role: ipaas-connector:zapier
-    registered_name: Anthropic (Claude)
-    matched_domain: anthropic.com
-    matched_by: domain
-    detected_by: sweep-workflow-automation.py
-    detected: '2026-10-15'
-    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
-    app_slug: anthropic-claude
-    beta: false
-    builder: unknown (not in the directory record)
-  status: not-a-workflow
-  arazzo: null
-- slug: anthropic-pipedream
-  label: Pipedream
-  partner: pipedream
-  partner_name: Pipedream
-  type: marketplace
-  marketplace: pipedream-components
-  channel: open-source-node
-  evidence: https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/anthropic
-  source: edge
-  relationship: ipaas-bridge
-  contract_reference:
-    register: Pipedream components (PipedreamHQ/pipedream components/)
-    spec_file: null
-    role: ipaas-connector:pipedream
-    registered_name: anthropic
-    matched_domain: anthropic.com
-    matched_by: domain
-    detected_by: sweep-workflow-automation.py
-    detected: '2026-10-15'
-    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
-    app_slug: anthropic
-    actions: true
-    sources: false
-    builder: Pipedream repo (component)
-  status: not-a-workflow
-  arazzo: null
-- slug: anthropic-uk-g-cloud-15-digital-marketplace
-  label: UK G-Cloud 15 (Digital Marketplace)
-  partner_name: UK G-Cloud 15 (Digital Marketplace)
-  category: UK public-sector procurement framework
-  type: marketplace
-  marketplace: g-cloud
-  channel: distribution
-  evidence: https://www.applytosupply.digitalmarketplace.service.gov.uk/g-cloud-15/supplier/724672
-  source: edge
-  relationship: distribution-channel
-  contract_reference:
-    register: UK G-Cloud 15 supplier list (Digital Marketplace)
-    spec_file: null
-    role: g-cloud-supplier
-    registered_name: Anthropic Ireland Limited
-    register_id: '724672'
-    matched_domain: anthropic.com
-    matched_by: domain
-    domain_source: contact-email
-    signal_note: a framework award is distribution (selling to the public sector), not an integration; kept out
-      of position shares
-    detected_by: sweep-gov-cloud.py
-    detected: '2026-10-15'
-  status: not-a-workflow
-  arazzo: null
 - slug: anthropic-slack-own
   label: Slack (own)
   partner: slack
@@ -389,5 +258,148 @@
       24 months'
     detected_by: sweep-official-sdks.py
     detected: '2026-10-18'
+  status: not-a-workflow
+  arazzo: null
+- slug: anthropic-uk-g-cloud-15-digital-marketplace
+  label: UK G-Cloud 15 (Digital Marketplace)
+  partner_name: UK G-Cloud 15 (Digital Marketplace)
+  category: UK public-sector procurement framework
+  type: marketplace
+  marketplace: g-cloud
+  channel: distribution
+  evidence: https://www.applytosupply.digitalmarketplace.service.gov.uk/g-cloud-15/supplier/724672
+  source: edge
+  relationship: distribution-channel
+  contract_reference:
+    register: UK G-Cloud 15 supplier list (Digital Marketplace)
+    spec_file: null
+    role: g-cloud-supplier
+    registered_name: Anthropic Ireland Limited
+    register_id: '724672'
+    matched_domain: anthropic.com
+    matched_by: domain
+    domain_source: contact-email
+    signal_note: a framework award is distribution (selling to the public sector), not an integration; kept out
+      of position shares
+    detected_by: sweep-gov-cloud.py
+    detected: '2026-10-15'
+  status: not-a-workflow
+  arazzo: null
+- slug: anthropic-openrouter
+  label: OpenRouter
+  partner: openrouter
+  partner_name: OpenRouter
+  type: coverage
+  channel: partner-built
+  evidence: https://openrouter.ai/api/v1/models
+  source: edge
+  relationship: system-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: anthropic-litellm
+  label: LiteLLM
+  partner: litellm
+  partner_name: LiteLLM
+  type: coverage
+  channel: partner-built
+  evidence: https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json
+  source: edge
+  relationship: system-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: anthropic-llm-gateway
+  label: LLM Gateway
+  partner: llmgateway-io
+  partner_name: LLM Gateway
+  type: coverage
+  channel: partner-built
+  evidence: https://api.llmgateway.io/v1/models
+  source: edge
+  relationship: system-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: anthropic-portkey
+  label: Portkey
+  partner: portkey
+  partner_name: Portkey
+  type: coverage
+  channel: partner-built
+  evidence: https://github.com/Portkey-AI/gateway/tree/main/src/providers/anthropic
+  source: edge
+  relationship: system-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: anthropic-cloudflare-ai-gateway
+  label: Cloudflare AI Gateway
+  partner: cloudflare-ai-gateway
+  partner_name: Cloudflare AI Gateway
+  type: coverage
+  channel: partner-built
+  evidence: https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/ai-gateway/usage/providers/anthropic.mdx
+  source: edge
+  relationship: system-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: anthropic-aws-marketplace
+  label: AWS Marketplace
+  partner: amazon-web-services
+  partner_name: AWS Marketplace
+  type: marketplace
+  marketplace: aws-marketplace
+  channel: distribution
+  evidence: https://aws.amazon.com/marketplace/seller-profile?id=seller-v6kfbdtqxnqgo
+  source: edge
+  relationship: distribution-channel
+  status: not-a-workflow
+  arazzo: null
+- slug: anthropic-zapier
+  label: Zapier
+  partner: zapier
+  partner_name: Zapier
+  type: marketplace
+  marketplace: zapier-directory
+  channel: ipaas-listing
+  evidence: https://zapier.com/apps/anthropic-claude/integrations
+  source: edge
+  relationship: ipaas-bridge
+  contract_reference:
+    register: Zapier app directory (zapier.com/api/v4/apps)
+    spec_file: null
+    role: ipaas-connector:zapier
+    registered_name: Anthropic (Claude)
+    matched_domain: anthropic.com
+    matched_by: domain
+    detected_by: sweep-workflow-automation.py
+    detected: '2026-10-15'
+    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
+    app_slug: anthropic-claude
+    beta: false
+    builder: unknown (not in the directory record)
+  status: not-a-workflow
+  arazzo: null
+- slug: anthropic-pipedream
+  label: Pipedream
+  partner: pipedream
+  partner_name: Pipedream
+  type: marketplace
+  marketplace: pipedream-components
+  channel: open-source-node
+  evidence: https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/anthropic
+  source: edge
+  relationship: ipaas-bridge
+  contract_reference:
+    register: Pipedream components (PipedreamHQ/pipedream components/)
+    spec_file: null
+    role: ipaas-connector:pipedream
+    registered_name: anthropic
+    matched_domain: anthropic.com
+    matched_by: domain
+    detected_by: sweep-workflow-automation.py
+    detected: '2026-10-15'
+    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
+    app_slug: anthropic
+    actions: true
+    sources: false
+    builder: Pipedream repo (component)
   status: not-a-workflow
   arazzo: null
