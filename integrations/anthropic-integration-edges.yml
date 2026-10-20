@@ -6,20 +6,15 @@ checked:
 - https://api.llmgateway.io/v1/models
 - https://api.nuget.org/v3
 - https://aws.amazon.com/marketplace/
-- https://cdn.winget.microsoft.com/cache
 - https://cloudsecurityalliance.org/star/registry
 - https://composio.dev/toolkits/anthropic
 - https://crates.io/api/v1
 - https://developers.cloudflare.com/ai-gateway/usage/providers/
 - https://eucoc.cloud/en/public-register/list-of-adherent-services
-- https://formulae.brew.sh/api/cask.json
-- https://formulae.brew.sh/api/formula.json
 - https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json
 - https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
 - https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/
 - https://github.com/Portkey-AI/gateway/tree/main/src/providers
-- https://github.com/ScoopInstaller/Extras
-- https://github.com/ScoopInstaller/Main
 - https://github.com/marketplace?type=actions
 - https://govramp.org/program-participants
 - https://marketplace.visualstudio.com/vscode
@@ -37,6 +32,17 @@ checked:
 - https://zapier.com/api/v4/apps/
 - https://zapier.com/apps/anthropic/integrations
 - slack/integrations/slack-integration-edges.yml
+- https://cdn.winget.microsoft.com/cache
+- https://formulae.brew.sh/api/cask.json
+- https://formulae.brew.sh/api/formula.json
+- https://github.com/ScoopInstaller/Extras
+- https://github.com/ScoopInstaller/Main
+- https://api.github.com
+- https://claude-plugins.dev/sitemap.xml
+- https://github.com/VoltAgent/awesome-agent-skills
+- https://officialskills.sh/sitemap.xml
+- https://skillsmp.com/sitemap.xml
+- https://www.skills.sh/sitemap.xml
 summary: null
 marketplace_apps:
 - marketplace: n8n
@@ -572,5 +578,286 @@ edges:
     detected_by: sweep-official-clis.py
     detected: '2026-10-20'
   detected_by: sweep-official-clis.py
+  first_seen: '2026-10-20'
+- partner_name: Agent Skills (own GitHub org)
+  partner: null
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: Agent Skills package
+  evidence: https://github.com/anthropics/claude-code
+  channel: provider-built
+  relationship: compatible
+  shape: agent-skills
+  evidence_kind: own-repo
+  degree: skill-repo
+  report_only: true
+  agent_skills:
+    org: anthropics
+    current: true
+    repos:
+    - repo: anthropics/claude-code
+      archived: false
+      lapsed: false
+      pushed: '2026-10-20'
+    - repo: anthropics/claude-cookbooks
+      archived: false
+      lapsed: false
+      pushed: '2026-10-17'
+    - repo: anthropics/claude-for-legal
+      archived: false
+      lapsed: false
+      pushed: '2026-10-14'
+    - repo: anthropics/claude-plugins-community
+      archived: false
+      lapsed: false
+      pushed: '2026-10-20'
+    - repo: anthropics/claude-plugins-official
+      archived: false
+      lapsed: false
+      pushed: '2026-10-20'
+    - repo: anthropics/claude-tag-plugins
+      archived: false
+      lapsed: false
+      pushed: '2026-10-07'
+    - repo: anthropics/cwc-workshops
+      archived: false
+      lapsed: false
+      pushed: '2026-10-16'
+    - repo: anthropics/financial-services
+      archived: false
+      lapsed: false
+      pushed: '2026-09-21'
+    - repo: anthropics/healthcare
+      archived: false
+      lapsed: false
+      pushed: '2026-08-27'
+    - repo: anthropics/knowledge-work-plugins
+      archived: false
+      lapsed: false
+      pushed: '2026-10-20'
+    - repo: anthropics/life-sciences
+      archived: false
+      lapsed: false
+      pushed: '2026-08-14'
+    - repo: anthropics/skills
+      archived: false
+      lapsed: false
+      pushed: '2026-10-09'
+  contract_reference:
+    register: 'provider''s own GitHub org (GitHub REST API: repo + git tree holds SKILL.md)'
+    spec_file: null
+    standard: Agent Skills (agentskills.io)
+    role: agent-skills-repo
+    matched_org: anthropics
+    matched_by: org-profile-domain:anthropic.com
+    detected_by: sweep-agent-skills.py
+    detected: '2026-10-20'
+  detected_by: sweep-agent-skills.py
+  first_seen: '2026-10-20'
+- partner_name: skills.sh
+  partner: null
+  partner_match: register
+  type: register
+  direction: partner-built
+  category: Agent Skills register
+  evidence: https://www.skills.sh/anthropics/claude-code
+  channel: standard-directory
+  relationship: compatible
+  shape: agent-skills
+  evidence_kind: register-listing
+  degree: listed
+  report_only: true
+  agent_skills_register:
+    repos:
+    - anthropics/claude-code
+    - anthropics/claude-cookbooks
+    - anthropics/claude-for-legal
+    - anthropics/claude-plugins-community
+    - anthropics/claude-plugins-official
+    - anthropics/defending-code-reference-harness
+    - anthropics/financial-services
+    - anthropics/healthcare
+    - anthropics/knowledge-work-plugins
+    - anthropics/skills
+    repo_verified: true
+    signal_note: the provider's own-org repos the register lists; skill / install counts never read
+  contract_reference:
+    register: skills.sh (public sitemap / list)
+    spec_file: null
+    standard: Agent Skills (agentskills.io)
+    role: agent-skills-listing
+    matched_org: anthropics
+    matched_by: org-profile-domain:anthropic.com
+    sample_skills:
+    - 3-statement-model
+    - academy-guide
+    - access
+    - accessibility-review
+    - account-research
+    detected_by: sweep-agent-skills.py
+    detected: '2026-10-20'
+  detected_by: sweep-agent-skills.py
+  first_seen: '2026-10-20'
+- partner_name: claude-plugins.dev
+  partner: null
+  partner_match: register
+  type: register
+  direction: partner-built
+  category: Agent Skills register
+  evidence: https://claude-plugins.dev/skills/@anthropics/claude-agent-sdk-demos
+  channel: standard-directory
+  relationship: compatible
+  shape: agent-skills
+  evidence_kind: register-listing
+  degree: listed
+  report_only: true
+  agent_skills_register:
+    repos:
+    - anthropics/claude-agent-sdk-demos
+    - anthropics/claude-code
+    - anthropics/claude-cookbooks
+    - anthropics/claude-plugins-community
+    - anthropics/claude-plugins-official
+    - anthropics/financial-services
+    - anthropics/knowledge-work-plugins
+    - anthropics/life-sciences
+    - anthropics/skills
+    repo_verified: true
+    signal_note: the provider's own-org repos the register lists; skill / install counts never read
+  contract_reference:
+    register: claude-plugins.dev (public sitemap / list)
+    spec_file: null
+    standard: Agent Skills (agentskills.io)
+    role: agent-skills-listing
+    matched_org: anthropics
+    matched_by: org-profile-domain:anthropic.com
+    sample_skills:
+    - 3-statement-model
+    - academy-guide
+    - accessibility-review
+    - accrual-schedule
+    - action-creator
+    detected_by: sweep-agent-skills.py
+    detected: '2026-10-20'
+  detected_by: sweep-agent-skills.py
+  first_seen: '2026-10-20'
+- partner_name: SkillsMP (skillsmp.com)
+  partner: null
+  partner_match: register
+  type: register
+  direction: partner-built
+  category: Agent Skills register
+  evidence: https://skillsmp.com/creators/anthropics/claude-agent-sdk-demos
+  channel: standard-directory
+  relationship: compatible
+  shape: agent-skills
+  evidence_kind: register-listing
+  degree: listed
+  report_only: true
+  agent_skills_register:
+    repos:
+    - anthropics
+    - anthropics/claude-agent-sdk-demos
+    - anthropics/claude-code
+    - anthropics/claude-cookbooks
+    - anthropics/claude-for-legal
+    - anthropics/claude-plugins-community
+    - anthropics/claude-plugins-official
+    - anthropics/claude-tag-plugins
+    - anthropics/cwc-workshops
+    - anthropics/financial-services
+    - anthropics/knowledge-work-plugins
+    - anthropics/launch-your-agent
+    - anthropics/life-sciences
+    - anthropics/skills
+    repo_verified: true
+    signal_note: the provider's own-org repos the register lists; skill / install counts never read
+  contract_reference:
+    register: SkillsMP (skillsmp.com) (public sitemap / list)
+    spec_file: null
+    standard: Agent Skills (agentskills.io)
+    role: agent-skills-listing
+    matched_org: anthropics
+    matched_by: org-profile-domain:anthropic.com
+    sample_skills:
+    - agent-battle-skills-mining
+    - agent-decomposition-claude-skills-supplier-selection
+    - agent-decomposition-claude-skills-weekly-report
+    - ai-governance-legal-skills-ai-inventory
+    - ai-governance-legal-skills-customize
+    detected_by: sweep-agent-skills.py
+    detected: '2026-10-20'
+  detected_by: sweep-agent-skills.py
+  first_seen: '2026-10-20'
+- partner_name: officialskills.sh
+  partner: null
+  partner_match: register
+  type: register
+  direction: partner-built
+  category: Agent Skills register
+  evidence: https://officialskills.sh/anthropics/skills
+  channel: standard-directory
+  relationship: compatible
+  shape: agent-skills
+  evidence_kind: register-listing
+  degree: listed
+  report_only: true
+  agent_skills_register:
+    repos:
+    - anthropics/skills
+    repo_verified: true
+    signal_note: the provider's own-org repos the register lists; skill / install counts never read
+  contract_reference:
+    register: officialskills.sh (public sitemap / list)
+    spec_file: null
+    standard: Agent Skills (agentskills.io)
+    role: agent-skills-listing
+    matched_org: anthropics
+    matched_by: org-profile-domain:anthropic.com
+    sample_skills:
+    - algorithmic-art
+    - brand-guidelines
+    - canvas-design
+    - doc-coauthoring
+    - docx
+    detected_by: sweep-agent-skills.py
+    detected: '2026-10-20'
+  detected_by: sweep-agent-skills.py
+  first_seen: '2026-10-20'
+- partner_name: VoltAgent awesome-agent-skills (community list)
+  partner: null
+  partner_match: register
+  type: register
+  direction: partner-built
+  category: Agent Skills register
+  evidence: https://github.com/VoltAgent/awesome-agent-skills
+  channel: standard-directory
+  relationship: compatible
+  shape: agent-skills
+  evidence_kind: register-listing
+  degree: listed
+  report_only: true
+  agent_skills_register:
+    repos:
+    - anthropics/skills
+    repo_verified: true
+    signal_note: the provider's own-org repos the register lists; skill / install counts never read
+  contract_reference:
+    register: VoltAgent awesome-agent-skills (community list) (public sitemap / list)
+    spec_file: null
+    standard: Agent Skills (agentskills.io)
+    role: agent-skills-listing
+    matched_org: anthropics
+    matched_by: org-profile-domain:anthropic.com
+    sample_skills:
+    - algorithmic-art
+    - brand-guidelines
+    - canvas-design
+    - doc-coauthoring
+    - docx
+    detected_by: sweep-agent-skills.py
+    detected: '2026-10-20'
+  detected_by: sweep-agent-skills.py
   first_seen: '2026-10-20'
 templates: []
