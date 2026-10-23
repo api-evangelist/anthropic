@@ -69,6 +69,7 @@ checked:
 - https://aur.archlinux.org/cgit/aur.git/tree/.SRCINFO
 - https://aur.archlinux.org/packages-meta-ext-v1.json.gz
 - https://aur.archlinux.org/rpc/v5/info
+- hugging-face/integrations/hugging-face-integration-edges.yml
 summary: null
 marketplace_apps:
 - marketplace: n8n
@@ -162,23 +163,6 @@ edges:
   - Verified domain
   detected_by: sweep-devtools.py
   detected: '2026-10-14'
-- partner_name: Slack (own)
-  partner: slack
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://slack.com/marketplace/A08SF47R6P4-claude
-  mirror_of: slack/integrations/slack-integration-edges.yml
-  apps:
-  - Claude
-  listing_count: 1
-  detected: '2026-10-18'
-  detected_by: mirror-platform-listings.py
-  category: Slack app
 - partner_name: Go module proxy
   partner: null
   partner_match: null
@@ -1190,4 +1174,47 @@ edges:
     detected: '2026-10-23'
   detected_by: sweep-aur-vendor-cli-packages.py
   first_seen: '2026-10-23'
+- partner_name: Slack (own)
+  partner: slack
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://slack.com/marketplace/A08SF47R6P4-claude
+  mirror_of: slack/integrations/slack-integration-edges.yml
+  apps:
+  - Claude
+  listing_count: 1
+  detected: '2026-10-18'
+  detected_by: mirror-platform-listings.py
+  category: Slack app
+- partner_name: Hugging Face (hugging-face-hub)
+  partner: hugging-face
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: hugging-face-hub
+  evidence: https://huggingface.co/Anthropic
+  mirror_of: hugging-face/integrations/hugging-face-integration-edges.yml
+  apps:
+  - Anthropic/claude-protein-binder-design
+  - Anthropic/hh-rlhf
+  - Anthropic/EconomicIndex
+  - Anthropic/BioMysteryBench-preview
+  - Anthropic/BioMysteryBench-full
+  - Anthropic/model-written-evals
+  - Anthropic/scorpion-toxin-binder-design
+  - Anthropic/llm_global_opinions
+  listing_count: 1
+  detected: '2026-10-23'
+  detected_by: mirror-platform-listings.py
+  category: Hugging Face Hub datasets
+  badges:
+  - Verified publisher (Hugging Face verified organisation)
 templates: []
