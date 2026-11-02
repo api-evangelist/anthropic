@@ -1,0 +1,272 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-07'
+method: searched
+source: https://claude.com/pricing
+name: Anthropic API Plans
+sources:
+- https://claude.com/pricing
+provenance:
+  tool: all/0-working/economics/harvest_pricing.py
+  run: 20261007T112025
+  grounding: every price_text was found verbatim in the fetched page text
+audience: business-product
+pricing_basis: tiered-subscription
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-10-07'
+  managed_tier: Pro
+published: true
+note: 'Combined consumer/team/enterprise subscription pricing plus API token pricing. Extras noted: US-only
+  inference at 1.1x pricing; fast mode for Opus 5.5 at 2x standard pricing; batch processing saves 50%.'
+plan_count: 15
+currency: USD
+plans:
+- name: Free
+  price_text: $0
+  price: 0
+  currency: USD
+  period: month
+  unit: user
+  included_quota: Chat on web, desktop, and mobile; search the web, create files, run code; memory; connect
+    apps; Artifacts
+- name: Pro
+  price_text: $17
+  price: 17
+  currency: USD
+  period: month
+  unit: user
+  included_quota: Per month with annual subscription discount ( $200 billed up front). $20 if billed monthly.
+- name: Max
+  price_text: From $100
+  price: 100
+  currency: USD
+  period: month
+  unit: user
+  included_quota: Choose 5x or 20x more usage than Pro
+- name: Team Standard seat
+  price_text: $20
+  price: 20
+  currency: USD
+  period: month
+  unit: seat
+  included_quota: Per seat / month if billed annually. $25 if billed monthly.
+- name: Team Premium seat
+  price_text: $100
+  price: 100
+  currency: USD
+  period: month
+  unit: seat
+  included_quota: 5x more usage than standard seats; Per seat / month if billed annually. $125 if billed
+    monthly.
+- name: Enterprise
+  price_text: US$20/seat/month, billed annually.
+  price: 20
+  currency: USD
+  period: month
+  unit: seat
+  included_quota: Seat price + usage at API rates
+  overage: Usage cost scales with model and task.
+- name: Fable 5.1 API
+  price_text: Input $10 / MTok
+  price: 10
+  currency: USD
+  period: per-use
+  unit: MTok input
+  included_quota: Output $50 / MTok; Prompt caching Read $0.25 / MTok, Write $12.50 / MTok
+- name: Opus 5.5 API
+  price_text: Input $4 / MTok
+  price: 4
+  currency: USD
+  period: per-use
+  unit: MTok input
+  included_quota: Output $20 / MTok; caching Read $0.20 / MTok, Write $5 / MTok
+- name: Sonnet 5.5 API
+  price_text: Input $2 / MTok
+  price: 2
+  currency: USD
+  period: per-use
+  unit: MTok input
+  included_quota: Output $10 / MTok; caching Read $0.20 / MTok, Write $2.50 / MTok
+- name: Haiku 4.5 API
+  price_text: Input $1 / MTok
+  price: 1
+  currency: USD
+  period: per-use
+  unit: MTok input
+  included_quota: Output $5 / MTok; caching Read $0.10 / MTok, Write $1.25 / MTok
+- name: Managed Agents
+  price_text: $0.08 per session-hour for active runtime
+  price: 0.08
+  currency: USD
+  period: per-use
+  unit: session-hour
+  included_quota: Standard token rates apply.
+- name: Web search
+  price_text: $10 / 1K searches
+  price: 10
+  currency: USD
+  period: per-use
+  unit: 1K searches
+  included_quota: Doesn't include input and output tokens
+- name: Code execution
+  price_text: $0.05 per hour per container
+  price: 0.05
+  currency: USD
+  period: per-use
+  unit: hour per container
+  included_quota: 50 free hours of usage daily per organization.
+- name: Opus 5 (legacy)
+  price_text: Input $5 / MTok
+  price: 5
+  currency: USD
+  period: per-use
+  unit: MTok input
+  included_quota: Output $25 / MTok
+- name: Sonnet 4.6 (legacy)
+  price_text: Input $3 / MTok
+  price: 3
+  currency: USD
+  period: per-use
+  unit: MTok input
+  included_quota: Output $15 / MTok
+rate_limit_statements:
+- Every plan has usage limits that reset on a rolling five-hour session window, and paid plans add weekly
+  limits on top.
+- Pro gives you at least 5x more usage per 5-hour session than Free. Max gives you 5x or 20x more usage
+  per 5-hour session than Pro.
+- 50 free hours of usage daily per organization.
+- we may limit your usage in other ways, such as weekly and monthly caps or model and feature usage, at
+  our discretion
+x-canonical:
+  generated: '2026-11-01'
+  vocabulary: engine/economics/plans-canonical.yml
+  models:
+  - free
+  - hybrid
+  - seat
+  - subscription
+  units:
+  - compute
+  - seat
+  plans:
+  - name: Free
+    access: other
+    model: free
+    model_how: derived
+    units:
+    - seat
+    periods:
+    - month
+  - name: Pro
+    access: other
+    model: seat
+    model_how: derived
+    units:
+    - seat
+    periods:
+    - month
+  - name: Max
+    access: other
+    model: seat
+    model_how: derived
+    units:
+    - seat
+    periods:
+    - month
+  - name: Team Standard seat
+    access: other
+    model: seat
+    model_how: derived
+    units:
+    - seat
+    periods:
+    - month
+  - name: Team Premium seat
+    access: other
+    model: seat
+    model_how: derived
+    units:
+    - seat
+    periods:
+    - month
+  - name: Enterprise
+    access: other
+    model: seat
+    model_how: derived
+    units:
+    - seat
+    periods:
+    - month
+  - name: Fable 5.1 API
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Opus 5.5 API
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Sonnet 5.5 API
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Haiku 4.5 API
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Managed Agents
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - compute
+    periods:
+    - other
+  - name: Web search
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Code execution
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - compute
+    periods:
+    - other
+  - name: Opus 5 (legacy)
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Sonnet 4.6 (legacy)
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
