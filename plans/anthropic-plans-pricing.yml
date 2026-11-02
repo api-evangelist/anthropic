@@ -139,7 +139,7 @@ rate_limit_statements:
 - we may limit your usage in other ways, such as weekly and monthly caps or model and feature usage, at
   our discretion
 x-canonical:
-  generated: '2026-11-01'
+  generated: '2026-11-02'
   vocabulary: engine/economics/plans-canonical.yml
   models:
   - free
