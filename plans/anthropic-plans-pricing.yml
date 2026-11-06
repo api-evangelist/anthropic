@@ -139,16 +139,17 @@ rate_limit_statements:
 - we may limit your usage in other ways, such as weekly and monthly caps or model and feature usage, at
   our discretion
 x-canonical:
-  generated: '2026-11-02'
+  generated: '2026-11-06'
   vocabulary: engine/economics/plans-canonical.yml
   models:
   - free
   - hybrid
   - seat
-  - subscription
   units:
   - compute
+  - request
   - seat
+  - token
   plans:
   - name: Free
     access: other
@@ -200,34 +201,34 @@ x-canonical:
     - month
   - name: Fable 5.1 API
     access: other
-    model: subscription
+    model: hybrid
     model_how: derived
     units:
-    - other
+    - token
     periods:
     - other
   - name: Opus 5.5 API
     access: other
-    model: subscription
+    model: hybrid
     model_how: derived
     units:
-    - other
+    - token
     periods:
     - other
   - name: Sonnet 5.5 API
     access: other
-    model: subscription
+    model: hybrid
     model_how: derived
     units:
-    - other
+    - token
     periods:
     - other
   - name: Haiku 4.5 API
     access: other
-    model: subscription
+    model: hybrid
     model_how: derived
     units:
-    - other
+    - token
     periods:
     - other
   - name: Managed Agents
@@ -240,10 +241,10 @@ x-canonical:
     - other
   - name: Web search
     access: other
-    model: subscription
+    model: hybrid
     model_how: derived
     units:
-    - other
+    - request
     periods:
     - other
   - name: Code execution
@@ -256,17 +257,17 @@ x-canonical:
     - other
   - name: Opus 5 (legacy)
     access: other
-    model: subscription
+    model: hybrid
     model_how: derived
     units:
-    - other
+    - token
     periods:
     - other
   - name: Sonnet 4.6 (legacy)
     access: other
-    model: subscription
+    model: hybrid
     model_how: derived
     units:
-    - other
+    - token
     periods:
     - other
